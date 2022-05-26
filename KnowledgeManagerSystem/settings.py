@@ -156,19 +156,6 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # django Built-in Login system settings
-LOGIN_REDIRECT_URL = reverse_lazy('dashboard:main')
+LOGIN_REDIRECT_URL = reverse_lazy('documents:article_list')
 LOGIN_URL = reverse_lazy('authentication:login')
 LOGOUT_REDIRECT_URL = LOGIN_URL
-
-
-class CUSTOM_LOGIN_REDIRECT_URLS:
-    default = LOGIN_REDIRECT_URL
-    superuser = reverse_lazy('accounts:profile_list')
-
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'redeemer.redhat@gmail.com'
-EMAIL_HOST_PASSWORD = 'anticarnal'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
