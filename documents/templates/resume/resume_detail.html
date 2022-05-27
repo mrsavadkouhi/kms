@@ -75,8 +75,23 @@
                 </p>
 				<h3><strong>سمینار</strong></h3>
 				<h3><strong>پایان نامه</strong></h3>
+                <p>
+                {% for thesis in resume.thesis_producer.all %}
+                    <a href="{% url 'documents:thesis_details' pk=thesis.id %}">{{ thesis.title }}</a>,
+                {% endfor %}
+                </p>
 				<h3><strong>ایده</strong></h3>
+                <p>
+                {% for idea in resume.idea_producer.all %}
+                    <a href="{% url 'documents:idea_details' pk=idea.id %}">{{ idea.title }}</a>,
+                {% endfor %}
+                </p>
 				<h3><strong>تجربه</strong></h3>
+                <p>
+                {% for experience in resume.experience_producer.all %}
+                    <a href="{% url 'documents:experience_details' pk=experience.id %}">{{ experience.title }}</a>,
+                {% endfor %}
+                </p>
 				<h3><strong>گزارش</strong></h3>
 				<div><br></div>
 			</div>

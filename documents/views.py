@@ -170,6 +170,102 @@ class ExperienceDeleteView(LoginRequiredMixin, JSONDeleteView):
     model = Experience
 
 
+class IdeaListView(LoginRequiredMixin, ListView):
+    model = Idea
+    template_name = 'idea/idea_list.html'
+
+
+class IdeaCreateView(LoginRequiredMixin, CreateView):
+    model = Idea
+    template_name = 'idea/idea_form.html'
+    form_class = IdeaForm
+    success_url = reverse_lazy('documents:idea_list')
+    extra_context = {
+        'title': 'create',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['resumes'] = Document.objects.filter(type="Resume")
+        context['centers'] = CENTER_LIST
+        context['fields'] = DOCUMENT_FIELDS
+        return context
+
+
+class IdeaDetailsView(LoginRequiredMixin, DetailView):
+    model = Idea
+    template_name = 'idea/idea_detail.html'
+
+
+class IdeaUpdateForm(LoginRequiredMixin, UpdateView):
+    model = Idea
+    template_name = 'idea/idea_form.html'
+    form_class = IdeaForm
+    success_url = reverse_lazy('documents:idea_list')
+    extra_context = {
+        'title': 'update',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['resumes']=Document.objects.filter(type="Resume")
+        context['centers']=CENTER_LIST
+        context['fields']=DOCUMENT_FIELDS
+        return context
+
+
+class IdeaDeleteView(LoginRequiredMixin, JSONDeleteView):
+    model = Idea
+
+
+class ThesisListView(LoginRequiredMixin, ListView):
+    model = Thesis
+    template_name = 'thesis/thesis_list.html'
+
+
+class ThesisCreateView(LoginRequiredMixin, CreateView):
+    model = Thesis
+    template_name = 'thesis/thesis_form.html'
+    form_class = ThesisForm
+    success_url = reverse_lazy('documents:thesis_list')
+    extra_context = {
+        'title': 'create',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['resumes'] = Document.objects.filter(type="Resume")
+        context['centers'] = CENTER_LIST
+        context['fields'] = DOCUMENT_FIELDS
+        return context
+
+
+class ThesisDetailsView(LoginRequiredMixin, DetailView):
+    model = Thesis
+    template_name = 'thesis/thesis_detail.html'
+
+
+class ThesisUpdateForm(LoginRequiredMixin, UpdateView):
+    model = Thesis
+    template_name = 'thesis/thesis_form.html'
+    form_class = ThesisForm
+    success_url = reverse_lazy('documents:thesis_list')
+    extra_context = {
+        'title': 'update',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['resumes']=Document.objects.filter(type="Resume")
+        context['centers']=CENTER_LIST
+        context['fields']=DOCUMENT_FIELDS
+        return context
+
+
+class ThesisDeleteView(LoginRequiredMixin, JSONDeleteView):
+    model = Thesis
+
+
 class ResumeListView(LoginRequiredMixin, ListView):
     model = Resume
     template_name = 'resume/resume_list.html'

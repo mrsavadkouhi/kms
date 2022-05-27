@@ -18,7 +18,7 @@
 
 {% endblock %}
 
-{% block head_title %}{% if title == 'update' %}جزئیات تجربه{% else %}ایجاد تجربه{% endif %}{% endblock %}
+{% block head_title %}{% if title == 'update' %}جزئیات پایان نامه{% else %}ایجاد پایان نامه{% endif %}{% endblock %}
 
 
 {% block title-breadcrumb %}
@@ -30,13 +30,13 @@
 				<a>مدیریت دانش</a>
 			</li>
 			<li class="breadcrumb-item">
-                <a href="{% url 'documents:experience_list' %}" >لیست تجربه ها</a>
+                <a href="{% url 'documents:thesis_list' %}" >لیست پایان نامه ها</a>
 			</li>
 			<li class="breadcrumb-item active">
                 {% if title == 'update' %}
-                    <a href="{% url 'documents:experience_update' object.id %}"><strong>ویرایش {{ object.title }}</strong></a>
+                    <a href="{% url 'documents:thesis_update' object.id %}"><strong>ویرایش {{ object.title }}</strong></a>
                 {% else %}
-                    <a href="{% url 'documents:experience_create' %}"><strong>افزودن تجربه جدید</strong></a>
+                    <a href="{% url 'documents:thesis_create' %}"><strong>افزودن پایان نامه جدید</strong></a>
                 {% endif %}
 			</li>
 		</ol>
@@ -108,7 +108,7 @@
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="producer_label">تجربه نگار: </span>
+                    <span class="input-group-text required" id="producer_label">دانشجو: </span>
                   </div>
                     <select name="producer" id="producer" class="select2 form-control">
                         {% for obj in resumes %}
@@ -117,25 +117,31 @@
                     </select>
                 </div>
                 <div class="input-group mb-2">
+                  <div class="input-group-append">
+                    <span class="input-group-text required" id="measure_label">رشته تحصیلی: </span>
+                  </div>
+                  <input type="text" class="form-control" value="{{ object.measure }}" name="measure" aria-describedby="measure_label">
+                </div>
+                <div class="input-group mb-2">
+                  <div class="input-group-append">
+                    <span class="input-group-text required" id="degree_label">مقطع تحصیلی: </span>
+                  </div>
+                  <input type="text" class="form-control" value="{{ object.degree }}" name="degree" aria-describedby="degree_label">
+                </div>
+                <div class="input-group mb-2">
+                  <div class="input-group-append">
+                    <span class="input-group-text required" id="university_label">دانشگاه: </span>
+                  </div>
+                  <input type="text" class="form-control" value="{{ object.university }}" name="university" aria-describedby="university_label">
+                </div>
+                <div class="input-group mb-2">
                     <div class="input-group-append">
-                        <span class="input-group-text required" id="presented_at_label">تاریخ ارایه: </span>
+                        <span class="input-group-text required" id="presented_at_label">تاریخ دفاع: </span>
                     </div>
                     <input type="datetime" id="datepicker" class="form-control" name="presented_at" aria-describedby="presented_at_label">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-calendar fa-2x"></i></span>
                     </div>
-                </div>
-                <div class="input-group mb-2">
-                  <div class="input-group-append">
-                    <span class="input-group-text" id="judges_label">داوران: </span>
-                  </div>
-                    <textarea type="text" class="form-control" name="judges" aria-describedby="judges_label">{{ object.judges }}</textarea>
-                </div>
-                <div class="input-group mb-2">
-                  <div class="input-group-append">
-                    <span class="input-group-text required" id="assessment_result_label">ارزشیابی: </span>
-                  </div>
-                  <input type="text" class="form-control" value="{{ object.assessment_result }}" name="assessment_result" aria-describedby="assessment_result_label">
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
@@ -164,13 +170,13 @@
 						<span aria-hidden="true">&times;</span>
 						<span class="sr-only">بستن</span>
 					</button>
-					<h5 class="modal-title" id="exampleModalLabel">حذف تجربه</h5>
+					<h5 class="modal-title" id="exampleModalLabel">حذف پایان نامه</h5>
 				</div>
-				<form method="post" id="delete-form" {% if title == 'update' %} action="{% url 'documents:experience_delete' pk=object.id %}" {% endif %}>
+				<form method="post" id="delete-form" {% if title == 'update' %} action="{% url 'documents:thesis_delete' pk=object.id %}" {% endif %}>
 					{% csrf_token %}
 					<div class="modal-body">
 						<p class="float-right">
-							آیا واقعا می خواهید تجربه
+							آیا واقعا می خواهید پایان نامه
 							<code>
 								<strong id="delete-name">{{ object.title }}</strong>
 							</code>
@@ -279,7 +285,7 @@
 				url: url,
 				data: form.serialize(), // serializes the form's elements.
 				success: function (data) {
-                    location.replace("{% url 'documents:experience_list' %}");
+                    location.replace("{% url 'documents:thesis_list' %}");
 				}
 			});
 			e.preventDefault(); // avoid to execute the actual submit of the form.

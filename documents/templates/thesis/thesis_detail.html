@@ -4,7 +4,7 @@
 {% load jalali_date %}
 
 
-{% block head_title %}جزئیات تجربه{% endblock %}
+{% block head_title %}جزئیات پایان نامه{% endblock %}
 
 
 {% block title-breadcrumb %}
@@ -16,10 +16,10 @@
 				<a>مدیریت دانش</a>
 			</li>
 			<li class="breadcrumb-item">
-                <a  href="{% url 'documents:experience_list' %}" >لیست تجربه ها</a>
+                <a  href="{% url 'documents:thesis_list' %}" >لیست پایان نامه ها</a>
 			</li>
 			<li class="breadcrumb-item active">
-				<a href="{% url 'documents:experience_details' object.id %}"><strong>جزئیات تجربه {{ object.name }}</strong></a>
+				<a href="{% url 'documents:thesis_details' object.id %}"><strong>جزئیات پایان نامه {{ object.name }}</strong></a>
 			</li>
 		</ol>
 	</div>
@@ -27,7 +27,7 @@
 	<div class="col-md-3">
 		<div class="title-action float-right">
             <div class="btn-group">
-                <a href="{% url 'documents:experience_update' pk=object.id %}" class="btn btn-lg btn-outline-warning"><i class="fa fa-user-edit"></i> ویرایش</a>
+                <a href="{% url 'documents:thesis_update' pk=object.id %}" class="btn btn-lg btn-outline-warning"><i class="fa fa-user-edit"></i> ویرایش</a>
 			    <button data-toggle="modal" data-delete-what="{{ object.id }}" data-target="#delete-modal" class="btn btn-lg btn-outline-danger"><i class="fa fa-trash"></i> حذف </button>
             </div>
         </div>
@@ -47,11 +47,11 @@
 				<h3><strong>عنوان: </strong>{{ object.title }}</h3>
 				<h3><strong>شناسه: </strong>{{ object.organization_code }}</h3>
 				<h3><strong>حوزه تخصصی: </strong>{{ object.get_field_display }}</h3>
-				<h3><strong>تجربه نگار: </strong>{{ object.producer.title }}</h3>
-                <h3><strong>تحصیلات تجربه نگار: </strong>{{ object.producer.degree }}</h3>
-				<h3><strong>داوران: </strong>{{ object.judges }}</h3>
-				<h3><strong>ارزشیابی: </strong>{{ object.assessment_result }}</h3>
-				<h3><strong>تاریخ ارایه: </strong>{{ object.presented_at | j_format_date:"%Y/%m/%d"  }}</h3>
+				<h3><strong>دانشجو: </strong>{{ object.producer.title }}</h3>
+                <h3><strong>رشته تحصیلی: </strong>{{ object.measure }}</h3>
+                <h3><strong>مقطع تحصیلی: </strong>{{ object.degree }}</h3>
+				<h3><strong>دانشگاه: </strong>{{ object.university }}</h3>
+				<h3><strong>تاریخ دفاع: </strong>{{ object.presented_at | j_format_date:"%Y/%m/%d"  }}</h3>
 				<h3><strong>مرکز تحقیقاتی: </strong>{{ object.get_center_display }}</h3>
 				<div><br></div>
 			</div>
@@ -137,13 +137,13 @@
 						<span aria-hidden="true">&times;</span>
 						<span class="sr-only">بستن</span>
 					</button>
-					<h5 class="modal-title" id="exampleModalLabel">حذف تجربه</h5>
+					<h5 class="modal-title" id="exampleModalLabel">حذف پایان نامه</h5>
 				</div>
-				<form method="post" id="delete-form" action="{% url 'documents:experience_delete' pk=object.id %}">
+				<form method="post" id="delete-form" action="{% url 'documents:thesis_delete' pk=object.id %}">
 					{% csrf_token %}
 					<div class="modal-body">
 						<p class="float-right">
-							آیا واقعا می خواهید تجربه
+							آیا واقعا می خواهید پایان نامه
 							<code>
 								<strong id="delete-name">{{ object.title }}</strong>
 							</code>
@@ -184,7 +184,7 @@
 				url: url,
 				data: form.serialize(), // serializes the form's elements.
 				success: function (data) {
-                    location.replace("{% url 'documents:experience_list' %}");
+                    location.replace("{% url 'documents:thesis_list' %}");
 				}
 			});
 			e.preventDefault(); // avoid to execute the actual submit of the form.

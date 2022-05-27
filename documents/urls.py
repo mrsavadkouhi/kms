@@ -33,5 +33,17 @@ urlpatterns = [
 	path('experience/edit/<pk>', ExperienceUpdateForm.as_view(), name='experience_update'),
 	path('experience/delete/<pk>', ExperienceDeleteView.as_view(), name='experience_delete'),
 
+	path('idea/list', IdeaListView.as_view(), name='idea_list'),
+	path('idea/add', IdeaCreateView.as_view(), name='idea_create'),
+	path('idea/<pk>', IdeaDetailsView.as_view(), name='idea_details'),
+	path('idea/edit/<pk>', IdeaUpdateForm.as_view(), name='idea_update'),
+	path('idea/delete/<pk>', IdeaDeleteView.as_view(), name='idea_delete'),
+
+	path('thesis/list', ThesisListView.as_view(), name='thesis_list'),
+	path('thesis/add', ThesisCreateView.as_view(), name='thesis_create'),
+	path('thesis/<pk>', ThesisDetailsView.as_view(), name='thesis_details'),
+	path('thesis/edit/<pk>', ThesisUpdateForm.as_view(), name='thesis_update'),
+	path('thesis/delete/<pk>', ThesisDeleteView.as_view(), name='thesis_delete'),
+
 	path('ajax/', AjaxHandler.as_view(), name='ajax'),
 ]

@@ -18,7 +18,7 @@
 
 {% endblock %}
 
-{% block head_title %}{% if title == 'update' %}جزئیات تجربه{% else %}ایجاد تجربه{% endif %}{% endblock %}
+{% block head_title %}{% if title == 'update' %}جزئیات ایده{% else %}ایجاد ایده{% endif %}{% endblock %}
 
 
 {% block title-breadcrumb %}
@@ -30,13 +30,13 @@
 				<a>مدیریت دانش</a>
 			</li>
 			<li class="breadcrumb-item">
-                <a href="{% url 'documents:experience_list' %}" >لیست تجربه ها</a>
+                <a href="{% url 'documents:idea_list' %}" >لیست ایده ها</a>
 			</li>
 			<li class="breadcrumb-item active">
                 {% if title == 'update' %}
-                    <a href="{% url 'documents:experience_update' object.id %}"><strong>ویرایش {{ object.title }}</strong></a>
+                    <a href="{% url 'documents:idea_update' object.id %}"><strong>ویرایش {{ object.title }}</strong></a>
                 {% else %}
-                    <a href="{% url 'documents:experience_create' %}"><strong>افزودن تجربه جدید</strong></a>
+                    <a href="{% url 'documents:idea_create' %}"><strong>افزودن ایده جدید</strong></a>
                 {% endif %}
 			</li>
 		</ol>
@@ -108,7 +108,7 @@
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="producer_label">تجربه نگار: </span>
+                    <span class="input-group-text required" id="producer_label">ایده پرداز: </span>
                   </div>
                     <select name="producer" id="producer" class="select2 form-control">
                         {% for obj in resumes %}
@@ -164,13 +164,13 @@
 						<span aria-hidden="true">&times;</span>
 						<span class="sr-only">بستن</span>
 					</button>
-					<h5 class="modal-title" id="exampleModalLabel">حذف تجربه</h5>
+					<h5 class="modal-title" id="exampleModalLabel">حذف ایده</h5>
 				</div>
-				<form method="post" id="delete-form" {% if title == 'update' %} action="{% url 'documents:experience_delete' pk=object.id %}" {% endif %}>
+				<form method="post" id="delete-form" {% if title == 'update' %} action="{% url 'documents:idea_delete' pk=object.id %}" {% endif %}>
 					{% csrf_token %}
 					<div class="modal-body">
 						<p class="float-right">
-							آیا واقعا می خواهید تجربه
+							آیا واقعا می خواهید ایده
 							<code>
 								<strong id="delete-name">{{ object.title }}</strong>
 							</code>
@@ -279,7 +279,7 @@
 				url: url,
 				data: form.serialize(), // serializes the form's elements.
 				success: function (data) {
-                    location.replace("{% url 'documents:experience_list' %}");
+                    location.replace("{% url 'documents:idea_list' %}");
 				}
 			});
 			e.preventDefault(); // avoid to execute the actual submit of the form.

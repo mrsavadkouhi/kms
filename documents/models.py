@@ -24,6 +24,7 @@ DOCUMENT_TYPES = [
     ('Resume', 'رزومه'),
     ('Book', 'کتاب'),
     ('Experience', 'تجربه'),
+    ('Thesis', 'پایان نامه'),
 ]
 
 
@@ -159,6 +160,7 @@ class Projects(Document):
 
 class Thesis(Document):
     producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='thesis_producer')
+    presented_at = models.DateTimeField()
     university = models.CharField(max_length=255)
     measure = models.CharField(max_length=255)
     degree = models.CharField(max_length=255)
