@@ -218,6 +218,104 @@ class IdeaDeleteView(LoginRequiredMixin, JSONDeleteView):
     model = Idea
 
 
+class SeminarListView(LoginRequiredMixin, ListView):
+    model = Seminar
+    template_name = 'seminar/seminar_list.html'
+
+
+class SeminarCreateView(LoginRequiredMixin, CreateView):
+    model = Seminar
+    template_name = 'seminar/seminar_form.html'
+    form_class = SeminarForm
+    success_url = reverse_lazy('documents:seminar_list')
+    extra_context = {
+        'title': 'create',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['resumes'] = Document.objects.filter(type="Resume")
+        context['centers'] = CENTER_LIST
+        context['fields'] = DOCUMENT_FIELDS
+        return context
+
+
+class SeminarDetailsView(LoginRequiredMixin, DetailView):
+    model = Seminar
+    template_name = 'seminar/seminar_detail.html'
+
+
+class SeminarUpdateForm(LoginRequiredMixin, UpdateView):
+    model = Seminar
+    template_name = 'seminar/seminar_form.html'
+    form_class = SeminarForm
+    success_url = reverse_lazy('documents:seminar_list')
+    extra_context = {
+        'title': 'update',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['resumes']=Document.objects.filter(type="Resume")
+        context['centers']=CENTER_LIST
+        context['fields']=DOCUMENT_FIELDS
+        return context
+
+
+class SeminarDeleteView(LoginRequiredMixin, JSONDeleteView):
+    model = Seminar
+
+
+class WorkshopListView(LoginRequiredMixin, ListView):
+    model = Workshop
+    template_name = 'workshop/workshop_list.html'
+
+
+class WorkshopCreateView(LoginRequiredMixin, CreateView):
+    model = Workshop
+    template_name = 'workshop/workshop_form.html'
+    form_class = WorkshopForm
+    success_url = reverse_lazy('documents:workshop_list')
+    extra_context = {
+        'title': 'create',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['resumes'] = Document.objects.filter(type="Resume")
+        context['centers'] = CENTER_LIST
+        context['fields'] = DOCUMENT_FIELDS
+        context['workshop_types']=WORKSHOP_TYPES
+        return context
+
+
+class WorkshopDetailsView(LoginRequiredMixin, DetailView):
+    model = Workshop
+    template_name = 'workshop/workshop_detail.html'
+
+
+class WorkshopUpdateForm(LoginRequiredMixin, UpdateView):
+    model = Workshop
+    template_name = 'workshop/workshop_form.html'
+    form_class = WorkshopForm
+    success_url = reverse_lazy('documents:workshop_list')
+    extra_context = {
+        'title': 'update',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['resumes']=Document.objects.filter(type="Resume")
+        context['centers']=CENTER_LIST
+        context['fields']=DOCUMENT_FIELDS
+        context['workshop_types']=WORKSHOP_TYPES
+        return context
+
+
+class WorkshopDeleteView(LoginRequiredMixin, JSONDeleteView):
+    model = Workshop
+
+
 class ThesisListView(LoginRequiredMixin, ListView):
     model = Thesis
     template_name = 'thesis/thesis_list.html'

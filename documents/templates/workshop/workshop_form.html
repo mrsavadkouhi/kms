@@ -18,7 +18,7 @@
 
 {% endblock %}
 
-{% block head_title %}{% if title == 'update' %}جزئیات ایده{% else %}ایجاد ایده{% endif %}{% endblock %}
+{% block head_title %}{% if title == 'update' %}جزئیات کارگاه{% else %}ایجاد کارگاه{% endif %}{% endblock %}
 
 
 {% block title-breadcrumb %}
@@ -30,13 +30,13 @@
 				<a>مدیریت دانش</a>
 			</li>
 			<li class="breadcrumb-item">
-                <a href="{% url 'documents:idea_list' %}" >لیست ایده ها</a>
+                <a href="{% url 'documents:workshop_list' %}" >لیست کارگاهها</a>
 			</li>
 			<li class="breadcrumb-item active">
                 {% if title == 'update' %}
-                    <a href="{% url 'documents:idea_update' object.id %}"><strong>ویرایش {{ object.title }}</strong></a>
+                    <a href="{% url 'documents:workshop_update' object.id %}"><strong>ویرایش {{ object.title }}</strong></a>
                 {% else %}
-                    <a href="{% url 'documents:idea_create' %}"><strong>افزودن ایده جدید</strong></a>
+                    <a href="{% url 'documents:workshop_create' %}"><strong>افزودن کارگاه جدید</strong></a>
                 {% endif %}
 			</li>
 		</ol>
@@ -94,7 +94,7 @@
                   <div class="input-group-append">
                     <span class="input-group-text required" id="type_label">نوع: </span>
                   </div>
-                  <input type="text" class="form-control" value="Idea" name="type" aria-describedby="type_label" readonly>
+                  <input type="text" class="form-control" value="Workshop" name="type" aria-describedby="type_label" readonly>
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
@@ -108,7 +108,7 @@
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="producer_label">ایده پرداز: </span>
+                    <span class="input-group-text required" id="producer_label">ارایه دهنده: </span>
                   </div>
                     <select name="producer" id="producer" class="select2 form-control">
                         {% for obj in resumes %}
@@ -118,24 +118,40 @@
                 </div>
                 <div class="input-group mb-2">
                     <div class="input-group-append">
-                        <span class="input-group-text required" id="presented_at_label">تاریخ ارایه: </span>
+                        <span class="input-group-text required" id="started_at_label">تاریخ شروع: </span>
                     </div>
-                    <input type="datetime" id="datepicker" class="form-control" name="presented_at" aria-describedby="presented_at_label">
+                    <input type="datetime" id="datepicker" class="form-control" name="started_at" aria-describedby="started_at_label">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-calendar fa-2x"></i></span>
                     </div>
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text" id="judges_label">داوران: </span>
+                    <span class="input-group-text required" id="meeting_number_label">تعداد جلسات: </span>
                   </div>
-                    <textarea type="text" class="form-control" name="judges" aria-describedby="judges_label">{{ object.judges }}</textarea>
+                  <input type="number" class="form-control" value="{{ object.meeting_number }}" name="meeting_number" aria-describedby="meeting_number_label">
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="assessment_result_label">ارزشیابی: </span>
+                    <span class="input-group-text required" id="participant_number_label">تعداد شرکت کنندگان: </span>
                   </div>
-                  <input type="text" class="form-control" value="{{ object.assessment_result }}" name="assessment_result" aria-describedby="assessment_result_label">
+                  <input type="number" class="form-control" value="{{ object.participant_number }}" name="participant_number" aria-describedby="participant_number_label">
+                </div>
+                <div class="input-group mb-2">
+                  <div class="input-group-append">
+                    <span class="input-group-text required" id="location_label">محل برگزاری: </span>
+                  </div>
+                  <input type="text" class="form-control" value="{{ object.location }}" name="location" aria-describedby="location_label">
+                </div>
+                <div class="input-group mb-2">
+                  <div class="input-group-append">
+                    <span class="input-group-text required" id="center_label">نوع کارگاه: </span>
+                  </div>
+                    <select name="workshop_type" id="workshop_type" class="select2 form-control">
+                        {% for val,obj in workshop_types %}
+                            <option value="{{ val }}">{{ obj }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
@@ -164,13 +180,13 @@
 						<span aria-hidden="true">&times;</span>
 						<span class="sr-only">بستن</span>
 					</button>
-					<h5 class="modal-title" id="exampleModalLabel">حذف ایده</h5>
+					<h5 class="modal-title" id="exampleModalLabel">حذف کارگاه</h5>
 				</div>
-				<form method="post" id="delete-form" {% if title == 'update' %} action="{% url 'documents:idea_delete' pk=object.id %}" {% endif %}>
+				<form method="post" id="delete-form" {% if title == 'update' %} action="{% url 'documents:workshop_delete' pk=object.id %}" {% endif %}>
 					{% csrf_token %}
 					<div class="modal-body">
 						<p class="float-right">
-							آیا واقعا می خواهید ایده
+							آیا واقعا می خواهید کارگاه
 							<code>
 								<strong id="delete-name">{{ object.title }}</strong>
 							</code>
@@ -200,15 +216,10 @@
         });
         field.val("{{ object.field }}").trigger("change");
 
-        var type = $("#type").select2({
+        var workshop_types = $("#workshop_type").select2({
                 theme: 'bootstrap4',
         });
-        type.val("{{ object.publish_type }}").trigger("change");
-
-        var level = $("#level").select2({
-                theme: 'bootstrap4',
-        });
-        level.val("{{ object.publish_level }}").trigger("change");
+        workshop_types.val("{{ object.workshop_type }}").trigger("change");
 
         var center = $("#center").select2({
                 theme: 'bootstrap4',
@@ -258,7 +269,7 @@
         };
 
         var datepicker = $("#datepicker").persianDatepicker(datepickeroption);
-        $('#datepicker').val('{{ object.presented_at | j_format_date:"%Y-%m-%d %H:%M" }}');
+        $('#datepicker').val('{{ object.started_at | j_format_date:"%Y-%m-%d %H:%M" }}');
 
          $('#ar-form').submit(function () {
 
@@ -279,7 +290,7 @@
 				url: url,
 				data: form.serialize(), // serializes the form's elements.
 				success: function (data) {
-                    location.replace("{% url 'documents:idea_list' %}");
+                    location.replace("{% url 'documents:workshop_list' %}");
 				}
 			});
 			e.preventDefault(); // avoid to execute the actual submit of the form.

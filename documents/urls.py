@@ -45,5 +45,17 @@ urlpatterns = [
 	path('thesis/edit/<pk>', ThesisUpdateForm.as_view(), name='thesis_update'),
 	path('thesis/delete/<pk>', ThesisDeleteView.as_view(), name='thesis_delete'),
 
+	path('seminar/list', SeminarListView.as_view(), name='seminar_list'),
+	path('seminar/add', SeminarCreateView.as_view(), name='seminar_create'),
+	path('seminar/<pk>', SeminarDetailsView.as_view(), name='seminar_details'),
+	path('seminar/edit/<pk>', SeminarUpdateForm.as_view(), name='seminar_update'),
+	path('seminar/delete/<pk>', SeminarDeleteView.as_view(), name='seminar_delete'),
+
+	path('workshop/list', WorkshopListView.as_view(), name='workshop_list'),
+	path('workshop/add', WorkshopCreateView.as_view(), name='workshop_create'),
+	path('workshop/<pk>', WorkshopDetailsView.as_view(), name='workshop_details'),
+	path('workshop/edit/<pk>', WorkshopUpdateForm.as_view(), name='workshop_update'),
+	path('workshop/delete/<pk>', WorkshopDeleteView.as_view(), name='workshop_delete'),
+
 	path('ajax/', AjaxHandler.as_view(), name='ajax'),
 ]

@@ -25,6 +25,11 @@ DOCUMENT_TYPES = [
     ('Book', 'کتاب'),
     ('Experience', 'تجربه'),
     ('Thesis', 'پایان نامه'),
+    ('Idea', 'ایده'),
+    ('Seminar', 'سمینار'),
+    ('Workshop', 'کارگاه'),
+    ('Conference', 'کنفرانس'),
+    ('Visit', 'بازدید'),
 ]
 
 
@@ -106,7 +111,7 @@ class Seminar(Document):
     producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='seminar_producer')
     judges = models.TextField()
     presented_at = models.DateTimeField()
-    participants_number = models.IntegerField()
+    participant_number = models.IntegerField()
     assessment_result = models.CharField(max_length=255)
 
 
@@ -117,9 +122,9 @@ WORKSHOP_TYPES=[
 
 class Workshop(Document):
     producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='workshop_producer')
-    judges = models.TextField()
     started_at = models.DateTimeField()
     meeting_number = models.IntegerField()
+    participant_number = models.IntegerField()
     location = models.CharField(max_length=255)
     workshop_type = models.CharField(max_length=255, choices=WORKSHOP_TYPES)
 
@@ -132,7 +137,7 @@ CONFERENCE_LEVELS=[
 class Conference(Document):
     held_at = models.DateTimeField()
     location = models.CharField(max_length=255)
-    level = models.CharField(max_length=255, choices=CONFERENCE_LEVELS)
+    conference_level = models.CharField(max_length=255, choices=CONFERENCE_LEVELS)
 
 
 class Visit(Document):
