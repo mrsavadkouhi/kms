@@ -27,6 +27,7 @@ DOCUMENT_TYPES = [
 
 DOCUMENT_FIELDS = [
     ('Sample', 'نمونه'),
+    ('No Field', 'بدون فیلد'),
 ]
 
 
@@ -154,6 +155,7 @@ class Projects(Document):
 
 
 class Thesis(Document):
+    producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='thesis_producer')
     university = models.CharField(max_length=255)
     measure = models.CharField(max_length=255)
     degree = models.CharField(max_length=255)

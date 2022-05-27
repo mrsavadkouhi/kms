@@ -18,7 +18,7 @@
 
 {% endblock %}
 
-{% block head_title %}{% if title == 'update' %}جزئیات مقاله{% else %}ایجاد مقاله{% endif %}{% endblock %}
+{% block head_title %}{% if title == 'update' %}جزئیات رزومه{% else %}ایجاد رزومه{% endif %}{% endblock %}
 
 
 {% block title-breadcrumb %}
@@ -30,13 +30,13 @@
 				<a>مدیریت دانش</a>
 			</li>
 			<li class="breadcrumb-item">
-                <a href="{% url 'documents:article_list' %}" >لیست مقالات</a>
+                <a href="{% url 'documents:resume_list' %}" >لیست رزومه ها</a>
 			</li>
 			<li class="breadcrumb-item active">
                 {% if title == 'update' %}
-                    <a href="{% url 'documents:article_update' object.id %}"><strong>ویرایش {{ object.title }}</strong></a>
+                    <a href="{% url 'documents:resume_update' object.id %}"><strong>ویرایش {{ object.title }}</strong></a>
                 {% else %}
-                    <a href="{% url 'documents:article_create' %}"><strong>افزودن مقاله جدید</strong></a>
+                    <a href="{% url 'documents:resume_create' %}"><strong>افزودن رزومه جدید</strong></a>
                 {% endif %}
 			</li>
 		</ol>
@@ -80,13 +80,13 @@
                 <div><br></div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="title_label">عنوان: </span>
+                    <span class="input-group-text required" id="title_label">نام و نام خانوادگی: </span>
                   </div>
                   <input type="text" class="form-control" value="{{ object.title }}" name="title" aria-describedby="name_label">
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="organization_code_label">شناسه: </span>
+                    <span class="input-group-text required" id="organization_code_label">شناسه پاسداری: </span>
                   </div>
                   <input type="text" class="form-control" value="{{ object.organization_code }}" name="organization_code" aria-describedby="organization_code_label">
                 </div>
@@ -94,62 +94,31 @@
                   <div class="input-group-append">
                     <span class="input-group-text required" id="type_label">نوع: </span>
                   </div>
-                  <input type="text" class="form-control" value="Article" name="type" aria-describedby="type_label" readonly>
+                  <input type="text" class="form-control" value="Resume" name="type" aria-describedby="type_label" readonly>
+                </div>
+                <div class="input-group mb-2" hidden>
+                  <div class="input-group-append">
+                    <span class="input-group-text required" id="field_label">حوزه: </span>
+                  </div>
+                  <input type="text" class="form-control" value="No Field" name="field" aria-describedby="field_label" readonly>
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="field_label">حوزه تخصصی: </span>
+                    <span class="input-group-text required" id="entrance_year_label">سال ورود به سپاه: </span>
                   </div>
-                    <select name="field" id="field" class="select2 form-control">
-                        {% for val,obj in fields %}
-                            <option value="{{ val }}">{{ obj }}</option>
-                        {% endfor %}
-                    </select>
+                  <input type="number" class="form-control" value="{{ object.entrance_year }}" name="entrance_year" aria-describedby="entrance_year_label">
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text" id="key_words_label">کلید واژه ها: </span>
+                    <span class="input-group-text required" id="measure_label">رشته تحصیلی: </span>
                   </div>
-                    <textarea type="text" class="form-control" name="key_words" aria-describedby="key_words_label">{{ object.key_words }}</textarea>
+                  <input type="text" class="form-control" value="{{ object.measure }}" name="measure" aria-describedby="measure_label">
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="producer_label">نویسنده: </span>
+                    <span class="input-group-text required" id="degree_label">مدرک تحصیلی: </span>
                   </div>
-                    <select name="producer" id="producer" class="select2 form-control">
-                        {% for obj in resumes %}
-                            <option value="{{ obj.id }}">{{ obj.title }}-{{ obj.organization_code }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="input-group mb-2">
-                    <div class="input-group-append">
-                    <span class="input-group-text required" id="published_at_label">تاریخ چاپ: </span>
-                    </div>
-                    <input type="datetime" id="datepicker" class="form-control" name="published_at" aria-describedby="published_at_label">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fa fa-calendar fa-2x"></i></span>
-                    </div>
-                </div>
-                <div class="input-group mb-2">
-                  <div class="input-group-append">
-                    <span class="input-group-text required" id="type_label">نوع انتشار: </span>
-                  </div>
-                    <select name="publish_type" id="type" class="select2 form-control">
-                        {% for val,obj in types %}
-                            <option value="{{ val }}">{{ obj }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="input-group mb-2">
-                  <div class="input-group-append">
-                    <span class="input-group-text required" id="level_label">سطح انتشار: </span>
-                  </div>
-                    <select name="publish_level" id="level" class="select2 form-control">
-                        {% for val,obj in levels %}
-                            <option value="{{ val }}">{{ obj }}</option>
-                        {% endfor %}
-                    </select>
+                  <input type="text" class="form-control" value="{{ object.degree }}" name="degree" aria-describedby="degree_label">
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
@@ -178,13 +147,13 @@
 						<span aria-hidden="true">&times;</span>
 						<span class="sr-only">بستن</span>
 					</button>
-					<h5 class="modal-title" id="exampleModalLabel">حذف مقاله</h5>
+					<h5 class="modal-title" id="exampleModalLabel">حذف رزومه</h5>
 				</div>
-				<form method="post" id="delete-form" {% if title == 'update' %} action="{% url 'documents:article_delete' pk=object.id %}" {% endif %}>
+				<form method="post" id="delete-form" {% if title == 'update' %} action="{% url 'documents:resume_delete' pk=object.id %}" {% endif %}>
 					{% csrf_token %}
 					<div class="modal-body">
 						<p class="float-right">
-							آیا واقعا می خواهید مقاله
+							آیا واقعا می خواهید رزومه
 							<code>
 								<strong id="delete-name">{{ object.title }}</strong>
 							</code>
@@ -293,7 +262,7 @@
 				url: url,
 				data: form.serialize(), // serializes the form's elements.
 				success: function (data) {
-                    location.replace("{% url 'documents:article_list' %}");
+                    location.replace("{% url 'documents:resume_list' %}");
 				}
 			});
 			e.preventDefault(); // avoid to execute the actual submit of the form.

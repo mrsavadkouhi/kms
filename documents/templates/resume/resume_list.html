@@ -3,7 +3,7 @@
 {% load jalali_date %}
 
 
-{% block head_title %}لیست مقالات{% endblock %}
+{% block head_title %}لیست رزومه ها{% endblock %}
 
 {% block title-breadcrumb %}
 	<div class="col-md-10">
@@ -14,14 +14,14 @@
 				<a>مدیریت دانش</a>
 			</li>
 			<li class="breadcrumb-item active">
-                <a  href="{% url 'documents:article_list' %}" >لیست مقالات</a>
+                <a  href="{% url 'documents:resume_list' %}" >لیست رزومه ها</a>
 			</li>
 		</ol>
 	</div>
 
 	<div class="col-md-2">
 		<div class="title-action float-right">
-            <a href="{% url 'documents:article_create' %}" class="btn btn-outline-primary"><i class="fa small fa-plus"></i> <i class="fa fa-cube"></i> افزودن مقاله جدید</a>
+            <a href="{% url 'documents:resume_create' %}" class="btn btn-outline-primary"><i class="fa small fa-plus"></i> <i class="fa fa-cube"></i> افزودن رزومه جدید</a>
 		</div>
 	</div>
 {% endblock %}
@@ -44,8 +44,8 @@
                 <div class="ibox-content">
                     <br>
                     <div class="row">
-                            <div class="col-lg-1">
-                            <label for="producer">نویسنده</label>
+                        <div class="col-lg-2">
+                            <label for="producer">نام و نام خانوادگی</label>
                             </div>
                             <div class="col-lg-3">
                             <input type="text" id="producer" name="producer">
@@ -55,29 +55,6 @@
                         </div>
                         <div class="col-lg-3">
                             <input type="text" id="center" name="center">
-                        </div>
-                        <div class="col-lg-1">
-                            <label for="publish_date">تاریخ انتشار</label>
-                        </div>
-                        <div class="col-lg-3">
-                            <input type="text" id="publish_date" name="publish_date">
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                            <div class="col-lg-1">
-                            <label for="publish_type">نوع انتشار</label>
-                            </div>
-                            <div class="col-lg-3">
-                            <input type="text" id="publish_type" name="publish_type">
-                            </div>
-                        <div class="col-lg-1">
-                            <label for="publish_level">سطح انتشار</label>
-                        </div>
-                        <div class="col-lg-3">
-                            <input type="text" id="publish_level" name="publish_level">
-                        </div>
-                        <div class="col-lg-1">
                         </div>
                         <div class="col-lg-3">
                         </div>
@@ -91,15 +68,11 @@
 					<thead>
 					<tr>
 						<th class="text-center" style="background-color: white;width: 7%">ردیف</th>
-						<th class="text-center" style="background-color: white">عنوان</th>
-						<th class="text-center" style="background-color: white">شناسه</th>
-						<th class="text-center" style="background-color: white">حوزه</th>
-						<th class="text-center" style="background-color: white">کلید واژه ها</th>
-						<th class="text-center" style="background-color: white">نویسنده</th>
+						<th class="text-center" style="background-color: white">نام و نام خانوادگی</th>
 						<th class="text-center" style="background-color: white">شناسه پاسداری</th>
-						<th class="text-center" style="background-color: white">تاریخ انتشار</th>
-						<th class="text-center" style="background-color: white">نوع انتشار</th>
-						<th class="text-center" style="background-color: white">سطح انتشار</th>
+						<th class="text-center" style="background-color: white">سال ورود</th>
+						<th class="text-center" style="background-color: white">رشته تحصیلی</th>
+						<th class="text-center" style="background-color: white">مدرک تحصیلی</th>
 						<th class="text-center" style="background-color: white">مرکز تحقیقاتی</th>
 						<th class="text-center" style="background-color: white; width: 10%">عملیات</th>
 					</tr>
@@ -109,19 +82,15 @@
 					{% for obj in object_list %}
 						<tr id="c-tr-{{ obj.id }}"style="background-color: whitesmoke">
 							<td class="align-middle text-center">{{ forloop.counter }}</td>
-							<td class="align-middle text-center"><a href="{% url 'documents:article_details' pk=obj.id %}">{{ obj.title }}</a></td>
+							<td class="align-middle text-center"><a href="{% url 'documents:resume_details' pk=obj.id %}">{{ obj.title }}</a></td>
 							<td class="align-middle text-center">{{ obj.organization_code }}</td>
-							<td class="align-middle text-center">{{ obj.get_field_display }}</td>
-							<td class="align-middle text-center">{{ obj.key_words }}</td>
-							<td class="align-middle text-center">{{ obj.producer.title }}</td>
-							<td class="align-middle text-center">{{ obj.producer.organization_code }}</td>
-							<td class="align-middle text-center">{{ obj.published_at | j_format_date:"%Y/%m/%d" }}</td>
-							<td class="align-middle text-center">{{ obj.get_publish_type_display }}</td>
-							<td class="align-middle text-center">{{ obj.get_publish_level_display }}</td>
+							<td class="align-middle text-center">{{ obj.entrance_year }}</td>
+							<td class="align-middle text-center">{{ obj.measure }}</td>
+							<td class="align-middle text-center">{{ obj.degree }}</td>
 							<td class="align-middle text-center">{{ obj.get_center_display }}</td>
 							<td class="align-middle text-center">
 								<div class="btn-group">
-								<a href="{% url 'documents:article_update' pk=obj.id %}" class="btn btn-sm btn-outline-warning"><i class="fa small fa-pen"></i><i class="fa fa-cube"></i> ویرایش</a>
+								<a href="{% url 'documents:resume_update' pk=obj.id %}" class="btn btn-sm btn-outline-warning"><i class="fa small fa-pen"></i><i class="fa fa-cube"></i> ویرایش</a>
 								<button data-cid="{{ obj.id }}" class="btn btn-sm btn-outline-danger m-l-sm" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"></i> حذف
 								</button>
 								</div>
@@ -144,13 +113,13 @@
 						<span aria-hidden="true">&times;</span>
 						<span class="sr-only">بستن</span>
 					</button>
-					<h5 class="modal-title" id="exampleModalLabel">حذف مقاله</h5>
+					<h5 class="modal-title" id="exampleModalLabel">حذف رزومه</h5>
 				</div>
 				<form method="post" id="delete-form">
 					{% csrf_token %}
 					<div class="modal-body">
 						<p class="float-right">
-							آیا واقعا می خواهید مقاله 
+							آیا واقعا می خواهید رزومه
 							<code>
 								<strong id="delete-name"></strong>
 							</code>
@@ -186,26 +155,18 @@
 		});
 
 		$('#producer').on('keyup', function () {
-                table.column(5).search(this.value).draw();
+                table.column(1).search(this.value).draw();
 		});
 		$('#center').on('keyup', function () {
-			table.column(10).search(this.value).draw();
+			table.column(6).search(this.value).draw();
 		});
-		$('#publish_date').on('keyup', function () {
-			table.column(7).search(this.value).draw();
-		});
-		$('#publish_level').on('keyup', function () {
-			table.column(9).search(this.value).draw();
-		});
-		$('#publish_type').on('keyup', function () {
-			table.column(8).search(this.value).draw();
-		});
+
 
 		$('#delete-modal').on('show.bs.modal', function (e) {
 			id = $(e.relatedTarget).data('cid');
 			tr = $('#c-tr-' + id);
 			$('#delete-name').text(tr.find("td:eq(1)").text());
-			delete_url = "{% url 'documents:article_delete' pk=0 %}";
+			delete_url = "{% url 'documents:resume_delete' pk=0 %}";
 			$('#delete-form').attr('action', delete_url + id);
 		});
 
