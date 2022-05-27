@@ -87,58 +87,34 @@
 							دانلود
 							<i class="fa fa-download"></i>
 						</a>
-							<button data-toggle="modal" data-delete-what="{{ file.id }}" data-target="#delete-attach-modal-{{ file.id }}" class="btn btn-sm btn-outline-danger"><i class="fa fa-trash-alt"></i> حذف </button>
+							<button data-toggle="modal" data-target="#delete-attach-modal-{{ file.id }}" class="btn btn-sm btn-outline-danger"><i class="fa fa-trash-alt"></i> حذف </button>
 						</div>
-							<div class="modal inmodal fade" id="delete-attach-modal-{{ file.id }}" tabindex="-1" role="dialog" aria-labelledby="file-exampleModalLabel" aria-hidden="true">
-								<div class="modal-dialog" role="document">
-									<div class="modal-content">
-										<div class="modal-header">
-											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-												<span class="sr-only">بستن</span>
-											</button>
-											<h5 class="modal-title" id="file-exampleModalLabel">حذف پیوست</h5>
-										</div>
-										<form method="post" id="delete-attach-form-{{ file.id }}" action="{% url 'documents:project_attach_delete' pk=file.id %}">
-											{% csrf_token %}
-											<div class="modal-body">
-												<p class="float-right">
-													آیا واقعا می خواهید فایل
-													<code>
-														<strong id="file-delete-name">{{ file.file }}</strong>
-													</code>
-													را حذف کنید؟
-												</p>
-											</div>
-											<div class="modal-footer float-right">
-												<button type="button" class="btn btn-secondary" data-dismiss="modal">انصراف</button>
-												<button type="submit" class="btn btn-danger">حذف</button>
-											</div>
-										</form>
-									</div>
-								</div>
-							</div>
-							<script>
-								$("#delete-attach-modal-{{ file.id }}").on('show.bs.modal', function (e) {
-									delete_url = "{% url 'documents:attach_delete' pk=file.id %}";
-									$("#delete-attach-form-{{ file.id }}").attr('action', delete_url );
-								});
-								// this is the id of the form
-								$("#delete-form-{{ file.id }}").submit(function (e) {
-									var form = $(this);
-									var url = form.attr('action');
-
-									$.ajax({
-										type: "POST",
-										url: url,
-										data: form.serialize(), // serializes the form's elements.
-										success: function (data) {
-											location.replace("{% url 'documents:article_details' pk=object.id %}");
-										}
-									});
-									e.preventDefault(); // avoid to execute the actual submit of the form.
-								});
-							</script>
+                        <div class="modal inmodal fade" id="delete-attach-modal-{{ file.id }}" tabindex="-1" role="dialog" aria-labelledby="file-exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            <span class="sr-only">بستن</span>
+                                        </button>
+                                        <h5 class="modal-title" id="file-exampleModalLabel">حذف پیوست</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p class="float-right">
+                                            آیا واقعا می خواهید فایل
+                                            <code>
+                                                <strong id="file-delete-name">{{ file.file }}</strong>
+                                            </code>
+                                            را حذف کنید؟
+                                        </p>
+                                    </div>
+                                    <div class="modal-footer float-right">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">انصراف</button>
+                                        <button type="button" onclick="attach_delete({{ file.id }})" class="btn btn-danger">حذف</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 					</div>
 				{% endfor %}
 				</div>
@@ -193,6 +169,11 @@
 	<script src="{% static 'vendors/datatables/js/datatables.bootstrap4.min.js' %}"></script>
 
 	<script>
+        $(document).ready(function() {
+            $("#attach-{{ object.id }}").modalForm({
+                formURL: "{% url 'documents:attach_create' pk=object.id %}"
+            });
+        });
 		var table;
 		// this is the id of the form
 		$("#delete-form").submit(function (e) {
@@ -209,6 +190,21 @@
 			});
 			e.preventDefault(); // avoid to execute the actual submit of the form.
 		});
+
+        function attach_delete(id) {
+            $.ajax({
+                url: "{% url 'documents:ajax' %}",
+                data: {
+                    'request_type': 'delete_attachment',
+                    'attachment_id': `${id}`,
+                },
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    location.reload();
+                }
+            });
+        }
 	</script>
 {% endblock %}
 

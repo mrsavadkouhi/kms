@@ -8,8 +8,9 @@ from django.dispatch import receiver
 
 from accounts.models import Profile
 
+
 def get_attachment_directory_path(instance, filename):
-    return '%s/%d/%d/%s' % (instance.attachments.first().type, int(datetime.now().year), int(datetime.now().month), filename)
+    return '%d/%d/%s' % (int(datetime.now().year), int(datetime.now().month), filename)
 
 
 class DocumentAttachment(models.Model):

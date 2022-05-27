@@ -11,13 +11,13 @@
 						     src="{% if user.profile.avatar %}{{ user.profile.avatar.url }}{% else %}{% static 'img/user.png' %}{% endif %}"/>
 					</span>
 					<a data-toggle="dropdown" class="dropdown-toggle" href="#">
-						<h3 class="block m-t-xs font-bold">{% if user.get_full_name %}{{ user.get_full_name }}{% else %}{{ user.get_username }}{% endif %}</h3>
+						<h3 class="block m-t-xs font-bold"><b class="caret"></b>{% if user.get_full_name %}{{ user.get_full_name }}{% else %}{{ user.get_username }}{% endif %}</h3>
 					</a>
 					<ul class="dropdown-menu animated fadeInRight m-t-xs">
 						<li><a class="dropdown-item" {% if user.profile %}href="{% url 'accounts:profile_details' user.profile.id %}"{% else %}href="#"{% endif %}><i class="fas fa-user-alt" style="margin-left: 6px;"></i>پروفایل</a></li>
 						{% if user.is_superuser %}
 							<li><a class="dropdown-item" href="{% url 'admin:index' %}" target="_blank"><i class="fas fa-database" style="margin-left: 6px;"></i>پنل دیتابیس</a></li>
-							<li><a class="dropdown-item" href="{% url 'accounts:profile_list' %}" target="_blank"><i class="fas fa-database" style="margin-left: 6px;"></i>مدیریت کاربران</a></li>
+							<li><a class="dropdown-item" href="{% url 'accounts:profile_list' %}" target="_blank"><i class="fas fa-users" style="margin-left: 6px;"></i>مدیریت کاربران</a></li>
 						{% endif %}
 						<li class="dropdown-divider"></li>
 						<li><a class="dropdown-item" href="{% url 'authentication:logout' %}"><i class="fas fa-sign-out-alt" style="margin-left: 6px;"></i>خروج</a></li>

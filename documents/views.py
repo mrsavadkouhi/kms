@@ -17,13 +17,9 @@ class DocumentAttachmentCreateView(LoginRequiredMixin, BSModalCreateView):
     def get_success_url(self):
         doc = Document.objects.get(id=self.kwargs['pk'])
         if doc.type == 'Article':
-            return reverse_lazy('article:article_details', kwargs={'pk': self.kwargs['pk']})
+            return reverse_lazy('documents:article_details', kwargs={'pk': self.kwargs['pk']})
         else:
             pass
-
-
-class DocumentAttachmentDeleteView(LoginRequiredMixin, JSONDeleteView):
-    model = DocumentAttachment
 
 
 class ArticleListView(LoginRequiredMixin, ListView):
@@ -131,5 +127,13 @@ class AjaxHandler(TemplateView):
             profile = Profile.objects.get(id=profile_id)
             profile.user.set_password(new_password)
             profile.user.save()
+
+        if request_type == 'delete_attachment':
+            attachment_id = request.GET.get('attachment_id')
+            try:
+                attachemnt = DocumentAttachment.objects.get(id=attachment_id)
+                attachemnt.delete()
+            except:
+                data = {'error': 1}
 
         return JsonResponse(data)

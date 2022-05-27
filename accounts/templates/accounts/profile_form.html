@@ -1,7 +1,6 @@
 {% extends 'base.html' %}{% load static %}
 {% load humanize %}
 {% load jalali_date %}
-{% load helper_filter %}
 
 {% block last-header %}
     <script src="{% static  'vendors/select2/js/select2.full.min.js' %}" xmlns="http://www.w3.org/1999/html"></script>
@@ -275,15 +274,7 @@
 				url: url,
 				data: form.serialize(), // serializes the form's elements.
 				success: function (data) {
-				    var in_center = '{{ in_center }}'
-                    if(in_center==='True'){
-                        var the_url = '{% url 'accounts:center_profile_list' 0 %}';
-                        the_url.replace('0',the_center.id);
-                        location.replace(the_url);
-                    }
-                    else {
-                        location.replace("{% url 'accounts:profile_list' %}");
-                    }
+                    location.replace("{% url 'accounts:profile_list' %}");
 				}
 			});
 			e.preventDefault(); // avoid to execute the actual submit of the form.

@@ -48,19 +48,19 @@
                             <label for="producer">نویسنده</label>
                             </div>
                             <div class="col-lg-3">
-                            <input type="text" id="producer" name="search">
+                            <input type="text" id="producer" name="producer">
                             </div>
                         <div class="col-lg-1">
                             <label for="center">مرکز</label>
                         </div>
                         <div class="col-lg-3">
-                            <input type="text" id="center" name="search">
+                            <input type="text" id="center" name="center">
                         </div>
                         <div class="col-lg-1">
                             <label for="publish_date">تاریخ انتشار</label>
                         </div>
                         <div class="col-lg-3">
-                            <input type="text" id="publish_date" name="search">
+                            <input type="text" id="publish_date" name="publish_date">
                         </div>
                     </div>
                     <br>
@@ -69,13 +69,13 @@
                             <label for="publish_type">نوع انتشار</label>
                             </div>
                             <div class="col-lg-3">
-                            <input type="text" id="publish_type" name="search">
+                            <input type="text" id="publish_type" name="publish_type">
                             </div>
                         <div class="col-lg-1">
                             <label for="publish_level">سطح انتشار</label>
                         </div>
                         <div class="col-lg-3">
-                            <input type="text" id="publish_level" name="search">
+                            <input type="text" id="publish_level" name="publish_level">
                         </div>
                         <div class="col-lg-1">
                         </div>
@@ -111,14 +111,14 @@
 							<td class="align-middle text-center">{{ forloop.counter }}</td>
 							<td class="align-middle text-center"><a href="{% url 'documents:article_details' pk=obj.id %}">{{ obj.title }}</a></td>
 							<td class="align-middle text-center">{{ obj.organization_code }}</td>
-							<td class="align-middle text-center">{{ obj.field }}</td>
+							<td class="align-middle text-center">{{ obj.get_field_display }}</td>
 							<td class="align-middle text-center">{{ obj.key_words }}</td>
 							<td class="align-middle text-center">{{ obj.producer.title }}</td>
 							<td class="align-middle text-center">{{ obj.producer.organization_code }}</td>
 							<td class="align-middle text-center">{{ obj.published_at | j_format_date:"%Y/%m/%d" }}</td>
-							<td class="align-middle text-center">{{ obj.publish_type }}</td>
-							<td class="align-middle text-center">{{ obj.publish_level }}</td>
-							<td class="align-middle text-center">{{ obj.center }}</td>
+							<td class="align-middle text-center">{{ obj.get_publish_type_display }}</td>
+							<td class="align-middle text-center">{{ obj.get_publish_level_display }}</td>
+							<td class="align-middle text-center">{{ obj.get_center_display }}</td>
 							<td class="align-middle text-center">
 								<div class="btn-group">
 								<a href="{% url 'documents:article_update' pk=obj.id %}" class="btn btn-sm btn-outline-warning"><i class="fa small fa-pen"></i><i class="fa fa-cube"></i> ویرایش</a>
@@ -186,19 +186,19 @@
 		});
 
 		$('#producer').on('keyup', function () {
-                table.column(6).search(this.value).draw();
+                table.column(5).search(this.value).draw();
 		});
 		$('#center').on('keyup', function () {
-			table.column(11).search(this.value).draw();
-		});
-		$('#publish_date').on('keyup', function () {
-			table.column(8).search(this.value).draw();
-		});
-		$('#publish_level').on('keyup', function () {
 			table.column(10).search(this.value).draw();
 		});
-		$('#publish_type').on('keyup', function () {
+		$('#publish_date').on('keyup', function () {
+			table.column(7).search(this.value).draw();
+		});
+		$('#publish_level').on('keyup', function () {
 			table.column(9).search(this.value).draw();
+		});
+		$('#publish_type').on('keyup', function () {
+			table.column(8).search(this.value).draw();
 		});
 
 		$('#delete-modal').on('show.bs.modal', function (e) {

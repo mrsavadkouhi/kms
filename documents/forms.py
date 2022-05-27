@@ -5,13 +5,19 @@ from bootstrap_modal_forms.forms import BSModalModelForm
 
 class DocumentAttachmentForm(BSModalModelForm):
     document_id = forms.IntegerField(required=True)
+    file = forms.FileField(required=True)
+    description = forms.CharField(required=False)
 
     class Meta:
         model = DocumentAttachment
         fields = ['file', 'description']
 
-    def save(self):
-        instance = super().save()
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        if commit:
+            # If committing, save the instance and the m2m data immediately.
+            self.instance.save()
+            self._save_m2m()
         document = Document.objects.get(id=self.cleaned_data['document_id'])
         document.attachments.add(instance)
         return self.instance
