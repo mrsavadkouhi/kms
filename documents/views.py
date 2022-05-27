@@ -600,6 +600,54 @@ class ReportDeleteView(LoginRequiredMixin, JSONDeleteView):
     model = Report
 
 
+class ManualListView(LoginRequiredMixin, ListView):
+    model = Manual
+    template_name = 'manual/manual_list.html'
+
+
+class ManualCreateView(LoginRequiredMixin, CreateView):
+    model = Manual
+    template_name = 'manual/manual_form.html'
+    form_class = ManualForm
+    success_url = reverse_lazy('documents:manual_list')
+    extra_context = {
+        'title': 'create',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['resumes']=Document.objects.filter(type="Resume")
+        context['centers'] = CENTER_LIST
+        context['fields'] = DOCUMENT_FIELDS
+        return context
+
+
+class ManualDetailsView(LoginRequiredMixin, DetailView):
+    model = Manual
+    template_name = 'manual/manual_detail.html'
+
+
+class ManualUpdateForm(LoginRequiredMixin, UpdateView):
+    model = Manual
+    template_name = 'manual/manual_form.html'
+    form_class = ManualForm
+    success_url = reverse_lazy('documents:manual_list')
+    extra_context = {
+        'title': 'update',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['resumes']=Document.objects.filter(type="Resume")
+        context['centers']=CENTER_LIST
+        context['fields']=DOCUMENT_FIELDS
+        return context
+
+
+class ManualDeleteView(LoginRequiredMixin, JSONDeleteView):
+    model = Manual
+
+
 class AjaxHandler(TemplateView):
     def get(self, request, *args, **kwargs):
         request_type = request.GET.get('request_type')
