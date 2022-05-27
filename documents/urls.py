@@ -27,5 +27,11 @@ urlpatterns = [
 	path('book/edit/<pk>', BookUpdateForm.as_view(), name='book_update'),
 	path('book/delete/<pk>', BookDeleteView.as_view(), name='book_delete'),
 
+	path('experience/list', ExperienceListView.as_view(), name='experience_list'),
+	path('experience/add', ExperienceCreateView.as_view(), name='experience_create'),
+	path('experience/<pk>', ExperienceDetailsView.as_view(), name='experience_details'),
+	path('experience/edit/<pk>', ExperienceUpdateForm.as_view(), name='experience_update'),
+	path('experience/delete/<pk>', ExperienceDeleteView.as_view(), name='experience_delete'),
+
 	path('ajax/', AjaxHandler.as_view(), name='ajax'),
 ]

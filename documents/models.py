@@ -23,6 +23,7 @@ DOCUMENT_TYPES = [
     ('Article', 'مقاله'),
     ('Resume', 'رزومه'),
     ('Book', 'کتاب'),
+    ('Experience', 'تجربه'),
 ]
 
 

@@ -122,6 +122,54 @@ class BookDeleteView(LoginRequiredMixin, JSONDeleteView):
     model = Book
 
 
+class ExperienceListView(LoginRequiredMixin, ListView):
+    model = Experience
+    template_name = 'experience/experience_list.html'
+
+
+class ExperienceCreateView(LoginRequiredMixin, CreateView):
+    model = Experience
+    template_name = 'experience/experience_form.html'
+    form_class = ExperienceForm
+    success_url = reverse_lazy('documents:experience_list')
+    extra_context = {
+        'title': 'create',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['resumes'] = Document.objects.filter(type="Resume")
+        context['centers'] = CENTER_LIST
+        context['fields'] = DOCUMENT_FIELDS
+        return context
+
+
+class ExperienceDetailsView(LoginRequiredMixin, DetailView):
+    model = Experience
+    template_name = 'experience/experience_detail.html'
+
+
+class ExperienceUpdateForm(LoginRequiredMixin, UpdateView):
+    model = Experience
+    template_name = 'experience/experience_form.html'
+    form_class = ExperienceForm
+    success_url = reverse_lazy('documents:experience_list')
+    extra_context = {
+        'title': 'update',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['resumes']=Document.objects.filter(type="Resume")
+        context['centers']=CENTER_LIST
+        context['fields']=DOCUMENT_FIELDS
+        return context
+
+
+class ExperienceDeleteView(LoginRequiredMixin, JSONDeleteView):
+    model = Experience
+
+
 class ResumeListView(LoginRequiredMixin, ListView):
     model = Resume
     template_name = 'resume/resume_list.html'
