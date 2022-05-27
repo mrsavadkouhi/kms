@@ -44,8 +44,8 @@ class ArticleCreateView(LoginRequiredMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context['resumes'] = Document.objects.filter(type="Resume")
         context['centers'] = CENTER_LIST
-        context['levels'] = ARTICLE_PUBLISH_TYPES
-        context['types'] = ARTICLE_PUBLISH_LEVELS
+        context['types'] = ARTICLE_PUBLISH_TYPES
+        context['levels'] = ARTICLE_PUBLISH_LEVELS
         context['fields'] = DOCUMENT_FIELDS
         return context
 
@@ -66,11 +66,11 @@ class ArticleUpdateForm(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['resumes'] = Document.objects.filter(type="Resume")
-        context['centers'] = CENTER_LIST
-        context['levels'] = ARTICLE_PUBLISH_TYPES
-        context['types'] = ARTICLE_PUBLISH_LEVELS
-        context['fields'] = ARTICLE_PUBLISH_LEVELS
+        context['resumes']=Document.objects.filter(type="Resume")
+        context['centers']=CENTER_LIST
+        context['types']=ARTICLE_PUBLISH_TYPES
+        context['levels']=ARTICLE_PUBLISH_LEVELS
+        context['fields']=DOCUMENT_FIELDS
         return context
 
 

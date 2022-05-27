@@ -69,7 +69,7 @@
             <h1> {{ error }} </h1>
             </div>
         {% endfor %}
-        <form class="m-t" role="form" method="post" enctype="multipart/form-data">
+        <form id="ar-form" class="m-t" role="form" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="col-lg-3 text-center">
                 <div><br></div>
@@ -89,6 +89,12 @@
                     <span class="input-group-text required" id="organization_code_label">شناسه: </span>
                   </div>
                   <input type="text" class="form-control" value="{{ object.organization_code }}" name="organization_code" aria-describedby="organization_code_label">
+                </div>
+                <div class="input-group mb-2" hidden>
+                  <div class="input-group-append">
+                    <span class="input-group-text required" id="type_label">نوع: </span>
+                  </div>
+                  <input type="text" class="form-control" value="Article" name="type" aria-describedby="type_label" readonly>
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
@@ -129,7 +135,7 @@
                   <div class="input-group-append">
                     <span class="input-group-text required" id="type_label">نوع انتشار: </span>
                   </div>
-                    <select name="type" id="type" class="select2 form-control">
+                    <select name="publish_type" id="type" class="select2 form-control">
                         {% for val,obj in types %}
                             <option value="{{ val }}">{{ obj }}</option>
                         {% endfor %}
@@ -139,7 +145,7 @@
                   <div class="input-group-append">
                     <span class="input-group-text required" id="level_label">سطح انتشار: </span>
                   </div>
-                    <select name="level" id="level" class="select2 form-control">
+                    <select name="publish_level" id="level" class="select2 form-control">
                         {% for val,obj in levels %}
                             <option value="{{ val }}">{{ obj }}</option>
                         {% endfor %}
@@ -211,12 +217,12 @@
         var type = $("#type").select2({
                 theme: 'bootstrap4',
         });
-        type.val("{{ object.type }}").trigger("change");
+        type.val("{{ object.publish_type }}").trigger("change");
 
         var level = $("#level").select2({
                 theme: 'bootstrap4',
         });
-        level.val("{{ object.level }}").trigger("change");
+        level.val("{{ object.publish_level }}").trigger("change");
 
         var center = $("#center").select2({
                 theme: 'bootstrap4',
@@ -268,7 +274,7 @@
         var datepicker = $("#datepicker").persianDatepicker(datepickeroption);
         $('#datepicker').val('{{ object.published_at | j_format_date:"%Y-%m-%d %H:%M" }}');
 
-         $('#pr-form').submit(function () {
+         $('#ar-form').submit(function () {
 
              if ($('#datepicker').val() === '') {
                  $('#datepicker').val('');
