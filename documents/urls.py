@@ -75,5 +75,11 @@ urlpatterns = [
 	path('project/edit/<pk>', ProjectUpdateForm.as_view(), name='project_update'),
 	path('project/delete/<pk>', ProjectDeleteView.as_view(), name='project_delete'),
 
+	path('report/list', ReportListView.as_view(), name='report_list'),
+	path('report/add', ReportCreateView.as_view(), name='report_create'),
+	path('report/<pk>', ReportDetailsView.as_view(), name='report_details'),
+	path('report/edit/<pk>', ReportUpdateForm.as_view(), name='report_update'),
+	path('report/delete/<pk>', ReportDeleteView.as_view(), name='report_delete'),
+
 	path('ajax/', AjaxHandler.as_view(), name='ajax'),
 ]

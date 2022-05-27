@@ -18,7 +18,7 @@
 
 {% endblock %}
 
-{% block head_title %}{% if title == 'update' %}جزئیات پروژه{% else %}ایجاد پروژه{% endif %}{% endblock %}
+{% block head_title %}{% if title == 'update' %}جزئیات گزارش{% else %}ایجاد گزارش{% endif %}{% endblock %}
 
 
 {% block title-breadcrumb %}
@@ -30,13 +30,13 @@
 				<a>مدیریت دانش</a>
 			</li>
 			<li class="breadcrumb-item">
-                <a href="{% url 'documents:project_list' %}" >لیست پروژه ها</a>
+                <a href="{% url 'documents:report_list' %}" >لیست گزارش ها</a>
 			</li>
 			<li class="breadcrumb-item active">
                 {% if title == 'update' %}
-                    <a href="{% url 'documents:project_update' object.id %}"><strong>ویرایش {{ object.title }}</strong></a>
+                    <a href="{% url 'documents:report_update' object.id %}"><strong>ویرایش {{ object.title }}</strong></a>
                 {% else %}
-                    <a href="{% url 'documents:project_create' %}"><strong>افزودن پروژه جدید</strong></a>
+                    <a href="{% url 'documents:report_create' %}"><strong>افزودن گزارش جدید</strong></a>
                 {% endif %}
 			</li>
 		</ol>
@@ -94,7 +94,7 @@
                   <div class="input-group-append">
                     <span class="input-group-text required" id="type_label">نوع: </span>
                   </div>
-                  <input type="text" class="form-control" value="Project" name="type" aria-describedby="type_label" readonly>
+                  <input type="text" class="form-control" value="Report" name="type" aria-describedby="type_label" readonly>
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
@@ -108,28 +108,32 @@
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="manager_label">مدیر: </span>
+                    <span class="input-group-text required" id="producer_label">تهیه کننده: </span>
                   </div>
-                    <select name="manager" id="manager" class="select2 form-control">
+                    <select name="producer" id="producer" class="select2 form-control">
                         {% for obj in resumes %}
                             <option value="{{ obj.id }}">{{ obj.title }}-{{ obj.organization_code }}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="input-group mb-2">
+                  <div class="input-group-append">
+                    <span class="input-group-text required" id="related_project_label">پروژه مرتبط: </span>
+                  </div>
+                    <select name="related_project" id="related_project" class="select2 form-control">
+                        {% for obj in project %}
+                            <option value="{{ obj.id }}">{{ obj.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="input-group mb-2">
                     <div class="input-group-append">
-                        <span class="input-group-text required" id="finished_at_label">تاریخ پایان: </span>
+                        <span class="input-group-text required" id="presented_at_label">تاریخ ارایه: </span>
                     </div>
-                    <input type="datetime" id="datepicker" class="form-control" name="finished_at" aria-describedby="finished_at_label">
+                    <input type="datetime" id="datepicker" class="form-control" name="presented_at" aria-describedby="presented_at_label">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-calendar fa-2x"></i></span>
                     </div>
-                </div>
-                <div class="input-group mb-2">
-                  <div class="input-group-append">
-                    <span class="input-group-text" id="description_label">توضیحات: </span>
-                  </div>
-                    <textarea type="text" class="form-control" name="description" aria-describedby="description_label">{{ object.description }}</textarea>
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
@@ -158,13 +162,13 @@
 						<span aria-hidden="true">&times;</span>
 						<span class="sr-only">بستن</span>
 					</button>
-					<h5 class="modal-title" id="exampleModalLabel">حذف پروژه</h5>
+					<h5 class="modal-title" id="exampleModalLabel">حذف گزارش</h5>
 				</div>
-				<form method="post" id="delete-form" {% if title == 'update' %} action="{% url 'documents:project_delete' pk=object.id %}" {% endif %}>
+				<form method="post" id="delete-form" {% if title == 'update' %} action="{% url 'documents:report_delete' pk=object.id %}" {% endif %}>
 					{% csrf_token %}
 					<div class="modal-body">
 						<p class="float-right">
-							آیا واقعا می خواهید پروژه
+							آیا واقعا می خواهید گزارش
 							<code>
 								<strong id="delete-name">{{ object.title }}</strong>
 							</code>
@@ -184,15 +188,25 @@
 
 {% block scripts %}
 	<script>
-                var manager = $("#manager").select2({
+        var producer = $("#producer").select2({
                 theme: 'bootstrap4',
         });
-        manager.val("{{ object.manager.id }}").trigger("change");
+        producer.val("{{ object.producer.id }}").trigger("change");
 
         var field = $("#field").select2({
                 theme: 'bootstrap4',
         });
         field.val("{{ object.field }}").trigger("change");
+
+        var type = $("#type").select2({
+                theme: 'bootstrap4',
+        });
+        type.val("{{ object.publish_type }}").trigger("change");
+
+        var level = $("#level").select2({
+                theme: 'bootstrap4',
+        });
+        level.val("{{ object.publish_level }}").trigger("change");
 
         var center = $("#center").select2({
                 theme: 'bootstrap4',
@@ -242,7 +256,7 @@
         };
 
         var datepicker = $("#datepicker").persianDatepicker(datepickeroption);
-        $('#datepicker').val('{{ object.finished_at | j_format_date:"%Y-%m-%d %H:%M" }}');
+        $('#datepicker').val('{{ object.presented_at | j_format_date:"%Y-%m-%d %H:%M" }}');
 
          $('#ar-form').submit(function () {
 
@@ -263,7 +277,7 @@
 				url: url,
 				data: form.serialize(), // serializes the form's elements.
 				success: function (data) {
-                    location.replace("{% url 'documents:project_list' %}");
+                    location.replace("{% url 'documents:report_list' %}");
 				}
 			});
 			e.preventDefault(); // avoid to execute the actual submit of the form.

@@ -188,7 +188,10 @@ class Journal(Document):
 
 
 FUTURE_TYPES = [
-    ('sample', 'نمونه'),
+    ('Rasadi', 'گزارش رصدی'),
+    ('Info', 'اینفوگرافی'),
+    ('Dide', 'دیده بان'),
+    ('Organ', 'گزارش سازمانی'),
 ]
 
 

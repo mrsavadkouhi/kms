@@ -550,6 +550,56 @@ class ProjectDeleteView(LoginRequiredMixin, JSONDeleteView):
     model = Project
 
 
+class ReportListView(LoginRequiredMixin, ListView):
+    model = Report
+    template_name = 'project/project_list.html'
+
+
+class ReportCreateView(LoginRequiredMixin, CreateView):
+    model = Report
+    template_name = 'project/project_form.html'
+    form_class = ReportForm
+    success_url = reverse_lazy('documents:project_list')
+    extra_context = {
+        'title': 'create',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['resumes']=Document.objects.filter(type="Resume")
+        context['projects']=Document.objects.filter(type="Project")
+        context['centers'] = CENTER_LIST
+        context['fields'] = DOCUMENT_FIELDS
+        return context
+
+
+class ReportDetailsView(LoginRequiredMixin, DetailView):
+    model = Report
+    template_name = 'project/project_detail.html'
+
+
+class ReportUpdateForm(LoginRequiredMixin, UpdateView):
+    model = Report
+    template_name = 'project/project_form.html'
+    form_class = ReportForm
+    success_url = reverse_lazy('documents:project_list')
+    extra_context = {
+        'title': 'update',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['resumes']=Document.objects.filter(type="Resume")
+        context['projects']=Document.objects.filter(type="Project")
+        context['centers']=CENTER_LIST
+        context['fields']=DOCUMENT_FIELDS
+        return context
+
+
+class ReportDeleteView(LoginRequiredMixin, JSONDeleteView):
+    model = Report
+
+
 class AjaxHandler(TemplateView):
     def get(self, request, *args, **kwargs):
         request_type = request.GET.get('request_type')
