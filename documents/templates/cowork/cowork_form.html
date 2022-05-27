@@ -18,7 +18,7 @@
 
 {% endblock %}
 
-{% block head_title %}{% if title == 'update' %}جزئیات مقاله{% else %}ایجاد مقاله{% endif %}{% endblock %}
+{% block head_title %}{% if title == 'update' %}جزئیات همکاری{% else %}ایجاد همکاری{% endif %}{% endblock %}
 
 
 {% block title-breadcrumb %}
@@ -30,13 +30,13 @@
 				<a>مدیریت دانش</a>
 			</li>
 			<li class="breadcrumb-item">
-                <a href="{% url 'documents:article_list' %}" >لیست مقالات</a>
+                <a href="{% url 'documents:cowork_list' %}" >لیست همکاری ها</a>
 			</li>
 			<li class="breadcrumb-item active">
                 {% if title == 'update' %}
-                    <a href="{% url 'documents:article_update' object.id %}"><strong>ویرایش {{ object.title }}</strong></a>
+                    <a href="{% url 'documents:cowork_update' object.id %}"><strong>ویرایش {{ object.title }}</strong></a>
                 {% else %}
-                    <a href="{% url 'documents:article_create' %}"><strong>افزودن مقاله جدید</strong></a>
+                    <a href="{% url 'documents:cowork_create' %}"><strong>افزودن همکاری جدید</strong></a>
                 {% endif %}
 			</li>
 		</ol>
@@ -94,7 +94,39 @@
                   <div class="input-group-append">
                     <span class="input-group-text required" id="type_label">نوع: </span>
                   </div>
-                  <input type="text" class="form-control" value="Article" name="type" aria-describedby="type_label" readonly>
+                  <input type="text" class="form-control" value="CoWork" name="type" aria-describedby="type_label" readonly>
+                </div>
+                            <div class="input-group mb-2">
+                  <div class="input-group-append">
+                    <span class="input-group-text required" id="cowork_type_label">نوع همکاری: </span>
+                  </div>
+                    <select name="cowork_type" id="cowork_type" class="select2 form-control">
+                        {% for val,obj in cowork_types %}
+                            <option value="{{ val }}">{{ obj }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="input-group mb-2">
+                  <div class="input-group-append">
+                    <span class="input-group-text required" id="level_label">شخص: </span>
+                  </div>
+                    <select name="person_type" id="person_type" class="select2 form-control">
+                        {% for val,obj in person_types %}
+                            <option value="{{ val }}">{{ obj }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="input-group mb-2">
+                  <div class="input-group-append">
+                    <span class="input-group-text" id="description_label">توضیحات: </span>
+                  </div>
+                    <textarea type="text" class="form-control" name="description" aria-describedby="description_label">{{ object.description }}</textarea>
+                </div>
+                <div class="input-group mb-2">
+                  <div class="input-group-append">
+                    <span class="input-group-text" id="address_label">آدرس: </span>
+                  </div>
+                    <textarea type="text" class="form-control" name="address" aria-describedby="address_label">{{ object.address }}</textarea>
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
@@ -102,51 +134,6 @@
                   </div>
                     <select name="field" id="field" class="select2 form-control">
                         {% for val,obj in fields %}
-                            <option value="{{ val }}">{{ obj }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="input-group mb-2">
-                  <div class="input-group-append">
-                    <span class="input-group-text" id="key_words_label">کلید واژه ها: </span>
-                  </div>
-                    <textarea type="text" class="form-control" name="key_words" aria-describedby="key_words_label">{{ object.key_words }}</textarea>
-                </div>
-                <div class="input-group mb-2">
-                  <div class="input-group-append">
-                    <span class="input-group-text required" id="producer_label">نویسنده: </span>
-                  </div>
-                    <select name="producer" id="producer" class="select2 form-control">
-                        {% for obj in resumes %}
-                            <option value="{{ obj.id }}">{{ obj.title }}-{{ obj.organization_code }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="input-group mb-2">
-                    <div class="input-group-append">
-                    <span class="input-group-text required" id="published_at_label">تاریخ چاپ: </span>
-                    </div>
-                    <input type="datetime" id="datepicker" class="form-control" name="published_at" aria-describedby="published_at_label">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fa fa-calendar fa-2x"></i></span>
-                    </div>
-                </div>
-                <div class="input-group mb-2">
-                  <div class="input-group-append">
-                    <span class="input-group-text required" id="type_label">نوع انتشار: </span>
-                  </div>
-                    <select name="publish_type" id="publish_type" class="select2 form-control">
-                        {% for val,obj in types %}
-                            <option value="{{ val }}">{{ obj }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="input-group mb-2">
-                  <div class="input-group-append">
-                    <span class="input-group-text required" id="level_label">سطح انتشار: </span>
-                  </div>
-                    <select name="publish_level" id="publish_level" class="select2 form-control">
-                        {% for val,obj in levels %}
                             <option value="{{ val }}">{{ obj }}</option>
                         {% endfor %}
                     </select>
@@ -178,13 +165,13 @@
 						<span aria-hidden="true">&times;</span>
 						<span class="sr-only">بستن</span>
 					</button>
-					<h5 class="modal-title" id="exampleModalLabel">حذف مقاله</h5>
+					<h5 class="modal-title" id="exampleModalLabel">حذف همکاری</h5>
 				</div>
-				<form method="post" id="delete-form" {% if title == 'update' %} action="{% url 'documents:article_delete' pk=object.id %}" {% endif %}>
+				<form method="post" id="delete-form" {% if title == 'update' %} action="{% url 'documents:cowork_delete' pk=object.id %}" {% endif %}>
 					{% csrf_token %}
 					<div class="modal-body">
 						<p class="float-right">
-							آیا واقعا می خواهید مقاله
+							آیا واقعا می خواهید همکاری
 							<code>
 								<strong id="delete-name">{{ object.title }}</strong>
 							</code>
@@ -204,25 +191,20 @@
 
 {% block scripts %}
 	<script>
-        var producer = $("#producer").select2({
+        var person_types = $("#person_type").select2({
                 theme: 'bootstrap4',
         });
-        producer.val("{{ object.producer.id }}").trigger("change");
+        person_types.val("{{ object.person_type }}").trigger("change");
+
+        var cowork_types = $("#cowork_type").select2({
+                theme: 'bootstrap4',
+        });
+        cowork_types.val("{{ object.cowork_type }}").trigger("change");
 
         var field = $("#field").select2({
                 theme: 'bootstrap4',
         });
         field.val("{{ object.field }}").trigger("change");
-
-        var type = $("#publish_type").select2({
-                theme: 'bootstrap4',
-        });
-        type.val("{{ object.publish_type }}").trigger("change");
-
-        var level = $("#publish_level").select2({
-                theme: 'bootstrap4',
-        });
-        level.val("{{ object.publish_level }}").trigger("change");
 
         var center = $("#center").select2({
                 theme: 'bootstrap4',
@@ -272,7 +254,7 @@
         };
 
         var datepicker = $("#datepicker").persianDatepicker(datepickeroption);
-        $('#datepicker').val('{{ object.published_at | j_format_date:"%Y-%m-%d %H:%M" }}');
+        $('#datepicker').val('{{ object.presented_at | j_format_date:"%Y-%m-%d %H:%M" }}');
 
          $('#ar-form').submit(function () {
 
@@ -293,7 +275,7 @@
 				url: url,
 				data: form.serialize(), // serializes the form's elements.
 				success: function (data) {
-                    location.replace("{% url 'documents:article_list' %}");
+                    location.replace("{% url 'documents:cowork_list' %}");
 				}
 			});
 			e.preventDefault(); // avoid to execute the actual submit of the form.

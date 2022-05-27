@@ -1,0 +1,208 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% load jalali_date %}
+
+
+{% block head_title %}جزئیات همکاری{% endblock %}
+
+
+{% block title-breadcrumb %}
+	<div class="col-md-9">
+    <br>
+    <br>
+		<ol class="breadcrumb">
+            <li class="breadcrumb-item">
+				<a>مدیریت دانش</a>
+			</li>
+			<li class="breadcrumb-item">
+                <a  href="{% url 'documents:cowork_list' %}" >لیست همکاری ها</a>
+			</li>
+			<li class="breadcrumb-item active">
+				<a href="{% url 'documents:cowork_details' object.id %}"><strong>جزئیات همکاری {{ object.name }}</strong></a>
+			</li>
+		</ol>
+	</div>
+
+	<div class="col-md-3">
+		<div class="title-action float-right">
+            <div class="btn-group">
+                <a href="{% url 'documents:cowork_update' pk=object.id %}" class="btn btn-lg btn-outline-warning"><i class="fa fa-user-edit"></i> ویرایش</a>
+			    <button data-toggle="modal" data-delete-what="{{ object.id }}" data-target="#delete-modal" class="btn btn-lg btn-outline-danger"><i class="fa fa-trash"></i> حذف </button>
+            </div>
+        </div>
+	</div>
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+        <div class="col-lg-12">
+			<div class="col-lg-3 text-center">
+				<div><br></div>
+				<i class="fa fa-cube fa-10x"></i>
+				<h1><strong>مشخصات</strong></h1>
+			</div>
+			<div class="card col-lg-9">
+				<div><br></div>
+				<h3><strong>عنوان: </strong>{{ object.title }}</h3>
+				<h3><strong>شناسه: </strong>{{ object.organization_code }}</h3>
+				<h3><strong>حوزه تخصصی: </strong>{{ object.get_field_display }}</h3>
+				<h3><strong>شخص: </strong>{{ object.get_person_type_display }}</h3>
+				<h3><strong>نوع همکاری: </strong>{{ object.get_cowork_type_display }}</h3>
+				<h3><strong>توضیحات: </strong>{{ object.description }}</h3>
+				<h3><strong>آدرس: </strong>{{ object.address }}</h3>
+                <h3><strong>مرکز تحقیقاتی: </strong>{{ object.get_center_display }}</h3>
+				<div><br></div>
+			</div>
+		</div>
+		<div class="col-lg-12">
+			<div class="col-lg-3 text-center">
+				<div><br></div>
+				<i class="fa fa-file-alt fa-10x"></i>
+				<h1><strong>پیوست</strong></h1>
+			</div>
+			<div class="card col-lg-9">
+				<div><br></div>
+				<div class="input-group mb-2">
+					<div class="input-group-append">
+						<span class="input-group-text" id="pay_label"><i class="fa fa-file"></i>فایل های پیوست</span>
+					</div>
+					<input readonly type="text" class="form-control" aria-describedby="name_label">
+				</div>
+				<br>
+				{% if not object.attachments.all.exists %}
+					<br>
+					<p class="text-center">تاکنون فایلی پیوست نشده است.</p>
+				{% endif %}
+				<div class="row">
+				{% for file in object.attachments.all %}
+					<div class="col-lg-3">
+						<br>
+						<h5>فایل: {{ file.file|truncatechars:20 }}</h5>
+						<h5>توضیحات: {{ file.description }}</h5>
+						<div class="btn-group">
+						<a href="{{ file.file.url }}" class="btn btn-sm btn-outline-primary">
+							دانلود
+							<i class="fa fa-download"></i>
+						</a>
+							<button data-toggle="modal" data-target="#delete-attach-modal-{{ file.id }}" class="btn btn-sm btn-outline-danger"><i class="fa fa-trash-alt"></i> حذف </button>
+						</div>
+                        <div class="modal inmodal fade" id="delete-attach-modal-{{ file.id }}" tabindex="-1" role="dialog" aria-labelledby="file-exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            <span class="sr-only">بستن</span>
+                                        </button>
+                                        <h5 class="modal-title" id="file-exampleModalLabel">حذف پیوست</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p class="float-right">
+                                            آیا واقعا می خواهید فایل
+                                            <code>
+                                                <strong id="file-delete-name">{{ file.file }}</strong>
+                                            </code>
+                                            را حذف کنید؟
+                                        </p>
+                                    </div>
+                                    <div class="modal-footer float-right">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">انصراف</button>
+                                        <button type="button" onclick="attach_delete({{ file.id }})" class="btn btn-danger">حذف</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+					</div>
+				{% endfor %}
+				</div>
+				<div><br></div>
+                <div class="col-lg-12">
+                <br>
+                {% include 'attach_form.html' %}
+                <div><br></div>
+                </div>
+			</div>
+
+		</div>
+
+    </div>
+	<!-- Delete Modal -->
+	<div class="modal inmodal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						<span class="sr-only">بستن</span>
+					</button>
+					<h5 class="modal-title" id="exampleModalLabel">حذف همکاری</h5>
+				</div>
+				<form method="post" id="delete-form" action="{% url 'documents:cowork_delete' pk=object.id %}">
+					{% csrf_token %}
+					<div class="modal-body">
+						<p class="float-right">
+							آیا واقعا می خواهید همکاری
+							<code>
+								<strong id="delete-name">{{ object.title }}</strong>
+							</code>
+							را حذف کنید؟
+						</p>
+					</div>
+					<div class="modal-footer float-right">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">انصراف</button>
+						<button type="submit" class="btn btn-danger">حذف</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+{% endblock %}
+
+{% block scripts %}
+	<link href="{% static 'vendors/datatables/css/datatables.min.css' %}" rel="stylesheet">
+	<script src="{% static 'vendors/datatables/js/datatables.min.js' %}"></script>
+	<script src="{% static 'vendors/datatables/js/datatables.bootstrap4.min.js' %}"></script>
+
+	<script>
+        $(document).ready(function() {
+            $("#attach-{{ object.id }}").modalForm({
+                formURL: "{% url 'documents:attach_create' pk=object.id %}"
+            });
+        });
+		var table;
+		// this is the id of the form
+		$("#delete-form").submit(function (e) {
+			var form = $(this);
+			var url = form.attr('action');
+
+			$.ajax({
+				type: "POST",
+				url: url,
+				data: form.serialize(), // serializes the form's elements.
+				success: function (data) {
+                    location.replace("{% url 'documents:cowork_list' %}");
+				}
+			});
+			e.preventDefault(); // avoid to execute the actual submit of the form.
+		});
+
+        function attach_delete(id) {
+            $.ajax({
+                url: "{% url 'documents:ajax' %}",
+                data: {
+                    'request_type': 'delete_attachment',
+                    'attachment_id': `${id}`,
+                },
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    location.reload();
+                }
+            });
+        }
+	</script>
+{% endblock %}
+

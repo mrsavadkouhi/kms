@@ -18,7 +18,7 @@
 
 {% endblock %}
 
-{% block head_title %}{% if title == 'update' %}جزئیات مقاله{% else %}ایجاد مقاله{% endif %}{% endblock %}
+{% block head_title %}{% if title == 'update' %}جزئیات آینده پژوهی{% else %}ایجاد آینده پژوهی{% endif %}{% endblock %}
 
 
 {% block title-breadcrumb %}
@@ -30,13 +30,13 @@
 				<a>مدیریت دانش</a>
 			</li>
 			<li class="breadcrumb-item">
-                <a href="{% url 'documents:article_list' %}" >لیست مقالات</a>
+                <a href="{% url 'documents:future_list' %}" >لیست آینده پژوهی ها</a>
 			</li>
 			<li class="breadcrumb-item active">
                 {% if title == 'update' %}
-                    <a href="{% url 'documents:article_update' object.id %}"><strong>ویرایش {{ object.title }}</strong></a>
+                    <a href="{% url 'documents:future_update' object.id %}"><strong>ویرایش {{ object.title }}</strong></a>
                 {% else %}
-                    <a href="{% url 'documents:article_create' %}"><strong>افزودن مقاله جدید</strong></a>
+                    <a href="{% url 'documents:future_create' %}"><strong>افزودن آینده پژوهی جدید</strong></a>
                 {% endif %}
 			</li>
 		</ol>
@@ -94,7 +94,7 @@
                   <div class="input-group-append">
                     <span class="input-group-text required" id="type_label">نوع: </span>
                   </div>
-                  <input type="text" class="form-control" value="Article" name="type" aria-describedby="type_label" readonly>
+                  <input type="text" class="form-control" value="Future" name="type" aria-describedby="type_label" readonly>
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
@@ -108,13 +108,7 @@
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text" id="key_words_label">کلید واژه ها: </span>
-                  </div>
-                    <textarea type="text" class="form-control" name="key_words" aria-describedby="key_words_label">{{ object.key_words }}</textarea>
-                </div>
-                <div class="input-group mb-2">
-                  <div class="input-group-append">
-                    <span class="input-group-text required" id="producer_label">نویسنده: </span>
+                    <span class="input-group-text required" id="producer_label">تهیه کننده: </span>
                   </div>
                     <select name="producer" id="producer" class="select2 form-control">
                         {% for obj in resumes %}
@@ -123,33 +117,23 @@
                     </select>
                 </div>
                 <div class="input-group mb-2">
+                  <div class="input-group-append">
+                    <span class="input-group-text required" id="future_type_label">نوع آینده پژوهی: </span>
+                  </div>
+                    <select name="future_type" id="future_type" class="select2 form-control">
+                        {% for val,obj in future_types %}
+                            <option value="{{ val }}">{{ obj }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="input-group mb-2">
                     <div class="input-group-append">
-                    <span class="input-group-text required" id="published_at_label">تاریخ چاپ: </span>
+                        <span class="input-group-text required" id="presented_at_label">تاریخ ارایه: </span>
                     </div>
-                    <input type="datetime" id="datepicker" class="form-control" name="published_at" aria-describedby="published_at_label">
+                    <input type="datetime" id="datepicker" class="form-control" name="presented_at" aria-describedby="presented_at_label">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-calendar fa-2x"></i></span>
                     </div>
-                </div>
-                <div class="input-group mb-2">
-                  <div class="input-group-append">
-                    <span class="input-group-text required" id="type_label">نوع انتشار: </span>
-                  </div>
-                    <select name="publish_type" id="publish_type" class="select2 form-control">
-                        {% for val,obj in types %}
-                            <option value="{{ val }}">{{ obj }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="input-group mb-2">
-                  <div class="input-group-append">
-                    <span class="input-group-text required" id="level_label">سطح انتشار: </span>
-                  </div>
-                    <select name="publish_level" id="publish_level" class="select2 form-control">
-                        {% for val,obj in levels %}
-                            <option value="{{ val }}">{{ obj }}</option>
-                        {% endfor %}
-                    </select>
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
@@ -178,13 +162,13 @@
 						<span aria-hidden="true">&times;</span>
 						<span class="sr-only">بستن</span>
 					</button>
-					<h5 class="modal-title" id="exampleModalLabel">حذف مقاله</h5>
+					<h5 class="modal-title" id="exampleModalLabel">حذف آینده پژوهی</h5>
 				</div>
-				<form method="post" id="delete-form" {% if title == 'update' %} action="{% url 'documents:article_delete' pk=object.id %}" {% endif %}>
+				<form method="post" id="delete-form" {% if title == 'update' %} action="{% url 'documents:future_delete' pk=object.id %}" {% endif %}>
 					{% csrf_token %}
 					<div class="modal-body">
 						<p class="float-right">
-							آیا واقعا می خواهید مقاله
+							آیا واقعا می خواهید آینده پژوهی
 							<code>
 								<strong id="delete-name">{{ object.title }}</strong>
 							</code>
@@ -209,20 +193,15 @@
         });
         producer.val("{{ object.producer.id }}").trigger("change");
 
+        var future_types = $("#future_type").select2({
+                theme: 'bootstrap4',
+        });
+        future_types.val("{{ object.future_type }}").trigger("change");
+
         var field = $("#field").select2({
                 theme: 'bootstrap4',
         });
         field.val("{{ object.field }}").trigger("change");
-
-        var type = $("#publish_type").select2({
-                theme: 'bootstrap4',
-        });
-        type.val("{{ object.publish_type }}").trigger("change");
-
-        var level = $("#publish_level").select2({
-                theme: 'bootstrap4',
-        });
-        level.val("{{ object.publish_level }}").trigger("change");
 
         var center = $("#center").select2({
                 theme: 'bootstrap4',
@@ -272,7 +251,7 @@
         };
 
         var datepicker = $("#datepicker").persianDatepicker(datepickeroption);
-        $('#datepicker').val('{{ object.published_at | j_format_date:"%Y-%m-%d %H:%M" }}');
+        $('#datepicker').val('{{ object.presented_at | j_format_date:"%Y-%m-%d %H:%M" }}');
 
          $('#ar-form').submit(function () {
 
@@ -293,7 +272,7 @@
 				url: url,
 				data: form.serialize(), // serializes the form's elements.
 				success: function (data) {
-                    location.replace("{% url 'documents:article_list' %}");
+                    location.replace("{% url 'documents:future_list' %}");
 				}
 			});
 			e.preventDefault(); // avoid to execute the actual submit of the form.

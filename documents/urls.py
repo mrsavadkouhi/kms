@@ -87,5 +87,25 @@ urlpatterns = [
 	path('manual/edit/<pk>', ManualUpdateForm.as_view(), name='manual_update'),
 	path('manual/delete/<pk>', ManualDeleteView.as_view(), name='manual_delete'),
 
+	path('journal/list', JournalListView.as_view(), name='journal_list'),
+	path('journal/add', JournalCreateView.as_view(), name='journal_create'),
+	path('journal/<pk>', JournalDetailsView.as_view(), name='journal_details'),
+	path('journal/edit/<pk>', JournalUpdateForm.as_view(), name='journal_update'),
+	path('journal/delete/<pk>', JournalDeleteView.as_view(), name='journal_delete'),
+
+
+	path('future/list', FutureListView.as_view(), name='future_list'),
+	path('future/add', FutureCreateView.as_view(), name='future_create'),
+	path('future/<pk>', FutureDetailsView.as_view(), name='future_details'),
+	path('future/edit/<pk>', FutureUpdateForm.as_view(), name='future_update'),
+	path('future/delete/<pk>', FutureDeleteView.as_view(), name='future_delete'),
+
+
+	path('cowork/list', CoWorkListView.as_view(), name='cowork_list'),
+	path('cowork/add', CoWorkCreateView.as_view(), name='cowork_create'),
+	path('cowork/<pk>', CoWorkDetailsView.as_view(), name='cowork_details'),
+	path('cowork/edit/<pk>', CoWorkUpdateForm.as_view(), name='cowork_update'),
+	path('cowork/delete/<pk>', CoWorkDeleteView.as_view(), name='cowork_delete'),
+
 	path('ajax/', AjaxHandler.as_view(), name='ajax'),
 ]

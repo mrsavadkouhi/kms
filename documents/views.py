@@ -648,6 +648,152 @@ class ManualDeleteView(LoginRequiredMixin, JSONDeleteView):
     model = Manual
 
 
+class JournalListView(LoginRequiredMixin, ListView):
+    model = Journal
+    template_name = 'journal/journal_list.html'
+
+
+class JournalCreateView(LoginRequiredMixin, CreateView):
+    model = Journal
+    template_name = 'journal/journal_form.html'
+    form_class = JournalForm
+    success_url = reverse_lazy('documents:journal_list')
+    extra_context = {
+        'title': 'create',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['centers'] = CENTER_LIST
+        context['fields'] = DOCUMENT_FIELDS
+        return context
+
+
+class JournalDetailsView(LoginRequiredMixin, DetailView):
+    model = Journal
+    template_name = 'journal/journal_detail.html'
+
+
+class JournalUpdateForm(LoginRequiredMixin, UpdateView):
+    model = Journal
+    template_name = 'journal/journal_form.html'
+    form_class = JournalForm
+    success_url = reverse_lazy('documents:journal_list')
+    extra_context = {
+        'title': 'update',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['centers']=CENTER_LIST
+        context['fields']=DOCUMENT_FIELDS
+        return context
+
+
+class JournalDeleteView(LoginRequiredMixin, JSONDeleteView):
+    model = Journal
+
+
+class FutureListView(LoginRequiredMixin, ListView):
+    model = Future
+    template_name = 'future/future_list.html'
+
+
+class FutureCreateView(LoginRequiredMixin, CreateView):
+    model = Future
+    template_name = 'future/future_form.html'
+    form_class = FutureForm
+    success_url = reverse_lazy('documents:future_list')
+    extra_context = {
+        'title': 'create',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['resumes']=Document.objects.filter(type="Resume")
+        context['centers'] = CENTER_LIST
+        context['fields'] = DOCUMENT_FIELDS
+        context['future_types'] = FUTURE_TYPES
+        return context
+
+
+class FutureDetailsView(LoginRequiredMixin, DetailView):
+    model = Future
+    template_name = 'future/future_detail.html'
+
+
+class FutureUpdateForm(LoginRequiredMixin, UpdateView):
+    model = Future
+    template_name = 'future/future_form.html'
+    form_class = FutureForm
+    success_url = reverse_lazy('documents:future_list')
+    extra_context = {
+        'title': 'update',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['resumes']=Document.objects.filter(type="Resume")
+        context['centers']=CENTER_LIST
+        context['fields']=DOCUMENT_FIELDS
+        context['future_types'] = FUTURE_TYPES
+        return context
+
+
+class FutureDeleteView(LoginRequiredMixin, JSONDeleteView):
+    model = Future
+
+
+class CoWorkListView(LoginRequiredMixin, ListView):
+    model = CoWork
+    template_name = 'cowork/cowork_list.html'
+
+
+class CoWorkCreateView(LoginRequiredMixin, CreateView):
+    model = CoWork
+    template_name = 'cowork/cowork_form.html'
+    form_class = CoWorkForm
+    success_url = reverse_lazy('documents:cowork_list')
+    extra_context = {
+        'title': 'create',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['centers'] = CENTER_LIST
+        context['fields'] = DOCUMENT_FIELDS
+        context['cowork_types'] = COWORK_TYPES
+        context['person_types'] = PERSON_TYPES
+        return context
+
+
+class CoWorkDetailsView(LoginRequiredMixin, DetailView):
+    model = CoWork
+    template_name = 'cowork/cowork_detail.html'
+
+
+class CoWorkUpdateForm(LoginRequiredMixin, UpdateView):
+    model = CoWork
+    template_name = 'cowork/cowork_form.html'
+    form_class = CoWorkForm
+    success_url = reverse_lazy('documents:cowork_list')
+    extra_context = {
+        'title': 'update',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['centers']=CENTER_LIST
+        context['fields']=DOCUMENT_FIELDS
+        context['cowork_types'] = COWORK_TYPES
+        context['person_types'] = PERSON_TYPES
+        return context
+
+
+class CoWorkDeleteView(LoginRequiredMixin, JSONDeleteView):
+    model = CoWork
+
+
 class AjaxHandler(TemplateView):
     def get(self, request, *args, **kwargs):
         request_type = request.GET.get('request_type')

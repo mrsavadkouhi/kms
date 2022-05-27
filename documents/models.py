@@ -33,6 +33,9 @@ DOCUMENT_TYPES = [
     ('Project', 'پروژه'),
     ('Manual', 'دستورالعمل'),
     ('Report', 'گزارش'),
+    ('Journal', 'فصلنامه'),
+    ('Future', 'آینده پژوهی'),
+    ('CoWork', 'همکاری'),
 ]
 
 
@@ -185,6 +188,7 @@ class Thesis(Document):
 class Journal(Document):
     presented_at = models.DateTimeField()
     page_number = models.IntegerField()
+    description=models.TextField()
 
 
 FUTURE_TYPES = [
@@ -196,8 +200,10 @@ FUTURE_TYPES = [
 
 
 class Future(Document):
+    producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='future_producer')
     presented_at = models.DateTimeField()
     future_type = models.CharField(max_length=255, choices=FUTURE_TYPES)
+
 
 
 COWORK_TYPES = [
@@ -213,6 +219,8 @@ PERSON_TYPES = [
 
 
 class CoWork(Document):
+    person_type = models.CharField(max_length=255, choices=PERSON_TYPES)
+    cowork_type = models.CharField(max_length=255, choices=COWORK_TYPES)
     address = models.TextField()
     description = models.TextField()
 
