@@ -121,7 +121,7 @@
                     <span class="input-group-text required" id="related_project_label">پروژه مرتبط: </span>
                   </div>
                     <select name="related_project" id="related_project" class="select2 form-control">
-                        {% for obj in project %}
+                        {% for obj in projects %}
                             <option value="{{ obj.id }}">{{ obj.title }}</option>
                         {% endfor %}
                     </select>
@@ -193,20 +193,15 @@
         });
         producer.val("{{ object.producer.id }}").trigger("change");
 
+        var projects = $("#related_project").select2({
+                theme: 'bootstrap4',
+        });
+        projects.val("{{ object.related_project.id }}").trigger("change");
+
         var field = $("#field").select2({
                 theme: 'bootstrap4',
         });
         field.val("{{ object.field }}").trigger("change");
-
-        var type = $("#type").select2({
-                theme: 'bootstrap4',
-        });
-        type.val("{{ object.publish_type }}").trigger("change");
-
-        var level = $("#level").select2({
-                theme: 'bootstrap4',
-        });
-        level.val("{{ object.publish_level }}").trigger("change");
 
         var center = $("#center").select2({
                 theme: 'bootstrap4',

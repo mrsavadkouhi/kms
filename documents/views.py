@@ -552,14 +552,14 @@ class ProjectDeleteView(LoginRequiredMixin, JSONDeleteView):
 
 class ReportListView(LoginRequiredMixin, ListView):
     model = Report
-    template_name = 'project/project_list.html'
+    template_name = 'report/report_list.html'
 
 
 class ReportCreateView(LoginRequiredMixin, CreateView):
     model = Report
-    template_name = 'project/project_form.html'
+    template_name = 'report/report_form.html'
     form_class = ReportForm
-    success_url = reverse_lazy('documents:project_list')
+    success_url = reverse_lazy('documents:report_list')
     extra_context = {
         'title': 'create',
     }
@@ -575,14 +575,14 @@ class ReportCreateView(LoginRequiredMixin, CreateView):
 
 class ReportDetailsView(LoginRequiredMixin, DetailView):
     model = Report
-    template_name = 'project/project_detail.html'
+    template_name = 'report/report_detail.html'
 
 
 class ReportUpdateForm(LoginRequiredMixin, UpdateView):
     model = Report
-    template_name = 'project/project_form.html'
+    template_name = 'report/report_form.html'
     form_class = ReportForm
-    success_url = reverse_lazy('documents:project_list')
+    success_url = reverse_lazy('documents:report_list')
     extra_context = {
         'title': 'update',
     }

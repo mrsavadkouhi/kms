@@ -32,3 +32,11 @@ class ArticleAdmin(admin.ModelAdmin):
 	list_filter = ['title', 'organization_code', 'producer']
 	list_display = ['title', 'organization_code', 'producer']
 	search_fields = ['title', 'organization_code', 'producer']
+
+
+@admin.register(Project)
+class ProjectAdmin(admin.ModelAdmin):
+	save_on_top = True
+	list_filter = ['title', 'organization_code', 'manager']
+	list_display = ['title', 'organization_code', 'manager']
+	search_fields = ['title', 'organization_code', 'manager']
