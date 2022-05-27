@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'phone_field',
     'bootstrap_modal_forms',
     # 'django_extensions',
     'polymorphic',
@@ -51,15 +50,10 @@ INSTALLED_APPS = [
     # extra template tags
     'django.contrib.humanize',
     'widget_tweaks',
-    # Cron from django admin
-    # 'chroniker',
-    # for wizards
-    # 'formtools',
-    # 'payment',
 
     # Project apps
-    'accounts.apps.AccountsConfig',
-    'documents.apps.CentersConfig',
+    'accounts',
+    'documents',
 ]
 
 MIDDLEWARE = [
@@ -156,6 +150,6 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # django Built-in Login system settings
-LOGIN_REDIRECT_URL = reverse_lazy('documents:article_list')
+LOGIN_REDIRECT_URL = reverse_lazy('documents:home')
 LOGIN_URL = reverse_lazy('authentication:login')
 LOGOUT_REDIRECT_URL = LOGIN_URL

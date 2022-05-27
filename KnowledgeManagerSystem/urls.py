@@ -21,10 +21,9 @@ from django.urls import include, path
 
 
 urlpatterns = [
-                  path('admin/', admin.site.urls),
-                  path('accounts/', include('django.contrib.auth.urls')),
-                  path('', include((auth_url, 'authentication'), 'authentication')),
-                  path('profiles/', include('accounts.urls')),
-                  path('documents/', include('documents.urls')),
-
-              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('admin/', admin.site.urls),
+    path('', include('documents.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('', include((auth_url, 'authentication'), 'authentication')),
+    path('profiles/', include('accounts.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

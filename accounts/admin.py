@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Profile, Lang, Software, Permission
+from .models import Profile
 
 
 @admin.register(Profile)
@@ -27,26 +27,3 @@ class ProfileAdmin(admin.ModelAdmin):
 
     get_last_name.admin_order_field = 'Last name'  # Allows column order sorting
     get_last_name.short_description = "Last name"  # Renames column head
-
-
-@admin.register(Lang)
-class LangAdmin(admin.ModelAdmin):
-    list_display = ['name',]
-    search_fields = ['name',]
-    save_as = True
-    save_on_top = True
-
-
-@admin.register(Software)
-class SoftwareAdmin(admin.ModelAdmin):
-    list_display = ['name',]
-    search_fields = ['name',]
-    save_as = True
-    save_on_top = True
-
-@admin.register(Permission)
-class PermissionAdmin(admin.ModelAdmin):
-    list_display = ['code',]
-    search_fields = ['code',]
-    save_as = True
-    save_on_top = True

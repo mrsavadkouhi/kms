@@ -8,58 +8,70 @@ from django.dispatch import receiver
 
 from accounts.models import Profile
 
-STATUS_TYPES = [
-    ('to_do', 'جهت انجام'),
-    ('inprogress', 'در حال انجام'),
-    ('completed', 'انجام شده'),
-    ('verified', 'تایید شده'),
-]
-
-TRANSACTION_TITTLES = [
-    ('prepayment', 'پیش پرداخت'),
-    ('installment', 'قسط'),
-    ('paragraph', 'بند'),
-]
-
-
 def get_attachment_directory_path(instance, filename):
     return '%s/%d/%d/%s' % (instance.attachments.first().type, int(datetime.now().year), int(datetime.now().month), filename)
 
 
 class DocumentAttachment(models.Model):
+    created_at=models.DateTimeField(auto_now_add=True)
     file = models.FileField(upload_to=get_attachment_directory_path, max_length=255)
     description = models.TextField(null=True, blank=True)
 
 
-class Document(PolymorphicModel):
-    TYPES = [
-        ('Article', 'مقاله'),
-    ]
+DOCUMENT_TYPES = [
+    ('Article', 'مقاله'),
+    ('Resume', 'رزومه'),
+]
 
+
+DOCUMENT_FIELDS = [
+    ('Sample', 'نمونه'),
+]
+
+
+CENTER_LIST = [
+    ('Sample', 'نمونه'),
+]
+
+
+class Document(PolymorphicModel):
     title = models.CharField(max_length=255)
     organization_code = models.CharField(max_length=255)
-    center = models.CharField(max_length=255)
-    field = models.CharField(max_length=255)
-    type = models.CharField(max_length=255, choices=TYPES)
+    center = models.CharField(max_length=255, choices=CENTER_LIST)
+    field = models.CharField(max_length=255, choices=DOCUMENT_FIELDS)
+    type = models.CharField(max_length=255, choices=DOCUMENT_TYPES)
+
+    created_at=models.DateTimeField(auto_now_add=True)
 
     attachments = models.ManyToManyField(DocumentAttachment, blank=True, related_name='attachments')
 
 
 class Resume(Document):
-    military_code = models.CharField(max_length=255)
     entrance_year = models.IntegerField()
     measure = models.CharField(max_length=255)
     degree = models.CharField(max_length=255)
 
 
+ARTICLE_PUBLISH_TYPES = [
+    ('Paper', 'مجله'),
+    ('Conference', 'کنفرانس'),
+]
+
+ARTICLE_PUBLISH_LEVELS = [
+    ('ISI', 'ISI'),
+    ('ISC', 'ISC'),
+    ('Research', 'علمی-پژوهشی'),
+    ('Extension', 'علمی-ترویجی'),
+    ('Specialized', 'علمی-تخصصی'),
+]
+
+
 class Article(Document):
-    PUBLISH_TYPES = [
-        ('Article', 'مقاله'),
-    ]
     producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='article_producer')
     key_words = models.TextField()
     published_at = models.DateTimeField()
-    publish_type = models.CharField(max_length=255, choices=PUBLISH_TYPES)
+    publish_type = models.CharField(max_length=255, choices=ARTICLE_PUBLISH_TYPES)
+    publish_level = models.CharField(max_length=255, choices=ARTICLE_PUBLISH_LEVELS)
 
 
 class Experience(Document):
@@ -92,22 +104,26 @@ class Seminar(Document):
     assessment_result = models.CharField(max_length=255)
 
 
+WORKSHOP_TYPES=[
+    ('sample', 'نمونه'),
+]
+
+
 class Workshop(Document):
-    WORKSHOP_TYPES=[
-        ('Article', 'مقاله'),
-    ]
     producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='workshop_producer')
     judges = models.TextField()
     started_at = models.DateTimeField()
     meeting_number = models.IntegerField()
     location = models.CharField(max_length=255)
-    type = models.CharField(max_length=255, choices=WORKSHOP_TYPES)
+    workshop_type = models.CharField(max_length=255, choices=WORKSHOP_TYPES)
+
+
+CONFERENCE_LEVELS=[
+    ('sample', 'نمونه'),
+]
 
 
 class Conference(Document):
-    CONFERENCE_LEVELS=[
-        ('Article', 'مقاله'),
-    ]
     held_at = models.DateTimeField()
     location = models.CharField(max_length=255)
     level = models.CharField(max_length=255, choices=CONFERENCE_LEVELS)
@@ -147,25 +163,29 @@ class Journal(Document):
     page_number = models.IntegerField()
 
 
-class Future(Document):
-    FUTURE_TYPES = [
-        ('Article', 'مقاله'),
-    ]
+FUTURE_TYPES = [
+    ('sample', 'نمونه'),
+]
 
+
+class Future(Document):
     presented_at = models.DateTimeField()
-    type = models.CharField(max_length=255, choices=FUTURE_TYPES)
+    future_type = models.CharField(max_length=255, choices=FUTURE_TYPES)
+
+
+COWORK_TYPES = [
+    ('Company', 'شرکت'),
+    ('University', 'دانشگاه'),
+]
+
+
+PERSON_TYPES = [
+    ('Real', 'حقیقی'),
+    ('Legal', 'حقوقی'),
+]
 
 
 class CoWork(Document):
-    COWORK_TYPES = [
-        ('Company', 'شرکت'),
-        ('University', 'دانشگاه'),
-    ]
-    PERSON_TYPES = [
-        ('Real', 'حقیقی'),
-        ('Legal', 'حقوقی'),
-    ]
-
     address = models.TextField()
     description = models.TextField()
 
