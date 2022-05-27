@@ -57,5 +57,17 @@ urlpatterns = [
 	path('workshop/edit/<pk>', WorkshopUpdateForm.as_view(), name='workshop_update'),
 	path('workshop/delete/<pk>', WorkshopDeleteView.as_view(), name='workshop_delete'),
 
+	path('conference/list', ConferenceListView.as_view(), name='conference_list'),
+	path('conference/add', ConferenceCreateView.as_view(), name='conference_create'),
+	path('conference/<pk>', ConferenceDetailsView.as_view(), name='conference_details'),
+	path('conference/edit/<pk>', ConferenceUpdateForm.as_view(), name='conference_update'),
+	path('conference/delete/<pk>', ConferenceDeleteView.as_view(), name='conference_delete'),
+
+	path('visit/list', VisitListView.as_view(), name='visit_list'),
+	path('visit/add', VisitCreateView.as_view(), name='visit_create'),
+	path('visit/<pk>', VisitDetailsView.as_view(), name='visit_details'),
+	path('visit/edit/<pk>', VisitUpdateForm.as_view(), name='visit_update'),
+	path('visit/delete/<pk>', VisitDeleteView.as_view(), name='visit_delete'),
+
 	path('ajax/', AjaxHandler.as_view(), name='ajax'),
 ]

@@ -3,7 +3,7 @@
 {% load jalali_date %}
 
 
-{% block head_title %}لیست کارگاهها{% endblock %}
+{% block head_title %}لیست بازدیدها{% endblock %}
 
 {% block title-breadcrumb %}
 	<div class="col-md-10">
@@ -14,14 +14,14 @@
 				<a>مدیریت دانش</a>
 			</li>
 			<li class="breadcrumb-item active">
-                <a  href="{% url 'documents:workshop_list' %}" >لیست کارگاهها</a>
+                <a  href="{% url 'documents:visit_list' %}" >لیست بازدیدها</a>
 			</li>
 		</ol>
 	</div>
 
 	<div class="col-md-2">
 		<div class="title-action float-right">
-            <a href="{% url 'documents:workshop_create' %}" class="btn btn-outline-primary"><i class="fa small fa-plus"></i> <i class="fa fa-cube"></i> افزودن کارگاه جدید</a>
+            <a href="{% url 'documents:visit_create' %}" class="btn btn-outline-primary"><i class="fa small fa-plus"></i> <i class="fa fa-cube"></i> افزودن بازدید جدید</a>
 		</div>
 	</div>
 {% endblock %}
@@ -31,7 +31,7 @@
     	<div class="col-lg-12">
 			<div class="ibox ">
                 <div class="ibox-title">
-                    <h5>جستجوی پیشرفته کارگاهها</h5>
+                    <h5>جستجوی پیشرفته بازدیدها</h5>
                     <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -45,10 +45,10 @@
                     <br>
                     <div class="row">
                             <div class="col-lg-1">
-                            <label for="producer">ارایه دهنده</label>
+                            <label for="field">حوزه تخصصی</label>
                             </div>
                             <div class="col-lg-3">
-                            <input type="text" id="producer" name="producer">
+                            <input type="text" id="field" name="field">
                             </div>
                         <div class="col-lg-1">
                             <label for="center">مرکز</label>
@@ -57,10 +57,10 @@
                             <input type="text" id="center" name="center">
                         </div>
                         <div class="col-lg-1">
-                            <label for="start_date">تاریخ شروع</label>
+                            <label for="visit_date">تاریخ بازدید</label>
                         </div>
                         <div class="col-lg-3">
-                            <input type="text" id="start_date" name="start_date">
+                            <input type="text" id="visit_date" name="visit_date">
                         </div>
                     </div>
                     <br>
@@ -75,13 +75,9 @@
 						<th class="text-center" style="background-color: white">عنوان</th>
 						<th class="text-center" style="background-color: white">شناسه</th>
 						<th class="text-center" style="background-color: white">حوزه</th>
-						<th class="text-center" style="background-color: white">ارایه دهنده</th>
-						<th class="text-center" style="background-color: white">تحصیلات ارایه دهنده</th>
-						<th class="text-center" style="background-color: white">نوع کارگاه</th>
-						<th class="text-center" style="background-color: white">تاریخ شروع</th>
-						<th class="text-center" style="background-color: white">تعداد جلسات</th>
-						<th class="text-center" style="background-color: white">تعداد شرکت کنندگان</th>
-						<th class="text-center" style="background-color: white">محل برگزاری</th>
+						<th class="text-center" style="background-color: white">تعداد شرکت کننده</th>
+						<th class="text-center" style="background-color: white">تاریخ بازدید</th>
+						<th class="text-center" style="background-color: white">محل بازدید</th>
 						<th class="text-center" style="background-color: white">مرکز تحقیقاتی</th>
 						<th class="text-center" style="background-color: white; width: 10%">عملیات</th>
 					</tr>
@@ -91,20 +87,16 @@
 					{% for obj in object_list %}
 						<tr id="c-tr-{{ obj.id }}"style="background-color: whitesmoke">
 							<td class="align-middle text-center">{{ forloop.counter }}</td>
-							<td class="align-middle text-center"><a href="{% url 'documents:workshop_details' pk=obj.id %}">{{ obj.title }}</a></td>
+							<td class="align-middle text-center"><a href="{% url 'documents:visit_details' pk=obj.id %}">{{ obj.title }}</a></td>
 							<td class="align-middle text-center">{{ obj.organization_code }}</td>
 							<td class="align-middle text-center">{{ obj.get_field_display }}</td>
-							<td class="align-middle text-center">{{ obj.producer.title }}</td>
-							<td class="align-middle text-center">{{ obj.producer.degree }}</td>
-                            <td class="align-middle text-center">{{ obj.get_workshop_type_display }}</td>
-							<td class="align-middle text-center">{{ obj.started_at | j_format_date:"%Y/%m/%d" }}</td>
-							<td class="align-middle text-center">{{ obj.meeting_number }}</td>
 							<td class="align-middle text-center">{{ obj.participant_number }}</td>
+                            <td class="align-middle text-center">{{ obj.visited_at | j_format_date:"%Y/%m/%d" }}</td>
                             <td class="align-middle text-center">{{ obj.location }}</td>
 							<td class="align-middle text-center">{{ obj.get_center_display }}</td>
 							<td class="align-middle text-center">
 								<div class="btn-group">
-								<a href="{% url 'documents:workshop_update' pk=obj.id %}" class="btn btn-sm btn-outline-warning"><i class="fa small fa-pen"></i><i class="fa fa-cube"></i> ویرایش</a>
+								<a href="{% url 'documents:visit_update' pk=obj.id %}" class="btn btn-sm btn-outline-warning"><i class="fa small fa-pen"></i><i class="fa fa-cube"></i> ویرایش</a>
 								<button data-cid="{{ obj.id }}" class="btn btn-sm btn-outline-danger m-l-sm" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"></i> حذف
 								</button>
 								</div>
@@ -127,13 +119,13 @@
 						<span aria-hidden="true">&times;</span>
 						<span class="sr-only">بستن</span>
 					</button>
-					<h5 class="modal-title" id="exampleModalLabel">حذف کارگاه</h5>
+					<h5 class="modal-title" id="exampleModalLabel">حذف بازدید</h5>
 				</div>
 				<form method="post" id="delete-form">
 					{% csrf_token %}
 					<div class="modal-body">
 						<p class="float-right">
-							آیا واقعا می خواهید کارگاه 
+							آیا واقعا می خواهید بازدید 
 							<code>
 								<strong id="delete-name"></strong>
 							</code>
@@ -168,21 +160,21 @@
 
 		});
 
-		$('#producer').on('keyup', function () {
-                table.column(4).search(this.value).draw();
+		$('#field').on('keyup', function () {
+                table.column(3).search(this.value).draw();
 		});
 		$('#center').on('keyup', function () {
-			table.column(11).search(this.value).draw();
-		});
-		$('#start_date').on('keyup', function () {
 			table.column(7).search(this.value).draw();
+		});
+		$('#visit_date').on('keyup', function () {
+			table.column(5).search(this.value).draw();
 		});
 
 		$('#delete-modal').on('show.bs.modal', function (e) {
 			id = $(e.relatedTarget).data('cid');
 			tr = $('#c-tr-' + id);
 			$('#delete-name').text(tr.find("td:eq(1)").text());
-			delete_url = "{% url 'documents:workshop_delete' pk=0 %}";
+			delete_url = "{% url 'documents:visit_delete' pk=0 %}";
 			$('#delete-form').attr('action', delete_url + id);
 		});
 

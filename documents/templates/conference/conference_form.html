@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% load jalali_date %}
+
+{% block last-header %}
+	<script src="{% static  'vendors/select2/js/select2.full.min.js' %}"></script>
+	<link href="{% static  'vendors/select2/css/select2.min.css' %}" rel="stylesheet">
+	<link href="{% static  'vendors/select2/css/select2-bootstrap4.min.css' %}" rel="stylesheet">
+
+    <link href="{% static 'vendors/persian-date/persian-datepicker.min.css' %}" rel="stylesheet">
+    <script src="{% static 'vendors/persian-date/persian-datepicker.min.js' %}"></script>
+    <script src="{% static 'vendors/persian-date/persian-date.js' %}"></script>
+
+    <style>
+        span.required:before { content: '*'; color: #FF0000; }
+    </style>
+
+{% endblock %}
+
+{% block head_title %}{% if title == 'update' %}جزئیات کنفرانس{% else %}ایجاد کنفرانس{% endif %}{% endblock %}
+
+
+{% block title-breadcrumb %}
+	<div class="col-md-9">
+    <br>
+    <br>
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">
+				<a>مدیریت دانش</a>
+			</li>
+			<li class="breadcrumb-item">
+                <a href="{% url 'documents:conference_list' %}" >لیست کنفرانس ها</a>
+			</li>
+			<li class="breadcrumb-item active">
+                {% if title == 'update' %}
+                    <a href="{% url 'documents:conference_update' object.id %}"><strong>ویرایش {{ object.title }}</strong></a>
+                {% else %}
+                    <a href="{% url 'documents:conference_create' %}"><strong>افزودن کنفرانس جدید</strong></a>
+                {% endif %}
+			</li>
+		</ol>
+	</div>
+
+	<div class="col-md-3">
+    {% if title == 'update' %}
+		<div class="title-action float-right">
+            <div class="btn-group">
+                <button data-toggle="modal" data-delete-what="{{ object.id }}" data-target="#delete-modal" class="btn btn-lg btn-outline-danger"><i class="fa fa-trash"></i> حذف </button>
+            </div>
+        </div>
+    {% endif %}
+	</div>
+{% endblock %}
+
+{% block content %}
+	<div class="col-lg-12">
+        {% if form.errors %}
+        <div class="card col-md-12 text-center" style="color: whitesmoke;background-color: lightcoral">
+        {% for field in form %}
+            {% for error in field.errors %}
+            <h1> {{ field.name }}: {{ error }} </h1>
+        {% endfor %}
+        {% endfor %}
+        </div>
+        {% endif %}
+        {% for error in form.non_field_errors %}
+            <div class="card col-md-12 text-center" style="color: whitesmoke;background-color: lightcoral">
+            <h1> {{ error }} </h1>
+            </div>
+        {% endfor %}
+        <form id="ar-form" class="m-t" role="form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="col-lg-3 text-center">
+                <div><br></div>
+                <i class="fa fa-cube fa-10x"></i>
+                <h1><strong>مشخصات</strong></h1>
+            </div>
+            <div class="card col-lg-9">
+                <div><br></div>
+                <div class="input-group mb-2">
+                  <div class="input-group-append">
+                    <span class="input-group-text required" id="title_label">عنوان: </span>
+                  </div>
+                  <input type="text" class="form-control" value="{{ object.title }}" name="title" aria-describedby="name_label">
+                </div>
+                <div class="input-group mb-2">
+                  <div class="input-group-append">
+                    <span class="input-group-text required" id="organization_code_label">شناسه: </span>
+                  </div>
+                  <input type="text" class="form-control" value="{{ object.organization_code }}" name="organization_code" aria-describedby="organization_code_label">
+                </div>
+                <div class="input-group mb-2" hidden>
+                  <div class="input-group-append">
+                    <span class="input-group-text required" id="type_label">نوع: </span>
+                  </div>
+                  <input type="text" class="form-control" value="Conference" name="type" aria-describedby="type_label" readonly>
+                </div>
+                <div class="input-group mb-2">
+                  <div class="input-group-append">
+                    <span class="input-group-text required" id="field_label">حوزه تخصصی: </span>
+                  </div>
+                    <select name="field" id="field" class="select2 form-control">
+                        {% for val,obj in fields %}
+                            <option value="{{ val }}">{{ obj }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="input-group mb-2">
+                    <div class="input-group-append">
+                        <span class="input-group-text required" id="held_at_label">تاریخ برگزاری: </span>
+                    </div>
+                    <input type="datetime" id="datepicker" class="form-control" name="held_at" aria-describedby="held_at_label">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-calendar fa-2x"></i></span>
+                    </div>
+                </div>
+                <div class="input-group mb-2">
+                  <div class="input-group-append">
+                    <span class="input-group-text required" id="location_label">محل برگزاری: </span>
+                  </div>
+                  <input type="text" class="form-control" value="{{ object.location }}" name="location" aria-describedby="location_label">
+                </div>
+                <div class="input-group mb-2">
+                  <div class="input-group-append">
+                    <span class="input-group-text required" id="center_label">سطح برگزاری: </span>
+                  </div>
+                    <select name="conference_level" id="conference_level" class="select2 form-control">
+                        {% for val,obj in conference_levels %}
+                            <option value="{{ val }}">{{ obj }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="input-group mb-2">
+                  <div class="input-group-append">
+                    <span class="input-group-text required" id="center_label">مرکز: </span>
+                  </div>
+                    <select name="center" id="center" class="select2 form-control">
+                        {% for val,obj in centers %}
+                            <option value="{{ val }}">{{ obj }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div><br></div>
+                <div class="btn-group float-left">
+                    <button type="submit" class="btn btn-lg btn-outline-primary"><i class="fa fa-save"></i> ذخیره </button>
+                </div>
+                <div><br></div>
+            </div>
+        </form>
+    </div>
+	<!-- Delete Modal -->
+	<div class="modal inmodal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						<span class="sr-only">بستن</span>
+					</button>
+					<h5 class="modal-title" id="exampleModalLabel">حذف کنفرانس</h5>
+				</div>
+				<form method="post" id="delete-form" {% if title == 'update' %} action="{% url 'documents:conference_delete' pk=object.id %}" {% endif %}>
+					{% csrf_token %}
+					<div class="modal-body">
+						<p class="float-right">
+							آیا واقعا می خواهید کنفرانس
+							<code>
+								<strong id="delete-name">{{ object.title }}</strong>
+							</code>
+							را حذف کنید؟
+						</p>
+					</div>
+					<div class="modal-footer float-right">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">انصراف</button>
+						<button type="submit" class="btn btn-danger">حذف</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block scripts %}
+	<script>
+        var field = $("#field").select2({
+                theme: 'bootstrap4',
+        });
+        field.val("{{ object.field }}").trigger("change");
+
+        var conference_levels = $("#conference_level").select2({
+                theme: 'bootstrap4',
+        });
+        conference_levels.val("{{ object.conference_level }}").trigger("change");
+
+        var center = $("#center").select2({
+                theme: 'bootstrap4',
+        });
+        center.val("{{ object.center }}").trigger("change");
+
+        var datepickeroption = {
+            initialValueType: 'gregorian',
+            //inline: true,
+            format: 'YYYY-MM-DD HH:mm',
+            submitButton: {
+                enabled: true,
+                text: {
+                    fa: "تایید",
+                    en: "Submit"
+                }
+            },
+            navigator: {
+                scroll: {
+                    enabled: false
+                }
+            },
+            calendar: {
+                persian: {
+                    leapYearMode: 'astronomical'
+                }
+            },
+            timePicker: {
+                enabled: true,
+                step: 5,
+                hour: {
+                    enabled: true,
+                    step: 1
+                },
+                minute: {
+                    enabled: true,
+                    step: 1
+                },
+                second: {
+                    enabled: false,
+                    step: 20
+                },
+                meridian: {
+                    enabled: true
+                }
+            },
+        };
+
+        var datepicker = $("#datepicker").persianDatepicker(datepickeroption);
+        $('#datepicker').val('{{ object.held_at | j_format_date:"%Y-%m-%d %H:%M" }}');
+
+         $('#ar-form').submit(function () {
+
+             if ($('#datepicker').val() === '') {
+                 $('#datepicker').val('');
+             } else {
+                 $('#datepicker').val(datepicker.getState().selected.dateObject.toCalendar('gregorian').toLocale('en').format('YYYY-MM-DD HH:mm'));
+             }
+         });
+
+		// this is the id of the form
+		$("#delete-form").submit(function (e) {
+			var form = $(this);
+			var url = form.attr('action');
+
+			$.ajax({
+				type: "POST",
+				url: url,
+				data: form.serialize(), // serializes the form's elements.
+				success: function (data) {
+                    location.replace("{% url 'documents:conference_list' %}");
+				}
+			});
+			e.preventDefault(); // avoid to execute the actual submit of the form.
+		});
+	</script>
+{% endblock %}
+

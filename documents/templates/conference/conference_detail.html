@@ -4,7 +4,7 @@
 {% load jalali_date %}
 
 
-{% block head_title %}جزئیات کارگاه{% endblock %}
+{% block head_title %}جزئیات کنفرانس{% endblock %}
 
 
 {% block title-breadcrumb %}
@@ -16,10 +16,10 @@
 				<a>مدیریت دانش</a>
 			</li>
 			<li class="breadcrumb-item">
-                <a  href="{% url 'documents:workshop_list' %}" >لیست کارگاهها</a>
+                <a  href="{% url 'documents:conference_list' %}" >لیست کنفرانس ها</a>
 			</li>
 			<li class="breadcrumb-item active">
-				<a href="{% url 'documents:workshop_details' object.id %}"><strong>جزئیات کارگاه {{ object.name }}</strong></a>
+				<a href="{% url 'documents:conference_details' object.id %}"><strong>جزئیات کنفرانس {{ object.name }}</strong></a>
 			</li>
 		</ol>
 	</div>
@@ -27,7 +27,7 @@
 	<div class="col-md-3">
 		<div class="title-action float-right">
             <div class="btn-group">
-                <a href="{% url 'documents:workshop_update' pk=object.id %}" class="btn btn-lg btn-outline-warning"><i class="fa fa-user-edit"></i> ویرایش</a>
+                <a href="{% url 'documents:conference_update' pk=object.id %}" class="btn btn-lg btn-outline-warning"><i class="fa fa-user-edit"></i> ویرایش</a>
 			    <button data-toggle="modal" data-delete-what="{{ object.id }}" data-target="#delete-modal" class="btn btn-lg btn-outline-danger"><i class="fa fa-trash"></i> حذف </button>
             </div>
         </div>
@@ -47,13 +47,9 @@
 				<h3><strong>عنوان: </strong>{{ object.title }}</h3>
 				<h3><strong>شناسه: </strong>{{ object.organization_code }}</h3>
 				<h3><strong>حوزه تخصصی: </strong>{{ object.get_field_display }}</h3>
-				<h3><strong>ارایه دهنده: </strong>{{ object.producer.title }}</h3>
-                <h3><strong>تحصیلات ارایه دهنده: </strong>{{ object.producer.degree }}</h3>
+				<h3><strong>سطح برگزاری: </strong>{{ object.get_conference_level_display }}</h3>
 				<h3><strong>محل برگزاری: </strong>{{ object.location }}</h3>
-				<h3><strong>تعداد جلسات: </strong>{{ object.meeting_number }}</h3>
-				<h3><strong>تاریخ شروع: </strong>{{ object.started_at | j_format_date:"%Y/%m/%d"  }}</h3>
-				<h3><strong>تعداد شرکت کنندگان: </strong>{{ object.participant_number }}</h3>
-				<h3><strong>نوع کارگاه: </strong>{{ object.get_workshop_type_display }}</h3>
+				<h3><strong>تاریخ برگزاری: </strong>{{ object.held_at | j_format_date:"%Y/%m/%d"  }}</h3>
 				<h3><strong>مرکز تحقیقاتی: </strong>{{ object.get_center_display }}</h3>
 				<div><br></div>
 			</div>
@@ -139,13 +135,13 @@
 						<span aria-hidden="true">&times;</span>
 						<span class="sr-only">بستن</span>
 					</button>
-					<h5 class="modal-title" id="exampleModalLabel">حذف کارگاه</h5>
+					<h5 class="modal-title" id="exampleModalLabel">حذف کنفرانس</h5>
 				</div>
-				<form method="post" id="delete-form" action="{% url 'documents:workshop_delete' pk=object.id %}">
+				<form method="post" id="delete-form" action="{% url 'documents:conference_delete' pk=object.id %}">
 					{% csrf_token %}
 					<div class="modal-body">
 						<p class="float-right">
-							آیا واقعا می خواهید کارگاه
+							آیا واقعا می خواهید کنفرانس
 							<code>
 								<strong id="delete-name">{{ object.title }}</strong>
 							</code>
@@ -186,7 +182,7 @@
 				url: url,
 				data: form.serialize(), // serializes the form's elements.
 				success: function (data) {
-                    location.replace("{% url 'documents:workshop_list' %}");
+                    location.replace("{% url 'documents:conference_list' %}");
 				}
 			});
 			e.preventDefault(); // avoid to execute the actual submit of the form.

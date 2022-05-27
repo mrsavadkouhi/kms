@@ -316,6 +316,100 @@ class WorkshopDeleteView(LoginRequiredMixin, JSONDeleteView):
     model = Workshop
 
 
+class ConferenceListView(LoginRequiredMixin, ListView):
+    model = Conference
+    template_name = 'conference/conference_list.html'
+
+
+class ConferenceCreateView(LoginRequiredMixin, CreateView):
+    model = Conference
+    template_name = 'conference/conference_form.html'
+    form_class = ConferenceForm
+    success_url = reverse_lazy('documents:conference_list')
+    extra_context = {
+        'title': 'create',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['centers'] = CENTER_LIST
+        context['fields'] = DOCUMENT_FIELDS
+        context['conference_levels']=CONFERENCE_LEVELS
+        return context
+
+
+class ConferenceDetailsView(LoginRequiredMixin, DetailView):
+    model = Conference
+    template_name = 'conference/conference_detail.html'
+
+
+class ConferenceUpdateForm(LoginRequiredMixin, UpdateView):
+    model = Conference
+    template_name = 'conference/conference_form.html'
+    form_class = ConferenceForm
+    success_url = reverse_lazy('documents:conference_list')
+    extra_context = {
+        'title': 'update',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['centers']=CENTER_LIST
+        context['fields']=DOCUMENT_FIELDS
+        context['conference_levels']=CONFERENCE_LEVELS
+        return context
+
+
+class ConferenceDeleteView(LoginRequiredMixin, JSONDeleteView):
+    model = Conference
+
+
+class VisitListView(LoginRequiredMixin, ListView):
+    model = Visit
+    template_name = 'visit/visit_list.html'
+
+
+class VisitCreateView(LoginRequiredMixin, CreateView):
+    model = Visit
+    template_name = 'visit/visit_form.html'
+    form_class = VisitForm
+    success_url = reverse_lazy('documents:visit_list')
+    extra_context = {
+        'title': 'create',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['centers'] = CENTER_LIST
+        context['fields'] = DOCUMENT_FIELDS
+        return context
+
+
+class VisitDetailsView(LoginRequiredMixin, DetailView):
+    model = Visit
+    template_name = 'visit/visit_detail.html'
+
+
+class VisitUpdateForm(LoginRequiredMixin, UpdateView):
+    model = Visit
+    template_name = 'visit/visit_form.html'
+    form_class = VisitForm
+    success_url = reverse_lazy('documents:visit_list')
+    extra_context = {
+        'title': 'update',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['centers']=CENTER_LIST
+        context['fields']=DOCUMENT_FIELDS
+        return context
+
+
+class VisitDeleteView(LoginRequiredMixin, JSONDeleteView):
+    model = Visit
+
+
 class ThesisListView(LoginRequiredMixin, ListView):
     model = Thesis
     template_name = 'thesis/thesis_list.html'
