@@ -502,6 +502,54 @@ class ResumeDeleteView(LoginRequiredMixin, JSONDeleteView):
     model = Resume
 
 
+class ProjectListView(LoginRequiredMixin, ListView):
+    model = Project
+    template_name = 'project/project_list.html'
+
+
+class ProjectCreateView(LoginRequiredMixin, CreateView):
+    model = Project
+    template_name = 'project/project_form.html'
+    form_class = ProjectForm
+    success_url = reverse_lazy('documents:project_list')
+    extra_context = {
+        'title': 'create',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['resumes']=Document.objects.filter(type="Resume")
+        context['centers'] = CENTER_LIST
+        context['fields'] = DOCUMENT_FIELDS
+        return context
+
+
+class ProjectDetailsView(LoginRequiredMixin, DetailView):
+    model = Project
+    template_name = 'project/project_detail.html'
+
+
+class ProjectUpdateForm(LoginRequiredMixin, UpdateView):
+    model = Project
+    template_name = 'project/project_form.html'
+    form_class = ProjectForm
+    success_url = reverse_lazy('documents:project_list')
+    extra_context = {
+        'title': 'update',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['resumes']=Document.objects.filter(type="Resume")
+        context['centers']=CENTER_LIST
+        context['fields']=DOCUMENT_FIELDS
+        return context
+
+
+class ProjectDeleteView(LoginRequiredMixin, JSONDeleteView):
+    model = Project
+
+
 class AjaxHandler(TemplateView):
     def get(self, request, *args, **kwargs):
         request_type = request.GET.get('request_type')

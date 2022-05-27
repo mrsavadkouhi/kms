@@ -30,17 +30,23 @@ DOCUMENT_TYPES = [
     ('Workshop', 'کارگاه'),
     ('Conference', 'کنفرانس'),
     ('Visit', 'بازدید'),
+    ('Project', 'پروژه'),
+    ('Manual', 'دستورالعمل'),
+    ('Report', 'گزارش'),
 ]
 
 
 DOCUMENT_FIELDS = [
-    ('Sample', 'نمونه'),
+    ('field-1', 'حوزه نمونه ۱'),
+    ('field-2', 'حوزه نمونه ۲'),
+    ('field-3', 'حوزه نمونه ۳'),
     ('No Field', 'بدون حوزه'),
 ]
 
 
 CENTER_LIST = [
-    ('Sample', 'نمونه'),
+    ('center-1', 'مرکز نمونه ۱'),
+    ('center-2', 'مرکز نمونه ۲'),
 ]
 
 
@@ -115,8 +121,10 @@ class Seminar(Document):
     assessment_result = models.CharField(max_length=255)
 
 
-WORKSHOP_TYPES=[
-    ('sample', 'نمونه'),
+WORKSHOP_TYPES = [
+    ('Technical', 'کارگاه فنی'),
+    ('Scientific', 'کارگاه علمی'),
+    ('Course', 'دوره آموزشی'),
 ]
 
 
@@ -130,7 +138,10 @@ class Workshop(Document):
 
 
 CONFERENCE_LEVELS=[
-    ('sample', 'نمونه'),
+    ('Citywid', 'شهری'),
+    ('Regional', 'استانی'),
+    ('Countrywide', 'کشوری'),
+    ('Wordwide', 'بین المللی'),
 ]
 
 
@@ -151,16 +162,16 @@ class Manual(Document):
     declared_at = models.DateTimeField()
 
 
+class Project(Document):
+    finished_at = models.DateTimeField()
+    manager = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='project_manager')
+    description = models.TextField()
+
+
 class Report(Document):
     producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='report_producer')
     presented_at = models.DateTimeField()
-    related_project = models.CharField(max_length=255)
-
-
-class Projects(Document):
-    finished_at = models.DateTimeField()
-    manager = models.CharField(max_length=255)
-    description = models.TextField()
+    related_project = models.ForeignKey(to=Project, on_delete=models.PROTECT, related_name='report_project')
 
 
 class Thesis(Document):

@@ -89,9 +89,9 @@ class ReportForm(forms.ModelForm):
         fields = '__all__'
 
 
-class ProjectsForm(forms.ModelForm):
+class ProjectForm(forms.ModelForm):
     class Meta:
-        model = Projects
+        model = Project
         fields = '__all__'
 
 
