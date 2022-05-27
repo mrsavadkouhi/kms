@@ -22,12 +22,13 @@ class DocumentAttachment(models.Model):
 DOCUMENT_TYPES = [
     ('Article', 'مقاله'),
     ('Resume', 'رزومه'),
+    ('Book', 'کتاب'),
 ]
 
 
 DOCUMENT_FIELDS = [
     ('Sample', 'نمونه'),
-    ('No Field', 'بدون فیلد'),
+    ('No Field', 'بدون حوزه'),
 ]
 
 
@@ -88,6 +89,7 @@ class Book(Document):
     fipa = models.CharField(max_length=255)
     published_at = models.DateTimeField()
     publisher = models.CharField(max_length=255)
+    judges=models.TextField()
     assessment_result = models.CharField(max_length=255)
 
 

@@ -21,5 +21,11 @@ urlpatterns = [
 	path('resume/edit/<pk>', ResumeUpdateForm.as_view(), name='resume_update'),
 	path('resume/delete/<pk>', ResumeDeleteView.as_view(), name='resume_delete'),
 
+	path('book/list', BookListView.as_view(), name='book_list'),
+	path('book/add', BookCreateView.as_view(), name='book_create'),
+	path('book/<pk>', BookDetailsView.as_view(), name='book_details'),
+	path('book/edit/<pk>', BookUpdateForm.as_view(), name='book_update'),
+	path('book/delete/<pk>', BookDeleteView.as_view(), name='book_delete'),
+
 	path('ajax/', AjaxHandler.as_view(), name='ajax'),
 ]

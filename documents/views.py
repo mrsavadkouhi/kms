@@ -74,6 +74,54 @@ class ArticleDeleteView(LoginRequiredMixin, JSONDeleteView):
     model = Article
 
 
+class BookListView(LoginRequiredMixin, ListView):
+    model = Book
+    template_name = 'book/book_list.html'
+
+
+class BookCreateView(LoginRequiredMixin, CreateView):
+    model = Book
+    template_name = 'book/book_form.html'
+    form_class = BookForm
+    success_url = reverse_lazy('documents:book_list')
+    extra_context = {
+        'title': 'create',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['resumes'] = Document.objects.filter(type="Resume")
+        context['centers'] = CENTER_LIST
+        context['fields'] = DOCUMENT_FIELDS
+        return context
+
+
+class BookDetailsView(LoginRequiredMixin, DetailView):
+    model = Book
+    template_name = 'book/book_detail.html'
+
+
+class BookUpdateForm(LoginRequiredMixin, UpdateView):
+    model = Book
+    template_name = 'book/book_form.html'
+    form_class = BookForm
+    success_url = reverse_lazy('documents:book_list')
+    extra_context = {
+        'title': 'update',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['resumes']=Document.objects.filter(type="Resume")
+        context['centers']=CENTER_LIST
+        context['fields']=DOCUMENT_FIELDS
+        return context
+
+
+class BookDeleteView(LoginRequiredMixin, JSONDeleteView):
+    model = Book
+
+
 class ResumeListView(LoginRequiredMixin, ListView):
     model = Resume
     template_name = 'resume/resume_list.html'
