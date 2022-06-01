@@ -6,6 +6,12 @@ from django import template
 register = template.Library()
 
 
+@register.simple_tag
+def has_perms(user, perms):
+	perms_list = perms.split(';')
+	return user.profile.has_perms(perms_list)
+
+
 @register.filter(expects_localtime=True, is_safe=False)
 def j_format_date(value, arg=None):
 	"""Formats a date or time according to the given format."""

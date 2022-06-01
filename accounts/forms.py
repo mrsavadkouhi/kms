@@ -12,8 +12,9 @@ class ProfileCreateForm(forms.ModelForm):
 	mobile_number = forms.CharField(label='پسورد', required=True, error_messages={'required': 'وارد کردن شماره همراه الزامی است.'})
 	email = forms.EmailField(label='ایمیل', required=True, error_messages={'required': 'وارد کردن ایمیل الزامی است.'})
 	avatar = forms.ImageField(label='Avatar', required=False)
+	permissions=forms.ModelMultipleChoiceField(queryset=Permission.objects.all(), required=False)
 
-	field_order = ['username','first_name', 'last_name','password', 'email', 'mobile_number','avatar']
+	field_order = ['username','first_name', 'last_name','password', 'email', 'mobile_number','avatar','permissions']
 
 	class Meta:
 		model = Profile
@@ -76,8 +77,9 @@ class ProfileUpdateForm(forms.ModelForm):
 	last_name = forms.CharField(label='نام خانوادگی', required=False)
 	email = forms.EmailField(label='ایمیل', required=True)
 	avatar = forms.ImageField(label='Avatar', required=False)
+	permissions=forms.ModelMultipleChoiceField(queryset=Permission.objects.all(), required=False)
 
-	field_order = ['username','first_name', 'last_name', 'email', 'avatar']
+	field_order = ['username','first_name', 'last_name', 'email', 'avatar', 'permissions']
 
 	class Meta:
 		model = Profile

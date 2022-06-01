@@ -90,6 +90,7 @@
                 <th class="text-center" style="background-color: white">ایمیل</th>
                 <th class="text-center" style="background-color: white">نام</th>
                 <th class="text-center" style="background-color: white">نام خانوادگی</th>
+                <th class="text-center" style="background-color: white">دسترسی</th>
                 <th class="text-center" style="background-color: white;width: 10%">عملیات</th>
             </tr>
             </thead>
@@ -104,6 +105,11 @@
                     <td class="align-middle text-center">{{ obj.user.email }}</td>
                     <td class="align-middle text-center">{{ obj.user.first_name }}</td>
                     <td class="align-middle text-center">{{ obj.user.last_name }}</td>
+                    <td class="align-middle text-center">
+                    {% for perm in obj.permissions.all %}
+                        {{ perm.get_code_display }},
+                    {% endfor %}
+                    </td>
                     <td class="align-middle text-center">
                         <div class="btn-group">
                             <button data-cid="{{ obj.id }}" class="btn btn-sm btn-outline-success m-l-sm" onclick="$('#pass-change-{{ obj.id }}').modal();"><i

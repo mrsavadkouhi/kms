@@ -152,4 +152,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # django Built-in Login system settings
 LOGIN_REDIRECT_URL = reverse_lazy('documents:home')
 LOGIN_URL = reverse_lazy('authentication:login')
-LOGOUT_REDIRECT_URL = LOGIN_URL
+LOGOUT_REDIRECT_URL = reverse_lazy('documents:home')

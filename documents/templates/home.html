@@ -1,0 +1,67 @@
+{% extends 'empty_base.html' %}
+{% load staticfiles %}{% load widget_tweaks %}{% load i18n %}
+
+{% block title %}خانه{% endblock %}
+
+{% block content %}
+	<div class="text-center animated fadeInDown">
+        <div class="row">
+            <div class="col-lg-2">
+                <div>
+                    <img src="{% static 'img/logo.png' %}" style="width: 100px"/>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <h1>مدیریت دانش- سازمان تحقیقات و خودکفایی ندسا</h1>
+            </div>
+            <div class="col-lg-2">
+                <div>
+                    <img src="{% static 'img/logo.png' %}" style="width: 100px"/>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-lg-3">
+            </div>
+            <div class="col-lg-3" href="{% url 'documents:article_list' %}">
+                <div>
+                    <a href="{% url 'documents:article_list' %}"><img src="{% static 'img/logo.png' %}" style="width: 250px"/></a>
+                </div>
+                <a ref="{% url 'documents:project_list' %}"><h3>مدیریت دانش</h3></a>
+            </div>
+            <div class="col-lg-3" href="{% url 'documents:project_list' %}">
+                <div>
+                    <a href="{% url 'documents:project_list' %}"><img src="{% static 'img/logo.png' %}" style="width: 250px"/></a>
+                </div>
+                <a ref="{% url 'documents:project_list' %}"><h3>مرکز رشد</h3></a>
+            </div>
+            <div class="col-lg-3">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+            </div>
+            <div class="col-lg-3" >
+                <div>
+                    <a href="{% url 'documents:future_list' %}"><img src="{% static 'img/logo.png' %}" style="width: 250px"/></a>
+                </div>
+                <a ref="{% url 'documents:resume_list' %}"><h3>آینده پژوهی و همکاری های علمی</h3></a>
+            </div>
+            <div class="col-lg-3" >
+                <div>
+                    <a href="{% url 'documents:resume_list' %}"><img src="{% static 'img/logo.png' %}" style="width: 250px"/></a>
+                </div>
+                <a ref="{% url 'documents:resume_list' %}"><h3>نخبگان آموزش و امور محققین</h3></a>
+            </div>
+            <div class="col-lg-3">
+            </div>
+        </div>
+        <div class="row">
+
+
+        </div>
+
+	</div>
+{% endblock %}

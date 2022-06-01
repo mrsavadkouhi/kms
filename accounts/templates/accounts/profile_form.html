@@ -150,6 +150,16 @@
                   </div>
                     <input type="email" class="form-control"  value="{{ object.user.email }}" name="email" aria-describedby="email_label">
                 </div>
+                <div class="input-group mb-2">
+                  <div class="input-group-append">
+                    <span class="input-group-text" id="permissions_lable">دسترسی ها: </span>
+                  </div>
+                  <select id="permissions_name" class="select2 form-control" name="permissions" aria-describedby="permissions_lable">
+                        {% for obj in permissions %}
+                                <option value="{{ obj.id }}">{{ obj.get_code_display }}</option>
+                        {% endfor %}
+                  </select>
+                </div>
             {% if title == 'create' %}
                 <div class="input-group mb-2">
                   <div class="input-group-append">
@@ -214,6 +224,17 @@
 
 {% block scripts %}
 	<script>
+    var permissions = $("#permissions_name").select2({
+                    theme: 'bootstrap4',
+                    multiple: true,
+                    placeholder: "دسترسی ها",
+                    allowClear: true
+            });
+            vals = [];
+            {% for obj in object.permissions.all %}
+                vals.push("{{ obj.id }}");
+            {% endfor %}
+            permissions.val(vals).trigger("change");
     /*  ==========================================
         SHOW UPLOADED IMAGE
     * ========================================== */

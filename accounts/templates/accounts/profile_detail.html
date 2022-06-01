@@ -68,6 +68,12 @@
                 <h3><strong>ایمیل: </strong>{{ object.user.email }}</h3>
                 <h3><strong>تاریخ ایجاد: </strong>{{ object.created_at | j_format_date:"%Y/%m/%d"  }}</h3>
                 <h3><strong>تلفن همراه: </strong>{{ object.mobile_number }}</h3>
+                <h3>
+                    <strong>دسترسی: </strong>
+                    {% for perm in object.permissions.all %}
+                        {{ perm.get_code_display }},
+                    {% endfor %}
+                </h3>
                 <div><br></div>
             </div>
         </div>

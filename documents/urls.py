@@ -7,7 +7,7 @@ app_name = 'documents'
 urlpatterns = [
 	path('attachment/<pk>/add', DocumentAttachmentCreateView.as_view(), name='attach_create'),
 
-	path('', ArticleListView.as_view(), name='home'),
+	path('', HomeView.as_view(), name='home'),
 
 	path('article/list', ArticleListView.as_view(), name='article_list'),
 	path('article/add', ArticleCreateView.as_view(), name='article_create'),

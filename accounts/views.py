@@ -38,9 +38,10 @@ class ProfileCreateView(LoginRequiredMixin, CreateView):
     form_class = ProfileCreateForm
     template_name = 'accounts/profile_form.html'
     success_url = reverse_lazy('accounts:profile_list')
-    extra_context = {
-        'title': 'create'
-    }
+    def get_context_data(self, **kwargs):
+        kwargs['title'] = 'create'
+        kwargs['permissions'] = Permission.objects.all()
+        return super().get_context_data(**kwargs)
 
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
@@ -48,9 +49,11 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     form_class = ProfileUpdateForm
     template_name = 'accounts/profile_form.html'
     success_url = reverse_lazy('accounts:profile_list')
-    extra_context={
-        'title': 'update'
-    }
+
+    def get_context_data(self, **kwargs):
+        kwargs['title'] = 'update'
+        kwargs['permissions'] = Permission.objects.all()
+        return super().get_context_data(**kwargs)
 
 
 class ProfileDeleteView(LoginRequiredMixin, JSONDeleteView):

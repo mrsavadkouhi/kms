@@ -22,6 +22,10 @@ class DocumentAttachmentCreateView(LoginRequiredMixin, BSModalCreateView):
             pass
 
 
+class HomeView(TemplateView):
+    template_name = 'home.html'
+
+
 class ArticleListView(LoginRequiredMixin, ListView):
     model = Article
     template_name = 'article/article_list.html'
