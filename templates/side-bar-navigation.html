@@ -67,11 +67,6 @@
                             <span class="nav-label">پایان نامه</span>
                         </a>
                     </li>
-                    <li {% if request.resolver_match.view_name == 'documents:workshop_list' %}class="active"{% endif %}>
-                        <a href="{% url 'documents:workshop_list' %}" ><i class="fa fa-th-large"></i>
-                            <span class="nav-label">کارگاه</span>
-                        </a>
-                    </li>
                     <li {% if request.resolver_match.view_name == 'documents:seminar_list' %}class="active"{% endif %}>
                         <a href="{% url 'documents:seminar_list' %}" ><i class="fa fa-th-large"></i>
                             <span class="nav-label">سمینار</span>
@@ -142,11 +137,24 @@
             </li>
         {% endif %}
         {% if user.is_superuser or has_resume_perm %}
-			<li {% if request.resolver_match.view_name == 'documents:resume_list' %}class="active"{% endif %}>
-				<a href="{% url 'documents:resume_list' %}" ><i class="fa fa-th-large"></i>
-					<span class="nav-label">نخبگان آموزش و امور محققین</span>
-				</a>
-			</li>
+            <li {% if request.resolver_match.view_name == 'documents:resume_list' or request.resolver_match.view_name == 'documents:workshop_list' %}class="active"{% endif %}>
+                <a href="#"><i class="fa fa-th-large"></i>
+                    <span class="nav-label">نخبگان آموزش و امور محققین</span>
+                    <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-second-level collapse">
+                    <li {% if request.resolver_match.view_name == 'documents:resume_list' %}class="active"{% endif %}>
+                        <a href="{% url 'documents:resume_list' %}" ><i class="fa fa-th-large"></i>
+                            <span class="nav-label">نخبگان آموزش و امور محققین</span>
+                        </a>
+                    </li>
+                    <li {% if request.resolver_match.view_name == 'documents:workshop_list' %}class="active"{% endif %}>
+                        <a href="{% url 'documents:workshop_list' %}" ><i class="fa fa-th-large"></i>
+                            <span class="nav-label">کارگاه ها و دوره های آموزشی</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
         {% endif %}
 		</ul>
 

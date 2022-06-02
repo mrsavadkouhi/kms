@@ -22,7 +22,7 @@ class DocumentAttachmentCreateView(LoginRequiredMixin, BSModalCreateView):
             pass
 
 
-class HomeView(TemplateView):
+class HomeView(LoginRequiredMixin, TemplateView):
     template_name = 'home.html'
 
 
