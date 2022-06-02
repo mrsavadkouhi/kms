@@ -34,6 +34,54 @@ class ArticleAdmin(admin.ModelAdmin):
 	search_fields = ['title', 'organization_code', 'producer']
 
 
+@admin.register(Book)
+class BookAdmin(admin.ModelAdmin):
+	save_on_top = True
+	list_filter = ['title', 'organization_code', 'producer']
+	list_display = ['title', 'organization_code', 'producer']
+	search_fields = ['title', 'organization_code', 'producer']
+
+
+@admin.register(Experience)
+class ExperienceAdmin(admin.ModelAdmin):
+	save_on_top = True
+	list_filter = ['title', 'organization_code', 'producer']
+	list_display = ['title', 'organization_code', 'producer']
+	search_fields = ['title', 'organization_code', 'producer']
+
+
+@admin.register(Idea)
+class IdeaAdmin(admin.ModelAdmin):
+	save_on_top = True
+	list_filter = ['title', 'organization_code', 'producer']
+	list_display = ['title', 'organization_code', 'producer']
+	search_fields = ['title', 'organization_code', 'producer']
+
+
+@admin.register(Seminar)
+class Seminardmin(admin.ModelAdmin):
+	save_on_top = True
+	list_filter = ['title', 'organization_code', 'producer']
+	list_display = ['title', 'organization_code', 'producer']
+	search_fields = ['title', 'organization_code', 'producer']
+
+
+@admin.register(Workshop)
+class Workshopdmin(admin.ModelAdmin):
+	save_on_top = True
+	list_filter = ['title', 'organization_code', 'producer']
+	list_display = ['title', 'organization_code', 'producer']
+	search_fields = ['title', 'organization_code', 'producer']
+
+
+@admin.register(Manual)
+class Manualdmin(admin.ModelAdmin):
+	save_on_top = True
+	list_filter = ['title', 'organization_code', 'producer']
+	list_display = ['title', 'organization_code', 'producer']
+	search_fields = ['title', 'organization_code', 'producer']
+
+
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
 	save_on_top = True

@@ -48,8 +48,21 @@ DOCUMENT_FIELDS = [
 
 
 CENTER_LIST = [
-    ('center-1', 'مرکز نمونه ۱'),
-    ('center-2', 'مرکز نمونه ۲'),
+    ('center-11', 'م.حاجت زاه(شناوری)'),
+    ('center-12', 'م.تهرانی(سلاح و مهمات)'),
+    ('center-13', 'ش.رضایی(موشکی)'),
+    ('center-14', 'ش.محمدیها(هوادریا)'),
+    ('center-15', 'ش.چمران(الکترونیک)'),
+    ('center-16', 'ش.همدانی(پدافند)'),
+    ('center-17', 'م.جلالی(مواد)'),
+    ('center-18', 'ش.مهدوی(فناوری)'),
+    ('center-19', 'مد.نوآوری(مد.دانش-آینده پژوهی)'),
+    ('center-20', 'مد.تحقیقات(تحقیقات)'),
+    ('center-21', 'ش.ناظری(موتور)'),
+    ('center-22', 'زیرسطحی'),
+    ('center-23', 'ش.آبسالان(فیزیک دریا)'),
+    ('center-24', 'ش.عسگری(رادار)'),
+    ('center-25', 'بازرسی-بهداری'),
 ]
 
 
@@ -63,6 +76,14 @@ class Document(PolymorphicModel):
     created_at=models.DateTimeField(auto_now_add=True)
 
     attachments = models.ManyToManyField(DocumentAttachment, blank=True, related_name='attachments')
+
+    @property
+    def organization_code_counter(self):
+        return int(self.organization_code.split('-')[2][2:])
+
+    @property
+    def organization_code_year(self):
+        return int(self.organization_code.split('-')[1])
 
 
 class Resume(Document):
