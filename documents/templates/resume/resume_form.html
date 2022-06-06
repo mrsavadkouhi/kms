@@ -122,6 +122,16 @@
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
+                    <span class="input-group-text required" id="center_label">کاربر: </span>
+                  </div>
+                    <select name="profile" id="profile" class="select2 form-control">
+                        {% for obj in profiles %}
+                            <option value="{{ obj.id }}">{{ obj.user.first_name }} {{ obj.user.last_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="input-group mb-2">
+                  <div class="input-group-append">
                     <span class="input-group-text required" id="center_label">مرکز: </span>
                   </div>
                     <select name="center" id="center" class="select2 form-control">
@@ -197,6 +207,11 @@
                 theme: 'bootstrap4',
         });
         center.val("{{ object.center }}").trigger("change");
+
+        var profile = $("#profile").select2({
+                theme: 'bootstrap4',
+        });
+        profile.val("{{ object.profile }}").trigger("change");
 
         var datepickeroption = {
             initialValueType: 'gregorian',

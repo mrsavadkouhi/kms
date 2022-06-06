@@ -100,6 +100,7 @@
 						<th class="text-center" style="background-color: white">تاریخ انتشار</th>
 						<th class="text-center" style="background-color: white">نوع انتشار</th>
 						<th class="text-center" style="background-color: white">سطح انتشار</th>
+						<th class="text-center" style="background-color: white">عنوان انتشار</th>
 						<th class="text-center" style="background-color: white">مرکز تحقیقاتی</th>
 						<th class="text-center" style="background-color: white; width: 10%">عملیات</th>
 					</tr>
@@ -118,6 +119,7 @@
 							<td class="align-middle text-center">{{ obj.published_at | j_format_date:"%Y/%m/%d" }}</td>
 							<td class="align-middle text-center">{{ obj.get_publish_type_display }}</td>
 							<td class="align-middle text-center">{{ obj.get_publish_level_display }}</td>
+							<td class="align-middle text-center">{{ obj.publish_title }}</td>
 							<td class="align-middle text-center">{{ obj.get_center_display }}</td>
 							<td class="align-middle text-center">
 								<div class="btn-group">

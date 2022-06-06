@@ -3,8 +3,6 @@ import time
 
 from polymorphic.models import PolymorphicModel
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 from accounts.models import Profile
 
@@ -72,6 +70,7 @@ class Document(PolymorphicModel):
     center = models.CharField(max_length=255, choices=CENTER_LIST)
     field = models.CharField(max_length=255, choices=DOCUMENT_FIELDS)
     type = models.CharField(max_length=255, choices=DOCUMENT_TYPES)
+    description = models.TextField(null=True, blank=True)
 
     created_at=models.DateTimeField(auto_now_add=True)
 
@@ -87,6 +86,7 @@ class Document(PolymorphicModel):
 
 
 class Resume(Document):
+    profile = models.OneToOneField(to=Profile, on_delete=models.CASCADE)
     entrance_year = models.IntegerField()
     measure = models.CharField(max_length=255)
     degree = models.CharField(max_length=255)
@@ -98,6 +98,25 @@ ARTICLE_PUBLISH_TYPES = [
 ]
 
 ARTICLE_PUBLISH_LEVELS = [
+    #magazine
+    ('ISI', 'ISI'),
+    ('ISC', 'ISC'),
+    ('Research', 'علمی-پژوهشی'),
+    ('Extension', 'علمی-ترویجی'),
+    ('Specialized', 'علمی-تخصصی'),
+    #conference
+    ('Departmental', 'داخلی'),
+    ('National', 'ملی'),
+    ('International', 'بین المللی'),
+]
+
+ARTICLE_CONFERENCE_PUBLISH_LEVELS = [
+    ('Departmental', 'داخلی'),
+    ('National', 'ملی'),
+    ('International', 'بین المللی'),
+]
+
+ARTICLE_MAGANIZE_PUBLISH_LEVELS = [
     ('ISI', 'ISI'),
     ('ISC', 'ISC'),
     ('Research', 'علمی-پژوهشی'),
@@ -112,6 +131,7 @@ class Article(Document):
     published_at = models.DateTimeField()
     publish_type = models.CharField(max_length=255, choices=ARTICLE_PUBLISH_TYPES)
     publish_level = models.CharField(max_length=255, choices=ARTICLE_PUBLISH_LEVELS)
+    publish_title = models.CharField(max_length=255)
 
 
 class Experience(Document):
@@ -189,7 +209,6 @@ class Manual(Document):
 class Project(Document):
     finished_at = models.DateTimeField()
     manager = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='project_manager')
-    description = models.TextField()
 
 
 class Report(Document):
@@ -209,7 +228,6 @@ class Thesis(Document):
 class Journal(Document):
     presented_at = models.DateTimeField()
     page_number = models.IntegerField()
-    description=models.TextField()
 
 
 FUTURE_TYPES = [
@@ -243,5 +261,4 @@ class CoWork(Document):
     person_type = models.CharField(max_length=255, choices=PERSON_TYPES)
     cowork_type = models.CharField(max_length=255, choices=COWORK_TYPES)
     address = models.TextField()
-    description = models.TextField()
 

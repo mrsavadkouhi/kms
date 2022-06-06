@@ -160,10 +160,16 @@
                     <span class="input-group-text required" id="level_label">سطح انتشار: </span>
                   </div>
                     <select name="publish_level" id="publish_level" class="select2 form-control">
-                        {% for val,obj in levels %}
+                        {% for val,obj in mag_levels %}
                             <option value="{{ val }}">{{ obj }}</option>
                         {% endfor %}
                     </select>
+                </div>
+                <div class="input-group mb-2">
+                  <div class="input-group-append">
+                    <span class="input-group-text required" id="type_label">عنوان انتشار: </span>
+                  </div>
+                  <input type="text" class="form-control" value="{{ object.publish_title }}" name="publish_title" aria-describedby="type_label">
                 </div>
 {#                <div class="input-group mb-2">#}
 {#                  <div class="input-group-append">#}
@@ -237,6 +243,24 @@
                 theme: 'bootstrap4',
         });
         level.val("{{ object.publish_level }}").trigger("change");
+
+        type.change(function() {
+            var selected_type = $("#publish_type option:selected").val();
+            if(selected_type === 'Paper'){
+                var mag_level = $('#publish_level');
+                mag_level.empty();
+                {% for val,obj in mag_levels %}
+                    mag_level.append('<option value="{{ val }}">{{ obj }}</option>');
+                {% endfor %}
+            }
+            else{
+                var con_level = $('#publish_level');
+                con_level.empty();
+                {% for val,obj in con_levels %}
+                    con_level.append('<option value="{{ val }}">{{ obj }}</option>');
+                {% endfor %}
+            }
+        });
 
         var center = $("#center").select2({
                 theme: 'bootstrap4',

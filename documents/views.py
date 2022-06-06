@@ -45,7 +45,8 @@ class ArticleCreateView(LoginRequiredMixin, CreateView):
         context['resumes'] = Document.objects.filter(type="Resume")
         context['centers'] = CENTER_LIST
         context['types'] = ARTICLE_PUBLISH_TYPES
-        context['levels'] = ARTICLE_PUBLISH_LEVELS
+        context['mag_levels']=ARTICLE_MAGANIZE_PUBLISH_LEVELS
+        context['con_levels']=ARTICLE_CONFERENCE_PUBLISH_LEVELS
         context['fields'] = DOCUMENT_FIELDS
         return context
 
@@ -69,7 +70,8 @@ class ArticleUpdateForm(LoginRequiredMixin, UpdateView):
         context['resumes']=Document.objects.filter(type="Resume")
         context['centers']=CENTER_LIST
         context['types']=ARTICLE_PUBLISH_TYPES
-        context['levels']=ARTICLE_PUBLISH_LEVELS
+        context['mag_levels']=ARTICLE_MAGANIZE_PUBLISH_LEVELS
+        context['con_levels']=ARTICLE_CONFERENCE_PUBLISH_LEVELS
         context['fields']=DOCUMENT_FIELDS
         return context
 
@@ -479,6 +481,7 @@ class ResumeCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['centers']=CENTER_LIST
+        context['profiles']=Profile.objects.all()
         return context
 
 
@@ -499,6 +502,7 @@ class ResumeUpdateForm(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['centers'] = CENTER_LIST
+        context['profiles']=Profile.objects.all()
         return context
 
 

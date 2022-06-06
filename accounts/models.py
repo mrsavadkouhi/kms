@@ -30,7 +30,7 @@ class Profile(models.Model):
     avatar = models.ImageField(upload_to=get_avatar_directory_path, max_length=255, blank=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     mobile_number = models.CharField(max_length=11, verbose_name='تلفن همراه', unique=True)
-    permissions=models.ManyToManyField(to=Permission, blank=True, verbose_name='دسترسی ها')
+    permissions = models.ManyToManyField(to=Permission, blank=True, verbose_name='دسترسی ها')
 
     @property
     def has_no_perms(self):

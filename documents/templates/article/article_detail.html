@@ -53,6 +53,7 @@
 				<h3><strong>تاریخ چاپ: </strong>{{ object.published_at | j_format_date:"%Y/%m/%d"  }}</h3>
 				<h3><strong>نوع انتشار: </strong>{{ object.get_publish_type_display }}</h3>
 				<h3><strong>سطح انتشار: </strong>{{ object.get_publish_level_display }}</h3>
+				<h3><strong>عنوان انتشار: </strong>{{ object.publish_title }}</h3>
 				<h3><strong>مرکز تحقیقاتی: </strong>{{ object.get_center_display }}</h3>
 				<div><br></div>
 			</div>
