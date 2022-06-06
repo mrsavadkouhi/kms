@@ -46,6 +46,7 @@
 				<div><br></div>
 				<h3><strong>عنوان: </strong>{{ object.title }}</h3>
 				<h3><strong>شناسه: </strong>{{ object.organization_code }}</h3>
+                <h3><strong>توضیحات: </strong>{{ object.description }}</h3>
 				<h3><strong>حوزه تخصصی: </strong>{{ object.get_field_display }}</h3>
 				<h3><strong>تهیه کننده: </strong>{{ object.producer.title }}</h3>
 				<h3><strong>تاریخ ابلاغ: </strong>{{ object.declared_at | j_format_date:"%Y/%m/%d"  }}</h3>
