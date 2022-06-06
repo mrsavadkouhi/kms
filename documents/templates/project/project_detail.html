@@ -27,7 +27,7 @@
 	<div class="col-md-3">
 		<div class="title-action float-right">
             <div class="btn-group">
-                <a href="{% url 'documents:project_update' pk=object.id %}" class="btn btn-lg btn-outline-warning"><i class="fa fa-user-edit"></i> ویرایش</a>
+                <a href="{% url 'documents:project_update' pk=object.id %}" class="btn btn-lg btn-outline-warning"><i class="fa fa-tasks"></i> ویرایش</a>
 			    <button data-toggle="modal" data-delete-what="{{ object.id }}" data-target="#delete-modal" class="btn btn-lg btn-outline-danger"><i class="fa fa-trash"></i> حذف </button>
             </div>
         </div>
@@ -39,7 +39,7 @@
         <div class="col-lg-12">
 			<div class="col-lg-3 text-center">
 				<div><br></div>
-				<i class="fa fa-cube fa-10x"></i>
+				<i class="fa fa-tasks fa-10x"></i>
 				<h1><strong>مشخصات</strong></h1>
 			</div>
 			<div class="card col-lg-9">
