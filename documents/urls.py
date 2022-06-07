@@ -107,5 +107,23 @@ urlpatterns = [
 	path('cowork/edit/<pk>', CoWorkUpdateForm.as_view(), name='cowork_update'),
 	path('cowork/delete/<pk>', CoWorkDeleteView.as_view(), name='cowork_delete'),
 
+	path('core/list', CoreListView.as_view(), name='core_list'),
+	path('core/add', CoreCreateView.as_view(), name='core_create'),
+	path('core/<pk>', CoreDetailsView.as_view(), name='core_details'),
+	path('core/edit/<pk>', CoreUpdateForm.as_view(), name='core_update'),
+	path('core/delete/<pk>', CoreDeleteView.as_view(), name='core_delete'),
+
+	path('tech/list', TechListView.as_view(), name='tech_list'),
+	path('tech/add', TechCreateView.as_view(), name='tech_create'),
+	path('tech/<pk>', TechDetailsView.as_view(), name='tech_details'),
+	path('tech/edit/<pk>', TechUpdateForm.as_view(), name='tech_update'),
+	path('tech/delete/<pk>', TechDeleteView.as_view(), name='tech_delete'),
+
+	path('company/list', CompanyListView.as_view(), name='company_list'),
+	path('company/add', CompanyCreateView.as_view(), name='company_create'),
+	path('company/<pk>', CompanyDetailsView.as_view(), name='company_details'),
+	path('company/edit/<pk>', CompanyUpdateForm.as_view(), name='company_update'),
+	path('company/delete/<pk>', CompanyDeleteView.as_view(), name='company_delete'),
+
 	path('ajax/', AjaxHandler.as_view(), name='ajax'),
 ]

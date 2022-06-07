@@ -844,6 +844,156 @@ class CoWorkDeleteView(LoginRequiredMixin, JSONDeleteView):
     model = CoWork
 
 
+class CoreListView(LoginRequiredMixin, ListView):
+    model = Core
+    template_name = 'core/core_list.html'
+
+
+class CoreCreateView(LoginRequiredMixin, CreateView):
+    model = Core
+    template_name = 'core/core_form.html'
+    form_class = CoreForm
+    success_url = reverse_lazy('documents:core_list')
+    extra_context = {
+        'title': 'create',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['centers'] = CENTER_LIST
+        context['fields'] = DOCUMENT_FIELDS
+        context['core_types'] = COWORK_TYPES
+        context['person_types'] = PERSON_TYPES
+        return context
+
+
+class CoreDetailsView(LoginRequiredMixin, DetailView):
+    model = Core
+    template_name = 'core/core_detail.html'
+
+
+class CoreUpdateForm(LoginRequiredMixin, UpdateView):
+    model = Core
+    template_name = 'core/core_form.html'
+    form_class = CoreForm
+    success_url = reverse_lazy('documents:core_list')
+    extra_context = {
+        'title': 'update',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['centers']=CENTER_LIST
+        context['fields']=DOCUMENT_FIELDS
+        context['core_types'] = COWORK_TYPES
+        context['person_types'] = PERSON_TYPES
+        return context
+
+
+class CoreDeleteView(LoginRequiredMixin, JSONDeleteView):
+    model = Core
+
+
+class TechListView(LoginRequiredMixin, ListView):
+    model = Tech
+    template_name = 'tech/tech_list.html'
+
+
+class TechCreateView(LoginRequiredMixin, CreateView):
+    model = Tech
+    template_name = 'tech/tech_form.html'
+    form_class = TechForm
+    success_url = reverse_lazy('documents:tech_list')
+    extra_context = {
+        'title': 'create',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['centers'] = CENTER_LIST
+        context['fields'] = DOCUMENT_FIELDS
+        context['tech_types'] = COWORK_TYPES
+        context['person_types'] = PERSON_TYPES
+        return context
+
+
+class TechDetailsView(LoginRequiredMixin, DetailView):
+    model = Tech
+    template_name = 'tech/tech_detail.html'
+
+
+class TechUpdateForm(LoginRequiredMixin, UpdateView):
+    model = Tech
+    template_name = 'tech/tech_form.html'
+    form_class = TechForm
+    success_url = reverse_lazy('documents:tech_list')
+    extra_context = {
+        'title': 'update',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['centers']=CENTER_LIST
+        context['fields']=DOCUMENT_FIELDS
+        context['tech_types'] = COWORK_TYPES
+        context['person_types'] = PERSON_TYPES
+        return context
+
+
+class TechDeleteView(LoginRequiredMixin, JSONDeleteView):
+    model = Tech
+
+
+class CompanyListView(LoginRequiredMixin, ListView):
+    model = Company
+    template_name = 'company/company_list.html'
+
+
+class CompanyCreateView(LoginRequiredMixin, CreateView):
+    model = Company
+    template_name = 'company/company_form.html'
+    form_class = CompanyForm
+    success_url = reverse_lazy('documents:company_list')
+    extra_context = {
+        'title': 'create',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['centers'] = CENTER_LIST
+        context['fields'] = DOCUMENT_FIELDS
+        context['company_types'] = COWORK_TYPES
+        context['person_types'] = PERSON_TYPES
+        return context
+
+
+class CompanyDetailsView(LoginRequiredMixin, DetailView):
+    model = Company
+    template_name = 'company/company_detail.html'
+
+
+class CompanyUpdateForm(LoginRequiredMixin, UpdateView):
+    model = Company
+    template_name = 'company/company_form.html'
+    form_class = CompanyForm
+    success_url = reverse_lazy('documents:company_list')
+    extra_context = {
+        'title': 'update',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['centers']=CENTER_LIST
+        context['fields']=DOCUMENT_FIELDS
+        context['company_types'] = COWORK_TYPES
+        context['person_types'] = PERSON_TYPES
+        return context
+
+
+class CompanyDeleteView(LoginRequiredMixin, JSONDeleteView):
+    model = Company
+
+
 class AjaxHandler(TemplateView):
     def get(self, request, *args, **kwargs):
         request_type = request.GET.get('request_type')

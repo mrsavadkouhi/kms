@@ -117,3 +117,21 @@ class CoWorkForm(forms.ModelForm):
     class Meta:
         model = CoWork
         fields = '__all__'
+
+
+class CoreForm(forms.ModelForm):
+    class Meta:
+        model = CoWork
+        fields = '__all__'
+
+
+class TechForm(forms.ModelForm):
+    class Meta:
+        model = CoWork
+        fields = '__all__'
+
+
+class CompanyForm(forms.ModelForm):
+    class Meta:
+        model = CoWork
+        fields = '__all__'

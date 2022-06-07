@@ -103,24 +103,24 @@
             </li>
         {% endif %}
         {% if user.is_superuser or has_center_perm %}
-            <li {% if request.resolver_match.view_name == 'documents:project_list' or  request.resolver_match.view_name == 'documents:conference_list' or  request.resolver_match.view_name == 'documents:visit_list' or  request.resolver_match.view_name == 'documents:project_list'  or  request.resolver_match.view_name == 'documents:report_list' %}class="active"{% endif %}>
+            <li {% if request.resolver_match.view_name == 'documents:core_list' or  request.resolver_match.view_name == 'documents:tech_list' or  request.resolver_match.view_name == 'documents:company_list' %}class="active"{% endif %}>
                 <a href="#"><i class="fa fa-cube"></i>
                     <span class="nav-label">مرکز رشد و خلاقیت</span>
                     <span class="fa arrow"></span>
                 </a>
                 <ul class="nav nav-second-level collapse">
-                    <li {% if request.resolver_match.view_name == 'documents:project_list' %}class="active"{% endif %}>
+                    <li {% if request.resolver_match.view_name == 'documents:core_list' %}class="active"{% endif %}>
                         <a href="{% url 'documents:project_list' %}" ><i class="fa fa-tasks"></i>
                             <span class="nav-label">بانک هسته ها</span>
                         </a>
                     </li>
-                    <li {% if request.resolver_match.view_name == 'documents:conference_list' %}class="active"{% endif %}>
+                    <li {% if request.resolver_match.view_name == 'documents:tech_list' %}class="active"{% endif %}>
                         <a href="{% url 'documents:conference_list' %}" ><i class="fa fa-ticket-alt"></i>
                             <span class="nav-label">بانک واحدهای فناور</span>
                         </a>
                     </li>
 
-                    <li {% if request.resolver_match.view_name == 'documents:visit_list' %}class="active"{% endif %}>
+                    <li {% if request.resolver_match.view_name == 'documents:company_list' %}class="active"{% endif %}>
                         <a href="{% url 'documents:visit_list' %}" ><i class="fa fa-industry"></i>
                             <span class="nav-label">بانک شرکت ها</span>
                         </a>
