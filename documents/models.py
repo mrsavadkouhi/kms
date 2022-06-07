@@ -263,15 +263,31 @@ class CoWork(Document):
     address = models.TextField()
 
 
-class CenterData(models.Model):
-    contract = models.CharField(max_length=255)
+class CenterPerson(models.Model):
+    national_code = models.CharField(max_length=255)
+    birth_year=models.IntegerField()
+    measure=models.CharField(max_length=255)
+    submeasure=models.CharField(max_length=255)
+    degree=models.CharField(max_length=255)
+    university=models.CharField(max_length=255)
+    city=models.CharField(max_length=255)
+    adress=models.CharField(max_length=255)
+    phone=models.CharField(max_length=255)
+    mobile=models.CharField(max_length=255)
+    email=models.CharField(max_length=255)
+    basij_entrance_year=models.IntegerField()
+    basij_city=models.CharField(max_length=255)
+
+    description = models.TextField(null=True, blank=True)
+    created_at=models.DateTimeField(auto_now_add=True)
+    attachments = models.ManyToManyField(DocumentAttachment, blank=True, related_name='attachments')
+
+
+class CenterProject(models.Model):
+    contract_number = models.CharField(max_length=255)
+    subject = models.CharField(max_length=255)
+    type = models.CharField(max_length=255)
     status = models.CharField(max_length=255)
-    manager = models.CharField(max_length=255)
-    contact = models.CharField(max_length=255)
-    stablish_year = models.IntegerField()
-    number = models.IntegerField()
-    activity_field = models.CharField(max_length=255)
-    professional_field = models.CharField(max_length=255)
 
     description = models.TextField(null=True, blank=True)
     created_at=models.DateTimeField(auto_now_add=True)
