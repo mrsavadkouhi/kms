@@ -100,7 +100,11 @@
                             <option value="{{ val }}">{{ obj }}</option>
                         {% endfor %}
                     </select>
-                    <input type="number" class="form-control" value="{{ object.organization_code_year }}" name="organization_code_year" id="organization_code_year" aria-describedby="organization_code_year_label">
+                    <select name="organization_code_year" id="organization_code_year" class="select2 form-control">
+                        {% for obj in years %}
+                            <option value="{{ obj }}">{{ obj }}</option>
+                        {% endfor %}
+                    </select>
                     <input type="text" class="form-control" value="P" readonly>
                     <input type="text" class="form-control" value="KM" readonly>
                 </div>
@@ -114,7 +118,7 @@
                     <div class="input-group-append">
                         <span class="input-group-text" id="description_label">توضیحات: </span>
                     </div>
-                    <textarea name="description" type="text" class="form-control" id="description" aria-describedby="description_label" ></textarea>
+                    <textarea name="description" type="text" class="form-control" id="description" aria-describedby="description_label" >{{ object.description }}</textarea>
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
@@ -240,6 +244,11 @@
         });
         field.val("{{ object.field }}").trigger("change");
 
+        var organization_code_year = $("#organization_code_year").select2({
+                theme: 'bootstrap4',
+        });
+        organization_code_year.val("{{ object.organization_code_year }}").trigger("change");
+
         var type = $("#publish_type").select2({
                 theme: 'bootstrap4',
         });
@@ -347,7 +356,7 @@
             var words = center_code.split('-');
             center_code = words[1];
             var organization_code_counter = $("#organization_code_counter").val();
-            var organization_code_year = $("#organization_code_year").val();
+            var organization_code_year = $("#organization_code_year option:selected").val();
             var organization_code = `KM/P-${organization_code_year}-${center_code}${organization_code_counter}`
             $("#organization_code").val(organization_code);
 		});

@@ -82,7 +82,7 @@ class Document(PolymorphicModel):
 
     @property
     def organization_code_year(self):
-        return int(self.organization_code.split('-')[1])
+        return self.organization_code.split('-')[1]
 
 
 class Resume(Document):

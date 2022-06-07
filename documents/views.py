@@ -48,6 +48,9 @@ class ArticleCreateView(LoginRequiredMixin, CreateView):
         context['mag_levels']=ARTICLE_MAGANIZE_PUBLISH_LEVELS
         context['con_levels']=ARTICLE_CONFERENCE_PUBLISH_LEVELS
         context['fields'] = DOCUMENT_FIELDS
+        context['years'] = ['pre98','98','99']
+        for i in range(400,430):
+            context['years'].append(str(i))
         return context
 
 
@@ -73,6 +76,9 @@ class ArticleUpdateForm(LoginRequiredMixin, UpdateView):
         context['mag_levels']=ARTICLE_MAGANIZE_PUBLISH_LEVELS
         context['con_levels']=ARTICLE_CONFERENCE_PUBLISH_LEVELS
         context['fields']=DOCUMENT_FIELDS
+        context['years'] = ['pre98','98','99']
+        for i in range(400,430):
+            context['years'].append(str(i))
         return context
 
 
@@ -99,6 +105,9 @@ class BookCreateView(LoginRequiredMixin, CreateView):
         context['resumes'] = Document.objects.filter(type="Resume")
         context['centers'] = CENTER_LIST
         context['fields'] = DOCUMENT_FIELDS
+        context['years'] = ['pre98','98','99']
+        for i in range(400,430):
+            context['years'].append(str(i))
         return context
 
 
@@ -121,6 +130,9 @@ class BookUpdateForm(LoginRequiredMixin, UpdateView):
         context['resumes']=Document.objects.filter(type="Resume")
         context['centers']=CENTER_LIST
         context['fields']=DOCUMENT_FIELDS
+        context['years'] = ['pre98','98','99']
+        for i in range(400,430):
+            context['years'].append(str(i))
         return context
 
 
@@ -147,6 +159,9 @@ class ExperienceCreateView(LoginRequiredMixin, CreateView):
         context['resumes'] = Document.objects.filter(type="Resume")
         context['centers'] = CENTER_LIST
         context['fields'] = DOCUMENT_FIELDS
+        context['years'] = ['pre98','98','99']
+        for i in range(400,430):
+            context['years'].append(str(i))
         return context
 
 
@@ -169,6 +184,9 @@ class ExperienceUpdateForm(LoginRequiredMixin, UpdateView):
         context['resumes']=Document.objects.filter(type="Resume")
         context['centers']=CENTER_LIST
         context['fields']=DOCUMENT_FIELDS
+        context['years'] = ['pre98','98','99']
+        for i in range(400,430):
+            context['years'].append(str(i))
         return context
 
 
@@ -195,6 +213,9 @@ class IdeaCreateView(LoginRequiredMixin, CreateView):
         context['resumes'] = Document.objects.filter(type="Resume")
         context['centers'] = CENTER_LIST
         context['fields'] = DOCUMENT_FIELDS
+        context['years'] = ['pre98','98','99']
+        for i in range(400,430):
+            context['years'].append(str(i))
         return context
 
 
@@ -217,6 +238,9 @@ class IdeaUpdateForm(LoginRequiredMixin, UpdateView):
         context['resumes']=Document.objects.filter(type="Resume")
         context['centers']=CENTER_LIST
         context['fields']=DOCUMENT_FIELDS
+        context['years'] = ['pre98','98','99']
+        for i in range(400,430):
+            context['years'].append(str(i))
         return context
 
 
@@ -243,6 +267,9 @@ class SeminarCreateView(LoginRequiredMixin, CreateView):
         context['resumes'] = Document.objects.filter(type="Resume")
         context['centers'] = CENTER_LIST
         context['fields'] = DOCUMENT_FIELDS
+        context['years'] = ['pre98','98','99']
+        for i in range(400,430):
+            context['years'].append(str(i))
         return context
 
 
@@ -265,6 +292,9 @@ class SeminarUpdateForm(LoginRequiredMixin, UpdateView):
         context['resumes']=Document.objects.filter(type="Resume")
         context['centers']=CENTER_LIST
         context['fields']=DOCUMENT_FIELDS
+        context['years'] = ['pre98','98','99']
+        for i in range(400,430):
+            context['years'].append(str(i))
         return context
 
 
@@ -292,6 +322,9 @@ class WorkshopCreateView(LoginRequiredMixin, CreateView):
         context['centers'] = CENTER_LIST
         context['fields'] = DOCUMENT_FIELDS
         context['workshop_types']=WORKSHOP_TYPES
+        context['years'] = ['pre98','98','99']
+        for i in range(400,430):
+            context['years'].append(str(i))
         return context
 
 
@@ -315,6 +348,9 @@ class WorkshopUpdateForm(LoginRequiredMixin, UpdateView):
         context['centers']=CENTER_LIST
         context['fields']=DOCUMENT_FIELDS
         context['workshop_types']=WORKSHOP_TYPES
+        context['years'] = ['pre98','98','99']
+        for i in range(400,430):
+            context['years'].append(str(i))
         return context
 
 
@@ -627,6 +663,9 @@ class ManualCreateView(LoginRequiredMixin, CreateView):
         context['resumes']=Document.objects.filter(type="Resume")
         context['centers'] = CENTER_LIST
         context['fields'] = DOCUMENT_FIELDS
+        context['years'] = ['pre98','98','99']
+        for i in range(400,430):
+            context['years'].append(str(i))
         return context
 
 
@@ -649,6 +688,9 @@ class ManualUpdateForm(LoginRequiredMixin, UpdateView):
         context['resumes']=Document.objects.filter(type="Resume")
         context['centers']=CENTER_LIST
         context['fields']=DOCUMENT_FIELDS
+        context['years'] = ['pre98','98','99']
+        for i in range(400,430):
+            context['years'].append(str(i))
         return context
 
 
