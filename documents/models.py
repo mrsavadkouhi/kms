@@ -304,6 +304,9 @@ class CenterData(PolymorphicModel):
     activity_field = models.CharField(max_length=255)
     professional_field = models.CharField(max_length=255)
 
+    personels=models.ManyToManyField(CenterPerson, blank=True, related_name='personel')
+    projects=models.ManyToManyField(CenterProject, blank=True, related_name='projects')
+
     description = models.TextField(null=True, blank=True)
     created_at=models.DateTimeField(auto_now_add=True)
     attachments = models.ManyToManyField(DocumentAttachment, blank=True, related_name='attachments')
@@ -314,3 +317,11 @@ class Core(CenterData):
     first_level_number = models.IntegerField(null=True, blank=True)
     second_level_number = models.IntegerField(null=True, blank=True)
     third_level_number = models.IntegerField(null=True, blank=True)
+
+
+class TechUnit(CenterData):
+    pass
+
+
+class Comapny(CenterData):
+    pass
