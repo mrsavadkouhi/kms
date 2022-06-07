@@ -262,3 +262,18 @@ class CoWork(Document):
     cowork_type = models.CharField(max_length=255, choices=COWORK_TYPES)
     address = models.TextField()
 
+
+class CenterData(PolymorphicModel):
+    title = models.CharField(max_length=255)
+    status = models.CharField(max_length=255)
+    manager = models.CharField(max_length=255)
+    contact = models.CharField(max_length=255)
+    organization_code = models.CharField(max_length=255)
+    center = models.CharField(max_length=255, choices=CENTER_LIST)
+    field = models.CharField(max_length=255, choices=DOCUMENT_FIELDS)
+    type = models.CharField(max_length=255, choices=DOCUMENT_TYPES)
+
+    description = models.TextField(null=True, blank=True)
+    created_at=models.DateTimeField(auto_now_add=True)
+    attachments = models.ManyToManyField(DocumentAttachment, blank=True, related_name='attachments')
+
