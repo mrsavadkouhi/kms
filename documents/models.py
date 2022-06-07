@@ -263,17 +263,38 @@ class CoWork(Document):
     address = models.TextField()
 
 
-class CenterData(PolymorphicModel):
-    title = models.CharField(max_length=255)
+class CenterData(models.Model):
+    contract = models.CharField(max_length=255)
     status = models.CharField(max_length=255)
     manager = models.CharField(max_length=255)
     contact = models.CharField(max_length=255)
-    organization_code = models.CharField(max_length=255)
-    center = models.CharField(max_length=255, choices=CENTER_LIST)
-    field = models.CharField(max_length=255, choices=DOCUMENT_FIELDS)
-    type = models.CharField(max_length=255, choices=DOCUMENT_TYPES)
+    stablish_year = models.IntegerField()
+    number = models.IntegerField()
+    activity_field = models.CharField(max_length=255)
+    professional_field = models.CharField(max_length=255)
 
     description = models.TextField(null=True, blank=True)
     created_at=models.DateTimeField(auto_now_add=True)
     attachments = models.ManyToManyField(DocumentAttachment, blank=True, related_name='attachments')
 
+
+class CenterData(PolymorphicModel):
+    title = models.CharField(max_length=255)
+    status = models.CharField(max_length=255)
+    manager = models.CharField(max_length=255)
+    contact = models.CharField(max_length=255)
+    stablish_year = models.IntegerField()
+    number = models.IntegerField()
+    activity_field = models.CharField(max_length=255)
+    professional_field = models.CharField(max_length=255)
+
+    description = models.TextField(null=True, blank=True)
+    created_at=models.DateTimeField(auto_now_add=True)
+    attachments = models.ManyToManyField(DocumentAttachment, blank=True, related_name='attachments')
+
+
+class Core(CenterData):
+    preDev_number = models.IntegerField(null=True, blank=True)
+    first_level_number = models.IntegerField(null=True, blank=True)
+    second_level_number = models.IntegerField(null=True, blank=True)
+    third_level_number = models.IntegerField(null=True, blank=True)
