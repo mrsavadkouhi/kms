@@ -264,7 +264,7 @@ class CoWork(Document):
 
 
 class CenterPersonnel(models.Model):
-    firs_name = models.CharField(max_length=255)
+    first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     national_code = models.CharField(max_length=255)
     birth_year=models.IntegerField()

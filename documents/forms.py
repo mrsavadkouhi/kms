@@ -138,15 +138,39 @@ class CompanyForm(forms.ModelForm):
 
 
 class CenterPersonnelForm(forms.ModelForm):
+    document_id = forms.IntegerField(required=True)
+
     class Meta:
         model = CenterPersonnel
         fields = '__all__'
 
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        if commit:
+            # If committing, save the instance and the m2m data immediately.
+            self.instance.save()
+            self._save_m2m()
+        document = CenterData.objects.get(id=self.cleaned_data['document_id'])
+        document.personnels.add(instance)
+        return self.instance
+
 
 class CenterProjectForm(forms.ModelForm):
+    document_id = forms.IntegerField(required=True)
+
     class Meta:
         model = CenterProject
         fields = '__all__'
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        if commit:
+            # If committing, save the instance and the m2m data immediately.
+            self.instance.save()
+            self._save_m2m()
+        document = CenterData.objects.get(id=self.cleaned_data['document_id'])
+        document.projects.add(instance)
+        return self.instance
 
 
 class CenterAttachmentForm(BSModalModelForm):
