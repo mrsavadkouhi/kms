@@ -121,19 +121,31 @@ class CoWorkForm(forms.ModelForm):
 
 class CoreForm(forms.ModelForm):
     class Meta:
-        model = CoWork
+        model = Core
         fields = '__all__'
 
 
 class TechForm(forms.ModelForm):
     class Meta:
-        model = CoWork
+        model = Tech
         fields = '__all__'
 
 
 class CompanyForm(forms.ModelForm):
     class Meta:
-        model = CoWork
+        model = Company
+        fields = '__all__'
+
+
+class CenterPersonnelForm(forms.ModelForm):
+    class Meta:
+        model = CenterPersonnel
+        fields = '__all__'
+
+
+class CenterProjectForm(forms.ModelForm):
+    class Meta:
+        model = CenterProject
         fields = '__all__'
 
 
@@ -145,26 +157,6 @@ class CenterAttachmentForm(BSModalModelForm):
     class Meta:
         model = DocumentAttachment
         fields = ['file', 'description']
-
-    def save(self, commit=True):
-        instance = super().save(commit=False)
-        if commit:
-            # If committing, save the instance and the m2m data immediately.
-            self.instance.save()
-            self._save_m2m()
-        document = CenterData.objects.get(id=self.cleaned_data['document_id'])
-        document.attachments.add(instance)
-        return self.instance
-
-
-class CenterPersonnelForm(BSModalModelForm):
-    document_id = forms.IntegerField(required=True)
-    file = forms.FileField(required=True)
-    description = forms.CharField(required=False)
-
-    class Meta:
-        model = CenterPerson
-        fields = '__all__'
 
     def save(self, commit=True):
         instance = super().save(commit=False)

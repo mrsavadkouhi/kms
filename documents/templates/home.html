@@ -34,15 +34,15 @@
                 <div>
                     <a href="{% url 'documents:article_list' %}"><img src="{% static 'img/logo.png' %}" style="width: 250px"/></a>
                 </div>
-                <a href="{% url 'documents:project_list' %}"><h3>مدیریت دانش</h3></a>
+                <a href="{% url 'documents:article_list' %}"><h3>مدیریت دانش</h3></a>
             </div>
             {% endif %}
         {% if user.is_superuser or has_center_perm %}
             <div class="col-lg-3" href="{% url 'documents:project_list' %}">
                 <div>
-                    <a href="{% url 'documents:project_list' %}"><img src="{% static 'img/logo.png' %}" style="width: 250px"/></a>
+                    <a href="{% url 'documents:core_list' %}"><img src="{% static 'img/logo.png' %}" style="width: 250px"/></a>
                 </div>
-                <a href="{% url 'documents:project_list' %}"><h3>مرکز رشد</h3></a>
+                <a href="{% url 'documents:core_list' %}"><h3>مرکز رشد</h3></a>
             </div>
         {% endif %}
             <div class="col-lg-3">
@@ -56,7 +56,7 @@
                 <div>
                     <a href="{% url 'documents:future_list' %}"><img src="{% static 'img/logo.png' %}" style="width: 250px"/></a>
                 </div>
-                <a href="{% url 'documents:resume_list' %}"><h3>آینده پژوهی و همکاری های علمی</h3></a>
+                <a href="{% url 'documents:future_list' %}"><h3>آینده پژوهی و همکاری های علمی</h3></a>
             </div>
             {% endif %}
         {% if user.is_superuser or has_resume_perm %}

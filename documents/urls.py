@@ -125,5 +125,14 @@ urlpatterns = [
 	path('company/edit/<pk>', CompanyUpdateForm.as_view(), name='company_update'),
 	path('company/delete/<pk>', CompanyDeleteView.as_view(), name='company_delete'),
 
+	path('center_personnel/<center_pk>/add', CenterPersonnelCreateView.as_view(), name='center_personnel_create'),
+	path('center_personnel/edit/<pk>', CenterPersonnelUpdateForm.as_view(), name='center_personnel_update'),
+	path('center_personnel/delete/<pk>', CenterPersonnelDeleteView.as_view(), name='center_personnel_delete'),
+
+	path('center_project/<center_pk>/add', CenterProjectCreateView.as_view(), name='center_project_create'),
+	path('center_project/edit/<pk>', CenterProjectUpdateForm.as_view(), name='center_project_update'),
+	path('center_project/delete/<pk>', CenterProjectDeleteView.as_view(), name='center_project_delete'),
+
+
 	path('ajax/', AjaxHandler.as_view(), name='ajax'),
 ]

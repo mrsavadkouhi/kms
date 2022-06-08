@@ -263,7 +263,7 @@ class CoWork(Document):
     address = models.TextField()
 
 
-class CenterPerson(models.Model):
+class CenterPersonnel(models.Model):
     national_code = models.CharField(max_length=255)
     birth_year=models.IntegerField()
     measure=models.CharField(max_length=255)
@@ -285,10 +285,19 @@ class CenterPerson(models.Model):
     attachments = models.ManyToManyField(DocumentAttachment, blank=True, related_name='center_personnel_attachments')
 
 
+CENTERPROJECT_LEVELS = [
+    ('predev', 'پیش رشد'),
+    ('first', 'سطح یک'),
+    ('second', 'سطح دو'),
+    ('third', 'سطح سه'),
+]
+
+
 class CenterProject(models.Model):
     contract_number = models.CharField(max_length=255)
     subject = models.CharField(max_length=255)
     type = models.CharField(max_length=255)
+    level = models.CharField(max_length=255, choices=CENTERPROJECT_LEVELS)
     status = models.CharField(max_length=255)
 
     description = models.TextField(null=True, blank=True)
@@ -314,7 +323,7 @@ class CenterData(PolymorphicModel):
     activity_field = models.CharField(max_length=255)
     professional_field = models.CharField(max_length=255)
 
-    personnels = models.ManyToManyField(CenterPerson, blank=True, related_name='personnel')
+    personnels = models.ManyToManyField(CenterPersonnel, blank=True, related_name='personnel')
     projects = models.ManyToManyField(CenterProject, blank=True, related_name='projects')
 
     description = models.TextField(null=True, blank=True)
@@ -323,10 +332,7 @@ class CenterData(PolymorphicModel):
 
 
 class Core(CenterData):
-    preDev_number = models.IntegerField(null=True, blank=True)
-    first_level_number = models.IntegerField(null=True, blank=True)
-    second_level_number = models.IntegerField(null=True, blank=True)
-    third_level_number = models.IntegerField(null=True, blank=True)
+    pass
 
 
 class Tech(CenterData):

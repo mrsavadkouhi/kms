@@ -858,14 +858,6 @@ class CoreCreateView(LoginRequiredMixin, CreateView):
         'title': 'create',
     }
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['centers'] = CENTER_LIST
-        context['fields'] = DOCUMENT_FIELDS
-        context['core_types'] = COWORK_TYPES
-        context['person_types'] = PERSON_TYPES
-        return context
-
 
 class CoreDetailsView(LoginRequiredMixin, DetailView):
     model = Core
@@ -880,14 +872,6 @@ class CoreUpdateForm(LoginRequiredMixin, UpdateView):
     extra_context = {
         'title': 'update',
     }
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['centers']=CENTER_LIST
-        context['fields']=DOCUMENT_FIELDS
-        context['core_types'] = COWORK_TYPES
-        context['person_types'] = PERSON_TYPES
-        return context
 
 
 class CoreDeleteView(LoginRequiredMixin, JSONDeleteView):
@@ -908,14 +892,6 @@ class TechCreateView(LoginRequiredMixin, CreateView):
         'title': 'create',
     }
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['centers'] = CENTER_LIST
-        context['fields'] = DOCUMENT_FIELDS
-        context['tech_types'] = COWORK_TYPES
-        context['person_types'] = PERSON_TYPES
-        return context
-
 
 class TechDetailsView(LoginRequiredMixin, DetailView):
     model = Tech
@@ -930,14 +906,6 @@ class TechUpdateForm(LoginRequiredMixin, UpdateView):
     extra_context = {
         'title': 'update',
     }
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['centers']=CENTER_LIST
-        context['fields']=DOCUMENT_FIELDS
-        context['tech_types'] = COWORK_TYPES
-        context['person_types'] = PERSON_TYPES
-        return context
 
 
 class TechDeleteView(LoginRequiredMixin, JSONDeleteView):
@@ -958,14 +926,6 @@ class CompanyCreateView(LoginRequiredMixin, CreateView):
         'title': 'create',
     }
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['centers'] = CENTER_LIST
-        context['fields'] = DOCUMENT_FIELDS
-        context['company_types'] = COWORK_TYPES
-        context['person_types'] = PERSON_TYPES
-        return context
-
 
 class CompanyDetailsView(LoginRequiredMixin, DetailView):
     model = Company
@@ -981,17 +941,57 @@ class CompanyUpdateForm(LoginRequiredMixin, UpdateView):
         'title': 'update',
     }
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['centers']=CENTER_LIST
-        context['fields']=DOCUMENT_FIELDS
-        context['company_types'] = COWORK_TYPES
-        context['person_types'] = PERSON_TYPES
-        return context
-
 
 class CompanyDeleteView(LoginRequiredMixin, JSONDeleteView):
     model = Company
+
+
+class CenterPersonnelCreateView(LoginRequiredMixin, CreateView):
+    model = CenterPersonnel
+    template_name = 'center_personnel/center_personnel_form.html'
+    form_class = CenterPersonnelForm
+    success_url = reverse_lazy('documents:company_list')
+    extra_context = {
+        'title': 'create',
+    }
+
+
+class CenterPersonnelUpdateForm(LoginRequiredMixin, UpdateView):
+    model = CenterPersonnel
+    template_name = 'center_personnel/center_personnel_form.html'
+    form_class = CenterPersonnelForm
+    success_url = reverse_lazy('documents:company_list')
+    extra_context = {
+        'title': 'update',
+    }
+
+
+class CenterPersonnelDeleteView(LoginRequiredMixin, JSONDeleteView):
+    model = CenterPersonnel
+
+
+class CenterProjectCreateView(LoginRequiredMixin, CreateView):
+    model = CenterProject
+    template_name = 'center_project/center_project_form.html'
+    form_class = CenterProjectForm
+    success_url = reverse_lazy('documents:company_list')
+    extra_context = {
+        'title': 'create',
+    }
+
+
+class CenterProjectUpdateForm(LoginRequiredMixin, UpdateView):
+    model = CenterProject
+    template_name = 'center_project/center_project_form.html'
+    form_class = CenterProjectForm
+    success_url = reverse_lazy('documents:company_list')
+    extra_context = {
+        'title': 'update',
+    }
+
+
+class CenterProjectDeleteView(LoginRequiredMixin, JSONDeleteView):
+    model = CenterProject
 
 
 class AjaxHandler(TemplateView):

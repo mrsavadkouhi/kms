@@ -110,19 +110,19 @@
                 </a>
                 <ul class="nav nav-second-level collapse">
                     <li {% if request.resolver_match.view_name == 'documents:core_list' %}class="active"{% endif %}>
-                        <a href="{% url 'documents:project_list' %}" ><i class="fa fa-tasks"></i>
-                            <span class="nav-label">بانک هسته ها</span>
+                        <a href="{% url 'documents:core_list' %}" ><i class="fa fa-podcast"></i>
+                            <span class="nav-label">هسته ها</span>
                         </a>
                     </li>
                     <li {% if request.resolver_match.view_name == 'documents:tech_list' %}class="active"{% endif %}>
-                        <a href="{% url 'documents:conference_list' %}" ><i class="fa fa-ticket-alt"></i>
-                            <span class="nav-label">بانک واحدهای فناور</span>
+                        <a href="{% url 'documents:tech_list' %}" ><i class="fa fa-rocket"></i>
+                            <span class="nav-label">واحدهای فناور</span>
                         </a>
                     </li>
 
                     <li {% if request.resolver_match.view_name == 'documents:company_list' %}class="active"{% endif %}>
-                        <a href="{% url 'documents:visit_list' %}" ><i class="fa fa-industry"></i>
-                            <span class="nav-label">بانک شرکت ها</span>
+                        <a href="{% url 'documents:company_list' %}" ><i class="fa fa-copyright"></i>
+                            <span class="nav-label">شرکت ها</span>
                         </a>
                     </li>
                 </ul>
