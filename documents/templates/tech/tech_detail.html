@@ -92,7 +92,7 @@
 							<td class="align-middle text-center">{{ obj.get_level_display }}</td>
 							<td class="align-middle text-center">
 								<div class="btn-group">
-								<a href="{% url 'documents:center_project_update' pk=obj.id %}" class="btn btn-sm btn-outline-warning"><i class="fa small fa-pen"></i><i class="fa fa-cube"></i> ویرایش</a>
+								<a href="{% url 'documents:center_project_update' center_pk=object.id pk=obj.id %}" class="btn btn-sm btn-outline-warning"><i class="fa small fa-pen"></i><i class="fa fa-cube"></i> ویرایش</a>
 								<button data-cid="{{ obj.id }}" class="btn btn-sm btn-outline-danger m-l-sm" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"></i> حذف
 								</button>
 								</div>

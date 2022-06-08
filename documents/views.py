@@ -1035,8 +1035,6 @@ class CenterPersonnelUpdateForm(LoginRequiredMixin, UpdateView):
             return reverse_lazy('documents:company_details', kwargs={'pk': self.kwargs['center_pk']})
 
 
-
-
 class CenterPersonnelDeleteView(LoginRequiredMixin, JSONDeleteView):
     model = CenterPersonnel
 
@@ -1045,20 +1043,49 @@ class CenterProjectCreateView(LoginRequiredMixin, CreateView):
     model = CenterProject
     template_name = 'center_project/center_project_form.html'
     form_class = CenterProjectForm
-    success_url = reverse_lazy('documents:company_list')
     extra_context = {
         'title': 'create',
     }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['center_pk']=self.kwargs['center_pk']
+        context['levels']=CENTERPROJECT_LEVELS
+        return context
+
+    def get_success_url(self):
+        doc=CenterData.objects.get(id=self.kwargs['center_pk'])
+        if doc.type == 'Core':
+            return reverse_lazy('documents:core_details', kwargs={'pk': self.kwargs['center_pk']})
+        elif doc.type == 'TechUnit':
+            return reverse_lazy('documents:tech_details', kwargs={'pk': self.kwargs['center_pk']})
+        elif doc.type == 'Company':
+            return reverse_lazy('documents:company_details', kwargs={'pk': self.kwargs['center_pk']})
 
 
 class CenterProjectUpdateForm(LoginRequiredMixin, UpdateView):
     model = CenterProject
     template_name = 'center_project/center_project_form.html'
     form_class = CenterProjectForm
-    success_url = reverse_lazy('documents:company_list')
     extra_context = {
         'title': 'update',
     }
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['center_pk']=self.kwargs['center_pk']
+        context['levels']=CENTERPROJECT_LEVELS
+        return context
+
+    def get_success_url(self):
+        doc=CenterData.objects.get(id=self.kwargs['center_pk'])
+        if doc.type == 'Core':
+            return reverse_lazy('documents:core_details', kwargs={'pk': self.kwargs['center_pk']})
+        elif doc.type == 'TechUnit':
+            return reverse_lazy('documents:tech_details', kwargs={'pk': self.kwargs['center_pk']})
+        elif doc.type == 'Company':
+            return reverse_lazy('documents:company_details', kwargs={'pk': self.kwargs['center_pk']})
+
+
 
 
 class CenterProjectDeleteView(LoginRequiredMixin, JSONDeleteView):
