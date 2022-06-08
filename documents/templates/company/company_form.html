@@ -18,7 +18,7 @@
 
 {% endblock %}
 
-{% block head_title %}{% if title == 'update' %}جزئیات هسته{% else %}ایجاد هسته{% endif %}{% endblock %}
+{% block head_title %}{% if title == 'update' %}جزئیات شرکت{% else %}ایجاد شرکت{% endif %}{% endblock %}
 
 
 {% block title-breadcrumb %}
@@ -30,13 +30,13 @@
 				<a>مرکز رشد</a>
 			</li>
 			<li class="breadcrumb-item">
-                <a href="{% url 'documents:core_list' %}" >لیست هسته ها</a>
+                <a href="{% url 'documents:company_list' %}" >لیست شرکت ها</a>
 			</li>
 			<li class="breadcrumb-item active">
                 {% if title == 'update' %}
-                    <a href="{% url 'documents:core_update' object.id %}"><strong>ویرایش {{ object.title }}</strong></a>
+                    <a href="{% url 'documents:company_update' object.id %}"><strong>ویرایش {{ object.title }}</strong></a>
                 {% else %}
-                    <a href="{% url 'documents:core_create' %}"><strong>افزودن هسته جدید</strong></a>
+                    <a href="{% url 'documents:company_create' %}"><strong>افزودن شرکت جدید</strong></a>
                 {% endif %}
 			</li>
 		</ol>
@@ -73,7 +73,7 @@
             {% csrf_token %}
             <div class="col-lg-3 text-center">
                 <div><br></div>
-                <i class="fa fa-podcast fa-10x"></i>
+                <i class="fa fa-copyright fa-10x"></i>
                 <h1><strong>مشخصات</strong></h1>
             </div>
             <div class="card col-lg-9">
@@ -175,13 +175,13 @@
 						<span aria-hidden="true">&times;</span>
 						<span class="sr-only">بستن</span>
 					</button>
-					<h5 class="modal-title" id="exampleModalLabel">حذف هسته</h5>
+					<h5 class="modal-title" id="exampleModalLabel">حذف شرکت</h5>
 				</div>
-				<form method="post" id="delete-form" {% if title == 'update' %} action="{% url 'documents:core_delete' pk=object.id %}" {% endif %}>
+				<form method="post" id="delete-form" {% if title == 'update' %} action="{% url 'documents:company_delete' pk=object.id %}" {% endif %}>
 					{% csrf_token %}
 					<div class="modal-body">
 						<p class="float-right">
-							آیا واقعا می خواهید هسته
+							آیا واقعا می خواهید شرکت
 							<code>
 								<strong id="delete-name">{{ object.title }}</strong>
 							</code>
@@ -216,10 +216,10 @@
         });
         field.val("{{ object.field }}").trigger("change");
 
-        var core_types = $("#core_type").select2({
+        var company_types = $("#company_type").select2({
                 theme: 'bootstrap4',
         });
-        core_types.val("{{ object.core_type }}").trigger("change");
+        company_types.val("{{ object.company_type }}").trigger("change");
 
         var center = $("#center").select2({
                 theme: 'bootstrap4',
@@ -290,7 +290,7 @@
 				url: url,
 				data: form.serialize(), // serializes the form's elements.
 				success: function (data) {
-                    location.replace("{% url 'documents:core_list' %}");
+                    location.replace("{% url 'documents:company_list' %}");
 				}
 			});
 			e.preventDefault(); // avoid to execute the actual submit of the form.
