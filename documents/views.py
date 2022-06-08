@@ -18,8 +18,23 @@ class DocumentAttachmentCreateView(LoginRequiredMixin, BSModalCreateView):
         doc = Document.objects.get(id=self.kwargs['pk'])
         if doc.type == 'Article':
             return reverse_lazy('documents:article_details', kwargs={'pk': self.kwargs['pk']})
-        else:
-            pass
+        elif doc.type == 'Book':
+            return reverse_lazy('documents:book_details', kwargs={'pk': self.kwargs['pk']})
+
+
+class CoreAttachmentCreateView(LoginRequiredMixin, BSModalCreateView):
+    template_name = 'core_attach_form.html'
+    model = DocumentAttachment
+    form_class = CenterAttachmentForm
+
+    def get_success_url(self):
+        doc = CenterData.objects.get(id=self.kwargs['pk'])
+        if doc.type == 'Core':
+            return reverse_lazy('documents:core_details', kwargs={'pk': self.kwargs['pk']})
+        elif doc.type == 'TechUnit':
+            return reverse_lazy('documents:tech_details', kwargs={'pk': self.kwargs['pk']})
+        elif doc.type == 'Company':
+            return reverse_lazy('documents:company_details', kwargs={'pk': self.kwargs['pk']})
 
 
 class HomeView(LoginRequiredMixin, TemplateView):

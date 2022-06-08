@@ -6,6 +6,7 @@ app_name = 'documents'
 
 urlpatterns = [
 	path('attachment/<pk>/add', DocumentAttachmentCreateView.as_view(), name='attach_create'),
+	path('core_attachment/<pk>/add', CoreAttachmentCreateView.as_view(), name='core_attach_create'),
 
 	path('', HomeView.as_view(), name='home'),
 
