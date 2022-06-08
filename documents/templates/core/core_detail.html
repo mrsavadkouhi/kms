@@ -52,14 +52,94 @@
 				<h3><strong>سال تاسیس: </strong>{{ object.producer.title }}</h3>
                 <h3><strong>حوزه فعالیت: </strong>{{ object.producer.degree }}</h3>
                 <h3><strong>حوزه تخصصی: </strong>{{ object.producer.degree }}</h3>
-				<h3><strong>تعداد پروژه در سطح پیش رشد: </strong>{{ object.location }}</h3>
-				<h3><strong>تعداد پروژه در سطح سه: </strong>{{ object.location }}</h3>
-				<h3><strong>تعداد پروژه در سطح دو: </strong>{{ object.location }}</h3>
-				<h3><strong>تعداد پروژه در سطح یک: </strong>{{ object.location }}</h3>
 				<h3><strong>تعداد اعضا: </strong>{{ object.location }}</h3>
 				<div><br></div>
 			</div>
 		</div>
+        <div class="col-lg-12">
+            <div class="col-lg-3 text-center">
+                <div><br></div>
+                <i class="fa fa-users fa-10x"></i>
+                <h1><strong>پروژهای مصوب</strong></h1>
+            </div>
+
+            <div class="card col-lg-9">
+                <div class="table-responsive">
+                <br>
+                    <table id="projects" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                        <tr>
+                            <th class="text-center" style="background-color: white;width: 7%">آواتار</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for obj in object.projects.all %}
+                            <tr id="c-tr-{{ obj.id }}" style="background-color: whitesmoke">
+							<td class="align-middle text-center">{{ forloop.counter }}</td>
+							<td class="align-middle text-center">{{ obj.contract_number }}</td>
+							<td class="align-middle text-center">{{ obj.status }}</td>
+							<td class="align-middle text-center">{{ obj.subject }}</td>
+							<td class="align-middle text-center">{{ obj.type }}</td>
+							<td class="align-middle text-center">{{ obj.get_level_display }}</td>
+							<td class="align-middle text-center">
+								<div class="btn-group">
+								<a href="{% url 'documents:center_project_update' pk=obj.id %}" class="btn btn-sm btn-outline-warning"><i class="fa small fa-pen"></i><i class="fa fa-cube"></i> ویرایش</a>
+								<button data-cid="{{ obj.id }}" class="btn btn-sm btn-outline-danger m-l-sm" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"></i> حذف
+								</button>
+								</div>
+							</td>
+						</tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="col-lg-3 text-center">
+                <div><br></div>
+                <i class="fa fa-users fa-10x"></i>
+                <h1><strong>اعضای هسته</strong></h1>
+            </div>
+
+            <div class="card col-lg-9">
+                <div class="table-responsive">
+                <br>
+                    <table id="personnel" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                        <tr>
+                            <th class="text-center" style="background-color: white;width: 7%">آواتار</th>
+                            <th class="text-center" style="background-color: white">نام کاربری</th>
+                            <th class="text-center" style="background-color: white">نام</th>
+                            <th class="text-center" style="background-color: white">نام خانوادگی</th>
+    {#                                <th class="text-center" style="background-color: white">مرکز</th>#}
+                            <th class="text-center" style="background-color: white">نقش</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for obj in object.personnels.all %}
+                            <tr id="c-tr-{{ obj.id }}" style="background-color: whitesmoke">
+                                <td class="align-middle text-center">
+                                        <img class="rounded-circle img-avatar" src="{% if obj.avatar %}{{ obj.avatar.url }}{% else %}{% static 'img/user.png' %}{% endif %}">
+                                </td>
+                                <td class="align-middle text-center"><a href="{% url 'accounts:profile_details' pk=obj.id %}">{{ obj.user.username }}</a></td>
+                                <td class="align-middle text-center">{{ obj.user.first_name }}</td>
+                                <td class="align-middle text-center">{{ obj.user.last_name }}</td>
+    {#                                    <td class="align-middle text-center">{{ obj.center }}</td>#}
+                                <td class="align-middle text-center">
+                                    {{ obj.get_user_role_display }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 		<div class="col-lg-12">
 			<div class="col-lg-3 text-center">
 				<div><br></div>
@@ -177,7 +257,21 @@
                 formURL: "{% url 'documents:attach_create' pk=object.id %}"
             });
         });
-		var table;
+		var project_table;
+		var personnel_table;
+        $(document).ready(function () {
+			project_table = $('#projects').DataTable({
+				pageLength: 25,
+				responsive: true,
+				dom: 'lTfgitp',
+			});
+			personnel_table = $('#personnel').DataTable({
+				pageLength: 25,
+				responsive: true,
+				dom: 'lTfgitp',
+			});
+
+		});
 		// this is the id of the form
 		$("#delete-form").submit(function (e) {
 			var form = $(this);

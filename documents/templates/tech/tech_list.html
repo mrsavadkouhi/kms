@@ -3,7 +3,7 @@
 {% load jalali_date %}
 
 
-{% block head_title %}لیست هسته ها{% endblock %}
+{% block head_title %}لیست واحدهای فناور{% endblock %}
 
 {% block title-breadcrumb %}
 	<div class="col-md-10">
@@ -14,14 +14,14 @@
 				<a>مرکز رشد</a>
 			</li>
 			<li class="breadcrumb-item active">
-                <a  href="{% url 'documents:core_list' %}" >لیست هسته ها</a>
+                <a  href="{% url 'documents:tech_list' %}" >لیست واحدهای فناور</a>
 			</li>
 		</ol>
 	</div>
 
 	<div class="col-md-2">
 		<div class="title-action float-right">
-            <a href="{% url 'documents:core_create' %}" class="btn btn-outline-primary"><i class="fa small fa-plus"></i> <i class="fa fa-podcast"></i> افزودن هسته جدید</a>
+            <a href="{% url 'documents:tech_create' %}" class="btn btn-outline-primary"><i class="fa small fa-plus"></i> <i class="fa fa-rocket"></i> افزودن واحد فناور جدید</a>
 		</div>
 	</div>
 {% endblock %}
@@ -31,7 +31,7 @@
     	<div class="col-lg-12">
 			<div class="ibox ">
                 <div class="ibox-title">
-                    <h5>جستجوی پیشرفته هسته ها</h5>
+                    <h5>جستجوی پیشرفته واحدهای فناور</h5>
                     <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -88,7 +88,7 @@
 					{% for obj in object_list %}
 						<tr id="c-tr-{{ obj.id }}" style="background-color: whitesmoke">
 							<td class="align-middle text-center">{{ forloop.counter }}</td>
-							<td class="align-middle text-center"><a href="{% url 'documents:core_details' pk=obj.id %}">{{ obj.title }}</a></td>
+							<td class="align-middle text-center"><a href="{% url 'documents:tech_details' pk=obj.id %}">{{ obj.title }}</a></td>
 							<td class="align-middle text-center">{{ obj.status }}</td>
 							<td class="align-middle text-center">{{ obj.manager }}</td>
 							<td class="align-middle text-center">{{ obj.contact }}</td>
@@ -98,7 +98,7 @@
                             <td class="align-middle text-center">{{ obj.number }}</td>
 							<td class="align-middle text-center">
 								<div class="btn-group">
-								<a href="{% url 'documents:core_update' pk=obj.id %}" class="btn btn-sm btn-outline-warning"><i class="fa small fa-pen"></i><i class="fa fa-cube"></i> ویرایش</a>
+								<a href="{% url 'documents:tech_update' pk=obj.id %}" class="btn btn-sm btn-outline-warning"><i class="fa small fa-pen"></i><i class="fa fa-cube"></i> ویرایش</a>
 								<button data-cid="{{ obj.id }}" class="btn btn-sm btn-outline-danger m-l-sm" data-toggle="modal" data-target="#delete-modal"><i class="fa fa-trash"></i> حذف
 								</button>
 								</div>
@@ -121,13 +121,13 @@
 						<span aria-hidden="true">&times;</span>
 						<span class="sr-only">بستن</span>
 					</button>
-					<h5 class="modal-title" id="exampleModalLabel">حذف هسته</h5>
+					<h5 class="modal-title" id="exampleModalLabel">حذف واحد فناور</h5>
 				</div>
 				<form method="post" id="delete-form">
 					{% csrf_token %}
 					<div class="modal-body">
 						<p class="float-right">
-							آیا واقعا می خواهید هسته 
+							آیا واقعا می خواهید واحد فناور
 							<code>
 								<strong id="delete-name"></strong>
 							</code>
@@ -176,7 +176,7 @@
 			id = $(e.relatedTarget).data('cid');
 			tr = $('#c-tr-' + id);
 			$('#delete-name').text(tr.find("td:eq(1)").text());
-			delete_url = "{% url 'documents:core_delete' pk=0 %}";
+			delete_url = "{% url 'documents:tech_delete' pk=0 %}";
 			$('#delete-form').attr('action', delete_url + id);
 		});
 

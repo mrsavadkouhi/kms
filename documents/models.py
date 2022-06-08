@@ -279,10 +279,7 @@ class CenterPersonnel(models.Model):
     basij_city=models.CharField(max_length=255)
     pre_empowerment = models.CharField(max_length=255)
     com_empowerment = models.CharField(max_length=255)
-
-    description = models.TextField(null=True, blank=True)
     created_at=models.DateTimeField(auto_now_add=True)
-    attachments = models.ManyToManyField(DocumentAttachment, blank=True, related_name='center_personnel_attachments')
 
 
 CENTERPROJECT_LEVELS = [
@@ -300,9 +297,7 @@ class CenterProject(models.Model):
     level = models.CharField(max_length=255, choices=CENTERPROJECT_LEVELS)
     status = models.CharField(max_length=255)
 
-    description = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    attachments = models.ManyToManyField(DocumentAttachment, blank=True, related_name='center_project_attachments')
 
 
 CENTERDATA_TYPES = [
