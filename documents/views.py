@@ -20,6 +20,34 @@ class DocumentAttachmentCreateView(LoginRequiredMixin, BSModalCreateView):
             return reverse_lazy('documents:article_details', kwargs={'pk': self.kwargs['pk']})
         elif doc.type == 'Book':
             return reverse_lazy('documents:book_details', kwargs={'pk': self.kwargs['pk']})
+        elif doc.type == 'Resume':
+            return reverse_lazy('documents:resume_details', kwargs={'pk': self.kwargs['pk']})
+        elif doc.type == 'Experience':
+            return reverse_lazy('documents:experience_details', kwargs={'pk': self.kwargs['pk']})
+        elif doc.type == 'Thesis':
+            return reverse_lazy('documents:thesis_details', kwargs={'pk': self.kwargs['pk']})
+        elif doc.type == 'Idea':
+            return reverse_lazy('documents:idea_details', kwargs={'pk': self.kwargs['pk']})
+        elif doc.type == 'Seminar':
+            return reverse_lazy('documents:seminar_details', kwargs={'pk': self.kwargs['pk']})
+        elif doc.type == 'Workshop':
+            return reverse_lazy('documents:workshop_details', kwargs={'pk': self.kwargs['pk']})
+        elif doc.type == 'Conference':
+            return reverse_lazy('documents:conference_details', kwargs={'pk': self.kwargs['pk']})
+        elif doc.type == 'Visit':
+            return reverse_lazy('documents:visit_details', kwargs={'pk': self.kwargs['pk']})
+        elif doc.type == 'Project':
+            return reverse_lazy('documents:project_details', kwargs={'pk': self.kwargs['pk']})
+        elif doc.type == 'Manual':
+            return reverse_lazy('documents:manual_details', kwargs={'pk': self.kwargs['pk']})
+        elif doc.type == 'Report':
+            return reverse_lazy('documents:report_details', kwargs={'pk': self.kwargs['pk']})
+        elif doc.type == 'Journal':
+            return reverse_lazy('documents:journal_details', kwargs={'pk': self.kwargs['pk']})
+        elif doc.type == 'Future':
+            return reverse_lazy('documents:future_details', kwargs={'pk': self.kwargs['pk']})
+        elif doc.type == 'CoWork':
+            return reverse_lazy('documents:cowork_details', kwargs={'pk': self.kwargs['pk']})
 
 
 class CoreAttachmentCreateView(LoginRequiredMixin, BSModalCreateView):
