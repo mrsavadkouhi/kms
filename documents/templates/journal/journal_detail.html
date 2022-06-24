@@ -46,11 +46,11 @@
 				<div><br></div>
 				<h3><strong>شماره فصلنامه: </strong>{{ object.title }}</h3>
 				<h3><strong>شناسه: </strong>{{ object.organization_code }}</h3>
-				<h3><strong>حوزه تخصصی: </strong>{{ object.get_field_display }}</h3>
+				<h3><strong>حوزه تخصصی: </strong>{{ object.field }}</h3>
 				<h3><strong>تعداد صفحات: </strong>{{ object.page_number }}</h3>
 				<h3><strong>توضیحات: </strong>{{ object.description }}</h3>
-				<h3><strong>تاریخ ارایه: </strong>{{ object.presented_at | j_format_date:"%Y/%m/%d"  }}</h3>
-				<h3><strong>مرکز تحقیقاتی: </strong>{{ object.get_center_display }}</h3>
+				<h3><strong>تاریخ چاپ: </strong>{{ object.presented_at | j_format_date:"%Y/%m/%d"  }}</h3>
+				<h3><strong>مرکز تحقیقاتی: </strong>{{ object.center.title }}</h3>
 				<div><br></div>
 			</div>
 		</div>

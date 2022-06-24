@@ -8,8 +8,8 @@ class ProfileCreateForm(forms.ModelForm):
 	username = forms.CharField(label='نام کاربری', required=True, error_messages={'required': 'وارد کردن نام کاربری الزامی است.'})
 	first_name = forms.CharField(label='نام', required=True,error_messages={'required': 'وارد کردن نام الزامی است.'})
 	last_name = forms.CharField(label='نام خانوادگی', required=True,error_messages={'required': 'وارد کردن نام خانوادگی الزامی است.'})
-	password = forms.CharField(label='پسورد', required=True, error_messages={'required': 'وارد کردن پسورد الزامی است.'})
-	mobile_number = forms.CharField(label='پسورد', required=True, error_messages={'required': 'وارد کردن شماره همراه الزامی است.'})
+	password = forms.CharField(label='رمز عبور', required=True, error_messages={'required': 'وارد کردن رمز عبور الزامی است.'})
+	mobile_number = forms.CharField(label='رمز عبور', required=True, error_messages={'required': 'وارد کردن شماره همراه الزامی است.'})
 	email = forms.EmailField(label='ایمیل', required=True, error_messages={'required': 'وارد کردن ایمیل الزامی است.'})
 	avatar = forms.ImageField(label='Avatar', required=False)
 	permissions=forms.ModelMultipleChoiceField(queryset=Permission.objects.all(), required=False)
@@ -39,15 +39,15 @@ class ProfileCreateForm(forms.ModelForm):
 			if re.search("[ا-ی]", password):
 				raise forms.ValidationError("برای کلمه عبور از کاراکترهای انگلیسی استفاده نمایید.")
 			elif len(password) < 8:
-				raise forms.ValidationError("پسورد باید حداقل ۸ کاراکتر باشد.")
+				raise forms.ValidationError("رمز عبور باید حداقل ۸ کاراکتر باشد.")
 			elif not re.search("[a-z]", password):
-				raise forms.ValidationError("پسورد باید شامل حروف کوچک باشد.")
+				raise forms.ValidationError("رمز عبور باید شامل حروف کوچک باشد.")
 			elif not re.search("[A-Z]", password):
-				raise forms.ValidationError("پسورد باید شامل حروف بزرگ باشد.")
+				raise forms.ValidationError("رمز عبور باید شامل حروف بزرگ باشد.")
 			elif not re.search("[0-9]", password):
-				raise forms.ValidationError("پسورد باید شامل عدد باشد.")
+				raise forms.ValidationError("رمز عبور باید شامل عدد باشد.")
 			elif re.search("\s", password):
-				raise forms.ValidationError("پسورد نباید شامل فاصله باشد.")
+				raise forms.ValidationError("رمز عبور نباید شامل فاصله باشد.")
 
 		if mobile_number:
 			if not re.search("^09\d{9}$", mobile_number):

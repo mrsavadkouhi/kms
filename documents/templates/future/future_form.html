@@ -106,11 +106,7 @@
                   <div class="input-group-append">
                     <span class="input-group-text required" id="field_label">حوزه تخصصی: </span>
                   </div>
-                    <select name="field" id="field" class="select2 form-control">
-                        {% for val,obj in fields %}
-                            <option value="{{ val }}">{{ obj }}</option>
-                        {% endfor %}
-                    </select>
+                    <input type="text" class="form-control" value="{{ object.field }}" name="field" aria-describedby="field_label">
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
@@ -134,7 +130,7 @@
                 </div>
                 <div class="input-group mb-2">
                     <div class="input-group-append">
-                        <span class="input-group-text required" id="presented_at_label">تاریخ ارایه: </span>
+                        <span class="input-group-text required" id="presented_at_label">تاریخ ارائه: </span>
                     </div>
                     <input type="datetime" id="datepicker" class="form-control" name="presented_at" aria-describedby="presented_at_label">
                     <div class="input-group-prepend">
@@ -146,8 +142,8 @@
                     <span class="input-group-text required" id="center_label">مرکز: </span>
                   </div>
                     <select name="center" id="center" class="select2 form-control">
-                        {% for val,obj in centers %}
-                            <option value="{{ val }}">{{ obj }}</option>
+                        {% for obj in centers %}
+                            <option value="{{ obj.id  }}">{{ obj.title }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -212,7 +208,7 @@
         var center = $("#center").select2({
                 theme: 'bootstrap4',
         });
-        center.val("{{ object.center }}").trigger("change");
+        center.val("{{ object.center.id  }}").trigger("change");
 
         var datepickeroption = {
             initialValueType: 'gregorian',

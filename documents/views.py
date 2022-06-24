@@ -86,11 +86,11 @@ class ArticleCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['resumes'] = Document.objects.filter(type="Resume")
-        context['centers'] = CENTER_LIST
+        context['centers']= Center.objects.all()
         context['types'] = ARTICLE_PUBLISH_TYPES
         context['mag_levels']=ARTICLE_MAGANIZE_PUBLISH_LEVELS
         context['con_levels']=ARTICLE_CONFERENCE_PUBLISH_LEVELS
-        context['fields'] = DOCUMENT_FIELDS
+        # context['fields'] = DOCUMENT_FIELDS
         context['years'] = ['pre98','98','99']
         for i in range(400,430):
             context['years'].append(str(i))
@@ -114,11 +114,11 @@ class ArticleUpdateForm(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['resumes']=Document.objects.filter(type="Resume")
-        context['centers']=CENTER_LIST
+        context['centers']= Center.objects.all()
         context['types']=ARTICLE_PUBLISH_TYPES
         context['mag_levels']=ARTICLE_MAGANIZE_PUBLISH_LEVELS
         context['con_levels']=ARTICLE_CONFERENCE_PUBLISH_LEVELS
-        context['fields']=DOCUMENT_FIELDS
+        # context['fields']=DOCUMENT_FIELDS
         context['years'] = ['pre98','98','99']
         for i in range(400,430):
             context['years'].append(str(i))
@@ -146,8 +146,8 @@ class BookCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['resumes'] = Document.objects.filter(type="Resume")
-        context['centers'] = CENTER_LIST
-        context['fields'] = DOCUMENT_FIELDS
+        context['centers']= Center.objects.all()
+        # context['fields'] = DOCUMENT_FIELDS
         context['years'] = ['pre98','98','99']
         for i in range(400,430):
             context['years'].append(str(i))
@@ -171,8 +171,8 @@ class BookUpdateForm(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['resumes']=Document.objects.filter(type="Resume")
-        context['centers']=CENTER_LIST
-        context['fields']=DOCUMENT_FIELDS
+        context['centers']= Center.objects.all()
+        # context['fields']=DOCUMENT_FIELDS
         context['years'] = ['pre98','98','99']
         for i in range(400,430):
             context['years'].append(str(i))
@@ -200,8 +200,8 @@ class ExperienceCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['resumes'] = Document.objects.filter(type="Resume")
-        context['centers'] = CENTER_LIST
-        context['fields'] = DOCUMENT_FIELDS
+        context['centers']= Center.objects.all()
+        # context['fields'] = DOCUMENT_FIELDS
         context['years'] = ['pre98','98','99']
         for i in range(400,430):
             context['years'].append(str(i))
@@ -225,8 +225,8 @@ class ExperienceUpdateForm(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['resumes']=Document.objects.filter(type="Resume")
-        context['centers']=CENTER_LIST
-        context['fields']=DOCUMENT_FIELDS
+        context['centers']= Center.objects.all()
+        # context['fields']=DOCUMENT_FIELDS
         context['years'] = ['pre98','98','99']
         for i in range(400,430):
             context['years'].append(str(i))
@@ -254,8 +254,8 @@ class IdeaCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['resumes'] = Document.objects.filter(type="Resume")
-        context['centers'] = CENTER_LIST
-        context['fields'] = DOCUMENT_FIELDS
+        context['centers']= Center.objects.all()
+        # context['fields'] = DOCUMENT_FIELDS
         context['years'] = ['pre98','98','99']
         for i in range(400,430):
             context['years'].append(str(i))
@@ -279,8 +279,8 @@ class IdeaUpdateForm(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['resumes']=Document.objects.filter(type="Resume")
-        context['centers']=CENTER_LIST
-        context['fields']=DOCUMENT_FIELDS
+        context['centers']= Center.objects.all()
+        # context['fields']=DOCUMENT_FIELDS
         context['years'] = ['pre98','98','99']
         for i in range(400,430):
             context['years'].append(str(i))
@@ -308,8 +308,8 @@ class SeminarCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['resumes'] = Document.objects.filter(type="Resume")
-        context['centers'] = CENTER_LIST
-        context['fields'] = DOCUMENT_FIELDS
+        context['centers']= Center.objects.all()
+        # context['fields'] = DOCUMENT_FIELDS
         context['years'] = ['pre98','98','99']
         for i in range(400,430):
             context['years'].append(str(i))
@@ -333,8 +333,8 @@ class SeminarUpdateForm(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['resumes']=Document.objects.filter(type="Resume")
-        context['centers']=CENTER_LIST
-        context['fields']=DOCUMENT_FIELDS
+        context['centers']= Center.objects.all()
+        # context['fields']=DOCUMENT_FIELDS
         context['years'] = ['pre98','98','99']
         for i in range(400,430):
             context['years'].append(str(i))
@@ -362,8 +362,8 @@ class WorkshopCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['resumes'] = Document.objects.filter(type="Resume")
-        context['centers'] = CENTER_LIST
-        context['fields'] = DOCUMENT_FIELDS
+        context['centers']= Center.objects.all()
+        # context['fields'] = DOCUMENT_FIELDS
         context['workshop_types']=WORKSHOP_TYPES
         context['years'] = ['pre98','98','99']
         for i in range(400,430):
@@ -388,8 +388,8 @@ class WorkshopUpdateForm(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['resumes']=Document.objects.filter(type="Resume")
-        context['centers']=CENTER_LIST
-        context['fields']=DOCUMENT_FIELDS
+        context['centers']= Center.objects.all()
+        # context['fields']=DOCUMENT_FIELDS
         context['workshop_types']=WORKSHOP_TYPES
         context['years'] = ['pre98','98','99']
         for i in range(400,430):
@@ -417,8 +417,8 @@ class ConferenceCreateView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['centers'] = CENTER_LIST
-        context['fields'] = DOCUMENT_FIELDS
+        context['centers']= Center.objects.all()
+        # context['fields'] = DOCUMENT_FIELDS
         context['conference_levels']=CONFERENCE_LEVELS
         return context
 
@@ -439,8 +439,8 @@ class ConferenceUpdateForm(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['centers']=CENTER_LIST
-        context['fields']=DOCUMENT_FIELDS
+        context['centers']= Center.objects.all()
+        # context['fields']=DOCUMENT_FIELDS
         context['conference_levels']=CONFERENCE_LEVELS
         return context
 
@@ -465,8 +465,8 @@ class VisitCreateView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['centers'] = CENTER_LIST
-        context['fields'] = DOCUMENT_FIELDS
+        context['centers']= Center.objects.all()
+        # context['fields'] = DOCUMENT_FIELDS
         return context
 
 
@@ -486,8 +486,8 @@ class VisitUpdateForm(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['centers']=CENTER_LIST
-        context['fields']=DOCUMENT_FIELDS
+        context['centers']= Center.objects.all()
+        # context['fields']=DOCUMENT_FIELDS
         return context
 
 
@@ -512,8 +512,8 @@ class ThesisCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['resumes'] = Document.objects.filter(type="Resume")
-        context['centers'] = CENTER_LIST
-        context['fields'] = DOCUMENT_FIELDS
+        context['centers']= Center.objects.all()
+        # context['fields'] = DOCUMENT_FIELDS
         return context
 
 
@@ -534,8 +534,8 @@ class ThesisUpdateForm(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['resumes']=Document.objects.filter(type="Resume")
-        context['centers']=CENTER_LIST
-        context['fields']=DOCUMENT_FIELDS
+        context['centers']= Center.objects.all()
+        # context['fields']=DOCUMENT_FIELDS
         return context
 
 
@@ -559,7 +559,7 @@ class ResumeCreateView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['centers']=CENTER_LIST
+        context['centers']= Center.objects.all()
         context['profiles']=Profile.objects.all()
         return context
 
@@ -568,6 +568,42 @@ class ResumeDetailsView(LoginRequiredMixin, DetailView):
     model = Resume
     template_name = 'resume/resume_detail.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['object_list']= []
+        context['article_num']= 0
+        context['book_num']= 0
+        context['idea_num']= 0
+        context['judge_num']= 0
+        context['exp_num']= 0
+        context['manual_num']= 0
+        context['seminar_num']= 0
+        context['thesis_num']= 0
+
+        for item in self.object.idea_producer.all():
+            context['object_list'].append((item, 'ایده', item.presented_at))
+            context['idea_num']+=1
+        for item in self.object.book_producer.all():
+            context['object_list'].append((item, 'کتاب', item.published_at))
+            context['book_num']+=1
+        for item in self.object.experience_producer.all():
+            context['object_list'].append((item, 'تجربه', item.presented_at))
+            context['exp_num']+=1
+        for item in self.object.thesis_producer.all():
+            context['object_list'].append((item, 'پایان نامه', item.presented_at))
+            context['thesis_num']+=1
+        for item in self.object.manual_producer.all():
+            context['object_list'].append((item, 'دستورالعمل', item.declared_at))
+            context['manual_num']+=1
+        for item in self.object.seminar_producer.all():
+            context['object_list'].append((item, 'سمینار', item.presented_at))
+            context['seminar_num']+=1
+        for item in self.object.article_producers.all():
+            context['object_list'].append((item, 'مقاله', item.published_at))
+            context['article_num']+=1
+
+        return context
 
 class ResumeUpdateForm(LoginRequiredMixin, UpdateView):
     model = Resume
@@ -580,7 +616,7 @@ class ResumeUpdateForm(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['centers'] = CENTER_LIST
+        context['centers']= Center.objects.all()
         context['profiles']=Profile.objects.all()
         return context
 
@@ -606,8 +642,8 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['resumes']=Document.objects.filter(type="Resume")
-        context['centers'] = CENTER_LIST
-        context['fields'] = DOCUMENT_FIELDS
+        context['centers']= Center.objects.all()
+        # context['fields'] = DOCUMENT_FIELDS
         return context
 
 
@@ -628,8 +664,8 @@ class ProjectUpdateForm(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['resumes']=Document.objects.filter(type="Resume")
-        context['centers']=CENTER_LIST
-        context['fields']=DOCUMENT_FIELDS
+        context['centers']= Center.objects.all()
+        # context['fields']=DOCUMENT_FIELDS
         return context
 
 
@@ -654,9 +690,9 @@ class ReportCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['resumes']=Document.objects.filter(type="Resume")
-        context['projects']=Document.objects.filter(type="Project")
-        context['centers'] = CENTER_LIST
-        context['fields'] = DOCUMENT_FIELDS
+        # context['projects']=Document.objects.filter(type="Project")
+        context['centers']= Center.objects.all()
+        # # context['fields'] = DOCUMENT_FIELDS
         return context
 
 
@@ -677,9 +713,9 @@ class ReportUpdateForm(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['resumes']=Document.objects.filter(type="Resume")
-        context['projects']=Document.objects.filter(type="Project")
-        context['centers']=CENTER_LIST
-        context['fields']=DOCUMENT_FIELDS
+        # context['projects']=Document.objects.filter(type="Project")
+        context['centers']= Center.objects.all()
+        # context['fields']=DOCUMENT_FIELDS
         return context
 
 
@@ -704,8 +740,8 @@ class ManualCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['resumes']=Document.objects.filter(type="Resume")
-        context['centers'] = CENTER_LIST
-        context['fields'] = DOCUMENT_FIELDS
+        context['centers']= Center.objects.all()
+        # context['fields'] = DOCUMENT_FIELDS
         context['years'] = ['pre98','98','99']
         for i in range(400,430):
             context['years'].append(str(i))
@@ -729,8 +765,8 @@ class ManualUpdateForm(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['resumes']=Document.objects.filter(type="Resume")
-        context['centers']=CENTER_LIST
-        context['fields']=DOCUMENT_FIELDS
+        context['centers']= Center.objects.all()
+        # context['fields']=DOCUMENT_FIELDS
         context['years'] = ['pre98','98','99']
         for i in range(400,430):
             context['years'].append(str(i))
@@ -757,8 +793,8 @@ class JournalCreateView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['centers'] = CENTER_LIST
-        context['fields'] = DOCUMENT_FIELDS
+        context['centers']= Center.objects.all()
+        # context['fields'] = DOCUMENT_FIELDS
         return context
 
 
@@ -778,8 +814,8 @@ class JournalUpdateForm(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['centers']=CENTER_LIST
-        context['fields']=DOCUMENT_FIELDS
+        context['centers']= Center.objects.all()
+        # context['fields']=DOCUMENT_FIELDS
         return context
 
 
@@ -804,8 +840,8 @@ class FutureCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['resumes']=Document.objects.filter(type="Resume")
-        context['centers'] = CENTER_LIST
-        context['fields'] = DOCUMENT_FIELDS
+        context['centers']= Center.objects.all()
+        # context['fields'] = DOCUMENT_FIELDS
         context['future_types'] = FUTURE_TYPES
         return context
 
@@ -827,8 +863,8 @@ class FutureUpdateForm(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['resumes']=Document.objects.filter(type="Resume")
-        context['centers']=CENTER_LIST
-        context['fields']=DOCUMENT_FIELDS
+        context['centers']= Center.objects.all()
+        # context['fields']=DOCUMENT_FIELDS
         context['future_types'] = FUTURE_TYPES
         return context
 
@@ -853,8 +889,8 @@ class CoWorkCreateView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['centers'] = CENTER_LIST
-        context['fields'] = DOCUMENT_FIELDS
+        context['centers']= Center.objects.all()
+        # context['fields'] = DOCUMENT_FIELDS
         context['cowork_types'] = COWORK_TYPES
         context['person_types'] = PERSON_TYPES
         return context
@@ -876,8 +912,8 @@ class CoWorkUpdateForm(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['centers']=CENTER_LIST
-        context['fields']=DOCUMENT_FIELDS
+        context['centers']= Center.objects.all()
+        # context['fields']=DOCUMENT_FIELDS
         context['cowork_types'] = COWORK_TYPES
         context['person_types'] = PERSON_TYPES
         return context

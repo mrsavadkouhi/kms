@@ -141,8 +141,8 @@
                     <span class="input-group-text required" id="center_label">مرکز: </span>
                   </div>
                     <select name="center" id="center" class="select2 form-control">
-                        {% for val,obj in centers %}
-                            <option value="{{ val }}">{{ obj }}</option>
+                        {% for obj in centers %}
+                            <option value="{{ obj.id  }}">{{ obj.title }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -212,7 +212,7 @@
         var center = $("#center").select2({
                 theme: 'bootstrap4',
         });
-        center.val("{{ object.center }}").trigger("change");
+        center.val("{{ object.center.id  }}").trigger("change");
 
         var profile = $("#profile").select2({
                 theme: 'bootstrap4',

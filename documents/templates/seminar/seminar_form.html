@@ -96,8 +96,8 @@
                   </div>
                     <input type="number" class="form-control" value="{{ object.organization_code_counter }}" name="organization_code_counter" id="organization_code_counter" aria-describedby="organization_code_counter_label">
                     <select name="center" id="center" class="select2 form-control">
-                        {% for val,obj in centers %}
-                            <option value="{{ val }}">{{ obj }}</option>
+                        {% for obj in centers %}
+                            <option value="{{ obj.id  }}">{{ obj.title }}</option>
                         {% endfor %}
                     </select>
                     <select name="organization_code_year" id="organization_code_year" class="select2 form-control">
@@ -124,15 +124,11 @@
                   <div class="input-group-append">
                     <span class="input-group-text required" id="field_label">حوزه تخصصی: </span>
                   </div>
-                    <select name="field" id="field" class="select2 form-control">
-                        {% for val,obj in fields %}
-                            <option value="{{ val }}">{{ obj }}</option>
-                        {% endfor %}
-                    </select>
+                    <input type="text" class="form-control" value="{{ object.field }}" name="field" aria-describedby="field_label">
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="producer_label">ارایه دهنده: </span>
+                    <span class="input-group-text required" id="producer_label">ارائه دهنده: </span>
                   </div>
                     <select name="producer" id="producer" class="select2 form-control">
                         {% for obj in resumes %}
@@ -142,7 +138,7 @@
                 </div>
                 <div class="input-group mb-2">
                     <div class="input-group-append">
-                        <span class="input-group-text required" id="presented_at_label">تاریخ ارایه: </span>
+                        <span class="input-group-text required" id="presented_at_label">تاریخ ارائه: </span>
                     </div>
                     <input type="datetime" id="datepicker" class="form-control" name="presented_at" aria-describedby="presented_at_label">
                     <div class="input-group-prepend">
@@ -151,9 +147,13 @@
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text" id="judges_label">داوران: </span>
+                    <span class="input-group-text required" id="producer_label">داوران: </span>
                   </div>
-                    <textarea type="text" class="form-control" name="judges" aria-describedby="judges_label">{{ object.judges }}</textarea>
+                    <select name="judges" id="judges" class="select2 form-control">
+                        {% for obj in resumes %}
+                            <option value="{{ obj.id }}">{{ obj.title }}-{{ obj.organization_code }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
@@ -220,6 +220,18 @@
 
 {% block scripts %}
 	<script>
+    var judges = $("#judges").select2({
+                    theme: 'bootstrap4',
+                    multiple: true,
+                    placeholder: "داوران",
+                    allowClear: true
+        });
+        vals = [];
+        {% for obj in object.judges.all %}
+            vals.push("{{ obj.id }}");
+        {% endfor %}
+        judges.val(vals).trigger("change");
+
             var organization_code_year = $("#organization_code_year").select2({
                 theme: 'bootstrap4',
         });
@@ -247,7 +259,7 @@
         var center = $("#center").select2({
                 theme: 'bootstrap4',
         });
-        center.val("{{ object.center }}").trigger("change");
+        center.val("{{ object.center.id  }}").trigger("change");
 
         var datepickeroption = {
             initialValueType: 'gregorian',

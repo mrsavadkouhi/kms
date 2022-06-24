@@ -37,38 +37,35 @@ DOCUMENT_TYPES = [
 ]
 
 
-DOCUMENT_FIELDS = [
-    ('field-1', 'حوزه نمونه ۱'),
-    ('field-2', 'حوزه نمونه ۲'),
-    ('field-3', 'حوزه نمونه ۳'),
-    ('No Field', 'بدون حوزه'),
-]
+# CENTER_LIST = [
+#     ('center-11', 'م.حاجت زاه(شناوری)'),
+#     ('center-12', 'م.تهرانی(سلاح و مهمات)'),
+#     ('center-13', 'ش.رضایی(موشکی)'),
+#     ('center-14', 'ش.محمدیها(هوادریا)'),
+#     ('center-15', 'ش.چمران(الکترونیک)'),
+#     ('center-16', 'ش.همدانی(پدافند)'),
+#     ('center-17', 'م.جلالی(مواد)'),
+#     ('center-18', 'ش.مهدوی(فناوری)'),
+#     ('center-19', 'مد.نوآوری(مد.دانش-آینده پژوهی)'),
+#     ('center-20', 'مد.تحقیقات(تحقیقات)'),
+#     ('center-21', 'ش.ناظری(موتور)'),
+#     ('center-22', 'زیرسطحی'),
+#     ('center-23', 'ش.آبسالان(فیزیک دریا)'),
+#     ('center-24', 'ش.عسگری(رادار)'),
+#     ('center-25', 'بازرسی-بهداری'),
+# ]
 
 
-CENTER_LIST = [
-    ('center-11', 'م.حاجت زاه(شناوری)'),
-    ('center-12', 'م.تهرانی(سلاح و مهمات)'),
-    ('center-13', 'ش.رضایی(موشکی)'),
-    ('center-14', 'ش.محمدیها(هوادریا)'),
-    ('center-15', 'ش.چمران(الکترونیک)'),
-    ('center-16', 'ش.همدانی(پدافند)'),
-    ('center-17', 'م.جلالی(مواد)'),
-    ('center-18', 'ش.مهدوی(فناوری)'),
-    ('center-19', 'مد.نوآوری(مد.دانش-آینده پژوهی)'),
-    ('center-20', 'مد.تحقیقات(تحقیقات)'),
-    ('center-21', 'ش.ناظری(موتور)'),
-    ('center-22', 'زیرسطحی'),
-    ('center-23', 'ش.آبسالان(فیزیک دریا)'),
-    ('center-24', 'ش.عسگری(رادار)'),
-    ('center-25', 'بازرسی-بهداری'),
-]
+class Center(models.Model):
+    title = models.CharField(max_length=255)
+    code = models.IntegerField()
 
 
 class Document(PolymorphicModel):
     title = models.CharField(max_length=255)
-    organization_code = models.CharField(max_length=255)
-    center = models.CharField(max_length=255, choices=CENTER_LIST)
-    field = models.CharField(max_length=255, choices=DOCUMENT_FIELDS)
+    organization_code = models.CharField(max_length=255, null=True, blank=True)
+    center = models.ForeignKey(to=Center, on_delete=models.PROTECT, related_name='center')
+    field = models.CharField(max_length=255)
     type = models.CharField(max_length=255, choices=DOCUMENT_TYPES)
     description = models.TextField(null=True, blank=True)
 
@@ -105,13 +102,15 @@ ARTICLE_PUBLISH_LEVELS = [
     ('Extension', 'علمی-ترویجی'),
     ('Specialized', 'علمی-تخصصی'),
     #conference
-    ('Departmental', 'داخلی'),
+    ('Sepah', 'سپاه'),
+    ('Martial', 'نیروهای مسلح'),
     ('National', 'ملی'),
     ('International', 'بین المللی'),
 ]
 
 ARTICLE_CONFERENCE_PUBLISH_LEVELS = [
-    ('Departmental', 'داخلی'),
+    ('Sepah', 'سپاه'),
+    ('Martial', 'نیروهای مسلح'),
     ('National', 'ملی'),
     ('International', 'بین المللی'),
 ]
@@ -126,7 +125,8 @@ ARTICLE_MAGANIZE_PUBLISH_LEVELS = [
 
 
 class Article(Document):
-    producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='article_producer')
+    producers = models.ManyToManyField(to=Resume, related_name='article_producers')
+    judges = models.ManyToManyField(to=Resume, related_name='article_judges')
     key_words = models.TextField()
     published_at = models.DateTimeField()
     publish_type = models.CharField(max_length=255, choices=ARTICLE_PUBLISH_TYPES)
@@ -136,7 +136,7 @@ class Article(Document):
 
 class Experience(Document):
     producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='experience_producer')
-    judges = models.TextField()
+    judges=models.ManyToManyField(to=Resume, related_name='experience_judges')
     presented_at = models.DateTimeField()
     assessment_result = models.CharField(max_length=255)
 
@@ -146,20 +146,20 @@ class Book(Document):
     fipa = models.CharField(max_length=255)
     published_at = models.DateTimeField()
     publisher = models.CharField(max_length=255)
-    judges=models.TextField()
+    judges=models.ManyToManyField(to=Resume, related_name='book_judges')
     assessment_result = models.CharField(max_length=255)
 
 
 class Idea(Document):
     producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='idea_producer')
-    judges = models.TextField()
+    judges=models.ManyToManyField(to=Resume, related_name='idea_judges')
     presented_at = models.DateTimeField()
     assessment_result = models.CharField(max_length=255)
 
 
 class Seminar(Document):
     producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='seminar_producer')
-    judges = models.TextField()
+    judges=models.ManyToManyField(to=Resume, related_name='seminar_judges')
     presented_at = models.DateTimeField()
     participant_number = models.IntegerField()
     assessment_result = models.CharField(max_length=255)
@@ -207,6 +207,7 @@ class Manual(Document):
 
 
 class Project(Document):
+    duration = models.IntegerField()
     finished_at = models.DateTimeField()
     manager = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='project_manager')
 
@@ -214,7 +215,7 @@ class Project(Document):
 class Report(Document):
     producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='report_producer')
     presented_at = models.DateTimeField()
-    related_project = models.ForeignKey(to=Project, on_delete=models.PROTECT, related_name='report_project')
+    related_project=models.CharField(max_length=255)
 
 
 class Thesis(Document):

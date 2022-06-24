@@ -73,7 +73,7 @@
 					<tr>
 						<th class="text-center" style="background-color: white;width: 7%">ردیف</th>
 						<th class="text-center" style="background-color: white">عنوان</th>
-						<th class="text-center" style="background-color: white">شناسه</th>
+{#						<th class="text-center" style="background-color: white">شناسه</th>#}
 						<th class="text-center" style="background-color: white">حوزه</th>
 						<th class="text-center" style="background-color: white">شخص</th>
 						<th class="text-center" style="background-color: white">نوع</th>
@@ -89,13 +89,13 @@
 						<tr id="c-tr-{{ obj.id }}"style="background-color: whitesmoke">
 							<td class="align-middle text-center">{{ forloop.counter }}</td>
 							<td class="align-middle text-center"><a href="{% url 'documents:cowork_details' pk=obj.id %}">{{ obj.title }}</a></td>
-							<td class="align-middle text-center">{{ obj.organization_code }}</td>
-							<td class="align-middle text-center">{{ obj.get_field_display }}</td>
+{#							<td class="align-middle text-center">{{ obj.organization_code }}</td>#}
+							<td class="align-middle text-center">{{ obj.field }}</td>
 							<td class="align-middle text-center">{{ obj.get_person_type_display }}</td>
 							<td class="align-middle text-center">{{ obj.get_cowork_type_display }}</td>
 							<td class="align-middle text-center">{{ obj.description }}</td>
 							<td class="align-middle text-center">{{ obj.address }}</td>
-							<td class="align-middle text-center">{{ obj.get_center_display }}</td>
+							<td class="align-middle text-center">{{ obj.center.title }}</td>
 							<td class="align-middle text-center">
 								<div class="btn-group">
 								<a href="{% url 'documents:cowork_update' pk=obj.id %}" class="btn btn-sm btn-outline-warning"><i class="fa small fa-pen"></i><i class="fa fa-cube"></i> ویرایش</a>

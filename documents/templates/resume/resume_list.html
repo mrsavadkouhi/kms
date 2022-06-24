@@ -87,7 +87,7 @@
 							<td class="align-middle text-center">{{ obj.entrance_year }}</td>
 							<td class="align-middle text-center">{{ obj.measure }}</td>
 							<td class="align-middle text-center">{{ obj.degree }}</td>
-							<td class="align-middle text-center">{{ obj.get_center_display }}</td>
+							<td class="align-middle text-center">{{ obj.center.title }}</td>
 							<td class="align-middle text-center">
 								<div class="btn-group">
 								<a href="{% url 'documents:resume_update' pk=obj.id %}" class="btn btn-sm btn-outline-warning"><i class="fa small fa-pen"></i><i class="fa fa-cube"></i> ویرایش</a>

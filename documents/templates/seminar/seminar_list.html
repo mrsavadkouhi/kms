@@ -45,7 +45,7 @@
                     <br>
                     <div class="row">
                             <div class="col-lg-1">
-                            <label for="producer">ارایه دهنده</label>
+                            <label for="producer">ارائه دهنده</label>
                             </div>
                             <div class="col-lg-3">
                             <input type="text" id="producer" name="producer">
@@ -57,7 +57,7 @@
                             <input type="text" id="center" name="center">
                         </div>
                         <div class="col-lg-1">
-                            <label for="presentation_date">تاریخ ارایه</label>
+                            <label for="presentation_date">تاریخ ارائه</label>
                         </div>
                         <div class="col-lg-3">
                             <input type="text" id="presentation_date" name="presentation_date">
@@ -75,9 +75,9 @@
 						<th class="text-center" style="background-color: white">عنوان</th>
 						<th class="text-center" style="background-color: white">شناسه</th>
 						<th class="text-center" style="background-color: white">حوزه</th>
-						<th class="text-center" style="background-color: white">ارایه دهنده</th>
-						<th class="text-center" style="background-color: white">تحصیلات ارایه دهنده</th>
-						<th class="text-center" style="background-color: white">تاریخ ارایه</th>
+						<th class="text-center" style="background-color: white">ارائه دهنده</th>
+						<th class="text-center" style="background-color: white">تحصیلات ارائه دهنده</th>
+						<th class="text-center" style="background-color: white">تاریخ ارائه</th>
 						<th class="text-center" style="background-color: white">تعداد شرکت کنندگان</th>
 						<th class="text-center" style="background-color: white">داوران</th>
 						<th class="text-center" style="background-color: white">ارزشیابی</th>
@@ -92,14 +92,18 @@
 							<td class="align-middle text-center">{{ forloop.counter }}</td>
 							<td class="align-middle text-center"><a href="{% url 'documents:seminar_details' pk=obj.id %}">{{ obj.title }}</a></td>
 							<td class="align-middle text-center">{{ obj.organization_code }}</td>
-							<td class="align-middle text-center">{{ obj.get_field_display }}</td>
+							<td class="align-middle text-center">{{ obj.field }}</td>
 							<td class="align-middle text-center">{{ obj.producer.title }}</td>
 							<td class="align-middle text-center">{{ obj.producer.degree }}</td>
 							<td class="align-middle text-center">{{ obj.presented_at | j_format_date:"%Y/%m/%d" }}</td>
 							<td class="align-middle text-center">{{ obj.participant_number }}</td>
-							<td class="align-middle text-center">{{ obj.judges }}</td>
+							<td class="align-middle text-center">
+                            {% for obj in object.judges.all %}
+                                {{ obj.title }}-{{ obj.organization_code }},
+                            {% endfor %}
+                            </td>
 							<td class="align-middle text-center">{{ obj.assessment_result }}</td>
-							<td class="align-middle text-center">{{ obj.get_center_display }}</td>
+							<td class="align-middle text-center">{{ obj.center.title }}</td>
 							<td class="align-middle text-center">
 								<div class="btn-group">
 								<a href="{% url 'documents:seminar_update' pk=obj.id %}" class="btn btn-sm btn-outline-warning"><i class="fa small fa-pen"></i><i class="fa fa-cube"></i> ویرایش</a>

@@ -251,7 +251,7 @@
         var center = $("#center").select2({
                 theme: 'bootstrap4',
         });
-        center.val("{{ object.center }}").trigger("change");
+        center.val("{{ object.center.id  }}").trigger("change");
 
         var datepickeroption = {
             initialValueType: 'gregorian',

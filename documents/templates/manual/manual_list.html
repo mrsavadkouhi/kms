@@ -88,10 +88,10 @@
 							<td class="align-middle text-center">{{ forloop.counter }}</td>
 							<td class="align-middle text-center"><a href="{% url 'documents:manual_details' pk=obj.id %}">{{ obj.title }}</a></td>
 							<td class="align-middle text-center">{{ obj.organization_code }}</td>
-							<td class="align-middle text-center">{{ obj.get_field_display }}</td>
+							<td class="align-middle text-center">{{ obj.field }}</td>
 							<td class="align-middle text-center">{{ obj.producer.title }}</td>
 							<td class="align-middle text-center">{{ obj.declared_at | j_format_date:"%Y/%m/%d" }}</td>
-							<td class="align-middle text-center">{{ obj.get_center_display }}</td>
+							<td class="align-middle text-center">{{ obj.center.title }}</td>
 							<td class="align-middle text-center">
 								<div class="btn-group">
 								<a href="{% url 'documents:manual_update' pk=obj.id %}" class="btn btn-sm btn-outline-warning"><i class="fa small fa-pen"></i><i class="fa fa-cube"></i> ویرایش</a>

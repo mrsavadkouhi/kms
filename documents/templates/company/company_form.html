@@ -98,7 +98,7 @@
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="status_label">مسوول واحد: </span>
+                    <span class="input-group-text required" id="status_label">مسئول واحد: </span>
                   </div>
                   <input type="text" class="form-control" value="{{ object.manager }}" name="manager" aria-describedby="status_label">
                 </div>
@@ -224,7 +224,7 @@
         var center = $("#center").select2({
                 theme: 'bootstrap4',
         });
-        center.val("{{ object.center }}").trigger("change");
+        center.val("{{ object.center.id  }}").trigger("change");
 
         var datepickeroption = {
             initialValueType: 'gregorian',

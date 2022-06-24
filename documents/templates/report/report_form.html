@@ -84,11 +84,29 @@
                   </div>
                   <input type="text" class="form-control" value="{{ object.title }}" name="title" aria-describedby="name_label">
                 </div>
+                                <div class="input-group mb-2" hidden>
+                  <div class="input-group-append">
+                    <span class="input-group-text required" id="organization_code_label">شناسه: </span>
+                  </div>
+                  <input type="text" class="form-control" value="" name="organization_code" id="organization_code" aria-describedby="organization_code_label">
+                </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
                     <span class="input-group-text required" id="organization_code_label">شناسه: </span>
                   </div>
-                  <input type="text" class="form-control" value="{{ object.organization_code }}" name="organization_code" aria-describedby="organization_code_label">
+                    <input type="number" class="form-control" value="{{ object.organization_code_counter }}" name="organization_code_counter" id="organization_code_counter" aria-describedby="organization_code_counter_label">
+                    <select name="center" id="center" class="select2 form-control">
+                        {% for obj in centers %}
+                            <option value="{{ obj.id  }}">{{ obj.title }}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="organization_code_year" id="organization_code_year" class="select2 form-control">
+                        {% for obj in years %}
+                            <option value="{{ obj }}">{{ obj }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="text" class="form-control" value="R" readonly>
+                    <input type="text" class="form-control" value="KM" readonly>
                 </div>
                 <div class="input-group mb-2" hidden>
                   <div class="input-group-append">
@@ -106,11 +124,7 @@
                   <div class="input-group-append">
                     <span class="input-group-text required" id="field_label">حوزه تخصصی: </span>
                   </div>
-                    <select name="field" id="field" class="select2 form-control">
-                        {% for val,obj in fields %}
-                            <option value="{{ val }}">{{ obj }}</option>
-                        {% endfor %}
-                    </select>
+                    <input type="text" class="form-control" value="{{ object.field }}" name="field" aria-describedby="field_label">
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
@@ -126,15 +140,11 @@
                   <div class="input-group-append">
                     <span class="input-group-text required" id="related_project_label">پروژه مرتبط: </span>
                   </div>
-                    <select name="related_project" id="related_project" class="select2 form-control">
-                        {% for obj in projects %}
-                            <option value="{{ obj.id }}">{{ obj.title }}</option>
-                        {% endfor %}
-                    </select>
+                  <input type="text" class="form-control" value="{{ object.related_project }}" name="related_project" aria-describedby="related_project_label">
                 </div>
                 <div class="input-group mb-2">
                     <div class="input-group-append">
-                        <span class="input-group-text required" id="presented_at_label">تاریخ ارایه: </span>
+                        <span class="input-group-text required" id="presented_at_label">تاریخ ارائه: </span>
                     </div>
                     <input type="datetime" id="datepicker" class="form-control" name="presented_at" aria-describedby="presented_at_label">
                     <div class="input-group-prepend">
@@ -146,8 +156,8 @@
                     <span class="input-group-text required" id="center_label">مرکز: </span>
                   </div>
                     <select name="center" id="center" class="select2 form-control">
-                        {% for val,obj in centers %}
-                            <option value="{{ val }}">{{ obj }}</option>
+                        {% for obj in centers %}
+                            <option value="{{ obj.id  }}">{{ obj.title }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -212,7 +222,7 @@
         var center = $("#center").select2({
                 theme: 'bootstrap4',
         });
-        center.val("{{ object.center }}").trigger("change");
+        center.val("{{ object.center.id  }}").trigger("change");
 
         var datepickeroption = {
             initialValueType: 'gregorian',
@@ -282,6 +292,15 @@
 				}
 			});
 			e.preventDefault(); // avoid to execute the actual submit of the form.
+		});
+        $("#ar-form").submit(function (e) {
+            var center_code = $("#center option:selected").val();
+            var words = center_code.split('-');
+            center_code = words[1];
+            var organization_code_counter = $("#organization_code_counter").val();
+            var organization_code_year = $("#organization_code_year option:selected").val();
+            var organization_code = `KM/R-${organization_code_year}-${center_code}${organization_code_counter}`
+            $("#organization_code").val(organization_code);
 		});
 	</script>
 {% endblock %}
