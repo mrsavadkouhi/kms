@@ -4,7 +4,7 @@
 {% load jalali_date %}
 
 
-{% block head_title %}جزئیات رزومه{% endblock %}
+{% block head_title %}جزئیات مرکز{% endblock %}
 
 
 {% block title-breadcrumb %}
@@ -13,13 +13,13 @@
     <br>
 		<ol class="breadcrumb">
             <li class="breadcrumb-item">
-				<a>نخبگان آموزش و امور محققین</a>
+				<a>مدیریت دانش</a>
 			</li>
 			<li class="breadcrumb-item">
-                <a  href="{% url 'documents:resume_list' %}" >لیست رزومه ها</a>
+                <a  href="{% url 'documents:center_list' %}" >لیست مراکز</a>
 			</li>
 			<li class="breadcrumb-item active">
-				<a href="{% url 'documents:resume_details' object.id %}"><strong>جزئیات رزومه {{ object.name }}</strong></a>
+				<a href="{% url 'documents:center_details' object.id %}"><strong>جزئیات مرکز {{ object.name }}</strong></a>
 			</li>
 		</ol>
 	</div>
@@ -27,7 +27,7 @@
 	<div class="col-md-3">
 		<div class="title-action float-right">
             <div class="btn-group">
-                <a href="{% url 'documents:resume_update' pk=object.id %}" class="btn btn-lg btn-outline-warning"><i class="fa fa-user-circle"></i> ویرایش</a>
+                <a href="{% url 'documents:center_update' pk=object.id %}" class="btn btn-lg btn-outline-warning"><i class="fa fa-user-circle"></i> ویرایش</a>
 			    <button data-toggle="modal" data-delete-what="{{ object.id }}" data-target="#delete-modal" class="btn btn-lg btn-outline-danger"><i class="fa fa-trash"></i> حذف </button>
             </div>
         </div>
@@ -44,13 +44,8 @@
 			</div>
 			<div class="card col-lg-9">
 				<div><br></div>
-				<h3><strong>نام و نام خانوادگی: </strong>{{ object.title }}</h3>
-				<h3><strong>شناسه پاسداری: </strong>{{ object.organization_code }}</h3>
-                <h3><strong>توضیحات: </strong>{{ object.description }}</h3>
-				<h3><strong>سال ورود: </strong>{{ object.entrance_year }}</h3>
-				<h3><strong>رشته: </strong>{{ object.measure }}</h3>
-				<h3><strong>مدرک: </strong>{{ object.degree }}</h3>
-				<h3><strong>مرکز تحقیقاتی: </strong>{{ object.center.title }}</h3>
+				<h3><strong>عنوان: </strong>{{ object.title }}</h3>
+				<h3><strong>کد: </strong>{{ object.code }}</h3>
 				<div><br></div>
 			</div>
 		</div>
@@ -69,19 +64,15 @@
                             <th class="text-center" style="background-color: white;width: 7%">ردیف</th>
                             <th class="text-center" style="background-color: white">عنوان</th>
                             <th class="text-center" style="background-color: white">نوع</th>
-                            <th class="text-center" style="background-color: white">سال انتشار</th>
-                            <th class="text-center" style="background-color: white">مرکز تحقیقاتی</th>
                         </tr>
                         </thead>
                         <tbody>
 
-                        {% for obj, type, year in object_list %}
+                        {% for obj in object_list %}
                             <tr id="c-tr-{{ obj.id }}"style="background-color: whitesmoke">
                                 <td class="align-middle text-center">{{ forloop.counter }}</td>
                                 <td class="align-middle text-center">{{ obj.title }}</td>
-                                <td class="align-middle text-center">{{ type }}</td>
-                                <td class="align-middle text-center">{{ year | j_format_date:"%Y/%m/%d" }}</td>
-                                <td class="align-middle text-center">{{ obj.center.title }}</td>>
+                                <td class="align-middle text-center">{{ obj.get_type_display }}</td>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -136,10 +127,10 @@
                         <p>{{ manual_num }}</p>
                     </div>
                     <div class="col-lg-2">
-                        <p>داوری:</p>
+                        <p>رزومه:</p>
                     </div>
                     <div class="col-lg-1">
-                        <p>{{ judge_num }}</p>
+                        <p>{{ resume_num }}</p>
                     </div>
                 </div>
             </div>
@@ -225,13 +216,13 @@
 						<span aria-hidden="true">&times;</span>
 						<span class="sr-only">بستن</span>
 					</button>
-					<h5 class="modal-title" id="exampleModalLabel">حذف رزومه</h5>
+					<h5 class="modal-title" id="exampleModalLabel">حذف مرکز</h5>
 				</div>
-				<form method="post" id="delete-form" action="{% url 'documents:resume_delete' pk=object.id %}">
+				<form method="post" id="delete-form" action="{% url 'documents:center_delete' pk=object.id %}">
 					{% csrf_token %}
 					<div class="modal-body">
 						<p class="float-right">
-							آیا واقعا می خواهید رزومه
+							آیا واقعا می خواهید مرکز
 							<code>
 								<strong id="delete-name">{{ object.title }}</strong>
 							</code>
@@ -277,7 +268,7 @@
 				url: url,
 				data: form.serialize(), // serializes the form's elements.
 				success: function (data) {
-                    location.replace("{% url 'documents:resume_list' %}");
+                    location.replace("{% url 'documents:center_list' %}");
 				}
 			});
 			e.preventDefault(); // avoid to execute the actual submit of the form.

@@ -36,7 +36,7 @@
             {%  has_perms user 'resume;' as has_resume_perm %}
             <!-- Menu Items -->
         {% if user.is_superuser or has_knowledge_perm %}
-            <li {% if request.resolver_match.view_name == 'documents:article_list' or request.resolver_match.view_name == 'documents:book_list' or request.resolver_match.view_name == 'documents:experience_list' or request.resolver_match.view_name == 'documents:idea_list' or request.resolver_match.view_name == 'documents:thesis_list' or request.resolver_match.view_name == 'documents:seminar_list' or request.resolver_match.view_name == 'documents:manual_list' or request.resolver_match.view_name == 'documents:project_list' or request.resolver_match.view_name == 'documents:visit_list' or request.resolver_match.view_name == 'documents:conference_list'  or request.resolver_match.view_name == 'documents:report_list' %} class="active"{% endif %}>
+            <li {% if request.resolver_match.view_name == 'documents:article_list' or request.resolver_match.view_name == 'documents:center_list' or request.resolver_match.view_name == 'documents:book_list' or request.resolver_match.view_name == 'documents:experience_list' or request.resolver_match.view_name == 'documents:idea_list' or request.resolver_match.view_name == 'documents:thesis_list' or request.resolver_match.view_name == 'documents:seminar_list' or request.resolver_match.view_name == 'documents:manual_list' or request.resolver_match.view_name == 'documents:project_list' or request.resolver_match.view_name == 'documents:visit_list' or request.resolver_match.view_name == 'documents:conference_list'  or request.resolver_match.view_name == 'documents:report_list' %} class="active"{% endif %}>
                 <a href="#"><i class="fa fa-university"></i>
                     <span class="nav-label">مدیریت دانش</span>
                     <span class="fa arrow"></span>
@@ -97,6 +97,11 @@
                     <li {% if request.resolver_match.view_name == 'documents:report_list' %}class="active"{% endif %}>
                         <a href="{% url 'documents:report_list' %}" ><i class="fa fa-file-alt"></i>
                             <span class="nav-label">گزارشات فنی</span>
+                        </a>
+                    </li>
+                    <li {% if request.resolver_match.view_name == 'documents:center_list' %}class="active"{% endif %}>
+                        <a href="{% url 'documents:center_list' %}" ><i class="fa fa-cube"></i>
+                            <span class="nav-label">رزومه مراکز تحقیقاتی</span>
                         </a>
                     </li>
                 </ul>

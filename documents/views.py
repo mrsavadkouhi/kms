@@ -69,6 +69,74 @@ class HomeView(LoginRequiredMixin, TemplateView):
     template_name = 'home.html'
 
 
+class CenterListView(LoginRequiredMixin, ListView):
+    model=Center
+    template_name='center/center_list.html'
+
+
+class CenterCreateView(LoginRequiredMixin, CreateView):
+    model=Center
+    template_name='center/center_form.html'
+    form_class=CenterForm
+    success_url=reverse_lazy('documents:center_list')
+    extra_context={
+        'title': 'create',
+    }
+
+
+class CenterDetailsView(LoginRequiredMixin, DetailView):
+    model=Center
+    template_name='center/center_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['object_list']= []
+        context['article_num']= 0
+        context['book_num']= 0
+        context['idea_num']= 0
+        context['exp_num']= 0
+        context['manual_num']= 0
+        context['seminar_num']= 0
+        context['thesis_num']= 0
+        context['resume_num']= 0
+
+        for item in self.object.center.all():
+            context['object_list'].append(item)
+            if item.type == 'Resume':
+                context['resume_num']+=1
+            if item.type == 'Article':
+                context['article_num']+=1
+            elif item.type == 'Book':
+                context['book_num']+=1
+            elif item.type == 'Idea':
+                context['idea_num']+=1
+            elif item.type == 'Experience':
+                context['exp_num']+=1
+            elif item.type == 'Manual':
+                context['manual_num']+=1
+            elif item.type == 'Seminar':
+                context['seminar_num']+=1
+            elif item.type == 'Thesis':
+                context['thesis_num']+=1
+
+        return context
+
+
+class CenterUpdateForm(LoginRequiredMixin, UpdateView):
+    model=Center
+    template_name='center/center_form.html'
+    form_class=CenterForm
+    success_url=reverse_lazy('documents:center_list')
+    extra_context={
+        'title': 'update',
+    }
+
+
+class CenterDeleteView(LoginRequiredMixin, JSONDeleteView):
+    model=Center
+
+
 class ArticleListView(LoginRequiredMixin, ListView):
     model = Article
     template_name = 'article/article_list.html'
@@ -603,7 +671,24 @@ class ResumeDetailsView(LoginRequiredMixin, DetailView):
             context['object_list'].append((item, 'مقاله', item.published_at))
             context['article_num']+=1
 
+        for item in self.object.idea_judges.all():
+            context['object_list'].append((item, 'داوری', item.presented_at))
+            context['judge_num']+=1
+        for item in self.object.book_judges.all():
+            context['object_list'].append((item, 'داوری', item.published_at))
+            context['judge_num']+=1
+        for item in self.object.experience_judges.all():
+            context['object_list'].append((item, 'داوری', item.presented_at))
+            context['judge_num']+=1
+        for item in self.object.seminar_judges.all():
+            context['object_list'].append((item, 'داوری', item.presented_at))
+            context['judge_num']+=1
+        for item in self.object.article_judges.all():
+            context['object_list'].append((item, 'داوری', item.published_at))
+            context['judge_num']+=1
+
         return context
+
 
 class ResumeUpdateForm(LoginRequiredMixin, UpdateView):
     model = Resume

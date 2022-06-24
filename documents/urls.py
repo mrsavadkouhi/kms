@@ -10,6 +10,12 @@ urlpatterns = [
 
 	path('', HomeView.as_view(), name='home'),
 
+	path('center/list', CenterListView.as_view(), name='center_list'),
+	path('center/add', CenterCreateView.as_view(), name='center_create'),
+	path('center/<pk>', CenterDetailsView.as_view(), name='center_details'),
+	path('center/edit/<pk>', CenterUpdateForm.as_view(), name='center_update'),
+	path('center/delete/<pk>', CenterDeleteView.as_view(), name='center_delete'),
+
 	path('article/list', ArticleListView.as_view(), name='article_list'),
 	path('article/add', ArticleCreateView.as_view(), name='article_create'),
 	path('article/<pk>', ArticleDetailsView.as_view(), name='article_details'),

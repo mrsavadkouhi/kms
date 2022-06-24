@@ -23,6 +23,12 @@ class DocumentAttachmentForm(BSModalModelForm):
         return self.instance
 
 
+class CenterForm(forms.ModelForm):
+    class Meta:
+        model = Center
+        fields = '__all__'
+
+
 class ResumeForm(forms.ModelForm):
     class Meta:
         model = Resume
