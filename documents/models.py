@@ -34,6 +34,7 @@ DOCUMENT_TYPES = [
     ('Journal', 'فصلنامه'),
     ('Future', 'آینده پژوهی'),
     ('CoWork', 'همکاری'),
+    ('Order', 'حکم'),
 ]
 
 
@@ -87,6 +88,11 @@ class Resume(Document):
     entrance_year = models.IntegerField()
     measure = models.CharField(max_length=255)
     degree = models.CharField(max_length=255)
+
+
+class Order(Document):
+    receiver = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='order_receiver')
+    issued_at = models.DateTimeField()
 
 
 ARTICLE_PUBLISH_TYPES = [

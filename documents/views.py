@@ -305,6 +305,52 @@ class ExperienceDeleteView(LoginRequiredMixin, JSONDeleteView):
     model = Experience
 
 
+class OrderListView(LoginRequiredMixin, ListView):
+    model = Order
+    template_name = 'order/order_list.html'
+
+
+class OrderCreateView(LoginRequiredMixin, CreateView):
+    model = Order
+    template_name = 'order/order_form.html'
+    form_class = OrderForm
+    success_url = reverse_lazy('documents:order_list')
+    extra_context = {
+        'title': 'create',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['resumes'] = Document.objects.filter(type="Resume")
+        context['centers']= Center.objects.all()
+        return context
+
+
+class OrderDetailsView(LoginRequiredMixin, DetailView):
+    model = Order
+    template_name = 'order/order_detail.html'
+
+
+class OrderUpdateForm(LoginRequiredMixin, UpdateView):
+    model = Order
+    template_name = 'order/order_form.html'
+    form_class = OrderForm
+    success_url = reverse_lazy('documents:order_list')
+    extra_context = {
+        'title': 'update',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['resumes'] = Document.objects.filter(type="Resume")
+        context['centers']= Center.objects.all()
+        return context
+
+
+class OrderDeleteView(LoginRequiredMixin, JSONDeleteView):
+    model = Order
+
+
 class IdeaListView(LoginRequiredMixin, ListView):
     model = Idea
     template_name = 'idea/idea_list.html'

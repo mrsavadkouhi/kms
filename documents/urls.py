@@ -94,6 +94,12 @@ urlpatterns = [
 	path('manual/edit/<pk>', ManualUpdateForm.as_view(), name='manual_update'),
 	path('manual/delete/<pk>', ManualDeleteView.as_view(), name='manual_delete'),
 
+	path('order/list', OrderListView.as_view(), name='order_list'),
+	path('order/add', OrderCreateView.as_view(), name='order_create'),
+	path('order/<pk>', OrderDetailsView.as_view(), name='order_details'),
+	path('order/edit/<pk>', OrderUpdateForm.as_view(), name='order_update'),
+	path('order/delete/<pk>', OrderDeleteView.as_view(), name='order_delete'),
+
 	path('journal/list', JournalListView.as_view(), name='journal_list'),
 	path('journal/add', JournalCreateView.as_view(), name='journal_create'),
 	path('journal/<pk>', JournalDetailsView.as_view(), name='journal_details'),
