@@ -18,7 +18,7 @@
 
 {% endblock %}
 
-{% block head_title %}{% if title == 'update' %}جزئیات رزومه{% else %}ایجاد رزومه{% endif %}{% endblock %}
+{% block head_title %}{% if title == 'update' %}جزئیات اختراع{% else %}ایجاد اختراع{% endif %}{% endblock %}
 
 
 {% block title-breadcrumb %}
@@ -27,16 +27,16 @@
     <br>
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item">
-				<a>مدیریت دانش</a>
+				<a>نخبگان آموزش و امور محققین</a>
 			</li>
 			<li class="breadcrumb-item">
-                <a href="{% url 'documents:resume_list' %}" >لیست رزومه ها</a>
+                <a href="{% url 'documents:invention_list' %}" >لیست ثبت اختراع</a>
 			</li>
 			<li class="breadcrumb-item active">
                 {% if title == 'update' %}
-                    <a href="{% url 'documents:resume_update' object.id %}"><strong>ویرایش {{ object.title }}</strong></a>
+                    <a href="{% url 'documents:invention_update' object.id %}"><strong>ویرایش {{ object.title }}</strong></a>
                 {% else %}
-                    <a href="{% url 'documents:resume_create' %}"><strong>افزودن رزومه جدید</strong></a>
+                    <a href="{% url 'documents:invention_create' %}"><strong>افزودن اختراع جدید</strong></a>
                 {% endif %}
 			</li>
 		</ol>
@@ -73,68 +73,59 @@
             {% csrf_token %}
             <div class="col-lg-3 text-center">
                 <div><br></div>
-                <i class="fa fa-user-circle fa-10x"></i>
+                <i class="fa fa-file-alt fa-10x"></i>
                 <h1><strong>مشخصات</strong></h1>
             </div>
             <div class="card col-lg-9">
                 <div><br></div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="title_label">نام و نام خانوادگی: </span>
+                    <span class="input-group-text required" id="title_label">عنوان: </span>
                   </div>
                   <input type="text" class="form-control" value="{{ object.title }}" name="title" aria-describedby="name_label">
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="organization_code_label">شناسه پاسداری: </span>
+                    <span class="input-group-text required" id="organization_code_label">عنوان پروژه: </span>
                   </div>
-                  <input type="text" class="form-control" value="{{ object.organization_code }}" name="organization_code" aria-describedby="organization_code_label">
+                  <input type="text" class="form-control" value="" name="project_title" id="project_title" aria-describedby="organization_code_label">
+                </div>
+                <div class="input-group mb-2">
+                  <div class="input-group-append">
+                    <span class="input-group-text required" id="organization_code_label">شماره اظهار نامه: </span>
+                  </div>
+                  <input type="text" class="form-control" value="" name="organization_code" id="organization_code" aria-describedby="organization_code_label">
                 </div>
                 <div class="input-group mb-2" hidden>
                   <div class="input-group-append">
                     <span class="input-group-text required" id="type_label">نوع: </span>
                   </div>
-                  <input type="text" class="form-control" value="Resume" name="type" aria-describedby="type_label" readonly>
+                  <input type="text" class="form-control" value="Invention" name="type" aria-describedby="type_label" readonly>
                 </div>
-            <div class="input-group mb-2">
+                <div class="input-group mb-2">
                     <div class="input-group-append">
                         <span class="input-group-text" id="description_label">توضیحات: </span>
                     </div>
                     <textarea name="description" type="text" class="form-control" id="description" aria-describedby="description_label" >{{ object.description }}</textarea>
                 </div>
-                <div class="input-group mb-2" hidden>
-                  <div class="input-group-append">
-                    <span class="input-group-text required" id="field_label">حوزه: </span>
-                  </div>
-                  <input type="text" class="form-control" value="No Field" name="field" aria-describedby="field_label" readonly>
-                </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="entrance_year_label">سال ورود به سپاه: </span>
+                    <span class="input-group-text required" id="producer_label">محققین: </span>
                   </div>
-                  <input type="number" class="form-control" value="{{ object.entrance_year }}" name="entrance_year" aria-describedby="entrance_year_label">
-                </div>
-                <div class="input-group mb-2">
-                  <div class="input-group-append">
-                    <span class="input-group-text required" id="measure_label">رشته تحصیلی: </span>
-                  </div>
-                  <input type="text" class="form-control" value="{{ object.measure }}" name="measure" aria-describedby="measure_label">
-                </div>
-                <div class="input-group mb-2">
-                  <div class="input-group-append">
-                    <span class="input-group-text required" id="degree_label">مدرک تحصیلی: </span>
-                  </div>
-                  <input type="text" class="form-control" value="{{ object.degree }}" name="degree" aria-describedby="degree_label">
-                </div>
-                <div class="input-group mb-2">
-                  <div class="input-group-append">
-                    <span class="input-group-text required" id="center_label">کاربر: </span>
-                  </div>
-                    <select name="profile" id="profile" class="select2 form-control">
-                        {% for obj in profiles %}
-                            <option value="{{ obj.id }}">{{ obj.user.first_name }} {{ obj.user.last_name }}</option>
+                    <select name="producers" id="producers" class="select2 form-control">
+                        {% for obj in resumes %}
+                            <option value="{{ obj.id }}">{{ obj.title }}-{{ obj.organization_code }}</option>
                         {% endfor %}
                     </select>
+                </div>
+                <div class="input-group mb-2">
+                    <div class="input-group-append">
+                    <span class="input-group-text required" id="published_at_label">تاریخ ثبت: </span>
+                    </div>
+                    <input type="datetime" id="datepicker" class="form-control" name="published_at" aria-describedby="published_at_label">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-calendar fa-2x"></i></span>
+                    </div>
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
@@ -142,7 +133,7 @@
                   </div>
                     <select name="center" id="center" class="select2 form-control">
                         {% for obj in centers %}
-                            <option value="{{ obj.id  }}">{{ obj.title }}</option>
+                            <option value="{{ obj.id }}">{{ obj.title }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -163,13 +154,13 @@
 						<span aria-hidden="true">&times;</span>
 						<span class="sr-only">بستن</span>
 					</button>
-					<h5 class="modal-title" id="exampleModalLabel">حذف رزومه</h5>
+					<h5 class="modal-title" id="exampleModalLabel">حذف اختراع</h5>
 				</div>
-				<form method="post" id="delete-form" {% if title == 'update' %} action="{% url 'documents:resume_delete' pk=object.id %}" {% endif %}>
+				<form method="post" id="delete-form" {% if title == 'update' %} action="{% url 'documents:invention_delete' pk=object.id %}" {% endif %}>
 					{% csrf_token %}
 					<div class="modal-body">
 						<p class="float-right">
-							آیا واقعا می خواهید رزومه
+							آیا واقعا می خواهید اختراع
 							<code>
 								<strong id="delete-name">{{ object.title }}</strong>
 							</code>
@@ -189,35 +180,22 @@
 
 {% block scripts %}
 	<script>
-        var producer = $("#producer").select2({
-                theme: 'bootstrap4',
+        var producers = $("#producers").select2({
+                    theme: 'bootstrap4',
+                    multiple: true,
+                    placeholder: "نویسنده ها",
+                    allowClear: true
         });
-        producer.val("{{ object.producer.id }}").trigger("change");
-
-        var field = $("#field").select2({
-                theme: 'bootstrap4',
-        });
-        field.val("{{ object.field }}").trigger("change");
-
-        var type = $("#type").select2({
-                theme: 'bootstrap4',
-        });
-        type.val("{{ object.publish_type }}").trigger("change");
-
-        var level = $("#level").select2({
-                theme: 'bootstrap4',
-        });
-        level.val("{{ object.publish_level }}").trigger("change");
+        vals = [];
+        {% for obj in object.producers.all %}
+            vals.push("{{ obj.id }}");
+        {% endfor %}
+        producers.val(vals).trigger("change");
 
         var center = $("#center").select2({
                 theme: 'bootstrap4',
         });
         center.val("{{ object.center.id  }}").trigger("change");
-
-        var profile = $("#profile").select2({
-                theme: 'bootstrap4',
-        });
-        profile.val("{{ object.profile }}").trigger("change");
 
         var datepickeroption = {
             initialValueType: 'gregorian',
@@ -262,7 +240,7 @@
         };
 
         var datepicker = $("#datepicker").persianDatepicker(datepickeroption);
-        $('#datepicker').val('{{ object.published_at | j_format_date:"%Y-%m-%d %H:%M" }}');
+        $('#datepicker').val('{{ object.registered_at | j_format_date:"%Y-%m-%d %H:%M" }}');
 
          $('#ar-form').submit(function () {
 
@@ -283,7 +261,7 @@
 				url: url,
 				data: form.serialize(), // serializes the form's elements.
 				success: function (data) {
-                    location.replace("{% url 'documents:resume_list' %}");
+                    location.replace("{% url 'documents:invention_list' %}");
 				}
 			});
 			e.preventDefault(); // avoid to execute the actual submit of the form.

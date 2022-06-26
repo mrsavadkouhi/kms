@@ -35,6 +35,8 @@ DOCUMENT_TYPES = [
     ('Future', 'آینده پژوهی'),
     ('CoWork', 'همکاری'),
     ('Order', 'حکم'),
+    ('Invention', 'ثبت اختراع'),
+    ('Assessment', 'ارزیابی'),
 ]
 
 
@@ -97,8 +99,8 @@ class Order(Document):
 
 class Invention(Document):
     producers = models.ManyToManyField(to=Resume, related_name='invention_producers')
-    key_words = models.TextField()
     registered_at = models.DateTimeField()
+    project_title = models.CharField(max_length=255)
 
 
 class Assessment(Document):
