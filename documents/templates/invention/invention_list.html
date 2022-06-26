@@ -21,7 +21,7 @@
 
 	<div class="col-md-2">
 		<div class="title-action float-right">
-            <a href="{% url 'documents:invention_create' %}" class="btn btn-outline-primary"><i class="fa small fa-plus"></i> <i class="fa fa-file-alt"></i> افزودن اختراع جدید</a>
+            <a href="{% url 'documents:invention_create' %}" class="btn btn-outline-primary"><i class="fa small fa-plus"></i> <i class="fa fa-bolt"></i> افزودن اختراع جدید</a>
 		</div>
 	</div>
 {% endblock %}
@@ -90,13 +90,8 @@
 							<td class="align-middle text-center">{{ obj.project_title }}</td>
 							<td class="align-middle text-center">{{ obj.organization_code }}</td>
 							<td class="align-middle text-center">
-                                {% for obj in object.producers.all %}
-                                    {{ obj.title }}-{{ obj.organization_code }},
-                                {% endfor %}
-                            </td>
-                            <td class="align-middle text-center">
-                                {% for obj in object.judges.all %}
-                                    {{ obj.title }}-{{ obj.organization_code }},
+                                {% for o in obj.producers.all %}
+                                    {{ o.title }}-{{ o.organization_code }},
                                 {% endfor %}
                             </td>
 {#							<td class="align-middle text-center">{{ obj.producer.organization_code }}</td>#}

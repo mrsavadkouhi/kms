@@ -68,7 +68,7 @@ class Document(PolymorphicModel):
     title = models.CharField(max_length=255)
     organization_code = models.CharField(max_length=255, null=True, blank=True)
     center = models.ForeignKey(to=Center, on_delete=models.PROTECT, related_name='center')
-    field = models.CharField(max_length=255)
+    field = models.CharField(max_length=255,null=True, blank=True)
     type = models.CharField(max_length=255, choices=DOCUMENT_TYPES)
     description = models.TextField(null=True, blank=True)
 
