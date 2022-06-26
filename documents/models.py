@@ -65,7 +65,7 @@ class Center(models.Model):
 
 
 class Document(PolymorphicModel):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255,null=True, blank=True)
     organization_code = models.CharField(max_length=255, null=True, blank=True)
     center = models.ForeignKey(to=Center, on_delete=models.PROTECT, related_name='center')
     field = models.CharField(max_length=255,null=True, blank=True)
