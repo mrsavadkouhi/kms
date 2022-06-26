@@ -21,8 +21,11 @@
 
 	<div class="col-md-2">
 		<div class="title-action float-right">
-            <a href="{% url 'documents:company_create' %}" class="btn btn-outline-primary"><i class="fa small fa-plus"></i> <i class="fa fa-copyright"></i> افزودن شرکت جدید</a>
-		</div>
+            <div class="btn-group">
+                <a href="{% url 'documents:company_create' %}" class="btn btn-outline-primary"><i class="fa small fa-plus"></i> <i class="fa fa-copyright"></i> افزودن شرکت جدید</a>
+		<button class="btn btn-lg btn-outline-danger"><i class="fa fa-print"></i> خروجی PDF</button>
+            </div>
+            </div>
 	</div>
 {% endblock %}
 
