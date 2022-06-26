@@ -29,6 +29,18 @@ class OrderForm(forms.ModelForm):
         fields = '__all__'
 
 
+class InventionForm(forms.ModelForm):
+    class Meta:
+        model = Invention
+        fields = '__all__'
+
+
+class AssessmentForm(forms.ModelForm):
+    class Meta:
+        model = Assessment
+        fields = '__all__'
+
+
 class CenterForm(forms.ModelForm):
     class Meta:
         model = Center

@@ -66,9 +66,9 @@
         {% if user.is_superuser or has_resume_perm %}
             <div class="col-lg-3 text-center" >
                 <div class="text-center">
-                    <a href="{% url 'documents:resume_list' %}"><img src="{% static 'img/learning.png' %}" style="height: 250px; alignment: center""/></a>
+                    <a href="{% url 'documents:assessment_list' %}"><img src="{% static 'img/learning.png' %}" style="height: 250px; alignment: center""/></a>
                 </div>
-                <a href="{% url 'documents:resume_list' %}"><h3>نخبگان آموزش و امور محققین</h3></a>
+                <a href="{% url 'documents:assessment_list' %}"><h3>نخبگان آموزش و امور محققین</h3></a>
             </div>
         {% endif %}
             <div class="col-lg-2">

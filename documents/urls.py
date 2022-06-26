@@ -120,6 +120,18 @@ urlpatterns = [
 	path('cowork/edit/<pk>', CoWorkUpdateForm.as_view(), name='cowork_update'),
 	path('cowork/delete/<pk>', CoWorkDeleteView.as_view(), name='cowork_delete'),
 
+	path('invention/list', InventionListView.as_view(), name='invention_list'),
+	path('invention/add', InventionCreateView.as_view(), name='invention_create'),
+	path('invention/<pk>', InventionDetailsView.as_view(), name='invention_details'),
+	path('invention/edit/<pk>', InventionUpdateForm.as_view(), name='invention_update'),
+	path('invention/delete/<pk>', InventionDeleteView.as_view(), name='invention_delete'),
+
+	path('assessment/list', AssessmentListView.as_view(), name='assessment_list'),
+	path('assessment/add', AssessmentCreateView.as_view(), name='assessment_create'),
+	path('assessment/<pk>', AssessmentDetailsView.as_view(), name='assessment_details'),
+	path('assessment/edit/<pk>', AssessmentUpdateForm.as_view(), name='assessment_update'),
+	path('assessment/delete/<pk>', AssessmentDeleteView.as_view(), name='assessment_delete'),
+
 	path('core/list', CoreListView.as_view(), name='core_list'),
 	path('core/add', CoreCreateView.as_view(), name='core_create'),
 	path('core/<pk>', CoreDetailsView.as_view(), name='core_details'),

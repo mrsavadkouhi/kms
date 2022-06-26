@@ -95,6 +95,24 @@ class Order(Document):
     issued_at = models.DateTimeField()
 
 
+class Invention(Document):
+    producers = models.ManyToManyField(to=Resume, related_name='invention_producers')
+    key_words = models.TextField()
+    registered_at = models.DateTimeField()
+
+
+class Assessment(Document):
+    producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='assessment_resume')
+    elite_received_at = models.DateTimeField()
+    order_issued_at = models.DateTimeField()
+    issue_code = models.CharField(max_length=255)
+    scientific_rank = models.CharField(max_length=255)
+    father = models.CharField(max_length=255)
+    profile_type = models.CharField(max_length=255)
+    necessary_condition = models.TextField()
+    sufficient_condition = models.TextField()
+
+
 ARTICLE_PUBLISH_TYPES = [
     ('Paper', 'مجله'),
     ('Conference', 'کنفرانس'),

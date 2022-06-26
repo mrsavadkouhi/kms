@@ -351,6 +351,98 @@ class OrderDeleteView(LoginRequiredMixin, JSONDeleteView):
     model = Order
 
 
+class InventionListView(LoginRequiredMixin, ListView):
+    model = Invention
+    template_name = 'invention/invention_list.html'
+
+
+class InventionCreateView(LoginRequiredMixin, CreateView):
+    model = Invention
+    template_name = 'invention/invention_form.html'
+    form_class = InventionForm
+    success_url = reverse_lazy('documents:invention_list')
+    extra_context = {
+        'title': 'create',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['resumes'] = Document.objects.filter(type="Resume")
+        context['centers']= Center.objects.all()
+        return context
+
+
+class InventionDetailsView(LoginRequiredMixin, DetailView):
+    model = Invention
+    template_name = 'invention/invention_detail.html'
+
+
+class InventionUpdateForm(LoginRequiredMixin, UpdateView):
+    model = Invention
+    template_name = 'invention/invention_form.html'
+    form_class = InventionForm
+    success_url = reverse_lazy('documents:invention_list')
+    extra_context = {
+        'title': 'update',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['resumes'] = Document.objects.filter(type="Resume")
+        context['centers']= Center.objects.all()
+        return context
+
+
+class InventionDeleteView(LoginRequiredMixin, JSONDeleteView):
+    model = Invention
+
+
+class AssessmentListView(LoginRequiredMixin, ListView):
+    model = Assessment
+    template_name = 'assessment/assessment_list.html'
+
+
+class AssessmentCreateView(LoginRequiredMixin, CreateView):
+    model = Assessment
+    template_name = 'assessment/assessment_form.html'
+    form_class = AssessmentForm
+    success_url = reverse_lazy('documents:assessment_list')
+    extra_context = {
+        'title': 'create',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['resumes'] = Document.objects.filter(type="Resume")
+        context['centers']= Center.objects.all()
+        return context
+
+
+class AssessmentDetailsView(LoginRequiredMixin, DetailView):
+    model = Assessment
+    template_name = 'assessment/assessment_detail.html'
+
+
+class AssessmentUpdateForm(LoginRequiredMixin, UpdateView):
+    model = Assessment
+    template_name = 'assessment/assessment_form.html'
+    form_class = AssessmentForm
+    success_url = reverse_lazy('documents:assessment_list')
+    extra_context = {
+        'title': 'update',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['resumes'] = Document.objects.filter(type="Resume")
+        context['centers']= Center.objects.all()
+        return context
+
+
+class AssessmentDeleteView(LoginRequiredMixin, JSONDeleteView):
+    model = Assessment
+
+
 class IdeaListView(LoginRequiredMixin, ListView):
     model = Idea
     template_name = 'idea/idea_list.html'

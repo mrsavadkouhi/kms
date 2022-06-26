@@ -168,19 +168,19 @@
             </li>
         {% endif %}
         {% if user.is_superuser or has_resume_perm %}
-            <li {% if request.resolver_match.view_name == 'documents:resume_list' or request.resolver_match.view_name == 'documents:workshop_list' %}class="active"{% endif %}>
+            <li {% if request.resolver_match.view_name == 'documents:assessment_list' or request.resolver_match.view_name == 'documents:invenstion_list' or request.resolver_match.view_name == 'documents:workshop_list' %}class="active"{% endif %}>
                 <a href="#"><i class="fa fa-users"></i>
                     <span class="nav-label">نخبگان،آموزش،محققین</span>
                     <span class="fa arrow"></span>
                 </a>
                 <ul class="nav nav-second-level collapse">
-                    <li {% if request.resolver_match.view_name == 'documents:workshop_list' %}class="active"{% endif %}>
-                        <a href="{% url 'documents:workshop_list' %}" ><i class="fa fa-users-class"></i>
+                    <li {% if request.resolver_match.view_name == 'documents:invenstion_list' %}class="active"{% endif %}>
+                        <a href="{% url 'documents:invenstion_list' %}" ><i class="fa fa-users-class"></i>
                             <span class="nav-label">ثبت اختراع</span>
                         </a>
                     </li>
-                    <li {% if request.resolver_match.view_name == 'documents:workshop_list' %}class="active"{% endif %}>
-                        <a href="{% url 'documents:workshop_list' %}" ><i class="fa fa-users-class"></i>
+                    <li {% if request.resolver_match.view_name == 'documents:assessment_list' %}class="active"{% endif %}>
+                        <a href="{% url 'documents:assessment_list' %}" ><i class="fa fa-users-class"></i>
                             <span class="nav-label">نظام ارزیابی</span>
                         </a>
                     </li>
