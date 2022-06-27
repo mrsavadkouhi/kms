@@ -354,6 +354,22 @@ class CenterData(PolymorphicModel):
     created_at = models.DateTimeField(auto_now_add=True)
     attachments = models.ManyToManyField(DocumentAttachment, blank=True, related_name='center_attachments')
 
+    @property
+    def pre_dev_level(self):
+        return self.projects.filter(level='predev').count()
+
+    @property
+    def first_level(self):
+        return self.projects.filter(level='first').count()
+
+    @property
+    def second_level(self):
+        return self.projects.filter(level='second').count()
+
+    @property
+    def third_level(self):
+        return self.projects.filter(level='third').count()
+
 
 class Core(CenterData):
     pass
