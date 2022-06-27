@@ -52,6 +52,60 @@
 				<h3><strong>مدرک: </strong>{{ object.degree }}</h3>
 				<h3><strong>مرکز تحقیقاتی: </strong>{{ object.center.title }}</h3>
 				<div><br></div>
+                <h3><strong>آمار کلی تعداد</strong></h3>
+                <div class="row">
+                    <div class="col-lg-2">
+                        <h3>مقاله:</h3>
+                    </div>
+                    <div class="col-lg-1">
+                        <h3>{{ article_num }}</h3>
+                    </div>
+                    <div class="col-lg-2">
+                        <h3>کتاب:</h3>
+                    </div>
+                    <div class="col-lg-1">
+                        <h3>{{ book_num }}</h3>
+                    </div>
+                    <div class="col-lg-2">
+                        <h3>سمینار:</h3>
+                    </div>
+                    <div class="col-lg-1">
+                        <h3>{{ seminar_num }}</h3>
+                    </div>
+                    <div class="col-lg-2">
+                        <h3>پایان نامه:</h3>
+                    </div>
+                    <div class="col-lg-1">
+                        <h3>{{ thesis_num }}</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2">
+                        <h3>ایده:</h3>
+                    </div>
+                    <div class="col-lg-1">
+                        <h3>{{ idea_num }}</h3>
+                    </div>
+                    <div class="col-lg-2">
+                        <h3>تجربه:</h3>
+                    </div>
+                    <div class="col-lg-1">
+                        <h3>{{ exp_num }}</h3>
+                    </div>
+                    <div class="col-lg-2">
+                        <h3>دستورالعمل:</h3>
+                    </div>
+                    <div class="col-lg-1">
+                        <h3>{{ manual_num }}</h3>
+                    </div>
+                    <div class="col-lg-2">
+                        <h3>داوری:</h3>
+                    </div>
+                    <div class="col-lg-1">
+                        <h3>{{ judge_num }}</h3>
+                    </div>
+                </div>
+                <div><br></div>
 			</div>
 		</div>
         <div class="col-lg-12">
@@ -89,59 +143,7 @@
                         </tbody>
                     </table>
                 </div>
-                <h2><strong>آمار کلی تعداد</strong></h2>
-                <div class="row">
-                    <div class="col-lg-2">
-                        <p>مقاله:</p>
-                    </div>
-                    <div class="col-lg-1">
-                        <p>{{ article_num }}</p>
-                    </div>
-                    <div class="col-lg-2">
-                        <p>کتاب:</p>
-                    </div>
-                    <div class="col-lg-1">
-                        <p>{{ book_num }}</p>
-                    </div>
-                    <div class="col-lg-2">
-                        <p>سمینار:</p>
-                    </div>
-                    <div class="col-lg-1">
-                        <p>{{ seminar_num }}</p>
-                    </div>
-                    <div class="col-lg-2">
-                        <p>پایان نامه:</p>
-                    </div>
-                    <div class="col-lg-1">
-                        <p>{{ thesis_num }}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-2">
-                        <p>ایده:</p>
-                    </div>
-                    <div class="col-lg-1">
-                        <p>{{ idea_num }}</p>
-                    </div>
-                    <div class="col-lg-2">
-                        <p>تجربه:</p>
-                    </div>
-                    <div class="col-lg-1">
-                        <p>{{ exp_num }}</p>
-                    </div>
-                    <div class="col-lg-2">
-                        <p>دستورالعمل:</p>
-                    </div>
-                    <div class="col-lg-1">
-                        <p>{{ manual_num }}</p>
-                    </div>
-                    <div class="col-lg-2">
-                        <p>داوری:</p>
-                    </div>
-                    <div class="col-lg-1">
-                        <p>{{ judge_num }}</p>
-                    </div>
-                </div>
+                <div><br></div>
             </div>
 		</div>
 		<div class="col-lg-12">
@@ -265,7 +267,59 @@
         table = $('.dataTables-example').DataTable({
 				pageLength: 25,
 				responsive: true,
-				dom: 'lTfgitp',
+
+				dom: 'lTfgitp<"float-right"B>',
+                buttons: [
+					{
+						extend: 'print',
+                        text: '<button class="btn btn-lg btn-outline-danger"><i class="fa fa-print"></i> خروجی PDF</button>',
+						className: 'bg-transparent',
+                        title: '',
+						footer: true,
+						exportOptions: {
+							columns: [0, 1, 2, 3, 4],
+							{#stripHtml: true#}
+						},
+                        customize: function (win) {
+							$(win.document.body).addClass('white-bg');
+							$(win.document.body).find('thead')
+								.css('color', 'black')
+								.css('font-size', '10px')
+								.css('font-family', 'Vazir')
+								.prepend("<tr><th colspan='12''>" +
+									"<img src='http://127.0.0.1:8000/static/img/logo.png' class='float-left obj-fit-contain' style='position:relative;width:5%' />" +
+									"<img src='http://127.0.0.1:8000/static/img/sepah_balck.png' class='float-right obj-fit-contain' style='position:relative;width:5%' />" +
+									"<h2 class='text-center'>رزومه دانشی محقق</h2>" +
+									"<br>" +
+                                    "<h3><strong>نام و نام خانوادگی: </strong>{{ object.title }}</h3>" +
+                                    "<h3><strong>شناسه پاسداری: </strong>{{ object.organization_code }}</h3>" +
+                                    "<h3><strong>توضیحات: </strong>{{ object.description }}</h3>" +
+                                    "<h3><strong>سال ورود: </strong>{{ object.entrance_year }}</h3>" +
+                                    "<h3><strong>رشته: </strong>{{ object.measure }}</h3>" +
+                                    "<h3><strong>مدرک: </strong>{{ object.degree }}</h3>" +
+                                    "<h3><strong>مرکز تحقیقاتی: </strong>{{ object.center.title }}</h3>" +
+                                    "<br>" +
+                                    "<h3><strong>آمار کلی تعداد</strong></h3>" +
+                                    "<h3>مقاله: {{ article_num }} , کتاب: {{ book_num }} , سمینار: {{ seminar_num }} , پایان نامه: {{ thesis_num }}</h3>" +
+                                    "<h3>ایده: {{ idea_num }} , تجربه: {{ exp_num }} , دستورالعمل: {{ manual_num }} , داوری: {{ judge_num }}</h3>" +
+                                    "<br>" +
+                                    "</th>" +
+									"</tr>");
+
+							$(win.document.body).find('table')
+								.addClass('compact')
+								.css('font-size', 'inherit')
+								.css('color', 'black')
+								.css('border-color', 'transparent')
+								.css('font-family', 'Vazir');
+
+							$(win.document.body).find('td:eq(0)')
+								.css('width', '5%');
+							$(win.document.body).find('td:nth-child(odd)')
+								.css('background-color', '#f2f2f2');
+						}
+					}
+				]
 			});
 		// this is the id of the form
 		$("#delete-form").submit(function (e) {

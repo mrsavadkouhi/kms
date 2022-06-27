@@ -119,13 +119,13 @@
 							<td class="align-middle text-center">{{ obj.field }}</td>
 							<td class="align-middle text-center">{{ obj.key_words }}</td>
 							<td class="align-middle text-center">
-                                {% for obj in object.producers.all %}
-                                    {{ obj.title }}-{{ obj.organization_code }},
+                                {% for o in obj.producers.all %}
+                                    {{ o.title }}-{{ o.organization_code }},
                                 {% endfor %}
                             </td>
                             <td class="align-middle text-center">
-                                {% for obj in object.judges.all %}
-                                    {{ obj.title }}-{{ obj.organization_code }},
+                                {% for o in object.judges.all %}
+                                    {{ o.title }}-{{ o.organization_code }},
                                 {% endfor %}
                             </td>
 {#							<td class="align-middle text-center">{{ obj.producer.organization_code }}</td>#}

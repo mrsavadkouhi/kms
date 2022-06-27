@@ -99,8 +99,8 @@
 							<td class="align-middle text-center">{{ obj.producer.degree }}</td>
 							<td class="align-middle text-center">{{ obj.presented_at | j_format_date:"%Y/%m/%d" }}</td>
 							<td class="align-middle text-center">
-                            {% for obj in object.judges.all %}
-                                {{ obj.title }}-{{ obj.organization_code }},
+                            {% for o in obj.judges.all %}
+                                {{ o.title }}-{{ o.organization_code }},
                             {% endfor %}
                             </td>
 							<td class="align-middle text-center">{{ obj.assessment_result }}</td>
