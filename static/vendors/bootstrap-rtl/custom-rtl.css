@@ -4,6 +4,11 @@
 }
 
 @font-face {
+	font-family: "B Nazanin";
+	src: url('../bootstrap-rtl/fonts/BNazanin/fonts/BNazanin.woff2') format('woff2');
+}
+
+@font-face {
 	font-family: IranSans;
 	font-weight: bold;
 	src: url('../bootstrap-rtl/fonts/IranSans/fonts/IRANSansWeb.woff2') format('woff2');
@@ -27,7 +32,7 @@
 	-webkit-border-radius: 4px;
 	border-radius: 4px;
 	color: #fff;
-	font: 12px/18px VazirFD;
+	font: 12px/18px "B Nazanin";
 	margin-right: 20px;
 	margin-top: -21px;
 	padding: 4px 8px;
@@ -52,7 +57,7 @@
 	background-color: #919187;
 	border-left: 1px solid #AAA;
 	color: #FFF;
-	font: 13px/19px VazirFD !important;
+	font: 13px/19px "B Nazanin" !important;
 	line-height: 28px;
 	text-decoration: none;
 	padding-left: 10px;
@@ -61,10 +66,10 @@
 }
 
 .leaflet-contextmenu {
-	font-family: VazirFD !important;
+	font-family: "B Nazanin" !important;
 }
 
 .per {
-	font-family: VazirFD !important;
+	font-family: "B Nazanin" !important;
 
 }
