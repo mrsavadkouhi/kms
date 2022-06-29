@@ -106,6 +106,24 @@
                   <div class="input-group-append">
                     <span class="input-group-text required" id="field_label">موضوع: </span>
                   </div>
+                    <select name="center" id="center" class="select2 form-control">
+                        <option value="مقاله">مقاله</option>
+                        <option value="کتاب">کتاب</option>
+                        <option value="تجربه">تجربه</option>
+                        <option value="ایده">ایده</option>
+                        <option value="پایان نامه">پایان نامه</option>
+                        <option value="دستورالعمل">دستورالعمل</option>
+                        <option value="سمینار">سمینار</option>
+                        <option value="کنفرانس">کنفرانس</option>
+                        <option value="بازدید">بازدید</option>
+                        <option value="گزارش">گزارش</option>
+                        <option value="سایر">سایر</option>
+                    </select>
+                </div>
+                <div class="input-group mb-2">
+                  <div class="input-group-append">
+                    <span class="input-group-text required" id="field_label">سایر: </span>
+                  </div>
                     <input type="text" class="form-control" value="{{ object.field }}" name="field" aria-describedby="field_label">
                 </div>
                 <div class="input-group mb-2">

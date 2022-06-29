@@ -95,6 +95,7 @@ class Resume(Document):
 class Order(Document):
     receiver = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='order_receiver')
     issued_at = models.DateTimeField()
+    other=models.CharField(max_length=255, null=True, blank=True)
 
 
 class Invention(Document):
