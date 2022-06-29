@@ -120,7 +120,7 @@
                         <option value="سایر">سایر</option>
                     </select>
                 </div>
-                <div class="input-group mb-2" id="other" hidden>
+                <div class="input-group mb-2" id="other">
                   <div class="input-group-append">
                     <span class="input-group-text required" id="field_label">سایر: </span>
                   </div>
@@ -205,6 +205,15 @@
 
         var field = $("#field").select2({
                 theme: 'bootstrap4',
+        });
+        field.change(function() {
+            var selected_type = $("#field option:selected").val();
+            if(selected_type === 'سایر'){
+                $('#other').show();
+            }
+            else{
+                $('#other').hide();
+            }
         });
         field.val("{{ object.field }}").trigger("change");
 
