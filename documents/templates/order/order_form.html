@@ -106,7 +106,7 @@
                   <div class="input-group-append">
                     <span class="input-group-text required" id="field_label">موضوع: </span>
                   </div>
-                    <select name="center" id="center" class="select2 form-control">
+                    <select name="field" id="field" class="select2 form-control">
                         <option value="مقاله">مقاله</option>
                         <option value="کتاب">کتاب</option>
                         <option value="تجربه">تجربه</option>
@@ -120,11 +120,11 @@
                         <option value="سایر">سایر</option>
                     </select>
                 </div>
-                <div class="input-group mb-2">
+                <div class="input-group mb-2" id="other" hidden>
                   <div class="input-group-append">
                     <span class="input-group-text required" id="field_label">سایر: </span>
                   </div>
-                    <input type="text" class="form-control" value="{{ object.field }}" name="field" aria-describedby="field_label">
+                    <input type="text" class="form-control" value="{{ object.other }}" name="other" aria-describedby="field_label">
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
@@ -202,6 +202,11 @@
                 theme: 'bootstrap4',
         });
         receiver.val("{{ object.receiver.id }}").trigger("change");
+
+        var field = $("#field").select2({
+                theme: 'bootstrap4',
+        });
+        field.val("{{ object.field }}").trigger("change");
 
         var center = $("#center").select2({
                 theme: 'bootstrap4',
