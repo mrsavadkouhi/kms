@@ -147,7 +147,54 @@
 			table = $('.dataTables-example').DataTable({
 				pageLength: 25,
 				responsive: true,
-				dom: 'lTfgitp',
+				dom: 'lTfgitp<"float-right"B>',
+                buttons: [
+					{
+						extend: 'print',
+                        text: '<button class="btn btn-lg btn-outline-danger"><i class="fa fa-print"></i> خروجی PDF</button>',
+						className: 'bg-transparent',
+                        title: '',
+						footer: true,
+						exportOptions: {
+							columns: [0, 1, 2],
+							{#stripHtml: true#}
+						},
+                        customize: function (win) {
+							$(win.document.body).addClass('white-bg');
+							$(win.document.body).find('thead')
+								.css('color', 'black')
+								.css('font-family', 'VazirFD')
+								.prepend("<tr><th colspan='4'>" +
+									"<img src='http://127.0.0.1:8000/static/img/logo.png' class='float-left obj-fit-contain' style='position:relative;width:10%' />" +
+									"<img src='http://127.0.0.1:8000/static/img/sepah_balck.png' class='float-right obj-fit-contain' style='position:relative;width:10%' />" +
+									"<h2 class='text-center'><b>لیست مراکز</b></h2>" +
+									"</th>" +
+									"</tr>");
+                            $(win.document.body).find('tfoot')
+								.css('color', 'black')
+								.css('font-family', 'VazirFD')
+								.empty()
+								.prepend('<tr><th style="background-color:#f2f2f2" colspan="4">' +
+                                    '<br><br><br>' +
+									'<span class="float-right">مدیر دانش ساتخ ندسا</span>' +
+									'</th><tr>');
+
+							$(win.document.body).find('table')
+								.addClass('compact')
+								.css('font-size', 'inherit')
+								.css('color', 'black')
+								.css('border-color', 'transparent')
+								.css('font-family', 'VazirFD');
+
+							$(win.document.body).find('td:eq(0)')
+								.css('width', '5%');
+							$(win.document.body).find('td:eq(7)')
+								.css('width', '15%');
+							$(win.document.body).find('td:nth-child(odd)')
+								.css('background-color', '#f2f2f2');
+						}
+					}
+				]
 			});
 
 		});
