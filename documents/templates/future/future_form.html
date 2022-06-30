@@ -96,12 +96,6 @@
                   </div>
                   <input type="text" class="form-control" value="Future" name="type" aria-describedby="type_label" readonly>
                 </div>
-            <div class="input-group mb-2">
-                    <div class="input-group-append">
-                        <span class="input-group-text" id="description_label">توضیحات: </span>
-                    </div>
-                    <textarea name="description" type="text" class="form-control" id="description" aria-describedby="description_label" >{{ object.description }}</textarea>
-                </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
                     <span class="input-group-text required" id="field_label">حوزه تخصصی: </span>
@@ -128,6 +122,12 @@
                         {% endfor %}
                     </select>
                 </div>
+                <div class="input-group mb-2" id="other">
+                  <div class="input-group-append">
+                    <span class="input-group-text required" id="field_label">سایر: </span>
+                  </div>
+                    <input type="text" class="form-control" value="{{ object.other }}" name="other" aria-describedby="field_label">
+                </div>
                 <div class="input-group mb-2">
                     <div class="input-group-append">
                         <span class="input-group-text required" id="presented_at_label">تاریخ ارائه: </span>
@@ -146,6 +146,13 @@
                             <option value="{{ obj.id  }}">{{ obj.title }}</option>
                         {% endfor %}
                     </select>
+                </div>
+
+            <div class="input-group mb-2">
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="description_label">توضیحات: </span>
+                    </div>
+                    <textarea name="description" type="text" class="form-control" id="description" aria-describedby="description_label" >{{ object.description }}</textarea>
                 </div>
                 <div><br></div>
                 <div class="btn-group float-left">
@@ -197,6 +204,15 @@
 
         var future_types = $("#future_type").select2({
                 theme: 'bootstrap4',
+        });
+        future_types.change(function() {
+            var selected_type = $("#future_type option:selected").val();
+            if(selected_type === 'Other'){
+                $('#other').show();
+            }
+            else{
+                $('#other').hide();
+            }
         });
         future_types.val("{{ object.future_type }}").trigger("change");
 

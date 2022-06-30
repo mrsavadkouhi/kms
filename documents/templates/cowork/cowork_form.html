@@ -118,12 +118,6 @@
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text" id="description_label">توضیحات: </span>
-                  </div>
-                    <textarea type="text" class="form-control" name="description" aria-describedby="description_label">{{ object.description }}</textarea>
-                </div>
-                <div class="input-group mb-2">
-                  <div class="input-group-append">
                     <span class="input-group-text" id="address_label">آدرس: </span>
                   </div>
                     <textarea type="text" class="form-control" name="address" aria-describedby="address_label">{{ object.address }}</textarea>
@@ -143,6 +137,13 @@
                             <option value="{{ obj.id  }}">{{ obj.title }}</option>
                         {% endfor %}
                     </select>
+                </div>
+
+                <div class="input-group mb-2">
+                  <div class="input-group-append">
+                    <span class="input-group-text" id="description_label">توضیحات: </span>
+                  </div>
+                    <textarea type="text" class="form-control" name="description" aria-describedby="description_label">{{ object.description }}</textarea>
                 </div>
                 <div><br></div>
                 <div class="btn-group float-left">

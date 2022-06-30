@@ -131,12 +131,6 @@
 {#                    </select>#}
 {#                </div>#}
                 <div class="input-group mb-2">
-                    <div class="input-group-append">
-                        <span class="input-group-text" id="description_label">توضیحات: </span>
-                    </div>
-                    <textarea name="description" type="text" class="form-control" id="description" aria-describedby="description_label" >{{ object.description }}</textarea>
-                </div>
-                <div class="input-group mb-2">
                   <div class="input-group-append">
                     <span class="input-group-text required" id="meeting_number_label">سال تاسیس: </span>
                   </div>
@@ -147,6 +141,13 @@
                     <span class="input-group-text required" id="meeting_number_label">تعداد اعضا: </span>
                   </div>
                   <input type="number" class="form-control" value="{{ object.number }}" name="number" aria-describedby="meeting_number_label">
+                </div>
+
+                <div class="input-group mb-2">
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="description_label">توضیحات: </span>
+                    </div>
+                    <textarea name="description" type="text" class="form-control" id="description" aria-describedby="description_label" >{{ object.description }}</textarea>
                 </div>
 {#                <div class="input-group mb-2">#}
 {#                  <div class="input-group-append">#}

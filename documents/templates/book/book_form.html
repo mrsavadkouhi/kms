@@ -115,12 +115,6 @@
                   <input type="text" class="form-control" value="Book" name="type" aria-describedby="type_label" readonly>
                 </div>
                 <div class="input-group mb-2">
-                    <div class="input-group-append">
-                        <span class="input-group-text" id="description_label">توضیحات: </span>
-                    </div>
-                    <textarea name="description" type="text" class="form-control" id="description" aria-describedby="description_label" >{{ object.description }}</textarea>
-                </div>
-                <div class="input-group mb-2">
                   <div class="input-group-append">
                     <span class="input-group-text required" id="field_label">حوزه تخصصی: </span>
                   </div>
@@ -172,6 +166,13 @@
                     <span class="input-group-text required" id="assessment_result_label">ارزشیابی: </span>
                   </div>
                   <input type="text" class="form-control" value="{{ object.assessment_result }}" name="assessment_result" aria-describedby="assessment_result_label">
+                </div>
+
+                <div class="input-group mb-2">
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="description_label">توضیحات: </span>
+                    </div>
+                    <textarea name="description" type="text" class="form-control" id="description" aria-describedby="description_label" >{{ object.description }}</textarea>
                 </div>
 {#                <div class="input-group mb-2">#}
 {#                  <div class="input-group-append">#}

@@ -101,6 +101,9 @@
 					{% endfor %}
 
 					</tbody>
+                    <tfoot>
+                        <tr></tr>
+                    </tfoot>
 				</table>
 			</div>
         </div>
@@ -167,21 +170,28 @@
 							$(win.document.body).addClass('white-bg');
 							$(win.document.body).find('thead')
 								.css('color', 'black')
-								.css('font-size', '10px')
-								.css('font-family', 'Vazir')
-								.prepend("<tr><th colspan='12''>" +
+								.css('font-family', 'VazirFD')
+								.prepend("<tr><th colspan='7''>" +
 									"<img src='http://127.0.0.1:8000/static/img/logo.png' class='float-left obj-fit-contain' style='position:relative;width:10%' />" +
 									"<img src='http://127.0.0.1:8000/static/img/sepah_balck.png' class='float-right obj-fit-contain' style='position:relative;width:10%' />" +
 									"<h2 class='text-center'><b>لیست رزومه دانشی محققین</b></h2>" +
 									"</th>" +
 									"</tr>");
+                            $(win.document.body).find('tfoot')
+								.css('color', 'black')
+								.css('font-family', 'VazirFD')
+								.empty()
+								.prepend('<tr><th style="background-color:#f2f2f2" colspan="7">' +
+                                    '<br><br><br>' +
+									'<span class="float-right">مدیر دانش ساتخ ندسا</span>' +
+									'</th><tr>');
 
 							$(win.document.body).find('table')
 								.addClass('compact')
 								.css('font-size', 'inherit')
 								.css('color', 'black')
 								.css('border-color', 'transparent')
-								.css('font-family', 'Vazir');
+								.css('font-family', 'VazirFD');
 
 							$(win.document.body).find('td:eq(0)')
 								.css('width', '5%');

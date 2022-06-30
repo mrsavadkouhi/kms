@@ -23,7 +23,7 @@
 		<div class="title-action float-right">
             <div class="btn-group">
                 <a href="{% url 'documents:tech_create' %}" class="btn btn-outline-primary"><i class="fa small fa-plus"></i> <i class="fa fa-rocket"></i> افزودن واحد فناور جدید</a>
-		<button class="btn btn-lg btn-outline-danger"><i class="fa fa-print"></i> خروجی PDF</button>
+
             </div>
             </div>
 	</div>
@@ -82,7 +82,7 @@
 						<th class="text-center" style="background-color: white">سال تاسیس</th>
 						<th class="text-center" style="background-color: white">حوزه فعالیت</th>
 						<th class="text-center" style="background-color: white">حوزه تخصصی</th>
-						<th class="text-center" style="background-color: white">تعداد اعصا</th>
+						<th class="text-center" style="background-color: white">تعداد اعضا</th>
 						<th class="text-center" style="background-color: white; width: 10%">عملیات</th>
 					</tr>
 					</thead>
@@ -110,6 +110,9 @@
 					{% endfor %}
 
 					</tbody>
+                    <tfoot>
+                        <tr></tr>
+                    </tfoot>
 				</table>
 			</div>
         </div>

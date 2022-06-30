@@ -23,7 +23,7 @@
 		<div class="title-action float-right">
             <div class="btn-group">
                 <a href="{% url 'documents:project_create' %}" class="btn btn-outline-primary"><i class="fa small fa-plus"></i> <i class="fa fa-tasks"></i> افزودن پروژه جدید</a>
-		<button class="btn btn-lg btn-outline-danger"><i class="fa fa-print"></i> خروجی PDF</button>
+
             </div>
             </div>
 	</div>
@@ -81,7 +81,7 @@
 						<th class="text-center" style="background-color: white">مدیر</th>
 						<th class="text-center" style="background-color: white">تاریخ شروع</th>
 						<th class="text-center" style="background-color: white">مدت اجرا</th>
-						<th class="text-center" style="background-color: white">توضیحات</th>
+{#						<th class="text-center" style="background-color: white">توضیحات</th>#}
 						<th class="text-center" style="background-color: white">مرکز تحقیقاتی</th>
 						<th class="text-center" style="background-color: white; width: 10%">عملیات</th>
 					</tr>
@@ -97,7 +97,7 @@
 							<td class="align-middle text-center">{{ obj.manager.title }}</td>
 							<td class="align-middle text-center">{{ obj.finished_at | j_format_date:"%Y/%m/%d" }}</td>
 							<td class="align-middle text-center">{{ obj.duration }}</td>
-							<td class="align-middle text-center">{{ obj.description }}</td>
+{#							<td class="align-middle text-center">{{ obj.description }}</td>#}
 							<td class="align-middle text-center">{{ obj.center.title }}</td>
 							<td class="align-middle text-center">
 								<div class="btn-group">
@@ -110,6 +110,9 @@
 					{% endfor %}
 
 					</tbody>
+                    <tfoot>
+                        <tr></tr>
+                    </tfoot>
 				</table>
 			</div>
         </div>

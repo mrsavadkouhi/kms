@@ -96,12 +96,6 @@
                   </div>
                   <input type="text" class="form-control" value="Order" name="type" aria-describedby="type_label" readonly>
                 </div>
-            <div class="input-group mb-2">
-                    <div class="input-group-append">
-                        <span class="input-group-text" id="description_label">توضیحات: </span>
-                    </div>
-                    <textarea name="description" type="text" class="form-control" id="description" aria-describedby="description_label" >{{ object.description }}</textarea>
-                </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
                     <span class="input-group-text required" id="field_label">موضوع: </span>
@@ -154,6 +148,13 @@
                             <option value="{{ obj.id }}">{{ obj.title }}</option>
                         {% endfor %}
                     </select>
+                </div>
+
+            <div class="input-group mb-2">
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="description_label">توضیحات: </span>
+                    </div>
+                    <textarea name="description" type="text" class="form-control" id="description" aria-describedby="description_label" >{{ object.description }}</textarea>
                 </div>
                 <div><br></div>
                 <div class="btn-group float-left">

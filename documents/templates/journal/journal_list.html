@@ -23,7 +23,7 @@
 		<div class="title-action float-right">
             <div class="btn-group">
                 <a href="{% url 'documents:journal_create' %}" class="btn btn-outline-primary"><i class="fa small fa-plus"></i> <i class="fa fa-file-alt"></i> افزودن فصلنامه جدید</a>
-		<button class="btn btn-lg btn-outline-danger"><i class="fa fa-print"></i> خروجی PDF</button>
+
             </div>
             </div>
 	</div>
@@ -80,8 +80,8 @@
 						<th class="text-center" style="background-color: white">حوزه</th>
 						<th class="text-center" style="background-color: white">تاریخ چاپ</th>
                         <th class="text-center" style="background-color: white">تعداد صفحات</th>
-                        <th class="text-center" style="background-color: white">توضیحات</th>
-						<th class="text-center" style="background-color: white">مرکز تحقیقاتی</th>
+{#                        <th class="text-center" style="background-color: white">توضیحات</th>#}
+{#						<th class="text-center" style="background-color: white">مرکز تحقیقاتی</th>#}
 						<th class="text-center" style="background-color: white; width: 10%">عملیات</th>
 					</tr>
 					</thead>
@@ -95,8 +95,8 @@
 							<td class="align-middle text-center">{{ obj.field }}</td>
 							<td class="align-middle text-center">{{ obj.presented_at | j_format_date:"%Y/%m/%d" }}</td>
 							<td class="align-middle text-center">{{ obj.page_number }}</td>
-							<td class="align-middle text-center">{{ obj.description }}</td>
-							<td class="align-middle text-center">{{ obj.center.title }}</td>
+{#							<td class="align-middle text-center">{{ obj.description }}</td>#}
+{#							<td class="align-middle text-center">{{ obj.center.title }}</td>#}
 							<td class="align-middle text-center">
 								<div class="btn-group">
 								<a href="{% url 'documents:journal_update' pk=obj.id %}" class="btn btn-sm btn-outline-warning"><i class="fa small fa-pen"></i><i class="fa fa-cube"></i> ویرایش</a>
@@ -108,6 +108,9 @@
 					{% endfor %}
 
 					</tbody>
+                    <tfoot>
+                        <tr></tr>
+                    </tfoot>
 				</table>
 			</div>
         </div>

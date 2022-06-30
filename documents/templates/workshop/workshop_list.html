@@ -23,7 +23,7 @@
 		<div class="title-action float-right">
             <div class="btn-group">
                 <a href="{% url 'documents:workshop_create' %}" class="btn btn-outline-primary"><i class="fa small fa-plus"></i> <i class="fa fa-users-class"></i> افزودن کارگاه جدید</a>
-		<button class="btn btn-lg btn-outline-danger"><i class="fa fa-print"></i> خروجی PDF</button>
+
             </div>
             </div>
 	</div>
@@ -116,6 +116,9 @@
 					{% endfor %}
 
 					</tbody>
+                    <tfoot>
+                        <tr></tr>
+                    </tfoot>
 				</table>
 			</div>
         </div>

@@ -47,7 +47,6 @@
 				<h3><strong>عنوان: </strong>{{ object.title }}</h3>
 				<h3><strong>عنوان پروژه: </strong>{{ object.project_title }}</h3>
 				<h3><strong>شماره اظهار نامه: </strong>{{ object.organization_code }}</h3>
-				<h3><strong>توضیحات: </strong>{{ object.description }}</h3>
 				<h3><strong>محققین: </strong>
                     {% for obj in object.producers.all %}
                         {{ obj.title }}-{{ obj.organization_code }},
@@ -56,6 +55,7 @@
 {#				<h3><strong>کد پاسداری نویسنده: </strong>{{ object.producer.organization_code }}</h3>#}
 				<h3><strong>تاریخ ثبت: </strong>{{ object.registered_at | j_format_date:"%Y/%m/%d"  }}</h3>
 				<h3><strong>مرکز تحقیقاتی: </strong>{{ object.center.title }}</h3>
+				<h3><strong>توضیحات: </strong>{{ object.description }}</h3>
 				<div><br></div>
 			</div>
 		</div>

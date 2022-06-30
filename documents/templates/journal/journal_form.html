@@ -104,12 +104,6 @@
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text" id="description_label">توضیحات: </span>
-                  </div>
-                    <textarea type="text" class="form-control" name="description" aria-describedby="description_label">{{ object.description }}</textarea>
-                </div>
-                <div class="input-group mb-2">
-                  <div class="input-group-append">
                     <span class="input-group-text required" id="field_label">حوزه تخصصی: </span>
                   </div>
                     <input type="text" class="form-control" value="{{ object.field }}" name="field" aria-describedby="field_label">
@@ -123,16 +117,23 @@
                         <span class="input-group-text"><i class="fa fa-calendar fa-2x"></i></span>
                     </div>
                 </div>
+
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="center_label">مرکز: </span>
+                    <span class="input-group-text" id="description_label">توضیحات: </span>
                   </div>
-                    <select name="center" id="center" class="select2 form-control">
-                        {% for obj in centers %}
-                            <option value="{{ obj.id  }}">{{ obj.title }}</option>
-                        {% endfor %}
-                    </select>
+                    <textarea type="text" class="form-control" name="description" aria-describedby="description_label">{{ object.description }}</textarea>
                 </div>
+{#                <div class="input-group mb-2">#}
+{#                  <div class="input-group-append">#}
+{#                    <span class="input-group-text required" id="center_label">مرکز: </span>#}
+{#                  </div>#}
+{#                    <select name="center" id="center" class="select2 form-control">#}
+{#                        {% for obj in centers %}#}
+{#                            <option value="{{ obj.id  }}">{{ obj.title }}</option>#}
+{#                        {% endfor %}#}
+{#                    </select>#}
+{#                </div>#}
                 <div><br></div>
                 <div class="btn-group float-left">
                     <button type="submit" class="btn btn-lg btn-outline-primary"><i class="fa fa-save"></i> ذخیره </button>

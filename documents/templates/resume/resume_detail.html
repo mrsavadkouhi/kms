@@ -46,11 +46,11 @@
 				<div><br></div>
 				<h3><strong>نام و نام خانوادگی: </strong>{{ object.title }}</h3>
 				<h3><strong>شناسه پاسداری: </strong>{{ object.organization_code }}</h3>
-                <h3><strong>توضیحات: </strong>{{ object.description }}</h3>
 				<h3><strong>سال ورود: </strong>{{ object.entrance_year }}</h3>
 				<h3><strong>رشته: </strong>{{ object.measure }}</h3>
 				<h3><strong>مدرک: </strong>{{ object.degree }}</h3>
 				<h3><strong>مرکز تحقیقاتی: </strong>{{ object.center.title }}</h3>
+                <h3><strong>توضیحات: </strong>{{ object.description }}</h3>
 				<div><br></div>
                 <h3><strong>آمار کلی تعداد</strong></h3>
                 <div class="row">
@@ -141,6 +141,9 @@
                         {% endfor %}
 
                         </tbody>
+                        <tfoot>
+                            <tr></tr>
+                        </tfoot>
                     </table>
                 </div>
                 <div><br></div>
@@ -284,13 +287,12 @@
 							$(win.document.body).addClass('white-bg');
 							$(win.document.body).find('thead')
 								.css('color', 'black')
-								.css('font-size', '10px')
-								.css('font-family', 'Vazir')
-								.prepend("<tr><th colspan='12''>" +
-									"<img src='http://127.0.0.1:8000/static/img/logo.png' class='float-left obj-fit-contain' style='position:relative;width:5%' />" +
-									"<img src='http://127.0.0.1:8000/static/img/sepah_balck.png' class='float-right obj-fit-contain' style='position:relative;width:5%' />" +
+								.css('font-family', 'VazirFD')
+								.prepend("<tr><th colspan='5'>" +
+									"<img src='http://127.0.0.1:8000/static/img/logo.png' class='float-left obj-fit-contain' style='position:relative;width:10%' />" +
+									"<img src='http://127.0.0.1:8000/static/img/sepah_balck.png' class='float-right obj-fit-contain' style='position:relative;width:10%' />" +
 									"<h2 class='text-center'>رزومه دانشی محقق</h2>" +
-									"<br>" +
+									"<br><br><br>" +
                                     "<h3><strong>نام و نام خانوادگی: </strong>{{ object.title }}</h3>" +
                                     "<h3><strong>شناسه پاسداری: </strong>{{ object.organization_code }}</h3>" +
                                     "<h3><strong>توضیحات: </strong>{{ object.description }}</h3>" +
@@ -306,12 +308,21 @@
                                     "</th>" +
 									"</tr>");
 
+                            $(win.document.body).find('tfoot')
+								.css('color', 'black')
+								.css('font-family', 'VazirFD')
+								.empty()
+								.prepend('<tr><th style="background-color:#f2f2f2" colspan="5">' +
+                                    '<br><br><br>' +
+									'<span class="float-right">مدیر دانش ساتخ ندسا</span>' +
+									'</th><tr>');
+
 							$(win.document.body).find('table')
 								.addClass('compact')
 								.css('font-size', 'inherit')
 								.css('color', 'black')
 								.css('border-color', 'transparent')
-								.css('font-family', 'Vazir');
+								.css('font-family', 'VazirFD');
 
 							$(win.document.body).find('td:eq(0)')
 								.css('width', '5%');

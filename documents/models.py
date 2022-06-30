@@ -65,9 +65,9 @@ class Center(models.Model):
 
 
 class Document(PolymorphicModel):
-    title = models.CharField(max_length=255,null=True, blank=True)
+    title = models.CharField(max_length=255, null=True, blank=True)
     organization_code = models.CharField(max_length=255, null=True, blank=True)
-    center = models.ForeignKey(to=Center, on_delete=models.PROTECT, related_name='center')
+    center = models.ForeignKey(to=Center, on_delete=models.PROTECT, related_name='center', null=True, blank=True)
     field = models.CharField(max_length=255,null=True, blank=True)
     type = models.CharField(max_length=255, choices=DOCUMENT_TYPES)
     description = models.TextField(null=True, blank=True)
@@ -125,6 +125,7 @@ ARTICLE_PUBLISH_LEVELS = [
     #magazine
     ('ISI', 'ISI'),
     ('ISC', 'ISC'),
+    ('Journal', 'فصلنامه'),
     ('Research', 'علمی-پژوهشی'),
     ('Extension', 'علمی-ترویجی'),
     ('Specialized', 'علمی-تخصصی'),
@@ -263,12 +264,14 @@ FUTURE_TYPES = [
     ('Info', 'اینفوگرافی'),
     ('Dide', 'دیده بان'),
     ('Organ', 'گزارش سازمانی'),
+    ('Other', 'سایر'),
 ]
 
 
 class Future(Document):
     producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='future_producer')
     presented_at = models.DateTimeField()
+    other = models.CharField(max_length=255, null=True, blank=True)
     future_type = models.CharField(max_length=255, choices=FUTURE_TYPES)
 
 
