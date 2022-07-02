@@ -173,7 +173,7 @@
                         title: '',
 						footer: true,
 						exportOptions: {
-							columns: [0, 1, 2, 3, 4, 5, 6,7,8,9],
+							columns: [0, 1, 2, 3, 4, 5, 6],
 							{#stripHtml: true#}
 						},
                         customize: function (win) {
@@ -181,19 +181,19 @@
 							$(win.document.body).find('thead')
 								.css('color', 'black')
 								.css('font-family', 'VazirFD')
-								.prepend("<tr><th colspan='10'>" +
+								.prepend("<tr><th colspan='7'>" +
 									"<img src='http://127.0.0.1:8000/static/img/logo.png' class='float-left obj-fit-contain' style='position:relative;width:10%' />" +
 									"<img src='http://127.0.0.1:8000/static/img/sepah_balck.png' class='float-right obj-fit-contain' style='position:relative;width:10%' />" +
-									"<h2 class='text-center'><b>لیست ایده پردازی ها</b></h2>" +
+									"<h2 class='text-center'><b>لیست ثبت اختراع</b></h2>" +
 									"</th>" +
 									"</tr>");
                             $(win.document.body).find('tfoot')
 								.css('color', 'black')
 								.css('font-family', 'VazirFD')
 								.empty()
-								.prepend('<tr><th style="background-color:#f2f2f2" colspan="10">' +
+								.prepend('<tr><th style="background-color:#f2f2f2" colspan="7">' +
                                     '<br><br><br>' +
-									'<span class="float-right">مدیر دانش ساتخ ندسا</span>' +
+									'<span class="float-right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;مدیر نخبگان و آموزش ساتخ ندسا</span>' +
 									'</th><tr>');
 
 							$(win.document.body).find('table')
