@@ -834,7 +834,7 @@ class ResumeDetailsView(LoginRequiredMixin, DetailView):
             context['manual_num']+=1
         for item in self.object.order_receiver.all():
             context['object_list'].append((item, 'احکام', item.issued_at))
-            context['manual_num']+=1
+            context['order_num']+=1
         for item in self.object.seminar_producer.all():
             context['object_list'].append((item, 'سمینار', item.presented_at))
             context['seminar_num']+=1
