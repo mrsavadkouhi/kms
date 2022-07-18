@@ -98,27 +98,54 @@ class CenterDetailsView(LoginRequiredMixin, DetailView):
         context['exp_num']= 0
         context['manual_num']= 0
         context['seminar_num']= 0
+        context['conf_num']= 0
+        context['project_num']= 0
+        context['visit_num']= 0
+        context['report_num']= 0
+        context['order_num']= 0
         context['thesis_num']= 0
         context['resume_num']= 0
 
         for item in self.object.center.all():
-            context['object_list'].append(item)
             if item.type == 'Resume':
                 context['resume_num']+=1
+                context['object_list'].append(item)
             if item.type == 'Article':
                 context['article_num']+=1
+                context['object_list'].append(item)
             elif item.type == 'Book':
                 context['book_num']+=1
+                context['object_list'].append(item)
             elif item.type == 'Idea':
                 context['idea_num']+=1
+                context['object_list'].append(item)
             elif item.type == 'Experience':
                 context['exp_num']+=1
+                context['object_list'].append(item)
             elif item.type == 'Manual':
                 context['manual_num']+=1
+                context['object_list'].append(item)
             elif item.type == 'Seminar':
                 context['seminar_num']+=1
+                context['object_list'].append(item)
             elif item.type == 'Thesis':
                 context['thesis_num']+=1
+                context['object_list'].append(item)
+            elif item.type == 'Conference':
+                context['conf_num']+=1
+                context['object_list'].append(item)
+            elif item.type == 'Visit':
+                context['visit_num']+=1
+                context['object_list'].append(item)
+            elif item.type == 'Project':
+                context['project_num']+=1
+                context['object_list'].append(item)
+            elif item.type == 'Order':
+                context['order_num']+=1
+                context['object_list'].append(item)
+            elif item.type == 'Report':
+                context['report_num']+=1
+                context['object_list'].append(item)
 
         return context
 
@@ -784,6 +811,9 @@ class ResumeDetailsView(LoginRequiredMixin, DetailView):
         context['judge_num']= 0
         context['exp_num']= 0
         context['manual_num']= 0
+        context['order_num']= 0
+        context['project_num']= 0
+        context['report_num']= 0
         context['seminar_num']= 0
         context['thesis_num']= 0
 
@@ -802,9 +832,18 @@ class ResumeDetailsView(LoginRequiredMixin, DetailView):
         for item in self.object.manual_producer.all():
             context['object_list'].append((item, 'دستورالعمل', item.declared_at))
             context['manual_num']+=1
+        for item in self.object.order_receiver.all():
+            context['object_list'].append((item, 'احکام', item.issued_at))
+            context['manual_num']+=1
         for item in self.object.seminar_producer.all():
             context['object_list'].append((item, 'سمینار', item.presented_at))
             context['seminar_num']+=1
+        for item in self.object.report_producer.all():
+            context['object_list'].append((item, 'گزارش', item.presented_at))
+            context['report_num']+=1
+        for item in self.object.project_manager.all():
+            context['object_list'].append((item, 'پروژه', item.finished_at))
+            context['project_num']+=1
         for item in self.object.article_producers.all():
             context['object_list'].append((item, 'مقاله', item.published_at))
             context['article_num']+=1
