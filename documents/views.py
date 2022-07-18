@@ -916,6 +916,9 @@ class ReportCreateView(LoginRequiredMixin, CreateView):
         # context['projects']=Document.objects.filter(type="Project")
         context['centers']= Center.objects.all()
         # # context['fields'] = DOCUMENT_FIELDS
+        context['years']=['pre98', '98', '99']
+        for i in range(400, 430):
+            context['years'].append(str(i))
         return context
 
 
@@ -939,6 +942,9 @@ class ReportUpdateForm(LoginRequiredMixin, UpdateView):
         # context['projects']=Document.objects.filter(type="Project")
         context['centers']= Center.objects.all()
         # context['fields']=DOCUMENT_FIELDS
+        context['years']=['pre98', '98', '99']
+        for i in range(400, 430):
+            context['years'].append(str(i))
         return context
 
 

@@ -125,7 +125,7 @@
                         {% for obj in object_list %}
                             <tr id="c-tr-{{ obj.id }}"style="background-color: whitesmoke">
                                 <td class="align-middle text-center">{{ forloop.counter }}</td>
-                                <td class="align-middle text-center">{{ obj.title }}</td>
+                                <td class="align-middle text-center">{% if obj.type == 'Assessment' %}{{ obj.producer.title }}{% else %}{{ obj.title }}{% endif %}</td>
                                 <td class="align-middle text-center">{{ obj.get_type_display }}</td>
                                 </td>
                             </tr>

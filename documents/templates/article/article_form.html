@@ -278,13 +278,9 @@
         var type = $("#publish_type").select2({
                 theme: 'bootstrap4',
         });
-        type.val("{{ object.publish_type }}").trigger("change");
-
         var level = $("#publish_level").select2({
                 theme: 'bootstrap4',
         });
-        level.val("{{ object.publish_level }}").trigger("change");
-
         type.change(function() {
             var selected_type = $("#publish_type option:selected").val();
             if(selected_type === 'Paper'){
@@ -302,6 +298,8 @@
                 {% endfor %}
             }
         });
+        type.val("{{ object.publish_type }}").trigger("change");
+        level.val("{{ object.publish_level }}").trigger("change");
 
         var center = $("#center").select2({
                 theme: 'bootstrap4',

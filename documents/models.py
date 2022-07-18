@@ -146,6 +146,7 @@ ARTICLE_CONFERENCE_PUBLISH_LEVELS = [
 ARTICLE_MAGANIZE_PUBLISH_LEVELS = [
     ('ISI', 'ISI'),
     ('ISC', 'ISC'),
+    ('Journal', 'فصلنامه'),
     ('Research', 'علمی-پژوهشی'),
     ('Extension', 'علمی-ترویجی'),
     ('Specialized', 'علمی-تخصصی'),
