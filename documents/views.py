@@ -1374,6 +1374,7 @@ class CenterProjectUpdateForm(LoginRequiredMixin, UpdateView):
     extra_context = {
         'title': 'update',
     }
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['center_pk']=self.kwargs['center_pk']
@@ -1390,10 +1391,25 @@ class CenterProjectUpdateForm(LoginRequiredMixin, UpdateView):
             return reverse_lazy('documents:company_details', kwargs={'pk': self.kwargs['center_pk']})
 
 
-
-
 class CenterProjectDeleteView(LoginRequiredMixin, JSONDeleteView):
     model = CenterProject
+
+
+class DocumenttBulkCreateView(LoginRequiredMixin, FormView):
+    template_name = 'import.html'
+    form_class = DocumentImportForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['document_type'] = self.kwargs['document_type']
+        return context
+
+    def get_success_url(self):
+        doc_type = self.kwargs['document_type']
+        if doc_type == 'Article':
+            return reverse_lazy('documents:article_list')
+        elif doc_type == 'Book':
+            return reverse_lazy('documents:tech_details', kwargs={'pk': self.kwargs['center_pk']})
 
 
 class AjaxHandler(TemplateView):

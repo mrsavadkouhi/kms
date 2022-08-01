@@ -159,5 +159,6 @@ urlpatterns = [
 	path('center_project/delete/<pk>', CenterProjectDeleteView.as_view(), name='center_project_delete'),
 
 
+	path('import/<document_type>', DocumenttBulkCreateView.as_view(), name='import'),
 	path('ajax/', AjaxHandler.as_view(), name='ajax'),
 ]

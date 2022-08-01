@@ -1,3 +1,4 @@
+import openpyxl
 from django import forms
 from .models import *
 from bootstrap_modal_forms.forms import BSModalModelForm
@@ -215,3 +216,74 @@ class CenterAttachmentForm(BSModalModelForm):
         document = CenterData.objects.get(id=self.cleaned_data['document_id'])
         document.attachments.add(instance)
         return self.instance
+
+
+class DocumentImportForm(forms.Form):
+    excel_file = forms.FileField()
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        excel_file = cleaned_data['excel_file']
+
+        wb = openpyxl.load_workbook(excel_file)
+        worksheet = wb["Sheet1"]
+
+        excel_data = list()
+        for row in worksheet.iter_rows():
+            row_data = list()
+            for cell in row:
+                row_data.append(str(cell.value))
+            excel_data.append(row_data)
+
+        for row in excel_data[1:]:
+            manager_name = row[2]
+            manager_name = manager_name.split(' ')
+            manger_first_name = manager_name[0]
+            if len(manager_name) == 2:
+                manger_last_name = manager_name[1]
+            else:
+                manger_last_name = row[2][len(manager_name)+3:]
+
+            center_name = row[3]
+
+            started_at = row[4]
+            if started_at == 'None':
+                started_at = ''
+            else:
+                started_at = datetime.datetime.strptime(started_at, "%Y-%m-%d %H:%M:%S")
+
+            to_be_finished = row[5]
+            if to_be_finished == 'None':
+                to_be_finished = ''
+            else:
+                to_be_finished = datetime.datetime.strptime(to_be_finished, "%Y-%m-%d %H:%M:%S")
+
+            finished_at = row[8]
+            if finished_at == 'None':
+                finished_at = ''
+            else:
+                finished_at = datetime.datetime.strptime(finished_at, "%Y-%m-%d %H:%M:%S")
+
+            payment = row[6]
+            if payment:
+                payment = int(payment)
+            else:
+                payment = 0
+
+            paid = row[7]
+            if paid:
+                paid = int(paid)
+            else:
+                paid = 0
+
+            status = row[9]
+
+            try:
+                center = Center.objects.get(name=center_name)
+                manager = Profile.objects.get(user__first_name=manger_first_name,user__last_name=manger_last_name)
+                Project.objects.create(name=row[0], description=row[1], manager=manager, center=center, started_at=started_at, finished_at=finished_at, to_be_finished=to_be_finished, payment=payment, paid=paid, status=status)
+            except:
+                pass
+
+        return cleaned_data
