@@ -233,6 +233,24 @@
 							$(win.document.body).find('td:nth-child(odd)')
 								.css('background-color', '#f2f2f2');
 						}
+					},
+                    {
+						extend: 'excel',
+                        text: '<button class="btn btn-lg btn-outline-success"><i class="fa fa-print"></i> خروجی Excel</button>',
+						className: 'bg-transparent',
+                        title: '',
+						footer: true,
+						exportOptions: {
+							columns: [0, 1, 2, 3, 4, 5, 6, 7,8,9],
+						}
+					},
+                    {
+                        text: '<button class="btn btn-lg btn-outline-primary"><i class="fa fa-print"></i> بارگزاری Excel</button>',
+						className: 'bg-transparent',
+                        title: '',
+						action: function ( e, dt, node, config ) {
+                            location.replace("{% url 'documents:import' document_type='Experience' %}")
+                        }
 					}
 				]
 			});

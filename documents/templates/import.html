@@ -61,6 +61,12 @@
                         <i class="fa fa-file-excel fa-10x"></i>
                                 <h1><strong>فایل اکسل</strong></h1>
                 <div><br></div>
+                <div class="input-group mb-2" hidden>
+                  <div class="input-group-append">
+                    <span class="input-group-text required" id="type_label">نوع: </span>
+                  </div>
+                  <input type="text" class="form-control" value="{{ document_type }}" name="doc_type" aria-describedby="type_label" readonly>
+                </div>
                 <div class="input-group mb-2">
                       <div class="custom-file">
                         <label id="excel_file_label" class="custom-file-label text-left" for="excel_file_id"></label>

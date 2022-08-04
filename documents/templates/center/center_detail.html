@@ -351,6 +351,16 @@
 							$(win.document.body).find('td:nth-child(odd)')
 								.css('background-color', '#f2f2f2');
 						}
+					},
+                    {
+						extend: 'excel',
+                        text: '<button class="btn btn-lg btn-outline-success"><i class="fa fa-print"></i> خروجی Excel</button>',
+						className: 'bg-transparent',
+                        title: '',
+						footer: true,
+						exportOptions: {
+							columns: [0, 1, 2],
+						}
 					}
 				]
 			});
