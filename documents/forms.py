@@ -1,3 +1,4 @@
+import jdatetime
 import openpyxl
 from django import forms
 from .models import *
@@ -224,52 +225,45 @@ class DocumentImportForm(forms.Form):
 
     def import_articles(self, excel_data):
         for row in excel_data:
-            manager_name = row[2]
-            manager_name = manager_name.split(' ')
-            manger_first_name = manager_name[0]
-            if len(manager_name) == 2:
-                manger_last_name = manager_name[1]
-            else:
-                manger_last_name = row[2][len(manager_name)+3:]
+            title = row[1]
+            organization_code = row[2]
+            field = row[3]
+            doc_type = 'Article'
+            key_words = row[4]
+            producers = row[5]
+            judges = row[6]
+            published_at = row[7]
 
-            center_name = row[3]
+            publish_type = row[8]
+            for name, des in ARTICLE_PUBLISH_TYPES:
+                if publish_type == des:
+                    publish_type = name
 
-            started_at = row[4]
-            if started_at == 'None':
-                started_at = ''
-            else:
-                started_at = datetime.strptime(started_at, "%Y-%m-%d %H:%M:%S")
+            publish_level = row[9]
+            for name, des in ARTICLE_PUBLISH_LEVELS:
+                if publish_level == des:
+                    publish_level = name
 
-            to_be_finished = row[5]
-            if to_be_finished == 'None':
-                to_be_finished = ''
-            else:
-                to_be_finished = datetime.strptime(to_be_finished, "%Y-%m-%d %H:%M:%S")
-
-            finished_at = row[8]
-            if finished_at == 'None':
-                finished_at = ''
-            else:
-                finished_at = datetime.strptime(finished_at, "%Y-%m-%d %H:%M:%S")
-
-            payment = row[6]
-            if payment:
-                payment = int(payment)
-            else:
-                payment = 0
-
-            paid = row[7]
-            if paid:
-                paid = int(paid)
-            else:
-                paid = 0
-
-            status = row[9]
+            publish_title = row[10]
+            center = row[11]
 
             try:
-                center = Center.objects.get(name=center_name)
-                manager = Profile.objects.get(user__first_name=manger_first_name,user__last_name=manger_last_name)
-                Project.objects.create(name=row[0], description=row[1], manager=manager, center=center, started_at=started_at, finished_at=finished_at, to_be_finished=to_be_finished, payment=payment, paid=paid, status=status)
+                center = Center.objects.get(title=center)
+                published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
+                published_at = published_at.togregorian()
+
+                Article.objects.create(
+                    title=title,
+                    organization_code=organization_code,
+                    field=field,
+                    type=doc_type,
+                    key_words=key_words,
+                    published_at=published_at,
+                    publish_level=publish_level,
+                    publish_type=publish_type,
+                    publish_title=publish_title,
+                    center=center,
+                                       )
             except:
                 pass
 
