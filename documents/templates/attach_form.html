@@ -20,6 +20,7 @@
 <form id="form-attach-{{ object.id }}" class="m-t" role="form" method="post" action="{% url 'documents:attach_create' pk=object.id %}" enctype="multipart/form-data">
 {% csrf_token %}
     <div class="row">
+        <input type="text" class="form-control d-none" value="{{ project_doc_type }}" aria-describedby="name_label" name="project_doc_type">
         <input type="text" class="form-control d-none" value="{{ object.id }}" aria-describedby="name_label" name="document_id">
         <div class="input-group mb-2">
               <div class="custom-file">

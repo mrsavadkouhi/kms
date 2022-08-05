@@ -7,6 +7,7 @@ from bootstrap_modal_forms.forms import BSModalModelForm
 
 class DocumentAttachmentForm(BSModalModelForm):
     document_id = forms.IntegerField(required=True)
+    project_doc_type = forms.CharField(required=False)
     file = forms.FileField(required=True)
     description = forms.CharField(required=False)
 
@@ -21,7 +22,14 @@ class DocumentAttachmentForm(BSModalModelForm):
             self.instance.save()
             self._save_m2m()
         document = Document.objects.get(id=self.cleaned_data['document_id'])
-        document.attachments.add(instance)
+        project_doc_type = self.cleaned_data['project_doc_type']
+        if project_doc_type == 'Middle':
+            document.middle_attachments.add(instance)
+        elif project_doc_type == 'End':
+            document.end_attachments.add(instance)
+        else:
+            document.attachments.add(instance)
+
         return self.instance
 
 

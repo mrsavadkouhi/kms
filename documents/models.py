@@ -239,6 +239,8 @@ class Project(Document):
     duration = models.IntegerField()
     finished_at = models.DateTimeField()
     manager = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='project_manager')
+    middle_attachments = models.ManyToManyField(DocumentAttachment, blank=True, related_name='middle_project_attachments')
+    end_attachments = models.ManyToManyField(DocumentAttachment, blank=True, related_name='end_project_attachments')
 
 
 class Report(Document):
