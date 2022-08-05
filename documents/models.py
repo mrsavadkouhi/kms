@@ -87,9 +87,9 @@ class Document(PolymorphicModel):
 
 class Resume(Document):
     # profile = models.OneToOneField(to=Profile, on_delete=models.CASCADE)
-    entrance_year = models.IntegerField()
-    measure = models.CharField(max_length=255)
-    degree = models.CharField(max_length=255)
+    entrance_year = models.IntegerField(null=True, blank=True)
+    measure = models.CharField(max_length=255,null=True, blank=True)
+    degree = models.CharField(max_length=255,null=True, blank=True)
 
 
 class Order(Document):

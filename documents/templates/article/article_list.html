@@ -112,7 +112,7 @@
 					<tbody>
 
 					{% for obj in object_list %}
-						<tr id="c-tr-{{ obj.id }}"style="background-color: whitesmoke">
+						<tr id="c-tr-{{ obj.id }}" style="background-color: whitesmoke">
 							<td class="align-middle text-center">{{ forloop.counter }}</td>
 							<td class="align-middle text-center"><a href="{% url 'documents:article_details' pk=obj.id %}">{{ obj.title }}</a></td>
 							<td class="align-middle text-center">{{ obj.organization_code }}</td>
@@ -250,16 +250,18 @@
 						extend: 'excel',
                         text: '<button class="btn btn-lg btn-outline-success"><i class="fa fa-print"></i> خروجی Excel</button>',
 						className: 'bg-transparent',
-                        title: '',
-						footer: true,
+						filename: 'articles',
 						exportOptions: {
-							columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-						}
+							columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+						},
+                        customize: function ( xlsx ) {
+                            var styles = xlsx.xl['styles.xml'];
+                            styles.childNodes[0].innerHTML = styles.childNodes[0].innerHTML + '<fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills>'
+                        }
 					},
                     {
                         text: '<button class="btn btn-lg btn-outline-primary"><i class="fa fa-print"></i> بارگزاری Excel</button>',
 						className: 'bg-transparent',
-                        title: '',
 						action: function ( e, dt, node, config ) {
                             location.replace("{% url 'documents:import' document_type='Article' %}")
                         }

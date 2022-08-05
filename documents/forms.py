@@ -233,34 +233,58 @@ class DocumentImportForm(forms.Form):
 
     def import_articles(self, excel_data):
         for row in excel_data:
-            title = row[1]
-            organization_code = row[2]
-            field = row[3]
+            title = row[0]
+            organization_code = row[1]
+            field = row[2]
             doc_type = 'Article'
-            key_words = row[4]
-            producers = row[5]
-            judges = row[6]
-            published_at = row[7]
+            key_words = row[3]
+            published_at=row[6]
+            publish_title=row[9]
+            center=row[10]
 
-            publish_type = row[8]
+            producers_raw = row[4].split(',')
+            producers_raw = producers_raw[:-1]
+            producers = []
+            for producer in producers_raw:
+                producer = producer.strip()
+                detail = producer.split('-')
+                producer = (detail[1], detail[0])
+                producers.append(producer)
+
+            judges_raw = row[5].split(',')
+            judges_raw = judges_raw[:-1]
+            judges = []
+            for judge in judges_raw:
+                judge = judge.strip()
+                detail=judge.split('-')
+                judge=(detail[1], detail[0])
+                judges.append(judge)
+
+            publish_type = row[7]
             for name, des in ARTICLE_PUBLISH_TYPES:
                 if publish_type == des:
                     publish_type = name
 
-            publish_level = row[9]
+            publish_level = row[8]
             for name, des in ARTICLE_PUBLISH_LEVELS:
                 if publish_level == des:
                     publish_level = name
-
-            publish_title = row[10]
-            center = row[11]
 
             try:
                 center = Center.objects.get(title=center)
                 published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
                 published_at = published_at.togregorian()
 
-                Article.objects.create(
+                producers_list = []
+                for producer in producers:
+                    producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer[1], organization_code=producer[0])
+                    producers_list.append(producer_obj)
+                judges_list = []
+                for judge in judges:
+                    judge_obj, c = Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
+                    judges_list.append(judge_obj)
+
+                article = Article.objects.create(
                     title=title,
                     organization_code=organization_code,
                     field=field,
@@ -272,6 +296,8 @@ class DocumentImportForm(forms.Form):
                     publish_title=publish_title,
                     center=center,
                                        )
+                article.producers.set(producers_list)
+                article.judges.set(judges_list)
             except:
                 pass
 
