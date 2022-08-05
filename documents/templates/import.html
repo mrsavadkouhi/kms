@@ -13,18 +13,11 @@
     <br>
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item">
-				<a>مدیریت پروژه ها</a>
-			</li>
-			<li class="breadcrumb-item">
-{#                <a href="{% url 'centers:project_list' %}" >لیست پروژه ها</a>#}
+				<a>{{ document_type_section }}</a>
 			</li>
 			<li class="breadcrumb-item active">
-{#                {% if tittle == 'project' %}#}
-{#                    <a href="{% url 'centers:project_bulk_create' %}"><strong>افزودن جمعی پروژه ها</strong></a>#}
-{#                {% else %}#}
-{#                    <a href="#"><strong>افزودن جمعی فعالیت ها</strong></a>#}
-{#                {% endif %}#}
-            </li>
+                <a>افزودن گروهی {{ document_type_display }}</a>
+			</li>
 		</ol>
 	</div>
 

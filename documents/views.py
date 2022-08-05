@@ -1395,6 +1395,36 @@ class CenterProjectDeleteView(LoginRequiredMixin, JSONDeleteView):
     model = CenterProject
 
 
+DOC_TYPES = [
+    ('مدیریت دانش', 'Article', 'مقاله'),
+    ('مدیریت دانش', 'Resume', 'رزومه'),
+    ('مدیریت دانش', 'Book', 'کتاب'),
+    ('مدیریت دانش', 'Experience', 'تجربه'),
+    ('مدیریت دانش', 'Thesis', 'پایان نامه'),
+    ('مدیریت دانش', 'Idea', 'ایده'),
+    ('مدیریت دانش', 'Seminar', 'سمینار'),
+    ('مدیریت دانش', 'Conference', 'کنفرانس'),
+    ('مدیریت دانش', 'Visit', 'بازدید علمی'),
+    ('مدیریت دانش', 'Project', 'پروژه تحقیقاتی'),
+    ('مدیریت دانش', 'Manual', 'دستورالعمل'),
+    ('مدیریت دانش', 'Report', 'گزارش فنی'),
+    ('مدیریت دانش', 'Order', 'حکم صادره'),
+    ('مدیریت دانش', 'Center', 'مرکز'),
+
+    ('آینده پژوهی و همکاری های علمی', 'Journal', 'فصلنامه'),
+    ('آینده پژوهی و همکاری های علمی', 'Future', 'آینده پژوهی'),
+    ('آینده پژوهی و همکاری های علمی', 'Cowork', 'همکاری های علمی'),
+
+    ('نخبگان آموزش و امور محققین', 'Invention', 'ثبت اختراع'),
+    ('نخبگان آموزش و امور محققین', 'Workshop', 'کارگاه آموزشی'),
+    ('نخبگان آموزش و امور محققین', 'Assessment', 'ارزیابی'),
+
+    ('مرکز رشد', 'Core', 'هسته'),
+    ('مرکز رشد', 'Tech', 'واحد فناور'),
+    ('مرکز رشد', 'Company', 'شرکت'),
+]
+
+
 class DocumenttBulkCreateView(LoginRequiredMixin, FormView):
     template_name = 'import.html'
     form_class = DocumentImportForm
@@ -1402,6 +1432,10 @@ class DocumenttBulkCreateView(LoginRequiredMixin, FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['document_type'] = self.kwargs['document_type']
+        for sec, name, des in DOC_TYPES:
+            if context['document_type'] == name:
+                context['document_type_display'] = des
+                context['document_type_section'] = sec
         return context
 
     def get_success_url(self):
@@ -1409,7 +1443,49 @@ class DocumenttBulkCreateView(LoginRequiredMixin, FormView):
         if doc_type == 'Article':
             return reverse_lazy('documents:article_list')
         elif doc_type == 'Book':
-            return reverse_lazy('documents:tech_details', kwargs={'pk': self.kwargs['center_pk']})
+            return reverse_lazy('documents:book_list')
+        elif doc_type == 'Experience':
+            return reverse_lazy('documents:experience_list')
+        elif doc_type == 'Idea':
+            return reverse_lazy('documents:idea_list')
+        elif doc_type == 'Thesis':
+            return reverse_lazy('documents:thesis_list')
+        elif doc_type == 'Manual':
+            return reverse_lazy('documents:manual_list')
+        elif doc_type == 'Order':
+            return reverse_lazy('documents:order_list')
+        elif doc_type == 'Seminar':
+            return reverse_lazy('documents:seminar_list')
+        elif doc_type == 'Project':
+            return reverse_lazy('documents:project_list')
+        elif doc_type == 'Conference':
+            return reverse_lazy('documents:conference_list')
+        elif doc_type == 'Visit':
+            return reverse_lazy('documents:visit_list')
+        elif doc_type == 'Report':
+            return reverse_lazy('documents:report_list')
+        elif doc_type == 'Resume':
+            return reverse_lazy('documents:resume_list')
+        elif doc_type == 'Center':
+            return reverse_lazy('documents:center_list')
+        elif doc_type == 'Core':
+            return reverse_lazy('documents:core_list')
+        elif doc_type == 'Tech':
+            return reverse_lazy('documents:tech_list')
+        elif doc_type == 'Company':
+            return reverse_lazy('documents:company_list')
+        elif doc_type == 'Future':
+            return reverse_lazy('documents:future_list')
+        elif doc_type == 'Journal':
+            return reverse_lazy('documents:journal_list')
+        elif doc_type == 'Cowork':
+            return reverse_lazy('documents:cowork_list')
+        elif doc_type == 'Invention':
+            return reverse_lazy('documents:invention_list')
+        elif doc_type == 'Assessment':
+            return reverse_lazy('documents:assessment_list')
+        elif doc_type == 'Workshop':
+            return reverse_lazy('documents:workshop_list')
 
 
 class AjaxHandler(TemplateView):
