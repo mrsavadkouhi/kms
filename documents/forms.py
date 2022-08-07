@@ -306,22 +306,16 @@ class DocumentImportForm(forms.Form):
             title = row[0]
             organization_code = row[1]
             field = row[2]
-            doc_type = 'Article'
-            key_words = row[3]
-            published_at=row[6]
-            publish_title=row[9]
+            doc_type = 'Book'
+            published_at=row[7]
+            publisher = row[6]
+            assessment_result=row[9]
+            fipa=row[5]
             center=row[10]
 
-            producers_raw = row[4].split(',')
-            producers_raw = producers_raw[:-1]
-            producers = []
-            for producer in producers_raw:
-                producer = producer.strip()
-                detail = producer.split('-')
-                producer = (detail[1], detail[0])
-                producers.append(producer)
+            producer = row[3]
 
-            judges_raw = row[5].split(',')
+            judges_raw = row[8].split(',')
             judges_raw = judges_raw[:-1]
             judges = []
             for judge in judges_raw:
@@ -330,744 +324,375 @@ class DocumentImportForm(forms.Form):
                 judge=(detail[1], detail[0])
                 judges.append(judge)
 
-            publish_type = row[7]
-            for name, des in ARTICLE_PUBLISH_TYPES:
-                if publish_type == des:
-                    publish_type = name
-
-            publish_level = row[8]
-            for name, des in ARTICLE_PUBLISH_LEVELS:
-                if publish_level == des:
-                    publish_level = name
-
             try:
                 center = Center.objects.get(title=center)
                 published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
                 published_at = published_at.togregorian()
+                producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer)
 
-                producers_list = []
-                for producer in producers:
-                    producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer[1], organization_code=producer[0])
-                    producers_list.append(producer_obj)
                 judges_list = []
                 for judge in judges:
                     judge_obj, c = Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
                     judges_list.append(judge_obj)
 
-                article = Article.objects.create(
+                book = Book.objects.create(
                     title=title,
                     organization_code=organization_code,
                     field=field,
                     type=doc_type,
-                    key_words=key_words,
+                    publisher=publisher,
+                    fipa=fipa,
+                    producer=producer_obj,
                     published_at=published_at,
-                    publish_level=publish_level,
-                    publish_type=publish_type,
-                    publish_title=publish_title,
+                    assessment_result=assessment_result,
                     center=center,
                                        )
-                article.producers.set(producers_list)
-                article.judges.set(judges_list)
+                book.judges.set(judges_list)
             except:
                 pass
 
     def import_experiences(self, excel_data):
         for row in excel_data:
-            title = row[0]
-            organization_code = row[1]
-            field = row[2]
-            doc_type = 'Article'
-            key_words = row[3]
-            published_at=row[6]
-            publish_title=row[9]
-            center=row[10]
+            title=row[0]
+            organization_code=row[1]
+            field=row[2]
+            doc_type='Experience'
+            presented_at=row[5]
+            assessment_result=row[7]
+            center=row[8]
 
-            producers_raw = row[4].split(',')
-            producers_raw = producers_raw[:-1]
-            producers = []
-            for producer in producers_raw:
-                producer = producer.strip()
-                detail = producer.split('-')
-                producer = (detail[1], detail[0])
-                producers.append(producer)
+            producer=row[3]
 
-            judges_raw = row[5].split(',')
-            judges_raw = judges_raw[:-1]
-            judges = []
+            judges_raw=row[6].split(',')
+            judges_raw=judges_raw[:-1]
+            judges=[]
             for judge in judges_raw:
-                judge = judge.strip()
+                judge=judge.strip()
                 detail=judge.split('-')
                 judge=(detail[1], detail[0])
                 judges.append(judge)
 
-            publish_type = row[7]
-            for name, des in ARTICLE_PUBLISH_TYPES:
-                if publish_type == des:
-                    publish_type = name
-
-            publish_level = row[8]
-            for name, des in ARTICLE_PUBLISH_LEVELS:
-                if publish_level == des:
-                    publish_level = name
-
             try:
-                center = Center.objects.get(title=center)
-                published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
-                published_at = published_at.togregorian()
+                center=Center.objects.get(title=center)
+                presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
+                presented_at=presented_at.togregorian()
+                producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
 
-                producers_list = []
-                for producer in producers:
-                    producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer[1], organization_code=producer[0])
-                    producers_list.append(producer_obj)
-                judges_list = []
+                judges_list=[]
                 for judge in judges:
-                    judge_obj, c = Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
+                    judge_obj, c=Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
                     judges_list.append(judge_obj)
 
-                article = Article.objects.create(
+                experience=Experience.objects.create(
                     title=title,
                     organization_code=organization_code,
                     field=field,
                     type=doc_type,
-                    key_words=key_words,
-                    published_at=published_at,
-                    publish_level=publish_level,
-                    publish_type=publish_type,
-                    publish_title=publish_title,
+                    producer=producer_obj,
+                    presented_at=presented_at,
+                    assessment_result=assessment_result,
                     center=center,
-                                       )
-                article.producers.set(producers_list)
-                article.judges.set(judges_list)
+                )
+                experience.judges.set(judges_list)
             except:
                 pass
 
     def import_ideas(self, excel_data):
         for row in excel_data:
-            title = row[0]
-            organization_code = row[1]
-            field = row[2]
-            doc_type = 'Article'
-            key_words = row[3]
-            published_at=row[6]
-            publish_title=row[9]
-            center=row[10]
+            title=row[0]
+            organization_code=row[1]
+            field=row[2]
+            doc_type='Idea'
+            presented_at=row[5]
+            assessment_result=row[7]
+            center=row[8]
 
-            producers_raw = row[4].split(',')
-            producers_raw = producers_raw[:-1]
-            producers = []
-            for producer in producers_raw:
-                producer = producer.strip()
-                detail = producer.split('-')
-                producer = (detail[1], detail[0])
-                producers.append(producer)
+            producer=row[3]
 
-            judges_raw = row[5].split(',')
-            judges_raw = judges_raw[:-1]
-            judges = []
+            judges_raw=row[6].split(',')
+            judges_raw=judges_raw[:-1]
+            judges=[]
             for judge in judges_raw:
-                judge = judge.strip()
+                judge=judge.strip()
                 detail=judge.split('-')
                 judge=(detail[1], detail[0])
                 judges.append(judge)
 
-            publish_type = row[7]
-            for name, des in ARTICLE_PUBLISH_TYPES:
-                if publish_type == des:
-                    publish_type = name
-
-            publish_level = row[8]
-            for name, des in ARTICLE_PUBLISH_LEVELS:
-                if publish_level == des:
-                    publish_level = name
-
             try:
-                center = Center.objects.get(title=center)
-                published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
-                published_at = published_at.togregorian()
+                center=Center.objects.get(title=center)
+                presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
+                presented_at=presented_at.togregorian()
+                producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
 
-                producers_list = []
-                for producer in producers:
-                    producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer[1], organization_code=producer[0])
-                    producers_list.append(producer_obj)
-                judges_list = []
+                judges_list=[]
                 for judge in judges:
-                    judge_obj, c = Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
+                    judge_obj, c=Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
                     judges_list.append(judge_obj)
 
-                article = Article.objects.create(
+                idea=Idea.objects.create(
                     title=title,
                     organization_code=organization_code,
                     field=field,
                     type=doc_type,
-                    key_words=key_words,
-                    published_at=published_at,
-                    publish_level=publish_level,
-                    publish_type=publish_type,
-                    publish_title=publish_title,
+                    producer=producer_obj,
+                    presented_at=presented_at,
+                    assessment_result=assessment_result,
                     center=center,
-                                       )
-                article.producers.set(producers_list)
-                article.judges.set(judges_list)
+                )
+                idea.judges.set(judges_list)
             except:
                 pass
 
     def import_theses(self, excel_data):
         for row in excel_data:
-            title = row[0]
-            organization_code = row[1]
-            field = row[2]
-            doc_type = 'Article'
-            key_words = row[3]
-            published_at=row[6]
-            publish_title=row[9]
-            center=row[10]
-
-            producers_raw = row[4].split(',')
-            producers_raw = producers_raw[:-1]
-            producers = []
-            for producer in producers_raw:
-                producer = producer.strip()
-                detail = producer.split('-')
-                producer = (detail[1], detail[0])
-                producers.append(producer)
-
-            judges_raw = row[5].split(',')
-            judges_raw = judges_raw[:-1]
-            judges = []
-            for judge in judges_raw:
-                judge = judge.strip()
-                detail=judge.split('-')
-                judge=(detail[1], detail[0])
-                judges.append(judge)
-
-            publish_type = row[7]
-            for name, des in ARTICLE_PUBLISH_TYPES:
-                if publish_type == des:
-                    publish_type = name
-
-            publish_level = row[8]
-            for name, des in ARTICLE_PUBLISH_LEVELS:
-                if publish_level == des:
-                    publish_level = name
+            title=row[0]
+            organization_code=row[1]
+            field=row[2]
+            doc_type='Thesis'
+            measure=row[4]
+            degree=row[5]
+            university=row[6]
+            presented_at=row[7]
+            center=row[8]
+            producer=row[3]
 
             try:
-                center = Center.objects.get(title=center)
-                published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
-                published_at = published_at.togregorian()
+                center=Center.objects.get(title=center)
+                presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
+                presented_at=presented_at.togregorian()
+                producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
 
-                producers_list = []
-                for producer in producers:
-                    producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer[1], organization_code=producer[0])
-                    producers_list.append(producer_obj)
-                judges_list = []
-                for judge in judges:
-                    judge_obj, c = Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
-                    judges_list.append(judge_obj)
-
-                article = Article.objects.create(
+                thesis=Thesis.objects.create(
                     title=title,
                     organization_code=organization_code,
                     field=field,
                     type=doc_type,
-                    key_words=key_words,
-                    published_at=published_at,
-                    publish_level=publish_level,
-                    publish_type=publish_type,
-                    publish_title=publish_title,
+                    producer=producer_obj,
+                    presented_at=presented_at,
+                    measure=measure,
+                    degree=degree,
+                    university=university,
                     center=center,
-                                       )
-                article.producers.set(producers_list)
-                article.judges.set(judges_list)
+                )
             except:
                 pass
 
     def import_manuals(self, excel_data):
         for row in excel_data:
-            title = row[0]
-            organization_code = row[1]
-            field = row[2]
-            doc_type = 'Article'
-            key_words = row[3]
-            published_at=row[6]
-            publish_title=row[9]
-            center=row[10]
-
-            producers_raw = row[4].split(',')
-            producers_raw = producers_raw[:-1]
-            producers = []
-            for producer in producers_raw:
-                producer = producer.strip()
-                detail = producer.split('-')
-                producer = (detail[1], detail[0])
-                producers.append(producer)
-
-            judges_raw = row[5].split(',')
-            judges_raw = judges_raw[:-1]
-            judges = []
-            for judge in judges_raw:
-                judge = judge.strip()
-                detail=judge.split('-')
-                judge=(detail[1], detail[0])
-                judges.append(judge)
-
-            publish_type = row[7]
-            for name, des in ARTICLE_PUBLISH_TYPES:
-                if publish_type == des:
-                    publish_type = name
-
-            publish_level = row[8]
-            for name, des in ARTICLE_PUBLISH_LEVELS:
-                if publish_level == des:
-                    publish_level = name
+            title=row[0]
+            organization_code=row[1]
+            field=row[2]
+            doc_type='Manual'
+            declared_at=row[4]
+            center=row[5]
+            producer=row[3]
 
             try:
-                center = Center.objects.get(title=center)
-                published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
-                published_at = published_at.togregorian()
+                center=Center.objects.get(title=center)
+                declared_at=jdatetime.datetime.strptime(declared_at, "%Y/%m/%d")
+                declared_at=declared_at.togregorian()
+                producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
 
-                producers_list = []
-                for producer in producers:
-                    producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer[1], organization_code=producer[0])
-                    producers_list.append(producer_obj)
-                judges_list = []
-                for judge in judges:
-                    judge_obj, c = Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
-                    judges_list.append(judge_obj)
-
-                article = Article.objects.create(
+                manual=Manual.objects.create(
                     title=title,
                     organization_code=organization_code,
                     field=field,
                     type=doc_type,
-                    key_words=key_words,
-                    published_at=published_at,
-                    publish_level=publish_level,
-                    publish_type=publish_type,
-                    publish_title=publish_title,
+                    producer=producer_obj,
+                    declared_at=declared_at,
                     center=center,
-                                       )
-                article.producers.set(producers_list)
-                article.judges.set(judges_list)
+                )
             except:
                 pass
 
     def import_orders(self, excel_data):
         for row in excel_data:
-            title = row[0]
-            organization_code = row[1]
-            field = row[2]
-            doc_type = 'Article'
-            key_words = row[3]
-            published_at=row[6]
-            publish_title=row[9]
-            center=row[10]
-
-            producers_raw = row[4].split(',')
-            producers_raw = producers_raw[:-1]
-            producers = []
-            for producer in producers_raw:
-                producer = producer.strip()
-                detail = producer.split('-')
-                producer = (detail[1], detail[0])
-                producers.append(producer)
-
-            judges_raw = row[5].split(',')
-            judges_raw = judges_raw[:-1]
-            judges = []
-            for judge in judges_raw:
-                judge = judge.strip()
-                detail=judge.split('-')
-                judge=(detail[1], detail[0])
-                judges.append(judge)
-
-            publish_type = row[7]
-            for name, des in ARTICLE_PUBLISH_TYPES:
-                if publish_type == des:
-                    publish_type = name
-
-            publish_level = row[8]
-            for name, des in ARTICLE_PUBLISH_LEVELS:
-                if publish_level == des:
-                    publish_level = name
+            title=row[0]
+            organization_code=row[1]
+            field=row[2]
+            doc_type='Order'
+            issued_at=row[4]
+            center=row[5]
+            receiver=row[3]
 
             try:
-                center = Center.objects.get(title=center)
-                published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
-                published_at = published_at.togregorian()
+                center=Center.objects.get(title=center)
+                issued_at=jdatetime.datetime.strptime(issued_at, "%Y/%m/%d")
+                issued_at=issued_at.togregorian()
+                receiver_obj, c=Resume.objects.get_or_create(type='Resume', title=receiver)
 
-                producers_list = []
-                for producer in producers:
-                    producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer[1], organization_code=producer[0])
-                    producers_list.append(producer_obj)
-                judges_list = []
-                for judge in judges:
-                    judge_obj, c = Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
-                    judges_list.append(judge_obj)
-
-                article = Article.objects.create(
+                order=Order.objects.create(
                     title=title,
                     organization_code=organization_code,
                     field=field,
                     type=doc_type,
-                    key_words=key_words,
-                    published_at=published_at,
-                    publish_level=publish_level,
-                    publish_type=publish_type,
-                    publish_title=publish_title,
+                    receiver=receiver_obj,
+                    issued_at=issued_at,
                     center=center,
-                                       )
-                article.producers.set(producers_list)
-                article.judges.set(judges_list)
+                )
             except:
                 pass
 
     def import_seminars(self, excel_data):
         for row in excel_data:
-            title = row[0]
-            organization_code = row[1]
-            field = row[2]
-            doc_type = 'Article'
-            key_words = row[3]
-            published_at=row[6]
-            publish_title=row[9]
-            center=row[10]
+            title=row[0]
+            organization_code=row[1]
+            field=row[2]
+            doc_type='Seminar'
+            presented_at=row[5]
+            participant_number=row[6]
+            assessment_result=row[8]
+            center=row[9]
+            producer=row[3]
 
-            producers_raw = row[4].split(',')
-            producers_raw = producers_raw[:-1]
-            producers = []
-            for producer in producers_raw:
-                producer = producer.strip()
-                detail = producer.split('-')
-                producer = (detail[1], detail[0])
-                producers.append(producer)
-
-            judges_raw = row[5].split(',')
-            judges_raw = judges_raw[:-1]
-            judges = []
+            judges_raw=row[7].split(',')
+            judges_raw=judges_raw[:-1]
+            judges=[]
             for judge in judges_raw:
-                judge = judge.strip()
+                judge=judge.strip()
                 detail=judge.split('-')
                 judge=(detail[1], detail[0])
                 judges.append(judge)
 
-            publish_type = row[7]
-            for name, des in ARTICLE_PUBLISH_TYPES:
-                if publish_type == des:
-                    publish_type = name
-
-            publish_level = row[8]
-            for name, des in ARTICLE_PUBLISH_LEVELS:
-                if publish_level == des:
-                    publish_level = name
-
             try:
-                center = Center.objects.get(title=center)
-                published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
-                published_at = published_at.togregorian()
+                center=Center.objects.get(title=center)
+                presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
+                presented_at=presented_at.togregorian()
+                producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
 
-                producers_list = []
-                for producer in producers:
-                    producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer[1], organization_code=producer[0])
-                    producers_list.append(producer_obj)
-                judges_list = []
+                judges_list=[]
                 for judge in judges:
-                    judge_obj, c = Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
+                    judge_obj, c=Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
                     judges_list.append(judge_obj)
 
-                article = Article.objects.create(
+                seminar=Seminar.objects.create(
                     title=title,
                     organization_code=organization_code,
                     field=field,
                     type=doc_type,
-                    key_words=key_words,
-                    published_at=published_at,
-                    publish_level=publish_level,
-                    publish_type=publish_type,
-                    publish_title=publish_title,
+                    producer=producer_obj,
+                    participant_number=int(participant_number),
+                    presented_at=presented_at,
+                    assessment_result=assessment_result,
                     center=center,
-                                       )
-                article.producers.set(producers_list)
-                article.judges.set(judges_list)
+                )
+                seminar.judges.set(judges_list)
             except:
                 pass
 
     def import_projects(self, excel_data):
         for row in excel_data:
-            title = row[0]
-            organization_code = row[1]
-            field = row[2]
-            doc_type = 'Article'
-            key_words = row[3]
-            published_at=row[6]
-            publish_title=row[9]
-            center=row[10]
-
-            producers_raw = row[4].split(',')
-            producers_raw = producers_raw[:-1]
-            producers = []
-            for producer in producers_raw:
-                producer = producer.strip()
-                detail = producer.split('-')
-                producer = (detail[1], detail[0])
-                producers.append(producer)
-
-            judges_raw = row[5].split(',')
-            judges_raw = judges_raw[:-1]
-            judges = []
-            for judge in judges_raw:
-                judge = judge.strip()
-                detail=judge.split('-')
-                judge=(detail[1], detail[0])
-                judges.append(judge)
-
-            publish_type = row[7]
-            for name, des in ARTICLE_PUBLISH_TYPES:
-                if publish_type == des:
-                    publish_type = name
-
-            publish_level = row[8]
-            for name, des in ARTICLE_PUBLISH_LEVELS:
-                if publish_level == des:
-                    publish_level = name
+            title=row[0]
+            field=row[1]
+            doc_type='Project'
+            duration=row[4]
+            finished_at=row[3]
+            center=row[5]
+            manager=row[2]
 
             try:
-                center = Center.objects.get(title=center)
-                published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
-                published_at = published_at.togregorian()
+                center=Center.objects.get(title=center)
+                finished_at=jdatetime.datetime.strptime(finished_at, "%Y/%m/%d")
+                finished_at=finished_at.togregorian()
+                manager_obj, c=Resume.objects.get_or_create(type='Resume', title=manager)
 
-                producers_list = []
-                for producer in producers:
-                    producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer[1], organization_code=producer[0])
-                    producers_list.append(producer_obj)
-                judges_list = []
-                for judge in judges:
-                    judge_obj, c = Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
-                    judges_list.append(judge_obj)
-
-                article = Article.objects.create(
+                project=Project.objects.create(
                     title=title,
-                    organization_code=organization_code,
+                    duration=int(duration),
                     field=field,
                     type=doc_type,
-                    key_words=key_words,
-                    published_at=published_at,
-                    publish_level=publish_level,
-                    publish_type=publish_type,
-                    publish_title=publish_title,
+                    manager=manager_obj,
+                    finished_at=finished_at,
                     center=center,
-                                       )
-                article.producers.set(producers_list)
-                article.judges.set(judges_list)
+                )
             except:
                 pass
 
     def import_conferences(self, excel_data):
         for row in excel_data:
-            title = row[0]
-            organization_code = row[1]
-            field = row[2]
-            doc_type = 'Article'
-            key_words = row[3]
-            published_at=row[6]
-            publish_title=row[9]
-            center=row[10]
+            title=row[0]
+            field=row[1]
+            doc_type='Conference'
+            location=row[4]
+            held_at=row[3]
+            center=row[5]
 
-            producers_raw = row[4].split(',')
-            producers_raw = producers_raw[:-1]
-            producers = []
-            for producer in producers_raw:
-                producer = producer.strip()
-                detail = producer.split('-')
-                producer = (detail[1], detail[0])
-                producers.append(producer)
-
-            judges_raw = row[5].split(',')
-            judges_raw = judges_raw[:-1]
-            judges = []
-            for judge in judges_raw:
-                judge = judge.strip()
-                detail=judge.split('-')
-                judge=(detail[1], detail[0])
-                judges.append(judge)
-
-            publish_type = row[7]
-            for name, des in ARTICLE_PUBLISH_TYPES:
-                if publish_type == des:
-                    publish_type = name
-
-            publish_level = row[8]
-            for name, des in ARTICLE_PUBLISH_LEVELS:
-                if publish_level == des:
-                    publish_level = name
+            conference_level=row[2]
+            for name, des in CONFERENCE_LEVELS:
+                if conference_level == des:
+                    conference_level=name
 
             try:
-                center = Center.objects.get(title=center)
-                published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
-                published_at = published_at.togregorian()
+                center=Center.objects.get(title=center)
+                held_at=jdatetime.datetime.strptime(held_at, "%Y/%m/%d")
+                held_at=held_at.togregorian()
 
-                producers_list = []
-                for producer in producers:
-                    producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer[1], organization_code=producer[0])
-                    producers_list.append(producer_obj)
-                judges_list = []
-                for judge in judges:
-                    judge_obj, c = Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
-                    judges_list.append(judge_obj)
-
-                article = Article.objects.create(
+                conference=Conference.objects.create(
                     title=title,
-                    organization_code=organization_code,
                     field=field,
                     type=doc_type,
-                    key_words=key_words,
-                    published_at=published_at,
-                    publish_level=publish_level,
-                    publish_type=publish_type,
-                    publish_title=publish_title,
+                    location=location,
+                    held_at=held_at,
+                    conference_level=conference_level,
                     center=center,
-                                       )
-                article.producers.set(producers_list)
-                article.judges.set(judges_list)
+                )
             except:
                 pass
 
     def import_visits(self, excel_data):
         for row in excel_data:
-            title = row[0]
-            organization_code = row[1]
-            field = row[2]
-            doc_type = 'Article'
-            key_words = row[3]
-            published_at=row[6]
-            publish_title=row[9]
-            center=row[10]
-
-            producers_raw = row[4].split(',')
-            producers_raw = producers_raw[:-1]
-            producers = []
-            for producer in producers_raw:
-                producer = producer.strip()
-                detail = producer.split('-')
-                producer = (detail[1], detail[0])
-                producers.append(producer)
-
-            judges_raw = row[5].split(',')
-            judges_raw = judges_raw[:-1]
-            judges = []
-            for judge in judges_raw:
-                judge = judge.strip()
-                detail=judge.split('-')
-                judge=(detail[1], detail[0])
-                judges.append(judge)
-
-            publish_type = row[7]
-            for name, des in ARTICLE_PUBLISH_TYPES:
-                if publish_type == des:
-                    publish_type = name
-
-            publish_level = row[8]
-            for name, des in ARTICLE_PUBLISH_LEVELS:
-                if publish_level == des:
-                    publish_level = name
+            title=row[0]
+            field=row[1]
+            doc_type='Visit'
+            location=row[4]
+            visited_at=row[3]
+            center=row[5]
+            participant_number=row[2]
 
             try:
-                center = Center.objects.get(title=center)
-                published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
-                published_at = published_at.togregorian()
+                center=Center.objects.get(title=center)
+                visited_at=jdatetime.datetime.strptime(visited_at, "%Y/%m/%d")
+                visited_at=visited_at.togregorian()
 
-                producers_list = []
-                for producer in producers:
-                    producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer[1], organization_code=producer[0])
-                    producers_list.append(producer_obj)
-                judges_list = []
-                for judge in judges:
-                    judge_obj, c = Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
-                    judges_list.append(judge_obj)
-
-                article = Article.objects.create(
+                visit=Visit.objects.create(
                     title=title,
-                    organization_code=organization_code,
                     field=field,
                     type=doc_type,
-                    key_words=key_words,
-                    published_at=published_at,
-                    publish_level=publish_level,
-                    publish_type=publish_type,
-                    publish_title=publish_title,
+                    location=location,
+                    visited_at=visited_at,
+                    participant_number=int(participant_number),
                     center=center,
-                                       )
-                article.producers.set(producers_list)
-                article.judges.set(judges_list)
+                )
             except:
                 pass
 
     def import_reports(self, excel_data):
         for row in excel_data:
-            title = row[0]
-            organization_code = row[1]
-            field = row[2]
-            doc_type = 'Article'
-            key_words = row[3]
-            published_at=row[6]
-            publish_title=row[9]
-            center=row[10]
-
-            producers_raw = row[4].split(',')
-            producers_raw = producers_raw[:-1]
-            producers = []
-            for producer in producers_raw:
-                producer = producer.strip()
-                detail = producer.split('-')
-                producer = (detail[1], detail[0])
-                producers.append(producer)
-
-            judges_raw = row[5].split(',')
-            judges_raw = judges_raw[:-1]
-            judges = []
-            for judge in judges_raw:
-                judge = judge.strip()
-                detail=judge.split('-')
-                judge=(detail[1], detail[0])
-                judges.append(judge)
-
-            publish_type = row[7]
-            for name, des in ARTICLE_PUBLISH_TYPES:
-                if publish_type == des:
-                    publish_type = name
-
-            publish_level = row[8]
-            for name, des in ARTICLE_PUBLISH_LEVELS:
-                if publish_level == des:
-                    publish_level = name
+            title=row[0]
+            organization_code=row[1]
+            field=row[2]
+            doc_type='Report'
+            presented_at=row[4]
+            related_project=row[5]
+            center=row[6]
+            producer=row[3]
 
             try:
-                center = Center.objects.get(title=center)
-                published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
-                published_at = published_at.togregorian()
+                center=Center.objects.get(title=center)
+                presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
+                presented_at=presented_at.togregorian()
+                producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
 
-                producers_list = []
-                for producer in producers:
-                    producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer[1], organization_code=producer[0])
-                    producers_list.append(producer_obj)
-                judges_list = []
-                for judge in judges:
-                    judge_obj, c = Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
-                    judges_list.append(judge_obj)
-
-                article = Article.objects.create(
+                report=Report.objects.create(
                     title=title,
                     organization_code=organization_code,
                     field=field,
                     type=doc_type,
-                    key_words=key_words,
-                    published_at=published_at,
-                    publish_level=publish_level,
-                    publish_type=publish_type,
-                    publish_title=publish_title,
+                    producer=producer_obj,
+                    presented_at=presented_at,
+                    related_project=related_project,
                     center=center,
-                                       )
-                article.producers.set(producers_list)
-                article.judges.set(judges_list)
+                )
             except:
                 pass
 
@@ -1214,210 +839,81 @@ class DocumentImportForm(forms.Form):
     def import_cores(self, excel_data):
         for row in excel_data:
             title = row[0]
-            organization_code = row[1]
-            field = row[2]
-            doc_type = 'Article'
-            key_words = row[3]
-            published_at=row[6]
-            publish_title=row[9]
-            center=row[10]
-
-            producers_raw = row[4].split(',')
-            producers_raw = producers_raw[:-1]
-            producers = []
-            for producer in producers_raw:
-                producer = producer.strip()
-                detail = producer.split('-')
-                producer = (detail[1], detail[0])
-                producers.append(producer)
-
-            judges_raw = row[5].split(',')
-            judges_raw = judges_raw[:-1]
-            judges = []
-            for judge in judges_raw:
-                judge = judge.strip()
-                detail=judge.split('-')
-                judge=(detail[1], detail[0])
-                judges.append(judge)
-
-            publish_type = row[7]
-            for name, des in ARTICLE_PUBLISH_TYPES:
-                if publish_type == des:
-                    publish_type = name
-
-            publish_level = row[8]
-            for name, des in ARTICLE_PUBLISH_LEVELS:
-                if publish_level == des:
-                    publish_level = name
+            status = row[1]
+            manager = row[2]
+            contact = row[3]
+            establish_year = row[4]
+            activity_field = row[5]
+            professional_field = row[6]
+            number = row[7]
+            doc_type = 'Core'
 
             try:
-                center = Center.objects.get(title=center)
-                published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
-                published_at = published_at.togregorian()
-
-                producers_list = []
-                for producer in producers:
-                    producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer[1], organization_code=producer[0])
-                    producers_list.append(producer_obj)
-                judges_list = []
-                for judge in judges:
-                    judge_obj, c = Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
-                    judges_list.append(judge_obj)
-
-                article = Article.objects.create(
-                    title=title,
-                    organization_code=organization_code,
-                    field=field,
+                core = Core.objects.create(
                     type=doc_type,
-                    key_words=key_words,
-                    published_at=published_at,
-                    publish_level=publish_level,
-                    publish_type=publish_type,
-                    publish_title=publish_title,
-                    center=center,
+                    title=title,
+                    status=status,
+                    manager=manager,
+                    contact=contact,
+                    establish_year=establish_year,
+                    activity_field=activity_field,
+                    professional_field=professional_field,
+                    number=number
                                        )
-                article.producers.set(producers_list)
-                article.judges.set(judges_list)
             except:
                 pass
 
     def import_techs(self, excel_data):
         for row in excel_data:
-            title = row[0]
-            organization_code = row[1]
-            field = row[2]
-            doc_type = 'Article'
-            key_words = row[3]
-            published_at=row[6]
-            publish_title=row[9]
-            center=row[10]
-
-            producers_raw = row[4].split(',')
-            producers_raw = producers_raw[:-1]
-            producers = []
-            for producer in producers_raw:
-                producer = producer.strip()
-                detail = producer.split('-')
-                producer = (detail[1], detail[0])
-                producers.append(producer)
-
-            judges_raw = row[5].split(',')
-            judges_raw = judges_raw[:-1]
-            judges = []
-            for judge in judges_raw:
-                judge = judge.strip()
-                detail=judge.split('-')
-                judge=(detail[1], detail[0])
-                judges.append(judge)
-
-            publish_type = row[7]
-            for name, des in ARTICLE_PUBLISH_TYPES:
-                if publish_type == des:
-                    publish_type = name
-
-            publish_level = row[8]
-            for name, des in ARTICLE_PUBLISH_LEVELS:
-                if publish_level == des:
-                    publish_level = name
+            title=row[0]
+            status=row[1]
+            manager=row[2]
+            contact=row[3]
+            establish_year=row[4]
+            activity_field=row[5]
+            professional_field=row[6]
+            number=row[7]
+            doc_type='TechUnit'
 
             try:
-                center = Center.objects.get(title=center)
-                published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
-                published_at = published_at.togregorian()
-
-                producers_list = []
-                for producer in producers:
-                    producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer[1], organization_code=producer[0])
-                    producers_list.append(producer_obj)
-                judges_list = []
-                for judge in judges:
-                    judge_obj, c = Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
-                    judges_list.append(judge_obj)
-
-                article = Article.objects.create(
-                    title=title,
-                    organization_code=organization_code,
-                    field=field,
+                tech=Tech.objects.create(
                     type=doc_type,
-                    key_words=key_words,
-                    published_at=published_at,
-                    publish_level=publish_level,
-                    publish_type=publish_type,
-                    publish_title=publish_title,
-                    center=center,
-                                       )
-                article.producers.set(producers_list)
-                article.judges.set(judges_list)
+                    title=title,
+                    status=status,
+                    manager=manager,
+                    contact=contact,
+                    establish_year=establish_year,
+                    activity_field=activity_field,
+                    professional_field=professional_field,
+                    number=number
+                )
             except:
                 pass
 
     def import_companies(self, excel_data):
         for row in excel_data:
-            title = row[0]
-            organization_code = row[1]
-            field = row[2]
-            doc_type = 'Article'
-            key_words = row[3]
-            published_at=row[6]
-            publish_title=row[9]
-            center=row[10]
-
-            producers_raw = row[4].split(',')
-            producers_raw = producers_raw[:-1]
-            producers = []
-            for producer in producers_raw:
-                producer = producer.strip()
-                detail = producer.split('-')
-                producer = (detail[1], detail[0])
-                producers.append(producer)
-
-            judges_raw = row[5].split(',')
-            judges_raw = judges_raw[:-1]
-            judges = []
-            for judge in judges_raw:
-                judge = judge.strip()
-                detail=judge.split('-')
-                judge=(detail[1], detail[0])
-                judges.append(judge)
-
-            publish_type = row[7]
-            for name, des in ARTICLE_PUBLISH_TYPES:
-                if publish_type == des:
-                    publish_type = name
-
-            publish_level = row[8]
-            for name, des in ARTICLE_PUBLISH_LEVELS:
-                if publish_level == des:
-                    publish_level = name
+            title=row[0]
+            status=row[1]
+            manager=row[2]
+            contact=row[3]
+            establish_year=row[4]
+            activity_field=row[5]
+            professional_field=row[6]
+            number=row[7]
+            doc_type='Comapny'
 
             try:
-                center = Center.objects.get(title=center)
-                published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
-                published_at = published_at.togregorian()
-
-                producers_list = []
-                for producer in producers:
-                    producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer[1], organization_code=producer[0])
-                    producers_list.append(producer_obj)
-                judges_list = []
-                for judge in judges:
-                    judge_obj, c = Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
-                    judges_list.append(judge_obj)
-
-                article = Article.objects.create(
-                    title=title,
-                    organization_code=organization_code,
-                    field=field,
+                company=Company.objects.create(
                     type=doc_type,
-                    key_words=key_words,
-                    published_at=published_at,
-                    publish_level=publish_level,
-                    publish_type=publish_type,
-                    publish_title=publish_title,
-                    center=center,
-                                       )
-                article.producers.set(producers_list)
-                article.judges.set(judges_list)
+                    title=title,
+                    status=status,
+                    manager=manager,
+                    contact=contact,
+                    establish_year=establish_year,
+                    activity_field=activity_field,
+                    professional_field=professional_field,
+                    number=number
+                )
             except:
                 pass
 
