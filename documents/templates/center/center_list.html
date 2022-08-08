@@ -205,8 +205,13 @@
 							columns: [1, 2],
 						},
                         customize: function ( xlsx ) {
-                            var styles = xlsx.xl['styles.xml'];
-                            styles.childNodes[0].innerHTML = styles.childNodes[0].innerHTML + '<fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills>'
+                            var platform = window.navigator?.userAgentData?.platform || window.navigator.platform;
+
+                            if (/Linux/.test(platform)) {
+                                console.log('hi there')
+                                var styles = xlsx.xl['styles.xml'];
+                                styles.childNodes[0].innerHTML = styles.childNodes[0].innerHTML + '<fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills>'
+                            }
                         }
 					},
                     {
