@@ -321,19 +321,16 @@ class DocumentImportForm(forms.Form):
 
             producer = row[3]
 
-            try:
-                judges_raw = row[8].split(',')
-                judges_raw = judges_raw[:-1]
-                judges = []
-                for judge in judges_raw:
-                    judge = judge.strip()
-                    detail=judge.split('-')
-                    judge=(detail[1], detail[0])
-                    judges.append(judge)
-            except:
-                raise forms.ValidationError("فرمت وارد شده در ستون داوران صحیح نیست.")
+            judges_raw = row[8].split(',')
+            judges_raw = judges_raw[:-1]
+            judges = []
+            for judge in judges_raw:
+                judge = judge.strip()
+                detail=judge.split('-')
+                judge=(detail[1], detail[0])
+                judges.append(judge)
 
-            try:
+
                 center = Center.objects.get(title=center)
                 published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
                 published_at = published_at.togregorian()
@@ -357,8 +354,6 @@ class DocumentImportForm(forms.Form):
                     center=center,
                                        )
                 book.judges.set(judges_list)
-            except:
-                raise forms.ValidationError("فرمت اطلاعات فایل وارد شده صحیح نیست.")
 
     def import_experiences(self, excel_data):
         for row in excel_data:
@@ -1032,9 +1027,10 @@ class DocumentImportForm(forms.Form):
     def clean(self):
         cleaned_data = super().clean()
         doc_type = cleaned_data['doc_type']
-
-        excel_file = cleaned_data['excel_file']
-
+        try:
+            excel_file = cleaned_data['excel_file']
+        except:
+            raise forms.ValidationError("هیچ فایلی انتخاب نشده است.")
         wb = openpyxl.load_workbook(excel_file)
         worksheet = wb["Sheet1"]
 
@@ -1045,51 +1041,54 @@ class DocumentImportForm(forms.Form):
                 row_data.append(str(cell.value))
             excel_data.append(row_data)
 
-        if doc_type == 'Article':
-            self.import_articles(excel_data[1:])
-        elif doc_type == 'Book':
-            self.import_books(excel_data[1:])
-        elif doc_type == 'Experience':
-            self.import_experiences(excel_data[1:])
-        elif doc_type == 'Idea':
-            self.import_ideas(excel_data[1:])
-        elif doc_type == 'Thesis':
-            self.import_theses(excel_data[1:])
-        elif doc_type == 'Manual':
-            self.import_manuals(excel_data[1:])
-        elif doc_type == 'Order':
-            self.import_orders(excel_data[1:])
-        elif doc_type == 'Seminar':
-            self.import_seminars(excel_data[1:])
-        elif doc_type == 'Project':
-            self.import_projects(excel_data[1:])
-        elif doc_type == 'Conference':
-            self.import_conferences(excel_data[1:])
-        elif doc_type == 'Visit':
-            self.import_visits(excel_data[1:])
-        elif doc_type == 'Report':
-            self.import_reports(excel_data[1:])
-        elif doc_type == 'Resume':
-            self.import_resumes(excel_data[1:])
-        elif doc_type == 'Center':
-            self.import_centers(excel_data[1:])
-        elif doc_type == 'Core':
-            self.import_cores(excel_data[1:])
-        elif doc_type == 'Tech':
-            self.import_techs(excel_data[1:])
-        elif doc_type == 'Company':
-            self.import_companies(excel_data[1:])
-        elif doc_type == 'Future':
-            self.import_futures(excel_data[1:])
-        elif doc_type == 'Journal':
-            self.import_journals(excel_data[1:])
-        elif doc_type == 'Cowork':
-            self.import_coworks(excel_data[1:])
-        elif doc_type == 'Invention':
-            self.import_inventions(excel_data[1:])
-        elif doc_type == 'Assessment':
-            self.import_assessments(excel_data[1:])
-        elif doc_type == 'Workshop':
-            self.import_workshops(excel_data[1:])
+        try:
+            if doc_type == 'Article':
+                self.import_articles(excel_data[1:])
+            elif doc_type == 'Book':
+                self.import_books(excel_data[1:])
+            elif doc_type == 'Experience':
+                self.import_experiences(excel_data[1:])
+            elif doc_type == 'Idea':
+                self.import_ideas(excel_data[1:])
+            elif doc_type == 'Thesis':
+                self.import_theses(excel_data[1:])
+            elif doc_type == 'Manual':
+                self.import_manuals(excel_data[1:])
+            elif doc_type == 'Order':
+                self.import_orders(excel_data[1:])
+            elif doc_type == 'Seminar':
+                self.import_seminars(excel_data[1:])
+            elif doc_type == 'Project':
+                self.import_projects(excel_data[1:])
+            elif doc_type == 'Conference':
+                self.import_conferences(excel_data[1:])
+            elif doc_type == 'Visit':
+                self.import_visits(excel_data[1:])
+            elif doc_type == 'Report':
+                self.import_reports(excel_data[1:])
+            elif doc_type == 'Resume':
+                self.import_resumes(excel_data[1:])
+            elif doc_type == 'Center':
+                self.import_centers(excel_data[1:])
+            elif doc_type == 'Core':
+                self.import_cores(excel_data[1:])
+            elif doc_type == 'Tech':
+                self.import_techs(excel_data[1:])
+            elif doc_type == 'Company':
+                self.import_companies(excel_data[1:])
+            elif doc_type == 'Future':
+                self.import_futures(excel_data[1:])
+            elif doc_type == 'Journal':
+                self.import_journals(excel_data[1:])
+            elif doc_type == 'Cowork':
+                self.import_coworks(excel_data[1:])
+            elif doc_type == 'Invention':
+                self.import_inventions(excel_data[1:])
+            elif doc_type == 'Assessment':
+                self.import_assessments(excel_data[1:])
+            elif doc_type == 'Workshop':
+                self.import_workshops(excel_data[1:])
+        except:
+            raise forms.ValidationError("فرمت اطلاعات فایل وارد شده صحیح نیست. مجددا بررسی نمایید.")
 
         return cleaned_data

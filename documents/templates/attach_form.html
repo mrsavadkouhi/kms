@@ -2,21 +2,15 @@
 {% load static %}
 {% load humanize %}
 
-{% if form.errors %}
-    <div class="card col-md-12 text-center" style="color: whitesmoke;background-color: lightcoral">
-    {% for field in form %}
-        {% for error in field.errors %}
-        <h1> {{ field.name }}: {{ error }} </h1>
-    {% endfor %}
-    {% endfor %}
-    </div>
-{% endif %}
-{% for error in form.non_field_errors %}
-    <div class="card col-md-12 text-center" style="color: whitesmoke;background-color: lightcoral">
-    <h1> {{ error }} </h1>
-    </div>
-{% endfor %}
 
+<div id="form-attach-error-container-{{ obj.id }}" class="col-lg-12 d-none">
+    <div class="card col-md-12 text-center" style="color: whitesmoke;background-color: lightcoral">
+        <h1 id="form-attach-error-{{ obj.id }}"></h1>
+    </div>
+</div>
+<div class="col-lg-12">
+    <div><br></div>
+</div>
 <form id="form-attach-{{ object.id }}" class="m-t" role="form" method="post" action="{% url 'documents:attach_create' pk=object.id %}" enctype="multipart/form-data">
 {% csrf_token %}
     <div class="row">
@@ -34,7 +28,7 @@
             </div>
             <textarea name="description" type="text" class="form-control" id="description" aria-describedby="description_label" ></textarea>
         </div>
-        <button type="submit" id="#attach-{{ object.id }}" class="btn btn-lg btn-outline-primary"><i class="fa fa-plus"></i> افزودن</button>
+        <button type="submit" id="button-attach-{{ object.id }}" class="btn btn-lg btn-outline-primary"><i class="fa fa-plus"></i> افزودن</button>
     </div>
 </form>
 
@@ -45,4 +39,12 @@ function showFileName_attach ( event ) {
   var fileName = input.files[0].name;
   document.getElementById( 'attach-{{ object.id }}-label' ).textContent = fileName.substring(fileName.length - 20, fileName.length);
 }
+
+$('#form-attach-{{ object.id }}').submit(function (e) {
+ if ($('#attach-{{ object.id }}').val() === '') {
+     e.preventDefault();
+     $('#form-attach-error-container-{{ obj.id }}').removeClass('d-none');
+     $('#form-attach-error-{{ obj.id }}').text('هیچ فایلی انتخاب نشده است.');
+ }
+});
 </script>
