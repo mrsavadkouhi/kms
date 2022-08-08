@@ -242,23 +242,29 @@ class DocumentImportForm(forms.Form):
             publish_title=row[9]
             center=row[10]
 
-            producers_raw = row[4].split(',')
-            producers_raw = producers_raw[:-1]
-            producers = []
-            for producer in producers_raw:
-                producer = producer.strip()
-                detail = producer.split('-')
-                producer = (detail[1], detail[0])
-                producers.append(producer)
+            try:
+                producers_raw = row[4].split(',')
+                producers_raw = producers_raw[:-1]
+                producers = []
+                for producer in producers_raw:
+                    producer = producer.strip()
+                    detail = producer.split('-')
+                    producer = (detail[1], detail[0])
+                    producers.append(producer)
+            except:
+                pass
 
-            judges_raw = row[5].split(',')
-            judges_raw = judges_raw[:-1]
-            judges = []
-            for judge in judges_raw:
-                judge = judge.strip()
-                detail=judge.split('-')
-                judge=(detail[1], detail[0])
-                judges.append(judge)
+            try:
+                judges_raw = row[5].split(',')
+                judges_raw = judges_raw[:-1]
+                judges = []
+                for judge in judges_raw:
+                    judge = judge.strip()
+                    detail=judge.split('-')
+                    judge=(detail[1], detail[0])
+                    judges.append(judge)
+            except:
+                pass
 
             publish_type = row[7]
             for name, des in ARTICLE_PUBLISH_TYPES:
@@ -315,14 +321,17 @@ class DocumentImportForm(forms.Form):
 
             producer = row[3]
 
-            judges_raw = row[8].split(',')
-            judges_raw = judges_raw[:-1]
-            judges = []
-            for judge in judges_raw:
-                judge = judge.strip()
-                detail=judge.split('-')
-                judge=(detail[1], detail[0])
-                judges.append(judge)
+            try:
+                judges_raw = row[8].split(',')
+                judges_raw = judges_raw[:-1]
+                judges = []
+                for judge in judges_raw:
+                    judge = judge.strip()
+                    detail=judge.split('-')
+                    judge=(detail[1], detail[0])
+                    judges.append(judge)
+            except:
+                raise forms.ValidationError("فرمت وارد شده در ستون داوران صحیح نیست.")
 
             try:
                 center = Center.objects.get(title=center)
@@ -349,7 +358,7 @@ class DocumentImportForm(forms.Form):
                                        )
                 book.judges.set(judges_list)
             except:
-                pass
+                raise forms.ValidationError("فرمت اطلاعات فایل وارد شده صحیح نیست.")
 
     def import_experiences(self, excel_data):
         for row in excel_data:
