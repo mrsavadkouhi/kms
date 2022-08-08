@@ -1396,32 +1396,32 @@ class CenterProjectDeleteView(LoginRequiredMixin, JSONDeleteView):
 
 
 DOC_TYPES = [
-    ('مدیریت دانش', 'Article', 'مقاله'),
-    ('مدیریت دانش', 'Resume', 'رزومه'),
-    ('مدیریت دانش', 'Book', 'کتاب'),
-    ('مدیریت دانش', 'Experience', 'تجربه'),
-    ('مدیریت دانش', 'Thesis', 'پایان نامه'),
-    ('مدیریت دانش', 'Idea', 'ایده'),
-    ('مدیریت دانش', 'Seminar', 'سمینار'),
-    ('مدیریت دانش', 'Conference', 'کنفرانس'),
-    ('مدیریت دانش', 'Visit', 'بازدید علمی'),
-    ('مدیریت دانش', 'Project', 'پروژه تحقیقاتی'),
-    ('مدیریت دانش', 'Manual', 'دستورالعمل'),
-    ('مدیریت دانش', 'Report', 'گزارش فنی'),
-    ('مدیریت دانش', 'Order', 'حکم صادره'),
-    ('مدیریت دانش', 'Center', 'مرکز'),
+    ('مدیریت دانش', 'Article', 'مقالات', 'documents:article_list'),
+    ('مدیریت دانش', 'Resume', 'رزومه ها', 'documents:resume_list'),
+    ('مدیریت دانش', 'Book', 'کتاب ها', 'documents:book_list'),
+    ('مدیریت دانش', 'Experience', 'تجربه ها', 'documents:experience_list'),
+    ('مدیریت دانش', 'Thesis', 'پایان نامه ها', 'documents:thesis_list'),
+    ('مدیریت دانش', 'Idea', 'ایده ها', 'documents:idea_list'),
+    ('مدیریت دانش', 'Seminar', 'سمینارها', 'documents:seminar_list'),
+    ('مدیریت دانش', 'Conference', 'کنفرانس ها', 'documents:conference_list'),
+    ('مدیریت دانش', 'Visit', 'بازدیدهای علمی', 'documents:visit_list'),
+    ('مدیریت دانش', 'Project', 'پروژه های تحقیقاتی', 'documents:project_list'),
+    ('مدیریت دانش', 'Manual', 'دستورالعمل ها', 'documents:manual_list'),
+    ('مدیریت دانش', 'Report', 'گزارشات فنی', 'documents:report_list'),
+    ('مدیریت دانش', 'Order', 'احکام صادره', 'documents:order_list'),
+    ('مدیریت دانش', 'Center', 'مراکز', 'documents:center_list'),
 
-    ('آینده پژوهی و همکاری های علمی', 'Journal', 'فصلنامه'),
-    ('آینده پژوهی و همکاری های علمی', 'Future', 'آینده پژوهی'),
-    ('آینده پژوهی و همکاری های علمی', 'Cowork', 'همکاری های علمی'),
+    ('آینده پژوهی و همکاری های علمی', 'Journal', 'فصلنامه ها', 'documents:journal_list'),
+    ('آینده پژوهی و همکاری های علمی', 'Future', 'آینده پژوهی ها', 'documents:future_list'),
+    ('آینده پژوهی و همکاری های علمی', 'Cowork', 'همکاری های علمی', 'documents:cowork_list'),
 
-    ('نخبگان آموزش و امور محققین', 'Invention', 'ثبت اختراع'),
-    ('نخبگان آموزش و امور محققین', 'Workshop', 'کارگاه آموزشی'),
-    ('نخبگان آموزش و امور محققین', 'Assessment', 'ارزیابی'),
+    ('نخبگان آموزش و امور محققین', 'Invention', 'ثبت اختراع ها', 'documents:invention_list'),
+    ('نخبگان آموزش و امور محققین', 'Workshop', 'کارگاه های آموزشی', 'documents:workshop_list'),
+    ('نخبگان آموزش و امور محققین', 'Assessment', 'ارزیابی ها', 'documents:assessment_list'),
 
-    ('مرکز رشد', 'Core', 'هسته'),
-    ('مرکز رشد', 'Tech', 'واحد فناور'),
-    ('مرکز رشد', 'Company', 'شرکت'),
+    ('مرکز رشد', 'Core', 'هسته ها', 'documents:core_list'),
+    ('مرکز رشد', 'Tech', 'واحدهای فناور', 'documents:tech_list'),
+    ('مرکز رشد', 'Company', 'شرکت ها', 'documents:company_list'),
 ]
 
 
@@ -1432,10 +1432,11 @@ class DocumenttBulkCreateView(LoginRequiredMixin, FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['document_type'] = self.kwargs['document_type']
-        for sec, name, des in DOC_TYPES:
+        for sec, name, des, url in DOC_TYPES:
             if context['document_type'] == name:
                 context['document_type_display'] = des
                 context['document_type_section'] = sec
+                context['document_type_sub_section_url'] = url
         return context
 
     def get_success_url(self):
