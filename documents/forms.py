@@ -243,29 +243,23 @@ class DocumentImportForm(forms.Form):
             publish_title=row[9]
             center=row[10]
 
-            try:
-                producers_raw = row[4].split(',')
-                producers_raw = producers_raw[:-1]
-                producers = []
-                for producer in producers_raw:
-                    producer = producer.strip()
-                    detail = producer.split('-')
-                    producer = (detail[1], detail[0])
-                    producers.append(producer)
-            except:
-                pass
+            producers_raw = row[4].split(',')
+            producers_raw = producers_raw[:-1]
+            producers = []
+            for producer in producers_raw:
+                producer = producer.strip()
+                detail = producer.split('-')
+                producer = (detail[1], detail[0])
+                producers.append(producer)
 
-            try:
-                judges_raw = row[5].split(',')
-                judges_raw = judges_raw[:-1]
-                judges = []
-                for judge in judges_raw:
-                    judge = judge.strip()
-                    detail=judge.split('-')
-                    judge=(detail[1], detail[0])
-                    judges.append(judge)
-            except:
-                pass
+            judges_raw = row[5].split(',')
+            judges_raw = judges_raw[:-1]
+            judges = []
+            for judge in judges_raw:
+                judge = judge.strip()
+                detail=judge.split('-')
+                judge=(detail[1], detail[0])
+                judges.append(judge)
 
             publish_type = row[7]
             for name, des in ARTICLE_PUBLISH_TYPES:
@@ -1032,6 +1026,7 @@ class DocumentImportForm(forms.Form):
             excel_file = cleaned_data['excel_file']
         except:
             raise forms.ValidationError("هیچ فایلی انتخاب نشده است.")
+
         wb = openpyxl.load_workbook(excel_file)
         worksheet = wb["Sheet1"]
 
