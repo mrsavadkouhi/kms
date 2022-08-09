@@ -232,8 +232,10 @@ class DocumentImportForm(forms.Form):
     excel_file = forms.FileField()
     doc_type = forms.CharField()
 
-    def import_articles(self, excel_data):
+    def import_articles(self,excel_data):
+        error_line = 0
         for row in excel_data:
+            error_line += 1
             title = row[0]
             organization_code = row[1]
             field = row[2]
@@ -245,6 +247,8 @@ class DocumentImportForm(forms.Form):
 
             producers_raw = row[4].split(',')
             producers_raw = producers_raw[:-1]
+            if not producers_raw:
+                raise forms.ValidationError("فرمت اطلاعات ستون نویسندگان وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
             producers = []
             for producer in producers_raw:
                 producer = producer.strip()
@@ -253,7 +257,9 @@ class DocumentImportForm(forms.Form):
                 producers.append(producer)
 
             judges_raw = row[5].split(',')
-            judges_raw = judges_raw[:-1]
+            judges_raw=judges_raw[:-1]
+            if not judges_raw:
+                raise forms.ValidationError("فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
             judges = []
             for judge in judges_raw:
                 judge = judge.strip()
@@ -272,8 +278,12 @@ class DocumentImportForm(forms.Form):
                     publish_level = name
 
             center = Center.objects.get(title=center)
-            published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
-            published_at = published_at.togregorian()
+            
+            try:
+                published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
+                published_at = published_at.togregorian()
+            except:
+                raise forms.ValidationError("فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
             producers_list = []
             for producer in producers:
@@ -299,8 +309,10 @@ class DocumentImportForm(forms.Form):
             article.producers.set(producers_list)
             article.judges.set(judges_list)
 
-    def import_books(self, excel_data):
+    def import_books(self,excel_data):
+        error_line = 0
         for row in excel_data:
+            error_line += 1
             title = row[0]
             organization_code = row[1]
             field = row[2]
@@ -314,7 +326,9 @@ class DocumentImportForm(forms.Form):
             producer = row[3]
 
             judges_raw = row[8].split(',')
-            judges_raw = judges_raw[:-1]
+            judges_raw=judges_raw[:-1]
+            if not judges_raw:
+                raise forms.ValidationError("فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
             judges = []
             for judge in judges_raw:
                 judge = judge.strip()
@@ -323,8 +337,11 @@ class DocumentImportForm(forms.Form):
                 judges.append(judge)
 
             center = Center.objects.get(title=center)
-            published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
-            published_at = published_at.togregorian()
+            try:
+                published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
+                published_at = published_at.togregorian()
+            except:
+                raise forms.ValidationError("فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
             producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer)
 
             judges_list = []
@@ -346,8 +363,10 @@ class DocumentImportForm(forms.Form):
                                    )
             book.judges.set(judges_list)
 
-    def import_experiences(self, excel_data):
+    def import_experiences(self,excel_data):
+        error_line = 0
         for row in excel_data:
+            error_line += 1
             title=row[0]
             organization_code=row[1]
             field=row[2]
@@ -360,6 +379,8 @@ class DocumentImportForm(forms.Form):
 
             judges_raw=row[6].split(',')
             judges_raw=judges_raw[:-1]
+            if not judges_raw:
+                raise forms.ValidationError("فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
             judges=[]
             for judge in judges_raw:
                 judge=judge.strip()
@@ -367,33 +388,37 @@ class DocumentImportForm(forms.Form):
                 judge=(detail[1], detail[0])
                 judges.append(judge)
 
+            center=Center.objects.get(title=center)
+
             try:
-                center=Center.objects.get(title=center)
                 presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
                 presented_at=presented_at.togregorian()
-                producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
-
-                judges_list=[]
-                for judge in judges:
-                    judge_obj, c=Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
-                    judges_list.append(judge_obj)
-
-                experience=Experience.objects.create(
-                    title=title,
-                    organization_code=organization_code,
-                    field=field,
-                    type=doc_type,
-                    producer=producer_obj,
-                    presented_at=presented_at,
-                    assessment_result=assessment_result,
-                    center=center,
-                )
-                experience.judges.set(judges_list)
             except:
-                pass
+                raise forms.ValidationError("فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
-    def import_ideas(self, excel_data):
+            producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
+
+            judges_list=[]
+            for judge in judges:
+                judge_obj, c=Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
+                judges_list.append(judge_obj)
+
+            experience=Experience.objects.create(
+                title=title,
+                organization_code=organization_code,
+                field=field,
+                type=doc_type,
+                producer=producer_obj,
+                presented_at=presented_at,
+                assessment_result=assessment_result,
+                center=center,
+            )
+            experience.judges.set(judges_list)
+
+    def import_ideas(self,excel_data):
+        error_line = 0
         for row in excel_data:
+            error_line += 1
             title=row[0]
             organization_code=row[1]
             field=row[2]
@@ -406,6 +431,8 @@ class DocumentImportForm(forms.Form):
 
             judges_raw=row[6].split(',')
             judges_raw=judges_raw[:-1]
+            if not judges_raw:
+                raise forms.ValidationError("فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
             judges=[]
             for judge in judges_raw:
                 judge=judge.strip()
@@ -413,33 +440,37 @@ class DocumentImportForm(forms.Form):
                 judge=(detail[1], detail[0])
                 judges.append(judge)
 
+            center=Center.objects.get(title=center)
+
             try:
-                center=Center.objects.get(title=center)
                 presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
                 presented_at=presented_at.togregorian()
-                producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
-
-                judges_list=[]
-                for judge in judges:
-                    judge_obj, c=Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
-                    judges_list.append(judge_obj)
-
-                idea=Idea.objects.create(
-                    title=title,
-                    organization_code=organization_code,
-                    field=field,
-                    type=doc_type,
-                    producer=producer_obj,
-                    presented_at=presented_at,
-                    assessment_result=assessment_result,
-                    center=center,
-                )
-                idea.judges.set(judges_list)
             except:
-                pass
+                raise forms.ValidationError("فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
-    def import_theses(self, excel_data):
+            producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
+
+            judges_list=[]
+            for judge in judges:
+                judge_obj, c=Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
+                judges_list.append(judge_obj)
+
+            idea=Idea.objects.create(
+                title=title,
+                organization_code=organization_code,
+                field=field,
+                type=doc_type,
+                producer=producer_obj,
+                presented_at=presented_at,
+                assessment_result=assessment_result,
+                center=center,
+            )
+            idea.judges.set(judges_list)
+
+    def import_theses(self,excel_data):
+        error_line = 0
         for row in excel_data:
+            error_line += 1
             title=row[0]
             organization_code=row[1]
             field=row[2]
@@ -451,29 +482,33 @@ class DocumentImportForm(forms.Form):
             center=row[8]
             producer=row[3]
 
+            center=Center.objects.get(title=center)
+
             try:
-                center=Center.objects.get(title=center)
                 presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
                 presented_at=presented_at.togregorian()
-                producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
-
-                thesis=Thesis.objects.create(
-                    title=title,
-                    organization_code=organization_code,
-                    field=field,
-                    type=doc_type,
-                    producer=producer_obj,
-                    presented_at=presented_at,
-                    measure=measure,
-                    degree=degree,
-                    university=university,
-                    center=center,
-                )
             except:
-                pass
+                raise forms.ValidationError("فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
-    def import_manuals(self, excel_data):
+            producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
+
+            thesis=Thesis.objects.create(
+                title=title,
+                organization_code=organization_code,
+                field=field,
+                type=doc_type,
+                producer=producer_obj,
+                presented_at=presented_at,
+                measure=measure,
+                degree=degree,
+                university=university,
+                center=center,
+            )
+
+    def import_manuals(self,excel_data):
+        error_line = 0
         for row in excel_data:
+            error_line += 1
             title=row[0]
             organization_code=row[1]
             field=row[2]
@@ -482,26 +517,31 @@ class DocumentImportForm(forms.Form):
             center=row[5]
             producer=row[3]
 
+            center=Center.objects.get(title=center)
+
             try:
-                center=Center.objects.get(title=center)
                 declared_at=jdatetime.datetime.strptime(declared_at, "%Y/%m/%d")
                 declared_at=declared_at.togregorian()
-                producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
-
-                manual=Manual.objects.create(
-                    title=title,
-                    organization_code=organization_code,
-                    field=field,
-                    type=doc_type,
-                    producer=producer_obj,
-                    declared_at=declared_at,
-                    center=center,
-                )
             except:
-                pass
+                raise forms.ValidationError("فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
-    def import_orders(self, excel_data):
+            producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
+
+            manual=Manual.objects.create(
+                title=title,
+                organization_code=organization_code,
+                field=field,
+                type=doc_type,
+                producer=producer_obj,
+                declared_at=declared_at,
+                center=center,
+            )
+
+
+    def import_orders(self,excel_data):
+        error_line = 0
         for row in excel_data:
+            error_line += 1
             title=row[0]
             organization_code=row[1]
             field=row[2]
@@ -510,26 +550,30 @@ class DocumentImportForm(forms.Form):
             center=row[5]
             receiver=row[3]
 
+            center=Center.objects.get(title=center)
             try:
-                center=Center.objects.get(title=center)
                 issued_at=jdatetime.datetime.strptime(issued_at, "%Y/%m/%d")
                 issued_at=issued_at.togregorian()
-                receiver_obj, c=Resume.objects.get_or_create(type='Resume', title=receiver)
-
-                order=Order.objects.create(
-                    title=title,
-                    organization_code=organization_code,
-                    field=field,
-                    type=doc_type,
-                    receiver=receiver_obj,
-                    issued_at=issued_at,
-                    center=center,
-                )
             except:
-                pass
+                raise forms.ValidationError(
+                    "فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+            receiver_obj, c=Resume.objects.get_or_create(type='Resume', title=receiver)
 
-    def import_seminars(self, excel_data):
+            order=Order.objects.create(
+                title=title,
+                organization_code=organization_code,
+                field=field,
+                type=doc_type,
+                receiver=receiver_obj,
+                issued_at=issued_at,
+                center=center,
+            )
+
+
+    def import_seminars(self,excel_data):
+        error_line = 0
         for row in excel_data:
+            error_line += 1
             title=row[0]
             organization_code=row[1]
             field=row[2]
@@ -542,6 +586,8 @@ class DocumentImportForm(forms.Form):
 
             judges_raw=row[7].split(',')
             judges_raw=judges_raw[:-1]
+            if not judges_raw:
+                raise forms.ValidationError("فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
             judges=[]
             for judge in judges_raw:
                 judge=judge.strip()
@@ -549,34 +595,40 @@ class DocumentImportForm(forms.Form):
                 judge=(detail[1], detail[0])
                 judges.append(judge)
 
+            center=Center.objects.get(title=center)
+
             try:
-                center=Center.objects.get(title=center)
                 presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
                 presented_at=presented_at.togregorian()
-                producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
-
-                judges_list=[]
-                for judge in judges:
-                    judge_obj, c=Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
-                    judges_list.append(judge_obj)
-
-                seminar=Seminar.objects.create(
-                    title=title,
-                    organization_code=organization_code,
-                    field=field,
-                    type=doc_type,
-                    producer=producer_obj,
-                    participant_number=int(participant_number),
-                    presented_at=presented_at,
-                    assessment_result=assessment_result,
-                    center=center,
-                )
-                seminar.judges.set(judges_list)
             except:
-                pass
+                raise forms.ValidationError(
+                    "فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
-    def import_projects(self, excel_data):
+            producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
+
+            judges_list=[]
+            for judge in judges:
+                judge_obj, c=Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
+                judges_list.append(judge_obj)
+
+            seminar=Seminar.objects.create(
+                title=title,
+                organization_code=organization_code,
+                field=field,
+                type=doc_type,
+                producer=producer_obj,
+                participant_number=int(participant_number),
+                presented_at=presented_at,
+                assessment_result=assessment_result,
+                center=center,
+            )
+            seminar.judges.set(judges_list)
+
+
+    def import_projects(self,excel_data):
+        error_line = 0
         for row in excel_data:
+            error_line += 1
             title=row[0]
             field=row[1]
             doc_type='Project'
@@ -585,26 +637,31 @@ class DocumentImportForm(forms.Form):
             center=row[5]
             manager=row[2]
 
+            center=Center.objects.get(title=center)
+
             try:
-                center=Center.objects.get(title=center)
                 finished_at=jdatetime.datetime.strptime(finished_at, "%Y/%m/%d")
                 finished_at=finished_at.togregorian()
-                manager_obj, c=Resume.objects.get_or_create(type='Resume', title=manager)
-
-                project=Project.objects.create(
-                    title=title,
-                    duration=int(duration),
-                    field=field,
-                    type=doc_type,
-                    manager=manager_obj,
-                    finished_at=finished_at,
-                    center=center,
-                )
             except:
-                pass
+                raise forms.ValidationError(
+                    "فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
-    def import_conferences(self, excel_data):
+            manager_obj, c=Resume.objects.get_or_create(type='Resume', title=manager)
+
+            project=Project.objects.create(
+                title=title,
+                duration=int(duration),
+                field=field,
+                type=doc_type,
+                manager=manager_obj,
+                finished_at=finished_at,
+                center=center,
+            )
+
+    def import_conferences(self,excel_data):
+        error_line = 0
         for row in excel_data:
+            error_line += 1
             title=row[0]
             field=row[1]
             doc_type='Conference'
@@ -617,25 +674,29 @@ class DocumentImportForm(forms.Form):
                 if conference_level == des:
                     conference_level=name
 
+            center=Center.objects.get(title=center)
+
             try:
-                center=Center.objects.get(title=center)
                 held_at=jdatetime.datetime.strptime(held_at, "%Y/%m/%d")
                 held_at=held_at.togregorian()
-
-                conference=Conference.objects.create(
-                    title=title,
-                    field=field,
-                    type=doc_type,
-                    location=location,
-                    held_at=held_at,
-                    conference_level=conference_level,
-                    center=center,
-                )
             except:
-                pass
+                raise forms.ValidationError(
+                    "فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
-    def import_visits(self, excel_data):
+            conference=Conference.objects.create(
+                title=title,
+                field=field,
+                type=doc_type,
+                location=location,
+                held_at=held_at,
+                conference_level=conference_level,
+                center=center,
+            )
+
+    def import_visits(self,excel_data):
+        error_line = 0
         for row in excel_data:
+            error_line += 1
             title=row[0]
             field=row[1]
             doc_type='Visit'
@@ -644,25 +705,30 @@ class DocumentImportForm(forms.Form):
             center=row[5]
             participant_number=row[2]
 
+            center=Center.objects.get(title=center)
+
             try:
-                center=Center.objects.get(title=center)
                 visited_at=jdatetime.datetime.strptime(visited_at, "%Y/%m/%d")
                 visited_at=visited_at.togregorian()
-
-                visit=Visit.objects.create(
-                    title=title,
-                    field=field,
-                    type=doc_type,
-                    location=location,
-                    visited_at=visited_at,
-                    participant_number=int(participant_number),
-                    center=center,
-                )
             except:
-                pass
+                raise forms.ValidationError(
+                    "فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
-    def import_reports(self, excel_data):
+            visit=Visit.objects.create(
+                title=title,
+                field=field,
+                type=doc_type,
+                location=location,
+                visited_at=visited_at,
+                participant_number=int(participant_number),
+                center=center,
+            )
+
+
+    def import_reports(self,excel_data):
+        error_line = 0
         for row in excel_data:
+            error_line += 1
             title=row[0]
             organization_code=row[1]
             field=row[2]
@@ -672,27 +738,32 @@ class DocumentImportForm(forms.Form):
             center=row[6]
             producer=row[3]
 
+            center=Center.objects.get(title=center)
+
             try:
-                center=Center.objects.get(title=center)
                 presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
                 presented_at=presented_at.togregorian()
-                producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
-
-                report=Report.objects.create(
-                    title=title,
-                    organization_code=organization_code,
-                    field=field,
-                    type=doc_type,
-                    producer=producer_obj,
-                    presented_at=presented_at,
-                    related_project=related_project,
-                    center=center,
-                )
             except:
-                pass
+                raise forms.ValidationError(
+                    "فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
-    def import_resumes(self, excel_data):
+            producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
+
+            report=Report.objects.create(
+                title=title,
+                organization_code=organization_code,
+                field=field,
+                type=doc_type,
+                producer=producer_obj,
+                presented_at=presented_at,
+                related_project=related_project,
+                center=center,
+            )
+
+    def import_resumes(self,excel_data):
+        error_line = 0
         for row in excel_data:
+            error_line += 1
             title=row[0]
             organization_code=row[1]
             doc_type='Resume'
@@ -701,36 +772,34 @@ class DocumentImportForm(forms.Form):
             degree=row[4]
             center=row[5]
 
-            try:
-                center=Center.objects.get(title=center)
+            center=Center.objects.get(title=center)
 
-                resume=Resume.objects.create(
-                    title=title,
-                    organization_code=organization_code,
-                    type=doc_type,
-                    measure=measure,
-                    degree=degree,
-                    entrance_year=int(entrance_year),
-                    center=center,
-                )
-            except:
-                pass
+            resume=Resume.objects.create(
+                title=title,
+                organization_code=organization_code,
+                type=doc_type,
+                measure=measure,
+                degree=degree,
+                entrance_year=int(entrance_year),
+                center=center,
+            )
 
-    def import_centers(self, excel_data):
+    def import_centers(self,excel_data):
+        error_line = 0
         for row in excel_data:
+            error_line += 1
             title=row[0]
             code=row[1]
 
-            try:
-                center=Center.objects.create(
-                    title=title,
-                    code=code,
-                )
-            except:
-                pass
+            center=Center.objects.create(
+                title=title,
+                code=code,
+            )
 
-    def import_cores(self, excel_data):
+    def import_cores(self,excel_data):
+        error_line = 0
         for row in excel_data:
+            error_line += 1
             title = row[0]
             status = row[1]
             manager = row[2]
@@ -741,23 +810,22 @@ class DocumentImportForm(forms.Form):
             number = row[7]
             doc_type = 'Core'
 
-            try:
-                core = Core.objects.create(
-                    type=doc_type,
-                    title=title,
-                    status=status,
-                    manager=manager,
-                    contact=contact,
-                    establish_year=establish_year,
-                    activity_field=activity_field,
-                    professional_field=professional_field,
-                    number=number
-                                       )
-            except:
-                pass
+            core = Core.objects.create(
+                type=doc_type,
+                title=title,
+                status=status,
+                manager=manager,
+                contact=contact,
+                establish_year=establish_year,
+                activity_field=activity_field,
+                professional_field=professional_field,
+                number=number
+                                   )
 
-    def import_techs(self, excel_data):
+    def import_techs(self,excel_data):
+        error_line = 0
         for row in excel_data:
+            error_line += 1
             title=row[0]
             status=row[1]
             manager=row[2]
@@ -768,23 +836,22 @@ class DocumentImportForm(forms.Form):
             number=row[7]
             doc_type='TechUnit'
 
-            try:
-                tech=Tech.objects.create(
-                    type=doc_type,
-                    title=title,
-                    status=status,
-                    manager=manager,
-                    contact=contact,
-                    establish_year=establish_year,
-                    activity_field=activity_field,
-                    professional_field=professional_field,
-                    number=number
-                )
-            except:
-                pass
+            tech=Tech.objects.create(
+                type=doc_type,
+                title=title,
+                status=status,
+                manager=manager,
+                contact=contact,
+                establish_year=establish_year,
+                activity_field=activity_field,
+                professional_field=professional_field,
+                number=number
+            )
 
-    def import_companies(self, excel_data):
+    def import_companies(self,excel_data):
+        error_line = 0
         for row in excel_data:
+            error_line += 1
             title=row[0]
             status=row[1]
             manager=row[2]
@@ -795,23 +862,22 @@ class DocumentImportForm(forms.Form):
             number=row[7]
             doc_type='Comapny'
 
-            try:
-                company=Company.objects.create(
-                    type=doc_type,
-                    title=title,
-                    status=status,
-                    manager=manager,
-                    contact=contact,
-                    establish_year=establish_year,
-                    activity_field=activity_field,
-                    professional_field=professional_field,
-                    number=number
-                )
-            except:
-                pass
+            company=Company.objects.create(
+                type=doc_type,
+                title=title,
+                status=status,
+                manager=manager,
+                contact=contact,
+                establish_year=establish_year,
+                activity_field=activity_field,
+                professional_field=professional_field,
+                number=number
+            )
 
-    def import_futures(self, excel_data):
+    def import_futures(self,excel_data):
+        error_line = 0
         for row in excel_data:
+            error_line += 1
             title=row[0]
             organization_code=row[1]
             field=row[2]
@@ -824,27 +890,32 @@ class DocumentImportForm(forms.Form):
             center=row[6]
             producer=row[3]
 
+            center=Center.objects.get(title=center)
+
             try:
-                center=Center.objects.get(title=center)
                 presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
                 presented_at=presented_at.togregorian()
-                producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
-
-                future=Future.objects.create(
-                    title=title,
-                    organization_code=organization_code,
-                    field=field,
-                    type=doc_type,
-                    producer=producer_obj,
-                    presented_at=presented_at,
-                    future_type=future_type,
-                    center=center,
-                )
             except:
-                pass
+                raise forms.ValidationError(
+                    "فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
-    def import_journals(self, excel_data):
+            producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
+
+            future=Future.objects.create(
+                title=title,
+                organization_code=organization_code,
+                field=field,
+                type=doc_type,
+                producer=producer_obj,
+                presented_at=presented_at,
+                future_type=future_type,
+                center=center,
+            )
+
+    def import_journals(self,excel_data):
+        error_line = 0
         for row in excel_data:
+            error_line += 1
             title=row[0]
             organization_code=row[1]
             field=row[2]
@@ -855,20 +926,23 @@ class DocumentImportForm(forms.Form):
             try:
                 presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
                 presented_at=presented_at.togregorian()
-
-                journal=Journal.objects.create(
-                    title=title,
-                    organization_code=organization_code,
-                    field=field,
-                    type=doc_type,
-                    presented_at=presented_at,
-                    page_number=int(page_number),
-                )
             except:
-                pass
+                raise forms.ValidationError(
+                    "فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
-    def import_coworks(self, excel_data):
+            journal=Journal.objects.create(
+                title=title,
+                organization_code=organization_code,
+                field=field,
+                type=doc_type,
+                presented_at=presented_at,
+                page_number=int(page_number),
+            )
+
+    def import_coworks(self,excel_data):
+        error_line = 0
         for row in excel_data:
+            error_line += 1
             title=row[0]
             field=row[1]
             doc_type='Cowork'
@@ -883,23 +957,22 @@ class DocumentImportForm(forms.Form):
             address=row[4]
             center=row[5]
 
-            try:
-                center=Center.objects.get(title=center)
+            center=Center.objects.get(title=center)
 
-                cowork=CoWork.objects.create(
-                    title=title,
-                    person_type=person_type,
-                    cowork_type=cowork_type,
-                    field=field,
-                    type=doc_type,
-                    center=center,
-                    address=address,
-                )
-            except:
-                pass
+            cowork=CoWork.objects.create(
+                title=title,
+                person_type=person_type,
+                cowork_type=cowork_type,
+                field=field,
+                type=doc_type,
+                center=center,
+                address=address,
+            )
 
-    def import_inventions(self, excel_data):
+    def import_inventions(self,excel_data):
+        error_line = 0
         for row in excel_data:
+            error_line += 1
             title = row[0]
             organization_code=row[2]
             doc_type = 'Invention'
@@ -909,6 +982,8 @@ class DocumentImportForm(forms.Form):
 
             producers_raw = row[3].split(',')
             producers_raw = producers_raw[:-1]
+            if not producers_raw:
+                raise forms.ValidationError("فرمت اطلاعات ستون محققین وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
             producers = []
             for producer in producers_raw:
                 producer = producer.strip()
@@ -916,30 +991,34 @@ class DocumentImportForm(forms.Form):
                 producer = (detail[1], detail[0])
                 producers.append(producer)
 
+            center = Center.objects.get(title=center)
+
             try:
-                center = Center.objects.get(title=center)
                 registered_at = jdatetime.datetime.strptime(registered_at, "%Y/%m/%d")
                 registered_at = registered_at.togregorian()
-
-                producers_list = []
-                for producer in producers:
-                    producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer[1], organization_code=producer[0])
-                    producers_list.append(producer_obj)
-
-                invention = Invention.objects.create(
-                    title=title,
-                    organization_code=organization_code,
-                    type=doc_type,
-                    registered_at=registered_at,
-                    project_title=project_title,
-                    center=center,
-                                       )
-                invention.producers.set(producers_list)
             except:
-                pass
+                raise forms.ValidationError(
+                    "فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
-    def import_assessments(self, excel_data):
+            producers_list = []
+            for producer in producers:
+                producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer[1], organization_code=producer[0])
+                producers_list.append(producer_obj)
+
+            invention = Invention.objects.create(
+                title=title,
+                organization_code=organization_code,
+                type=doc_type,
+                registered_at=registered_at,
+                project_title=project_title,
+                center=center,
+                                   )
+            invention.producers.set(producers_list)
+
+    def import_assessments(self,excel_data):
+        error_line = 0
         for row in excel_data:
+            error_line += 1
             producer=row[0]
             father=row[2]
             scientific_rank=row[3]
@@ -952,32 +1031,36 @@ class DocumentImportForm(forms.Form):
             sufficient_condition=row[9]
             center=row[10]
 
+            center=Center.objects.get(title=center)
             try:
-                center=Center.objects.get(title=center)
                 order_issued_at=jdatetime.datetime.strptime(order_issued_at, "%Y/%m/%d")
                 order_issued_at=order_issued_at.togregorian()
                 elite_received_at=jdatetime.datetime.strptime(elite_received_at, "%Y/%m/%d")
                 elite_received_at=elite_received_at.togregorian()
-                producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
-
-                assessment=Assessment.objects.create(
-                    type=doc_type,
-                    father=father,
-                    producer=producer_obj,
-                    scientific_rank=scientific_rank,
-                    issue_code=issue_code,
-                    profile_type=profile_type,
-                    necessary_condition=necessary_condition,
-                    sufficient_condition=sufficient_condition,
-                    order_issued_at=order_issued_at,
-                    elite_received_at=elite_received_at,
-                    center=center,
-                )
             except:
-                pass
+                raise forms.ValidationError(
+                    "فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
-    def import_workshops(self, excel_data):
+            producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
+
+            assessment=Assessment.objects.create(
+                type=doc_type,
+                father=father,
+                producer=producer_obj,
+                scientific_rank=scientific_rank,
+                issue_code=issue_code,
+                profile_type=profile_type,
+                necessary_condition=necessary_condition,
+                sufficient_condition=sufficient_condition,
+                order_issued_at=order_issued_at,
+                elite_received_at=elite_received_at,
+                center=center,
+            )
+
+    def import_workshops(self,excel_data):
+        error_line = 0
         for row in excel_data:
+            error_line += 1
             title=row[0]
             organization_code=row[1]
             field=row[2]
@@ -993,27 +1076,30 @@ class DocumentImportForm(forms.Form):
             center=row[10]
             producer=row[3]
 
+            center=Center.objects.get(title=center)
+
             try:
-                center=Center.objects.get(title=center)
                 started_at=jdatetime.datetime.strptime(started_at, "%Y/%m/%d")
                 started_at=started_at.togregorian()
-                producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
-
-                workshop=Workshop.objects.create(
-                    title=title,
-                    organization_code=organization_code,
-                    field=field,
-                    type=doc_type,
-                    producer=producer_obj,
-                    started_at=started_at,
-                    workshop_type=workshop_type,
-                    location=location,
-                    meeting_number=int(meeting_number),
-                    participant_number=int(participant_number),
-                    center=center,
-                )
             except:
-                pass
+                raise forms.ValidationError(
+                    "فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+
+            producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
+
+            workshop=Workshop.objects.create(
+                title=title,
+                organization_code=organization_code,
+                field=field,
+                type=doc_type,
+                producer=producer_obj,
+                started_at=started_at,
+                workshop_type=workshop_type,
+                location=location,
+                meeting_number=int(meeting_number),
+                participant_number=int(participant_number),
+                center=center,
+            )
 
     def clean(self):
         cleaned_data = super().clean()
@@ -1080,7 +1166,7 @@ class DocumentImportForm(forms.Form):
                 self.import_assessments(excel_data[1:])
             elif doc_type == 'Workshop':
                 self.import_workshops(excel_data[1:])
-        except:
-            raise forms.ValidationError("فرمت اطلاعات فایل وارد شده صحیح نیست. مجددا بررسی نمایید.")
+        except Exception as e:
+            raise forms.ValidationError(e)
 
         return cleaned_data
