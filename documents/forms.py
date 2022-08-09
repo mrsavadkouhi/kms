@@ -253,7 +253,11 @@ class DocumentImportForm(forms.Form):
             for producer in producers_raw:
                 producer = producer.strip()
                 detail = producer.split('-')
-                producer = (detail[1], detail[0])
+                try:
+                    producer = (detail[1], detail[0])
+                except:
+                    raise forms.ValidationError(
+                        "فرمت اطلاعات ستون نویسندگان وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
                 producers.append(producer)
 
             judges_raw = row[5].split(',')
@@ -264,7 +268,11 @@ class DocumentImportForm(forms.Form):
             for judge in judges_raw:
                 judge = judge.strip()
                 detail=judge.split('-')
-                judge=(detail[1], detail[0])
+                try:
+                    judge=(detail[1], detail[0])
+                except:
+                    raise forms.ValidationError(
+                        "فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
                 judges.append(judge)
 
             publish_type = row[7]
@@ -333,7 +341,11 @@ class DocumentImportForm(forms.Form):
             for judge in judges_raw:
                 judge = judge.strip()
                 detail=judge.split('-')
-                judge=(detail[1], detail[0])
+                try:
+                    judge=(detail[1], detail[0])
+                except:
+                    raise forms.ValidationError(
+                        "فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
                 judges.append(judge)
 
             center = Center.objects.get(title=center)
@@ -385,7 +397,11 @@ class DocumentImportForm(forms.Form):
             for judge in judges_raw:
                 judge=judge.strip()
                 detail=judge.split('-')
-                judge=(detail[1], detail[0])
+                try:
+                    judge=(detail[1], detail[0])
+                except:
+                    raise forms.ValidationError(
+                        "فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
                 judges.append(judge)
 
             center=Center.objects.get(title=center)
@@ -437,7 +453,11 @@ class DocumentImportForm(forms.Form):
             for judge in judges_raw:
                 judge=judge.strip()
                 detail=judge.split('-')
-                judge=(detail[1], detail[0])
+                try:
+                    judge=(detail[1], detail[0])
+                except:
+                    raise forms.ValidationError(
+                        "فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
                 judges.append(judge)
 
             center=Center.objects.get(title=center)
@@ -592,7 +612,11 @@ class DocumentImportForm(forms.Form):
             for judge in judges_raw:
                 judge=judge.strip()
                 detail=judge.split('-')
-                judge=(detail[1], detail[0])
+                try:
+                    judge=(detail[1], detail[0])
+                except:
+                    raise forms.ValidationError(
+                        "فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
                 judges.append(judge)
 
             center=Center.objects.get(title=center)
@@ -988,7 +1012,11 @@ class DocumentImportForm(forms.Form):
             for producer in producers_raw:
                 producer = producer.strip()
                 detail = producer.split('-')
-                producer = (detail[1], detail[0])
+                try:
+                    producer = (detail[1], detail[0])
+                except:
+                    raise forms.ValidationError(
+                        "فرمت اطلاعات ستون نویسندگان وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
                 producers.append(producer)
 
             center = Center.objects.get(title=center)
