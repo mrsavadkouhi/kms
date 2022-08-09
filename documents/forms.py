@@ -271,36 +271,33 @@ class DocumentImportForm(forms.Form):
                 if publish_level == des:
                     publish_level = name
 
-            try:
-                center = Center.objects.get(title=center)
-                published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
-                published_at = published_at.togregorian()
+            center = Center.objects.get(title=center)
+            published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
+            published_at = published_at.togregorian()
 
-                producers_list = []
-                for producer in producers:
-                    producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer[1], organization_code=producer[0])
-                    producers_list.append(producer_obj)
-                judges_list = []
-                for judge in judges:
-                    judge_obj, c = Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
-                    judges_list.append(judge_obj)
+            producers_list = []
+            for producer in producers:
+                producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer[1], organization_code=producer[0])
+                producers_list.append(producer_obj)
+            judges_list = []
+            for judge in judges:
+                judge_obj, c = Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
+                judges_list.append(judge_obj)
 
-                article = Article.objects.create(
-                    title=title,
-                    organization_code=organization_code,
-                    field=field,
-                    type=doc_type,
-                    key_words=key_words,
-                    published_at=published_at,
-                    publish_level=publish_level,
-                    publish_type=publish_type,
-                    publish_title=publish_title,
-                    center=center,
-                                       )
-                article.producers.set(producers_list)
-                article.judges.set(judges_list)
-            except:
-                pass
+            article = Article.objects.create(
+                title=title,
+                organization_code=organization_code,
+                field=field,
+                type=doc_type,
+                key_words=key_words,
+                published_at=published_at,
+                publish_level=publish_level,
+                publish_type=publish_type,
+                publish_title=publish_title,
+                center=center,
+                                   )
+            article.producers.set(producers_list)
+            article.judges.set(judges_list)
 
     def import_books(self, excel_data):
         for row in excel_data:
@@ -325,30 +322,29 @@ class DocumentImportForm(forms.Form):
                 judge=(detail[1], detail[0])
                 judges.append(judge)
 
+            center = Center.objects.get(title=center)
+            published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
+            published_at = published_at.togregorian()
+            producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer)
 
-                center = Center.objects.get(title=center)
-                published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
-                published_at = published_at.togregorian()
-                producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer)
+            judges_list = []
+            for judge in judges:
+                judge_obj, c = Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
+                judges_list.append(judge_obj)
 
-                judges_list = []
-                for judge in judges:
-                    judge_obj, c = Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
-                    judges_list.append(judge_obj)
-
-                book = Book.objects.create(
-                    title=title,
-                    organization_code=organization_code,
-                    field=field,
-                    type=doc_type,
-                    publisher=publisher,
-                    fipa=fipa,
-                    producer=producer_obj,
-                    published_at=published_at,
-                    assessment_result=assessment_result,
-                    center=center,
-                                       )
-                book.judges.set(judges_list)
+            book = Book.objects.create(
+                title=title,
+                organization_code=organization_code,
+                field=field,
+                type=doc_type,
+                publisher=publisher,
+                fipa=fipa,
+                producer=producer_obj,
+                published_at=published_at,
+                assessment_result=assessment_result,
+                center=center,
+                                   )
+            book.judges.set(judges_list)
 
     def import_experiences(self, excel_data):
         for row in excel_data:
