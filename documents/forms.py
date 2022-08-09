@@ -1,5 +1,5 @@
 import jdatetime
-import csv
+import openpyxl
 import pandas as pd
 from django import forms
 from .models import *
@@ -1116,55 +1116,67 @@ class DocumentImportForm(forms.Form):
             raise forms.ValidationError("هیچ فایلی انتخاب نشده است.")
 
         # df = pd.read_csv(excel_file)
-        df = pd.read_excel(excel_file, engine='openpyxl')
+        # df = pd.read_excel(excel_file, engine='openpyxl')
+
+        wb = openpyxl.load_workbook(excel_file)
+        worksheet = wb["Sheet1"]
+
+        excel_data = list()
+        for row in worksheet.iter_rows():
+            row_data = list()
+            for cell in row:
+                row_data.append(str(cell.value))
+            if 'None' in row_data:
+                break
+            excel_data.append(row_data)
 
         try:
             if doc_type == 'Article':
-                self.import_articles(df.iloc)
+                self.import_articles(excel_data[1:])
             elif doc_type == 'Book':
-                self.import_books(df.iloc)
+                self.import_books(excel_data[1:])
             elif doc_type == 'Experience':
-                self.import_experiences(df.iloc)
+                self.import_experiences(excel_data[1:])
             elif doc_type == 'Idea':
-                self.import_ideas(df.iloc)
+                self.import_ideas(excel_data[1:])
             elif doc_type == 'Thesis':
-                self.import_theses(df.iloc)
+                self.import_theses(excel_data[1:])
             elif doc_type == 'Manual':
-                self.import_manuals(df.iloc)
+                self.import_manuals(excel_data[1:])
             elif doc_type == 'Order':
-                self.import_orders(df.iloc)
+                self.import_orders(excel_data[1:])
             elif doc_type == 'Seminar':
-                self.import_seminars(df.iloc)
+                self.import_seminars(excel_data[1:])
             elif doc_type == 'Project':
-                self.import_projects(df.iloc)
+                self.import_projects(excel_data[1:])
             elif doc_type == 'Conference':
-                self.import_conferences(df.iloc)
+                self.import_conferences(excel_data[1:])
             elif doc_type == 'Visit':
-                self.import_visits(df.iloc)
+                self.import_visits(excel_data[1:])
             elif doc_type == 'Report':
-                self.import_reports(df.iloc)
+                self.import_reports(excel_data[1:])
             elif doc_type == 'Resume':
-                self.import_resumes(df.iloc)
+                self.import_resumes(excel_data[1:])
             elif doc_type == 'Center':
-                self.import_centers(df.iloc)
+                self.import_centers(excel_data[1:])
             elif doc_type == 'Core':
-                self.import_cores(df.iloc)
+                self.import_cores(excel_data[1:])
             elif doc_type == 'Tech':
-                self.import_techs(df.iloc)
+                self.import_techs(excel_data[1:])
             elif doc_type == 'Company':
-                self.import_companies(df.iloc)
+                self.import_companies(excel_data[1:])
             elif doc_type == 'Future':
-                self.import_futures(df.iloc)
+                self.import_futures(excel_data[1:])
             elif doc_type == 'Journal':
-                self.import_journals(df.iloc)
+                self.import_journals(excel_data[1:])
             elif doc_type == 'Cowork':
-                self.import_coworks(df.iloc)
+                self.import_coworks(excel_data[1:])
             elif doc_type == 'Invention':
-                self.import_inventions(df.iloc)
+                self.import_inventions(excel_data[1:])
             elif doc_type == 'Assessment':
-                self.import_assessments(df.iloc)
+                self.import_assessments(excel_data[1:])
             elif doc_type == 'Workshop':
-                self.import_workshops(df.iloc)
+                self.import_workshops(excel_data[1:])
         except Exception as e:
             raise forms.ValidationError(e)
 
