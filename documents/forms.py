@@ -1116,7 +1116,7 @@ class DocumentImportForm(forms.Form):
             raise forms.ValidationError("هیچ فایلی انتخاب نشده است.")
 
         # df = pd.read_csv(excel_file)
-        df = pd.read_excel(excel_file, engine='openpysl')
+        df = pd.read_excel(excel_file, engine='openpyxl')
 
         try:
             if doc_type == 'Article':
