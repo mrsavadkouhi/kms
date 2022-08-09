@@ -1,6 +1,6 @@
 import jdatetime
-import openpyxl
 import csv
+import pandas as pd
 from django import forms
 from .models import *
 from bootstrap_modal_forms.forms import BSModalModelForm
@@ -1101,71 +1101,69 @@ class DocumentImportForm(forms.Form):
                 center=center,
             )
 
+    def handle_uploaded_file(self, f):
+        with open('excel_file.xlsx', 'wb+') as destination:
+            for chunk in f.chunks():
+                destination.write(chunk)
+
     def clean(self):
         cleaned_data = super().clean()
         doc_type = cleaned_data['doc_type']
         try:
             excel_file = cleaned_data['excel_file']
+            # self.handle_uploaded_file(excel_file)
         except:
             raise forms.ValidationError("هیچ فایلی انتخاب نشده است.")
 
-        wb = openpyxl.load_workbook(excel_file)
-        worksheet = wb["Sheet1"]
-
-        excel_data = list()
-        for row in worksheet.iter_rows():
-            row_data = list()
-            for cell in row:
-                row_data.append(str(cell.value))
-            excel_data.append(row_data)
+        df = pd.read_csv(excel_file)
 
         try:
             if doc_type == 'Article':
-                self.import_articles(excel_data[1:])
+                self.import_articles(df.iloc)
             elif doc_type == 'Book':
-                self.import_books(excel_data[1:])
+                self.import_books(df.iloc)
             elif doc_type == 'Experience':
-                self.import_experiences(excel_data[1:])
+                self.import_experiences(df.iloc)
             elif doc_type == 'Idea':
-                self.import_ideas(excel_data[1:])
+                self.import_ideas(df.iloc)
             elif doc_type == 'Thesis':
-                self.import_theses(excel_data[1:])
+                self.import_theses(df.iloc)
             elif doc_type == 'Manual':
-                self.import_manuals(excel_data[1:])
+                self.import_manuals(df.iloc)
             elif doc_type == 'Order':
-                self.import_orders(excel_data[1:])
+                self.import_orders(df.iloc)
             elif doc_type == 'Seminar':
-                self.import_seminars(excel_data[1:])
+                self.import_seminars(df.iloc)
             elif doc_type == 'Project':
-                self.import_projects(excel_data[1:])
+                self.import_projects(df.iloc)
             elif doc_type == 'Conference':
-                self.import_conferences(excel_data[1:])
+                self.import_conferences(df.iloc)
             elif doc_type == 'Visit':
-                self.import_visits(excel_data[1:])
+                self.import_visits(df.iloc)
             elif doc_type == 'Report':
-                self.import_reports(excel_data[1:])
+                self.import_reports(df.iloc)
             elif doc_type == 'Resume':
-                self.import_resumes(excel_data[1:])
+                self.import_resumes(df.iloc)
             elif doc_type == 'Center':
-                self.import_centers(excel_data[1:])
+                self.import_centers(df.iloc)
             elif doc_type == 'Core':
-                self.import_cores(excel_data[1:])
+                self.import_cores(df.iloc)
             elif doc_type == 'Tech':
-                self.import_techs(excel_data[1:])
+                self.import_techs(df.iloc)
             elif doc_type == 'Company':
-                self.import_companies(excel_data[1:])
+                self.import_companies(df.iloc)
             elif doc_type == 'Future':
-                self.import_futures(excel_data[1:])
+                self.import_futures(df.iloc)
             elif doc_type == 'Journal':
-                self.import_journals(excel_data[1:])
+                self.import_journals(df.iloc)
             elif doc_type == 'Cowork':
-                self.import_coworks(excel_data[1:])
+                self.import_coworks(df.iloc)
             elif doc_type == 'Invention':
-                self.import_inventions(excel_data[1:])
+                self.import_inventions(df.iloc)
             elif doc_type == 'Assessment':
-                self.import_assessments(excel_data[1:])
+                self.import_assessments(df.iloc)
             elif doc_type == 'Workshop':
-                self.import_workshops(excel_data[1:])
+                self.import_workshops(df.iloc)
         except Exception as e:
             raise forms.ValidationError(e)
 
