@@ -1116,67 +1116,65 @@ class DocumentImportForm(forms.Form):
             raise forms.ValidationError("هیچ فایلی انتخاب نشده است.")
 
         # df = pd.read_csv(excel_file)
-        # df = pd.read_excel(excel_file, engine='openpyxl')
+        df = pd.read_excel(excel_file, engine='openpyxl')
 
-        wb = openpyxl.load_workbook(excel_file)
-        worksheet = wb["Sheet1"]
+        # wb = openpyxl.load_workbook(excel_file)
+        # worksheet = wb["Sheet1"]
 
         excel_data = list()
-        for row in worksheet.iter_rows():
+        for row in df.iloc:
             row_data = list()
             for cell in row:
-                row_data.append(str(cell.value))
-            if 'None' in row_data:
-                break
+                row_data.append(str(cell))
             excel_data.append(row_data)
 
         try:
             if doc_type == 'Article':
-                self.import_articles(excel_data[1:])
+                self.import_articles(excel_data)
             elif doc_type == 'Book':
-                self.import_books(excel_data[1:])
+                self.import_books(excel_data)
             elif doc_type == 'Experience':
-                self.import_experiences(excel_data[1:])
+                self.import_experiences(excel_data)
             elif doc_type == 'Idea':
-                self.import_ideas(excel_data[1:])
+                self.import_ideas(excel_data)
             elif doc_type == 'Thesis':
-                self.import_theses(excel_data[1:])
+                self.import_theses(excel_data)
             elif doc_type == 'Manual':
-                self.import_manuals(excel_data[1:])
+                self.import_manuals(excel_data)
             elif doc_type == 'Order':
-                self.import_orders(excel_data[1:])
+                self.import_orders(excel_data)
             elif doc_type == 'Seminar':
-                self.import_seminars(excel_data[1:])
+                self.import_seminars(excel_data)
             elif doc_type == 'Project':
-                self.import_projects(excel_data[1:])
+                self.import_projects(excel_data)
             elif doc_type == 'Conference':
-                self.import_conferences(excel_data[1:])
+                self.import_conferences(excel_data)
             elif doc_type == 'Visit':
-                self.import_visits(excel_data[1:])
+                self.import_visits(excel_data)
             elif doc_type == 'Report':
-                self.import_reports(excel_data[1:])
+                self.import_reports(excel_data)
             elif doc_type == 'Resume':
-                self.import_resumes(excel_data[1:])
+                self.import_resumes(excel_data)
             elif doc_type == 'Center':
-                self.import_centers(excel_data[1:])
+                self.import_centers(excel_data)
             elif doc_type == 'Core':
-                self.import_cores(excel_data[1:])
+                self.import_cores(excel_data)
             elif doc_type == 'Tech':
-                self.import_techs(excel_data[1:])
+                self.import_techs(excel_data)
             elif doc_type == 'Company':
-                self.import_companies(excel_data[1:])
+                self.import_companies(excel_data)
             elif doc_type == 'Future':
-                self.import_futures(excel_data[1:])
+                self.import_futures(excel_data)
             elif doc_type == 'Journal':
-                self.import_journals(excel_data[1:])
+                self.import_journals(excel_data)
             elif doc_type == 'Cowork':
-                self.import_coworks(excel_data[1:])
+                self.import_coworks(excel_data)
             elif doc_type == 'Invention':
-                self.import_inventions(excel_data[1:])
+                self.import_inventions(excel_data)
             elif doc_type == 'Assessment':
-                self.import_assessments(excel_data[1:])
+                self.import_assessments(excel_data)
             elif doc_type == 'Workshop':
-                self.import_workshops(excel_data[1:])
+                self.import_workshops(excel_data)
         except Exception as e:
             raise forms.ValidationError(e)
 
