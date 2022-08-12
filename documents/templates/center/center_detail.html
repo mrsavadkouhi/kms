@@ -334,7 +334,7 @@
 									"<img src='http://127.0.0.1:8000/static/img/sepah_balck.png' class='float-right obj-fit-contain' style='position:relative;width:10%' />" +
 									"<h2 class='text-center'>رزومه مرکز تحقیقاتی</h2>" +
 									"<br><br><br>" +
-                                    "<img class='float-left img-thumbnail circle-img img-circle' src='http://127.0.0.1:8000{% if object.avatar %}{{ object.avatar.url }}{% else %}{% static '/img/user.png' %}{% endif %}'>" +
+                                    "{% if object.avatar %}<img class='float-left img-thumbnail circle-img img-circle' src='http://127.0.0.1:8000{{ object.avatar.url }}'>{% endif %}" +
 									"<h3><strong>عنوان: </strong>{{ object.title }}</h3>" +
 									"<h3><strong>کد: </strong>{{ object.code }}</h3>" +
                                     "<br>" +
