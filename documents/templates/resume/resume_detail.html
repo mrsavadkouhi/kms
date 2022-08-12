@@ -319,7 +319,6 @@
                         text: '<button class="btn btn-lg btn-outline-danger"><i class="fa fa-print"></i> خروجی PDF</button>',
 						className: 'bg-transparent',
                         title: '',
-						footer: true,
 						exportOptions: {
 							columns: [0, 1, 2, 3, 4],
 							{#stripHtml: true#}
@@ -347,7 +346,7 @@
                                     "<div class='col-lg-12' >" +
                                     "<h2><strong>اطلاعات شخصی</strong></h2>" +
                                     "<br>" +
-                                    "<img class='float-left img-thumbnail circle-img img-circle' src='http://127.0.0.1:8000{{ object.avatar.url }}'>" +
+                                    "<img class='float-left img-thumbnail circle-img img-circle' src='http://127.0.0.1:8000{% if object.avatar %}{{ object.avatar.url }}{% else %}{% static '/img/user.png' %}{% endif %}'>" +
                                     "<h3><strong>نام و نام خانوادگی: </strong>{{ object.title }}</h3>" +
                                     "<h3><strong>شناسه پاسداری: </strong>{{ object.organization_code }}</h3>" +
                                     "<h3><strong>توضیحات: </strong>{{ object.description }}</h3>" +
@@ -430,16 +429,22 @@
                                     "<td class='align-middle text-center'>{% if report_num %}دارد{% else %}ندارد{% endif %}</td>" +
                                     "</tr>" +
                                     "<tr>" +
-                                    "<td class='align-middle text-center'>۹</td>" +
+                                    "<td class='align-middle text-center'>۱۰</td>" +
                                     "<td class='align-middle text-center'>پروژه خاتمه یافته</td>" +
                                     "<td class='align-middle text-center'>{{ project_num }}</td>" +
                                     "<td class='align-middle text-center'>{% if project_num %}دارد{% else %}ندارد{% endif %}</td>" +
                                     "</tr>" +
                                     "<tr>" +
-                                    "<td class='align-middle text-center'>۹</td>" +
+                                    "<td class='align-middle text-center'>۱۱</td>" +
                                     "<td class='align-middle text-center'>احکام صادره</td>" +
                                     "<td class='align-middle text-center'>{{ order_num }}</td>" +
                                     "<td class='align-middle text-center'>{% if order_num %}دارد{% else %}ندارد{% endif %}</td>" +
+                                    "</tr>" +
+                                    "<tr>" +
+                                    "<td class='align-middle text-center'>۱۲</td>" +
+                                    "<td class='align-middle text-center'>ثبت اختراع</td>" +
+                                    "<td class='align-middle text-center'>{{ invention_num }}</td>" +
+                                    "<td class='align-middle text-center'>{% if invention_num %}دارد{% else %}ندارد{% endif %}</td>" +
                                     "</tr>" +
                                     "</tbody>" +
                                     "</table>" +
@@ -659,9 +664,9 @@
                                     "</table>" +
                                     "</div>" +
                                     "<br><br><br>" +
-                                    "<div class='col-lg-3' >" +
+                                    "<div class='col-lg-6' >" +
                                     "</div>" +
-                                    "<div class='col-lg-9' >" +
+                                    "<div class='col-lg-6' >" +
                                     "<span class='float-left'>مدیر دانش ساتخ ندسا</span>" +
                                     "</div>" +
                                     "</th>" +
