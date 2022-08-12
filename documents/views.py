@@ -817,50 +817,83 @@ class ResumeDetailsView(LoginRequiredMixin, DetailView):
         context['seminar_num']= 0
         context['thesis_num']= 0
 
+        context['others']=[]
+
+        context['ideas']=self.object.idea_producer.all()
         for item in self.object.idea_producer.all():
             context['object_list'].append((item, 'ایده', item.presented_at))
             context['idea_num']+=1
+
+        context['books']=self.object.book_producer.all()
         for item in self.object.book_producer.all():
             context['object_list'].append((item, 'کتاب', item.published_at))
             context['book_num']+=1
+
+        context['experiences']=self.object.experience_producer.all()
         for item in self.object.experience_producer.all():
             context['object_list'].append((item, 'تجربه', item.presented_at))
             context['exp_num']+=1
+
+        context['theses']=self.object.thesis_producer.all()
         for item in self.object.thesis_producer.all():
+            context['others'].append((item, 'پایان نامه', item.presented_at))
             context['object_list'].append((item, 'پایان نامه', item.presented_at))
             context['thesis_num']+=1
+
+        context['manuals']=self.object.manual_producer.all()
         for item in self.object.manual_producer.all():
+            context['others'].append((item, 'دستورالعمل', item.declared_at))
             context['object_list'].append((item, 'دستورالعمل', item.declared_at))
             context['manual_num']+=1
+
+        context['orders']=self.object.order_receiver.all()
         for item in self.object.order_receiver.all():
+            context['others'].append((item, 'احکام', item.issued_at))
             context['object_list'].append((item, 'احکام', item.issued_at))
             context['order_num']+=1
+
+        context['seminars']=self.object.seminar_producer.all()
         for item in self.object.seminar_producer.all():
+            context['others'].append((item, 'سمینار', item.presented_at))
             context['object_list'].append((item, 'سمینار', item.presented_at))
             context['seminar_num']+=1
+
+        context['reports']=self.object.report_producer.all()
         for item in self.object.report_producer.all():
+            context['others'].append((item, 'گزارش', item.presented_at))
             context['object_list'].append((item, 'گزارش', item.presented_at))
             context['report_num']+=1
+
+        context['projects']=self.object.project_manager.all()
         for item in self.object.project_manager.all():
+            context['others'].append((item, 'پروژه', item.finished_at))
             context['object_list'].append((item, 'پروژه', item.finished_at))
             context['project_num']+=1
+
+        context['articles']=self.object.article_producers.all()
         for item in self.object.article_producers.all():
             context['object_list'].append((item, 'مقاله', item.published_at))
             context['article_num']+=1
 
+
         for item in self.object.idea_judges.all():
+            context['others'].append((item, 'داوری', item.presented_at))
             context['object_list'].append((item, 'داوری', item.presented_at))
             context['judge_num']+=1
         for item in self.object.book_judges.all():
+            context['others'].append((item, 'داوری', item.published_at))
             context['object_list'].append((item, 'داوری', item.published_at))
             context['judge_num']+=1
         for item in self.object.experience_judges.all():
+            context['others'].append((item, 'داوری', item.presented_at))
             context['object_list'].append((item, 'داوری', item.presented_at))
             context['judge_num']+=1
         for item in self.object.seminar_judges.all():
+            context['others'].append((item, 'داوری', item.presented_at))
             context['object_list'].append((item, 'داوری', item.presented_at))
             context['judge_num']+=1
         for item in self.object.article_judges.all():
+            context['others'].append((item, 'داوری', item.published_at))
             context['object_list'].append((item, 'داوری', item.published_at))
             context['judge_num']+=1
 

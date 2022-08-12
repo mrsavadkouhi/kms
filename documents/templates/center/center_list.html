@@ -71,6 +71,7 @@
 					<thead>
 					<tr>
 						<th class="text-center" style="background-color: white;width: 7%">ردیف</th>
+                        <th class="text-center" style="background-color: white;width: 7%">آواتار</th>
 						<th class="text-center" style="background-color: white">عنوان</th>
 						<th class="text-center" style="background-color: white">کد</th>
 						<th class="text-center" style="background-color: white; width: 10%">عملیات</th>
@@ -79,8 +80,11 @@
 					<tbody>
 
 					{% for obj in object_list %}
-						<tr id="c-tr-{{ obj.id }}"style="background-color: whitesmoke">
+						<tr id="c-tr-{{ obj.id }}" style="background-color: whitesmoke">
 							<td class="align-middle text-center">{{ forloop.counter }}</td>
+                            <td class="align-middle text-center">
+                                <img class="rounded-circle img-avatar" src="{% if obj.avatar %}{{ obj.avatar.url }}{% else %}{% static 'img/user.png' %}{% endif %}">
+                            </td>
 							<td class="align-middle text-center"><a href="{% url 'documents:center_details' pk=obj.id %}">{{ obj.title }}</a></td>
 							<td class="align-middle text-center">{{ obj.code }}</td>
 							<td class="align-middle text-center">
@@ -157,7 +161,7 @@
                         title: '',
 						footer: true,
 						exportOptions: {
-							columns: [0, 1, 2],
+							columns: [ 0, 2, 3],
 							{#stripHtml: true#}
 						},
                         customize: function (win) {
@@ -202,7 +206,7 @@
                         title: '',
 						filename: 'centers',
 						exportOptions: {
-							columns: [1, 2],
+							columns: [2, 3],
 						}
 					},
                     {

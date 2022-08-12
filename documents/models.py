@@ -15,6 +15,10 @@ def get_avatar_directory_path(instance, filename):
     return 'resumes/%d_avatar_%s' % (int(time.time()), filename)
 
 
+def get_center_avatar_directory_path(instance, filename):
+    return 'centers/%d_avatar_%s' % (int(time.time()), filename)
+
+
 class DocumentAttachment(models.Model):
     created_at=models.DateTimeField(auto_now_add=True)
     file = models.FileField(upload_to=get_attachment_directory_path, max_length=255)
@@ -64,6 +68,7 @@ DOCUMENT_TYPES = [
 
 
 class Center(models.Model):
+    avatar=models.ImageField(upload_to=get_center_avatar_directory_path, max_length=255, blank=True, null=True)
     title = models.CharField(max_length=255)
     code = models.IntegerField()
 

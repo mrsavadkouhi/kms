@@ -3,6 +3,22 @@
 {% load humanize %}
 {% load jalali_date %}
 
+{% block last-header %}
+    <style>
+        .circle-img {
+          width: 200px;
+          height: 200px;
+          overflow: hidden;
+        }
+
+        .circle-img img {
+          height: 100%;
+          transform: translateX(-50%);
+          margin-left: 50%;
+        }
+    </style>
+
+{% endblock %}
 
 {% block head_title %}جزئیات مرکز{% endblock %}
 
@@ -39,7 +55,7 @@
         <div class="col-lg-12">
 			<div class="col-lg-3 text-center">
 				<div><br></div>
-				<i class="fa fa-user-circle fa-10x"></i>
+                <img class="img-thumbnail circle-img img-circle" src="{% if object.avatar %}{{ object.avatar.url }}{% else %}{% static 'img/user.png' %}{% endif %}">
 				<h1><strong>مشخصات</strong></h1>
 			</div>
 			<div class="card col-lg-9">
@@ -305,7 +321,7 @@
                         title: '',
 						footer: true,
 						exportOptions: {
-							columns: [ 1, 2 ],
+							columns: [ 0, 1, 2 ],
 							{#stripHtml: true#}
 						},
                         customize: function (win) {
@@ -318,6 +334,7 @@
 									"<img src='http://127.0.0.1:8000/static/img/sepah_balck.png' class='float-right obj-fit-contain' style='position:relative;width:10%' />" +
 									"<h2 class='text-center'>رزومه مرکز تحقیقاتی</h2>" +
 									"<br><br><br>" +
+                                    "<img class='float-left img-thumbnail circle-img img-circle' src='http://127.0.0.1:8000{{ object.avatar.url }}'>" +
 									"<h3><strong>عنوان: </strong>{{ object.title }}</h3>" +
 									"<h3><strong>کد: </strong>{{ object.code }}</h3>" +
                                     "<br>" +
@@ -330,26 +347,22 @@
                                     "</th>" +
 									"</tr>");
 
-                            $(win.document.body).find('tfoot')
-								.css('color', 'black')
-								.css('font-family', 'VazirFD')
-								.empty()
-								.prepend('<tr><th style="background-color:#f2f2f2" colspan="3">' +
-                                    '<br><br><br>' +
-									'<span class="float-right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;مدیر دانش ساتخ ندسا</span>' +
-									'</th><tr>');
-
 							$(win.document.body).find('table')
 								.addClass('compact')
 								.css('font-size', 'inherit')
 								.css('color', 'black')
 								.css('border-color', 'transparent')
-								.css('font-family', 'VazirFD');
-
-							$(win.document.body).find('td:eq(0)')
-								.css('width', '5%');
-							$(win.document.body).find('td:nth-child(odd)')
-								.css('background-color', '#f2f2f2');
+								.css('font-family', 'VazirFD')
+                                .append(
+                                    "<tr>" +
+                                    "<th colspan='3'>" +
+                                    "<div class='col-lg-12' >" +
+                                    "<br><br><br>" +
+                                    "<span class='float-left'>مدیر دانش ساتخ ندسا</span>" +
+                                    "</div>" +
+                                    "</th>" +
+                                    "<tr>"
+                                )
 						}
 					},
                     {
