@@ -51,6 +51,12 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('accounts:profile_list')
 
     def get_context_data(self, **kwargs):
+        req_user = self.request.user
+        the_user = self.object.user
+        if req_user == the_user:
+            kwargs['allowed_to_change_permissions'] = False
+        else:
+            kwargs['allowed_to_change_permissions'] = True
         kwargs['title'] = 'update'
         kwargs['permissions'] = Permission.objects.all()
         return super().get_context_data(**kwargs)

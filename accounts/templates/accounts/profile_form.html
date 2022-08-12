@@ -150,6 +150,7 @@
                   </div>
                     <input type="email" class="form-control"  value="{{ object.user.email }}" name="email" aria-describedby="email_label">
                 </div>
+            {% if allowed_to_change_permissions %}
                 <div class="input-group mb-2">
                   <div class="input-group-append">
                     <span class="input-group-text" id="permissions_lable">دسترسی ها: </span>
@@ -160,6 +161,7 @@
                         {% endfor %}
                   </select>
                 </div>
+            {% endif %}
             {% if title == 'create' %}
                 <div class="input-group mb-2">
                   <div class="input-group-append">

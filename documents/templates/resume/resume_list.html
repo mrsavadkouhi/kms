@@ -70,6 +70,7 @@
 					<thead>
 					<tr>
 						<th class="text-center" style="background-color: white;width: 7%">ردیف</th>
+						<th class="text-center" style="background-color: white;width: 7%">آواتار</th>
 						<th class="text-center" style="background-color: white">نام و نام خانوادگی</th>
 						<th class="text-center" style="background-color: white">شناسه پاسداری</th>
 						<th class="text-center" style="background-color: white">سال ورود</th>
@@ -84,6 +85,9 @@
 					{% for obj in object_list %}
 						<tr id="c-tr-{{ obj.id }}" style="background-color: whitesmoke">
 							<td class="align-middle text-center">{{ forloop.counter }}</td>
+                            <td class="align-middle text-center">
+                                <img class="rounded-circle img-avatar" src="{% if obj.avatar %}{{ obj.avatar.url }}{% else %}{% static 'img/user.png' %}{% endif %}">
+                            </td>
 							<td class="align-middle text-center"><a href="{% url 'documents:resume_details' pk=obj.id %}">{{ obj.title }}</a></td>
 							<td class="align-middle text-center">{{ obj.organization_code }}</td>
 							<td class="align-middle text-center">{{ obj.entrance_year }}</td>

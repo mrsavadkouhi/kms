@@ -11,6 +11,10 @@ def get_attachment_directory_path(instance, filename):
     return '%d/%d/%s' % (int(datetime.now().year), int(datetime.now().month), filename)
 
 
+def get_avatar_directory_path(instance, filename):
+    return 'resumes/%d_avatar_%s' % (int(time.time()), filename)
+
+
 class DocumentAttachment(models.Model):
     created_at=models.DateTimeField(auto_now_add=True)
     file = models.FileField(upload_to=get_attachment_directory_path, max_length=255)
@@ -78,7 +82,7 @@ class Document(PolymorphicModel):
 
     @property
     def organization_code_counter(self):
-        return int(self.organization_code.split('-')[2])
+        return int(self.organization_code.split('-')[2][2:])
 
     @property
     def organization_code_year(self):
@@ -87,6 +91,7 @@ class Document(PolymorphicModel):
 
 class Resume(Document):
     # profile = models.OneToOneField(to=Profile, on_delete=models.CASCADE)
+    avatar=models.ImageField(upload_to=get_avatar_directory_path, max_length=255, blank=True, null=True)
     entrance_year = models.IntegerField(null=True, blank=True)
     measure = models.CharField(max_length=255,null=True, blank=True)
     degree = models.CharField(max_length=255,null=True, blank=True)

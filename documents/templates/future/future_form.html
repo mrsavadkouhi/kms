@@ -143,7 +143,7 @@
                   </div>
                     <select name="center" id="center" class="select2 form-control">
                         {% for obj in centers %}
-                            <option value="{{ obj.id  }}">{{ obj.title }}</option>
+                            <option value="{{ obj.id  }}">{{ obj.title }}-{{ obj.code }}</option>
                         {% endfor %}
                     </select>
                 </div>

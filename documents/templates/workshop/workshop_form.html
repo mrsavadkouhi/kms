@@ -97,7 +97,7 @@
                     <input type="number" class="form-control" value="{{ object.organization_code_counter }}" name="organization_code_counter" id="organization_code_counter" aria-describedby="organization_code_counter_label">
                     <select name="center" id="center" class="select2 form-control">
                         {% for obj in centers %}
-                            <option value="{{ obj.id  }}">{{ obj.title }}</option>
+                            <option value="{{ obj.id  }}">{{ obj.title }}-{{ obj.code }}</option>
                         {% endfor %}
                     </select>
                     <select name="organization_code_year" id="organization_code_year" class="select2 form-control">
@@ -322,7 +322,9 @@
 			e.preventDefault(); // avoid to execute the actual submit of the form.
 		});
         $("#ar-form").submit(function (e) {
-            var center_code = $("#center option:selected").val();
+            var center_code = $("#center option:selected").text();
+            var words = center_code.split('-');
+            center_code = words[1];
 
             var organization_code_counter = $("#organization_code_counter").val();
             var organization_code_year = $("#organization_code_year").val();

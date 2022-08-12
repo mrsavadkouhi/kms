@@ -13,6 +13,18 @@
     <script src="{% static 'vendors/persian-date/persian-date.js' %}"></script>
 
     <style>
+            .circle-img {
+          width: 200px;
+          height: 200px;
+          overflow: hidden;
+        }
+
+        .circle-img img {
+          height: 100%;
+          transform: translateX(-50%);
+          margin-left: 50%;
+        }
+
         span.required:before { content: '*'; color: #FF0000; }
     </style>
 
@@ -73,8 +85,14 @@
             {% csrf_token %}
             <div class="col-lg-3 text-center">
                 <div><br></div>
-                <i class="fa fa-user-circle fa-10x"></i>
-                <h1><strong>مشخصات</strong></h1>
+                <img id="imageResult" class="img-thumbnail circle-img img-circle" src="{% if object.avatar %}{{ object.avatar.url }}{% else %}{% static 'img/user.png' %}{% endif %}">
+                <div><br></div>
+                <div class="input-group mb-3">
+                  <div class="custom-file">
+                    <label id="avatar_label" class="custom-file-label text-left" for="avatar"></label>
+                      <input type="file" class="custom-file-input" name="avatar" id="avatar" onchange="readURL(this);">
+                  </div>
+                </div>
             </div>
             <div class="card col-lg-9">
                 <div><br></div>
@@ -136,7 +154,7 @@
                   </div>
                     <select name="center" id="center" class="select2 form-control">
                         {% for obj in centers %}
-                            <option value="{{ obj.id  }}">{{ obj.title }}</option>
+                            <option value="{{ obj.id  }}">{{ obj.title }}-{{ obj.code }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -190,6 +208,41 @@
 
 {% block scripts %}
 	<script>
+        /*  ==========================================
+        SHOW UPLOADED IMAGE
+    * ========================================== */
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#imageResult')
+                    .attr('src', e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $(function () {
+        $('#avatar').on('change', function () {
+            readURL(input);
+        });
+    });
+
+    /*  ==========================================
+        SHOW UPLOADED IMAGE NAME
+    * ========================================== */
+    var input = document.getElementById( 'avatar' );
+    var infoArea = document.getElementById( 'avatar_label' );
+
+    input.addEventListener( 'change', showFileName );
+    function showFileName( event ) {
+      var input = event.srcElement;
+      var fileName = input.files[0].name;
+      infoArea.textContent = fileName.substring(fileName.length - 20, fileName.length);
+    }
+
+
         var producer = $("#producer").select2({
                 theme: 'bootstrap4',
         });

@@ -258,14 +258,6 @@
 			});
 			e.preventDefault(); // avoid to execute the actual submit of the form.
 		});
-        $("#ar-form").submit(function (e) {
-            var center_code = $("#center option:selected").val();
-
-            var organization_code_counter = $("#organization_code_counter").val();
-            var organization_code_year = $("#organization_code_year").val();
-            var organization_code = `KM/W-${organization_code_year}-${center_code}${organization_code_counter}`
-            $("#organization_code").val(organization_code);
-		});
 	</script>
 {% endblock %}
 
