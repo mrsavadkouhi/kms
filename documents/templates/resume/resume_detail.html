@@ -140,6 +140,12 @@
                     <div class="col-lg-1">
                         <h3>{{ project_num }}</h3>
                     </div>
+                    <div class="col-lg-2">
+                        <h3>ثبت اختراع:</h3>
+                    </div>
+                    <div class="col-lg-1">
+                        <h3>{{ invention_num }}</h3>
+                    </div>
                 </div>
                 <div><br></div>
 			</div>
@@ -177,9 +183,6 @@
                         {% endfor %}
 
                         </tbody>
-                        <tfoot>
-                            <tr></tr>
-                        </tfoot>
                     </table>
                 </div>
                 <div><br></div>
@@ -312,6 +315,7 @@
 					{
 						extend: 'print',
                         pageSize: 'A4',
+                        pageScale: '90',
                         text: '<button class="btn btn-lg btn-outline-danger"><i class="fa fa-print"></i> خروجی PDF</button>',
 						className: 'bg-transparent',
                         title: '',
@@ -326,6 +330,8 @@
                                 .html('');
 							$(win.document.body).find('thead')
                                 .html('')
+                                .addClass('compact')
+								.css('border-color', 'transparent')
 								.css('color', 'black')
 								.css('font-family', 'VazirFD')
 								.append("<tr>" +
@@ -533,6 +539,10 @@
                                     "</table>" +
                                     "</div>" +
                                     "<br><br><br>" +
+                                    "</th>" +
+                                    "</tr>")
+                                .append("<tr>" +
+                                    "<th colspan='5'>" +
                                     "<div class='col-lg-12' >" +
                                     "<h2><strong>ایده پردازی</strong></h2>" +
                                     "<br>" +
@@ -552,6 +562,36 @@
                                     "<td class='align-middle text-center'>{{ forloop.counter }}</td>" +
                                     "<td class='align-middle text-center'>{{ obj.title }}</td>" +
                                     "<td class='align-middle text-center'>{{ obj.presented_at | j_format_date:"%Y/%m/%d" }}</td>" +
+                                    "<td class='align-middle text-center'>{{ obj.organization_code }}</td>" +
+                                    "</tr>" +
+                                    "{% endfor %}" +
+                                    "</tbody>" +
+                                    "</table>" +
+                                    "</div>" +
+                                    "<br><br><br>" +
+                                    "</th>" +
+                                    "</tr>")
+                                .append("<tr>" +
+                                    "<th colspan='5'>" +
+                                    "<div class='col-lg-12' >" +
+                                    "<h2><strong>ثبت اختراع</strong></h2>" +
+                                    "<br>" +
+                                    "<div class='table-responsive'>" +
+                                    "<table class='table table-striped table-bordered table-hover dataTables-example'>" +
+                                    "<thead>" +
+                                    "<tr>" +
+                                    "<th class='text-center' style='background-color: grey; width: 7%'>ردیف</th>" +
+                                    "<th class='text-center' style='background-color: grey'>عنوان ایده</th>" +
+                                    "<th class='text-center' style='background-color: grey'>تاریخ ارائه</th>" +
+                                    "<th class='text-center' style='background-color: grey'>شناسه سازمانی</th>" +
+                                    "</tr>" +
+                                    "</thead>" +
+                                    "<tbody>" +
+                                    "{% for obj in inventions %}" +
+                                    "<tr>" +
+                                    "<td class='align-middle text-center'>{{ forloop.counter }}</td>" +
+                                    "<td class='align-middle text-center'>{{ obj.title }}</td>" +
+                                    "<td class='align-middle text-center'>{{ obj.registered_at | j_format_date:"%Y/%m/%d" }}</td>" +
                                     "<td class='align-middle text-center'>{{ obj.organization_code }}</td>" +
                                     "</tr>" +
                                     "{% endfor %}" +
@@ -619,17 +659,14 @@
                                     "</table>" +
                                     "</div>" +
                                     "<br><br><br>" +
-                                    "</th>" +
-                                    "</tr>")
-                                .append("<tr>" +
-                                    "<th colspan='5'>" +
                                     "<div class='col-lg-3' >" +
                                     "</div>" +
                                     "<div class='col-lg-9' >" +
                                     "<span class='float-left'>مدیر دانش ساتخ ندسا</span>" +
                                     "</div>" +
                                     "</th>" +
-									"</tr>");
+                                    "</tr>"
+                                )
 						}
 					},
                     {

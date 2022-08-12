@@ -816,6 +816,7 @@ class ResumeDetailsView(LoginRequiredMixin, DetailView):
         context['report_num']= 0
         context['seminar_num']= 0
         context['thesis_num']= 0
+        context['invention_num']= 0
 
         context['others']=[]
 
@@ -874,6 +875,11 @@ class ResumeDetailsView(LoginRequiredMixin, DetailView):
         for item in self.object.article_producers.all():
             context['object_list'].append((item, 'مقاله', item.published_at))
             context['article_num']+=1
+
+        context['inventions']=self.object.invention_producers.all()
+        for item in self.object.invention_producers.all():
+            context['object_list'].append((item, 'اختراع', item.registered_at))
+            context['invention_num']+=1
 
 
         for item in self.object.idea_judges.all():
