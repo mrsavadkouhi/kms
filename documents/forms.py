@@ -260,20 +260,23 @@ class DocumentImportForm(forms.Form):
                         "فرمت اطلاعات ستون نویسندگان وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
                 producers.append(producer)
 
-            judges_raw = row[5].split(',')
-            judges_raw=judges_raw[:-1]
-            if not judges_raw:
-                raise forms.ValidationError("فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
-            judges = []
-            for judge in judges_raw:
-                judge = judge.strip()
-                detail=judge.split('-')
-                try:
-                    judge=(detail[1], detail[0])
-                except:
-                    raise forms.ValidationError(
-                        "فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
-                judges.append(judge)
+            if row[5]:
+                judges_raw = row[5].split(',')
+                judges_raw = judges_raw[:-1]
+                if not judges_raw:
+                    raise forms.ValidationError("فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
+                judges = []
+                for judge in judges_raw:
+                    judge = judge.strip()
+                    detail = judge.split('-')
+                    try:
+                        judge = (detail[1], detail[0])
+                    except:
+                        raise forms.ValidationError(
+                            "فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
+                    judges.append(judge)
+            else:
+                judges = []
 
             publish_type = row[7]
             for name, des in ARTICLE_PUBLISH_TYPES:
@@ -333,20 +336,23 @@ class DocumentImportForm(forms.Form):
 
             producer = row[3]
 
-            judges_raw = row[8].split(',')
-            judges_raw=judges_raw[:-1]
-            if not judges_raw:
-                raise forms.ValidationError("فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
-            judges = []
-            for judge in judges_raw:
-                judge = judge.strip()
-                detail=judge.split('-')
-                try:
-                    judge=(detail[1], detail[0])
-                except:
-                    raise forms.ValidationError(
-                        "فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
-                judges.append(judge)
+            if row[8]:
+                judges_raw = row[8].split(',')
+                judges_raw=judges_raw[:-1]
+                if not judges_raw:
+                    raise forms.ValidationError("فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
+                judges = []
+                for judge in judges_raw:
+                    judge = judge.strip()
+                    detail=judge.split('-')
+                    try:
+                        judge=(detail[1], detail[0])
+                    except:
+                        raise forms.ValidationError(
+                            "فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
+                    judges.append(judge)
+            else:
+                judges = []
 
             center = Center.objects.get(title=center)
             try:
@@ -389,20 +395,23 @@ class DocumentImportForm(forms.Form):
 
             producer=row[3]
 
-            judges_raw=row[6].split(',')
-            judges_raw=judges_raw[:-1]
-            if not judges_raw:
-                raise forms.ValidationError("فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
-            judges=[]
-            for judge in judges_raw:
-                judge=judge.strip()
-                detail=judge.split('-')
-                try:
-                    judge=(detail[1], detail[0])
-                except:
-                    raise forms.ValidationError(
-                        "فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
-                judges.append(judge)
+            if row[6]:
+                judges_raw = row[6].split(',')
+                judges_raw = judges_raw[:-1]
+                if not judges_raw:
+                    raise forms.ValidationError("فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
+                judges=[]
+                for judge in judges_raw:
+                    judge=judge.strip()
+                    detail=judge.split('-')
+                    try:
+                        judge=(detail[1], detail[0])
+                    except:
+                        raise forms.ValidationError(
+                            "فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
+                    judges.append(judge)
+            else:
+                judges = []
 
             center=Center.objects.get(title=center)
 
@@ -445,20 +454,23 @@ class DocumentImportForm(forms.Form):
 
             producer=row[3]
 
-            judges_raw=row[6].split(',')
-            judges_raw=judges_raw[:-1]
-            if not judges_raw:
-                raise forms.ValidationError("فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
-            judges=[]
-            for judge in judges_raw:
-                judge=judge.strip()
-                detail=judge.split('-')
-                try:
-                    judge=(detail[1], detail[0])
-                except:
-                    raise forms.ValidationError(
-                        "فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
-                judges.append(judge)
+            if row[6]:
+                judges_raw=row[6].split(',')
+                judges_raw=judges_raw[:-1]
+                if not judges_raw:
+                    raise forms.ValidationError("فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
+                judges=[]
+                for judge in judges_raw:
+                    judge=judge.strip()
+                    detail=judge.split('-')
+                    try:
+                        judge=(detail[1], detail[0])
+                    except:
+                        raise forms.ValidationError(
+                            "فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
+                    judges.append(judge)
+            else:
+                judges = []
 
             center=Center.objects.get(title=center)
 
@@ -604,20 +616,23 @@ class DocumentImportForm(forms.Form):
             center=row[9]
             producer=row[3]
 
-            judges_raw=row[7].split(',')
-            judges_raw=judges_raw[:-1]
-            if not judges_raw:
-                raise forms.ValidationError("فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
-            judges=[]
-            for judge in judges_raw:
-                judge=judge.strip()
-                detail=judge.split('-')
-                try:
-                    judge=(detail[1], detail[0])
-                except:
-                    raise forms.ValidationError(
-                        "فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
-                judges.append(judge)
+            if row[7]:
+                judges_raw=row[7].split(',')
+                judges_raw=judges_raw[:-1]
+                if not judges_raw:
+                    raise forms.ValidationError("فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
+                judges=[]
+                for judge in judges_raw:
+                    judge=judge.strip()
+                    detail=judge.split('-')
+                    try:
+                        judge=(detail[1], detail[0])
+                    except:
+                        raise forms.ValidationError(
+                            "فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
+                    judges.append(judge)
+            else:
+                judges = []
 
             center=Center.objects.get(title=center)
 

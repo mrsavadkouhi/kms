@@ -116,9 +116,11 @@
                                 class="fa fa-lock"></i> تغییر رمز عبور
                             </button>
                             <a href="{% url 'accounts:profile_update' obj.id %}" class="btn btn-outline-warning"><i class="fa fa-user-plus"></i> ویرایش</a>
+                            {% if not obj.user.is_superuser %}
                             <button data-cid="{{ obj.id }}" class="btn btn-sm btn-outline-danger m-l-sm" data-toggle="modal" data-target="#delete-modal"><i
                                 class="fa fa-trash"></i> حذف
                             </button>
+                            {% endif %}
                         </div>
                     </td>
                 </tr>

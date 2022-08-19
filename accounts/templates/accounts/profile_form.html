@@ -58,7 +58,9 @@
                 <button  class="btn btn-sm btn-outline-warning m-l-sm" onclick="$('#pass-change').modal();"><i
                                             class="fa fa-lock"></i> تغییر رمز عبور
                 </button>
+                {% if not object.user.is_superuser %}
                 <button data-toggle="modal" data-delete-what="{{ object.id }}" data-target="#delete-modal" class="btn btn-lg btn-outline-danger"><i class="fa fa-trash"></i> حذف </button>
+                {% endif %}
             </div>
 			</div>
         <div class="modal fade" id="pass-change">

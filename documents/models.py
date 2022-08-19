@@ -165,8 +165,8 @@ ARTICLE_MAGANIZE_PUBLISH_LEVELS = [
 
 class Article(Document):
     producers = models.ManyToManyField(to=Resume, related_name='article_producers')
-    judges = models.ManyToManyField(to=Resume, related_name='article_judges')
-    key_words = models.TextField()
+    judges = models.ManyToManyField(to=Resume, related_name='article_judges', blank=True, null=True)
+    key_words = models.TextField(blank=True, null=True)
     published_at = models.DateTimeField()
     publish_type = models.CharField(max_length=255, choices=ARTICLE_PUBLISH_TYPES)
     publish_level = models.CharField(max_length=255, choices=ARTICLE_PUBLISH_LEVELS)
@@ -175,7 +175,7 @@ class Article(Document):
 
 class Experience(Document):
     producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='experience_producer')
-    judges=models.ManyToManyField(to=Resume, related_name='experience_judges')
+    judges=models.ManyToManyField(to=Resume, related_name='experience_judges', blank=True, null=True)
     presented_at = models.DateTimeField()
     assessment_result = models.CharField(max_length=255)
 
@@ -185,20 +185,20 @@ class Book(Document):
     fipa = models.CharField(max_length=255)
     published_at = models.DateTimeField()
     publisher = models.CharField(max_length=255)
-    judges=models.ManyToManyField(to=Resume, related_name='book_judges')
+    judges=models.ManyToManyField(to=Resume, related_name='book_judges', blank=True, null=True)
     assessment_result = models.CharField(max_length=255)
 
 
 class Idea(Document):
     producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='idea_producer')
-    judges=models.ManyToManyField(to=Resume, related_name='idea_judges')
+    judges=models.ManyToManyField(to=Resume, related_name='idea_judges', blank=True, null=True)
     presented_at = models.DateTimeField()
     assessment_result = models.CharField(max_length=255)
 
 
 class Seminar(Document):
     producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='seminar_producer')
-    judges=models.ManyToManyField(to=Resume, related_name='seminar_judges')
+    judges=models.ManyToManyField(to=Resume, related_name='seminar_judges', blank=True, null=True)
     presented_at = models.DateTimeField()
     participant_number = models.IntegerField()
     assessment_result = models.CharField(max_length=255)
