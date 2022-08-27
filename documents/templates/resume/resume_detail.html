@@ -16,6 +16,36 @@
           transform: translateX(-50%);
           margin-left: 50%;
         }
+
+        .resume_title_blue {
+            border-right-style: solid;
+            border-left-style: solid;
+            border-top-style: dashed;
+            border-bottom-style: dashed;
+            width: 350px;
+            border-color: #0095ff;
+            background-color: #94d2ff;
+        }
+
+        .resume_title_red {
+            border-right-style: solid;
+            border-left-style: solid;
+            border-top-style: dashed;
+            border-bottom-style: dashed;
+            width: 350px;
+            border-color: #ff0000;
+            background-color: #ff9191;
+        }
+
+        .resume_title_purple {
+            border-right-style: solid;
+            border-left-style: solid;
+            border-top-style: dashed;
+            border-bottom-style: dashed;
+            width: 350px;
+            border-color: #f700ff;
+            background-color: #f9a2ff;
+        }
     </style>
 
 {% endblock %}
@@ -334,8 +364,8 @@
 								.css('font-family', 'VazirFD')
 								.append("<tr>" +
                                     "<th colspan='5'>" +
-									"<img src='http://127.0.0.1:8000/static/img/logo.png' class='float-left obj-fit-contain' style='position:relative;width:10%' />" +
-									"<img src='http://127.0.0.1:8000/static/img/sepah_balck.png' class='float-right obj-fit-contain' style='position:relative;width:10%' />" +
+									"<img src='http://127.0.0.1:8000/static/img/logo.png' class='float-left obj-fit-contain' style='position:relative;width:15%' />" +
+									"<img src='http://127.0.0.1:8000/static/img/sepah_balck.png' class='float-right obj-fit-contain' style='position:relative;width:15%' />" +
 									"<h1 class='text-center'><strong>رزومه علمی و تحقیقاتی</strong></h1>" +
 									"<h2 class='text-center'><strong>{{ object.title }}</strong></h2>" +
 									"<br><br><br>" +
@@ -344,7 +374,9 @@
                                 .append("<tr>" +
                                     "<th colspan='5'>" +
                                     "<div class='col-lg-12' >" +
+                                    "<div class='col-lg-4 resume_title_blue' >" +
                                     "<h2><strong>اطلاعات شخصی</strong></h2>" +
+                                    "</div>" +
                                     "<br>" +
                                     "{% if object.avatar %}<img class='float-left img-thumbnail circle-img img-circle' src='http://127.0.0.1:8000{{ object.avatar.url }}'>{% endif %}" +
                                     "<h3><strong>نام و نام خانوادگی: </strong>{{ object.title }}</h3>" +
@@ -361,7 +393,9 @@
                                 .append("<tr>" +
                                     "<th colspan='5'>" +
                                     "<div class='col-lg-12' >" +
-                                    "<h2><strong>در یک نگاه</strong></h2>" +
+                                    "<div class='col-lg-4 resume_title_purple' style='background-color: blue;' >" +
+                                    "<h2><strong> در یک نگاه</strong></h2>" +
+                                    "</div>" +
                                     "<br>" +
                                     "<div class='table-responsive'>" +
                                     "<table class='table table-striped table-bordered table-hover dataTables-example'>" +
@@ -455,7 +489,9 @@
                                 .append("<tr>" +
                                     "<th colspan='5'>" +
                                     "<div class='col-lg-12' >" +
+                                    "<div class='col-lg-4 resume_title_red'>" +
                                     "<h2><strong>انتشارات علمی(مقالات)</strong></h2>" +
+                                    "</div>" +
                                     "<br>" +
                                     "<div class='table-responsive'>" +
                                     "<table class='table table-striped table-bordered table-hover dataTables-example'>" +
@@ -489,7 +525,9 @@
                                 .append("<tr>" +
                                     "<th colspan='5'>" +
                                     "<div class='col-lg-12' >" +
+                                    "<div class='col-lg-4 resume_title_red' >" +
                                     "<h2><strong>انتشارات علمی(کتاب)</strong></h2>" +
+                                    "</div>" +
                                     "<br>" +
                                     "<div class='table-responsive'>" +
                                     "<table class='table table-striped table-bordered table-hover dataTables-example'>" +
@@ -519,7 +557,9 @@
                                 .append("<tr>" +
                                     "<th colspan='5'>" +
                                     "<div class='col-lg-12' >" +
+                                    "<div class='col-lg-4 resume_title_blue' >" +
                                     "<h2><strong>تجربه نگاری</strong></h2>" +
+                                    "</div>" +
                                     "<br>" +
                                     "<div class='table-responsive'>" +
                                     "<table class='table table-striped table-bordered table-hover dataTables-example'>" +
@@ -549,7 +589,9 @@
                                 .append("<tr>" +
                                     "<th colspan='5'>" +
                                     "<div class='col-lg-12' >" +
+                                    "<div class='col-lg-4 resume_title_blue' >" +
                                     "<h2><strong>ایده پردازی</strong></h2>" +
+                                    "</div>" +
                                     "<br>" +
                                     "<div class='table-responsive'>" +
                                     "<table class='table table-striped table-bordered table-hover dataTables-example'>" +
@@ -579,7 +621,9 @@
                                 .append("<tr>" +
                                     "<th colspan='5'>" +
                                     "<div class='col-lg-12' >" +
+                                    "<div class='col-lg-4 resume_title_blue' >" +
                                     "<h2><strong>ثبت اختراع</strong></h2>" +
+                                    "</div>" +
                                     "<br>" +
                                     "<div class='table-responsive'>" +
                                     "<table class='table table-striped table-bordered table-hover dataTables-example'>" +
@@ -609,7 +653,9 @@
                                 .append("<tr>" +
                                     "<th colspan='5'>" +
                                     "<div class='col-lg-12' >" +
+                                    "<div class='col-lg-4 resume_title_red' >" +
                                     "<h2><strong>پروژه های تحقیقاتی</strong></h2>" +
+                                    "</div>" +
                                     "<br>" +
                                     "<div class='table-responsive'>" +
                                     "<table class='table table-striped table-bordered table-hover dataTables-example'>" +
@@ -639,7 +685,9 @@
                                 .append("<tr>" +
                                     "<th colspan='5'>" +
                                     "<div class='col-lg-12' >" +
+                                    "<div class='col-lg-4 resume_title_red' >" +
                                     "<h2><strong>سایر فعالیت های علمی- پژوهشی</strong></h2>" +
+                                    "</div>" +
                                     "<br>" +
                                     "<div class='table-responsive'>" +
                                     "<table class='table table-striped table-bordered table-hover dataTables-example'>" +
@@ -664,9 +712,8 @@
                                     "</table>" +
                                     "</div>" +
                                     "<br><br><br>" +
-                                    "<div class='text-center' >مدیر دانش ساتخ ندسا</div" +
+                                    "<div class='text-center' style='font-size: 30px;' >مدیر دانش ساتخ ندسا</div" +
                                     "<br><br><br>" +
-                                    "</th>" +
                                     "</tr>"
                                 )
 						}

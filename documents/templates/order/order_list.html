@@ -166,7 +166,7 @@
                         text: '<button class="btn btn-lg btn-outline-danger"><i class="fa fa-print"></i> خروجی PDF</button>',
 						className: 'bg-transparent',
                         title: '',
-						footer: true,
+
 						exportOptions: {
 							columns: [0, 1, 2, 3, 4, 5, 6],
 							{#stripHtml: true#}
@@ -177,20 +177,19 @@
 								.css('color', 'black')
 								.css('font-family', 'VazirFD')
 								.prepend("<tr><th colspan='7'>" +
-									"<img src='http://127.0.0.1:8000/static/img/logo.png' class='float-left obj-fit-contain' style='position:relative;width:10%' />" +
-									"<img src='http://127.0.0.1:8000/static/img/sepah_balck.png' class='float-right obj-fit-contain' style='position:relative;width:10%' />" +
+									"<img src='http://127.0.0.1:8000/static/img/logo.png' class='float-left obj-fit-contain' style='position:relative;width:15%' />" +
+									"<img src='http://127.0.0.1:8000/static/img/sepah_balck.png' class='float-right obj-fit-contain' style='position:relative;width:15%' />" +
 									"<h2 class='text-center'><b>فهرست احکام صادره</b></h2>" +
 									"</th>" +
 									"</tr>");
-                            $(win.document.body).find('tfoot')
+                            $(win.document.body).find('tbody')
 								.css('color', 'black')
 								.css('font-family', 'VazirFD')
-								.empty()
-								.prepend('<tr><th style="background-color:#f2f2f2" colspan="7">' +
-                                    '<br><br><br>' +
-									'<span class="float-right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;مدیر دانش ساتخ ندسا</span>' +
-									'</th><tr>');
-
+								.append("<tr><th colspan='7'>" +
+                                    "<br><br><br>" +
+                                    "<div class='text-center' style='font-size: 30px;' >مدیر دانش ساتخ ندسا</div" +
+                                    "<br><br><br>" +
+                                    "</tr>")
 							$(win.document.body).find('table')
 								.addClass('compact')
 								.css('font-size', 'inherit')
