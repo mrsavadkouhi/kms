@@ -87,11 +87,17 @@ class Document(PolymorphicModel):
 
     @property
     def organization_code_counter(self):
-        return int(self.organization_code.split('-')[2][2:])
+        try:
+            return int(self.organization_code.split('-')[2][2:])
+        except:
+            return None
 
     @property
     def organization_code_year(self):
-        return self.organization_code.split('-')[1]
+        try:
+            return self.organization_code.split('-')[1]
+        except:
+            return None
 
 
 class Resume(Document):
