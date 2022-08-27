@@ -812,99 +812,143 @@ class ResumeDetailsView(LoginRequiredMixin, DetailView):
 
         context['object_list']= []
         context['article_num']= 0
+        context['article_has_attachments']= False
         context['book_num']= 0
+        context['book_has_attachments']= False
         context['idea_num']= 0
+        context['idea_has_attachments']= False
         context['judge_num']= 0
+        context['judge_has_attachments']= False
         context['exp_num']= 0
+        context['exp_has_attachments']= False
         context['manual_num']= 0
+        context['manual_has_attachments']= False
         context['order_num']= 0
+        context['order_has_attachments']= False
         context['project_num']= 0
+        context['project_has_attachments']= False
         context['report_num']= 0
+        context['report_has_attachments']= False
         context['seminar_num']= 0
+        context['seminar_has_attachments']= False
         context['thesis_num']= 0
+        context['thesis_has_attachments']= False
         context['invention_num']= 0
+        context['invention_has_attachments']= False
 
         context['others']=[]
 
         context['ideas']=self.object.idea_producer.all()
         for item in self.object.idea_producer.all():
+            if item.attachments.all():
+                context['idea_has_attachments']=True
             context['object_list'].append((item, 'ایده', item.presented_at))
             context['idea_num']+=1
 
         context['books']=self.object.book_producers.all()
         for item in self.object.book_producers.all():
+            if item.attachments.all():
+                context['book_has_attachments']=True
             context['object_list'].append((item, 'کتاب', item.published_at))
             context['book_num']+=1
 
         context['experiences']=self.object.experience_producer.all()
         for item in self.object.experience_producer.all():
+            if item.attachments.all():
+                context['exp_has_attachments']=True
             context['object_list'].append((item, 'تجربه', item.presented_at))
             context['exp_num']+=1
 
         context['theses']=self.object.thesis_producer.all()
         for item in self.object.thesis_producer.all():
+            if item.attachments.all():
+                context['thesis_has_attachments']=True
             context['others'].append((item, 'پایان نامه', item.presented_at))
             context['object_list'].append((item, 'پایان نامه', item.presented_at))
             context['thesis_num']+=1
 
         context['manuals']=self.object.manual_producer.all()
         for item in self.object.manual_producer.all():
+            if item.attachments.all():
+                context['manual_has_attachments']=True
             context['others'].append((item, 'دستورالعمل', item.declared_at))
             context['object_list'].append((item, 'دستورالعمل', item.declared_at))
             context['manual_num']+=1
 
         context['orders']=self.object.order_receiver.all()
         for item in self.object.order_receiver.all():
+            if item.attachments.all():
+                context['order_has_attachments']=True
             context['others'].append((item, 'احکام', item.issued_at))
             context['object_list'].append((item, 'احکام', item.issued_at))
             context['order_num']+=1
 
         context['seminars']=self.object.seminar_producer.all()
         for item in self.object.seminar_producer.all():
+            if item.attachments.all():
+                context['seminar_has_attachments']=True
             context['others'].append((item, 'سمینار', item.presented_at))
             context['object_list'].append((item, 'سمینار', item.presented_at))
             context['seminar_num']+=1
 
         context['reports']=self.object.report_producer.all()
         for item in self.object.report_producer.all():
+            if item.attachments.all():
+                context['report_has_attachments']=True
             context['others'].append((item, 'گزارش', item.presented_at))
             context['object_list'].append((item, 'گزارش', item.presented_at))
             context['report_num']+=1
 
         context['projects']=self.object.project_manager.all()
         for item in self.object.project_manager.all():
+            if item.attachments.all():
+                context['project_has_attachments']=True
             context['others'].append((item, 'پروژه', item.finished_at))
             context['object_list'].append((item, 'پروژه', item.finished_at))
             context['project_num']+=1
 
         context['articles']=self.object.article_producers.all()
         for item in self.object.article_producers.all():
+            if item.attachments.all():
+                context['article_has_attachments']=True
             context['object_list'].append((item, 'مقاله', item.published_at))
             context['article_num']+=1
 
         context['inventions']=self.object.invention_producers.all()
         for item in self.object.invention_producers.all():
+            if item.attachments.all():
+                context['invention_has_attachments']=True
             context['object_list'].append((item, 'اختراع', item.registered_at))
             context['invention_num']+=1
 
 
         for item in self.object.idea_judges.all():
+            if item.attachments.all():
+                context['judge_has_attachments']=True
             context['others'].append((item, 'داوری- ایده', item.presented_at))
             context['object_list'].append((item, 'داوری- ایده', item.presented_at))
             context['judge_num']+=1
         for item in self.object.book_judges.all():
+            if item.attachments.all():
+                context['judge_has_attachments']=True
             context['others'].append((item, 'داوری- کتاب', item.published_at))
             context['object_list'].append((item, 'داوری- کتاب', item.published_at))
             context['judge_num']+=1
         for item in self.object.experience_judges.all():
+            if item.attachments.all():
+                context['judge_has_attachments']=True
             context['others'].append((item, 'داوری- تجربه', item.presented_at))
             context['object_list'].append((item, 'داوری- تجربه', item.presented_at))
             context['judge_num']+=1
         for item in self.object.seminar_judges.all():
+            if item.attachments.all():
+                context['judge_has_attachments']=True
             context['others'].append((item, 'داوری- سمینار', item.presented_at))
             context['object_list'].append((item, 'داوری- سمینار', item.presented_at))
             context['judge_num']+=1
         for item in self.object.article_judges.all():
+            if item.attachments.all():
+                context['judge_has_attachments']=True
             context['others'].append((item, 'داوری- مقاله', item.published_at))
             context['object_list'].append((item, 'داوری- مقاله', item.published_at))
             context['judge_num']+=1
