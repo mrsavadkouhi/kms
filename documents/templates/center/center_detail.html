@@ -32,7 +32,7 @@
 				<a>مدیریت دانش</a>
 			</li>
 			<li class="breadcrumb-item">
-                <a  href="{% url 'documents:center_list' %}" >لیست مراکز</a>
+                <a  href="{% url 'documents:center_list' %}" >فهرست مراکز تحقیقاتی و مدیریت های ساتخ ندسا</a>
 			</li>
 			<li class="breadcrumb-item active">
 				<a href="{% url 'documents:center_details' object.id %}"><strong>جزئیات مرکز {{ object.name }}</strong></a>
@@ -157,7 +157,7 @@
 			<div class="col-lg-3 text-center">
 				<div><br></div>
 				<i class="fa fa-cube fa-10x"></i>
-				<h1><strong>دست آوردها</strong></h1>
+				<h1><strong>دستاوردها</strong></h1>
 			</div>
 			<div class="card col-lg-9">
                 <div class="table-responsive">
@@ -332,7 +332,8 @@
 								.prepend("<tr><th colspan='3'>" +
 									"<img src='http://127.0.0.1:8000/static/img/logo.png' class='float-left obj-fit-contain' style='position:relative;width:10%' />" +
 									"<img src='http://127.0.0.1:8000/static/img/sepah_balck.png' class='float-right obj-fit-contain' style='position:relative;width:10%' />" +
-									"<h2 class='text-center'>رزومه مرکز تحقیقاتی</h2>" +
+									"<h2 class='text-center'>رزومه فعالیت های پژوهشی مرکز تحقیقات</h2>" +
+									"<h3 class='text-center'>مدیریت دانش ساتخ ندسا</h3>" +
 									"<br><br><br>" +
                                     "{% if object.avatar %}<img class='float-left img-thumbnail circle-img img-circle' src='http://127.0.0.1:8000{{ object.avatar.url }}'>{% endif %}" +
 									"<h3><strong>عنوان: </strong>{{ object.title }}</h3>" +

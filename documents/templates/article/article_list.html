@@ -3,7 +3,7 @@
 {% load jalali_date %}
 
 
-{% block head_title %}لیست مقالات{% endblock %}
+{% block head_title %}فهرست مقالات{% endblock %}
 
 {% block title-breadcrumb %}
 	<div class="col-md-10">
@@ -14,7 +14,7 @@
 				<a>مدیریت دانش</a>
 			</li>
 			<li class="breadcrumb-item active">
-                <a  href="{% url 'documents:article_list' %}" >لیست مقالات</a>
+                <a  href="{% url 'documents:article_list' %}" >فهرست مقالات</a>
 			</li>
 		</ol>
 	</div>
@@ -219,7 +219,7 @@
 								.prepend("<tr><th colspan='12'>" +
 									"<img src='http://127.0.0.1:8000/static/img/logo.png' class='float-left obj-fit-contain' style='position:relative;width:10%' />" +
 									"<img src='http://127.0.0.1:8000/static/img/sepah_balck.png' class='float-right obj-fit-contain' style='position:relative;width:10%' />" +
-									"<h2 class='text-center'><b>لیست مقالات</b></h2>" +
+									"<h2 class='text-center'><b>فهرست مقالات</b></h2>" +
 									"</th>" +
 									"</tr>");
                             $(win.document.body).find('tfoot')

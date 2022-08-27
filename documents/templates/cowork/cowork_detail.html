@@ -16,7 +16,7 @@
 				<a>آینده پژوهی و همکاری های علمی</a>
 			</li>
 			<li class="breadcrumb-item">
-                <a  href="{% url 'documents:cowork_list' %}" >لیست همکاری ها</a>
+                <a  href="{% url 'documents:cowork_list' %}" >فهرست همکاری ها</a>
 			</li>
 			<li class="breadcrumb-item active">
 				<a href="{% url 'documents:cowork_details' object.id %}"><strong>جزئیات همکاری {{ object.name }}</strong></a>
@@ -49,6 +49,7 @@
 				<h3><strong>حوزه تخصصی: </strong>{{ object.field }}</h3>
 				<h3><strong>شخص: </strong>{{ object.get_person_type_display }}</h3>
 				<h3><strong>نوع همکاری: </strong>{{ object.get_cowork_type_display }}</h3>
+				<h3><strong>تاریخ همکاری: </strong>{{ object.started_at | j_format_date:"%Y/%m/%d" }}</h3>
 				<h3><strong>آدرس: </strong>{{ object.address }}</h3>
                 <h3><strong>مرکز تحقیقاتی: </strong>{{ object.center.title }}</h3>
 				<h3><strong>توضیحات: </strong>{{ object.description }}</h3>

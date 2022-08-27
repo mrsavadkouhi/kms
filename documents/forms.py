@@ -334,7 +334,21 @@ class DocumentImportForm(forms.Form):
             fipa=row[5]
             center=row[10]
 
-            producer = row[3]
+            producers_raw=row[3].split(',')
+            producers_raw=producers_raw[:-1]
+            if not producers_raw:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون نویسندگان وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
+            producers=[]
+            for producer in producers_raw:
+                producer=producer.strip()
+                detail=producer.split('-')
+                try:
+                    producer=(detail[1], detail[0])
+                except:
+                    raise forms.ValidationError(
+                        "فرمت اطلاعات ستون نویسندگان وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
+                producers.append(producer)
 
             if row[8]:
                 judges_raw = row[8].split(',')
@@ -360,7 +374,12 @@ class DocumentImportForm(forms.Form):
                 published_at = published_at.togregorian()
             except:
                 raise forms.ValidationError("فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
-            producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer)
+
+            producers_list=[]
+            for producer in producers:
+                producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer[1],
+                                                             organization_code=producer[0])
+                producers_list.append(producer_obj)
 
             judges_list = []
             for judge in judges:
@@ -374,12 +393,12 @@ class DocumentImportForm(forms.Form):
                 type=doc_type,
                 publisher=publisher,
                 fipa=fipa,
-                producer=producer_obj,
                 published_at=published_at,
                 assessment_result=assessment_result,
                 center=center,
                                    )
             book.judges.set(judges_list)
+            book.producers.set(producers_list)
 
     def import_experiences(self,excel_data):
         error_line = 0

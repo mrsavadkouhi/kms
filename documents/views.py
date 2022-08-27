@@ -747,6 +747,9 @@ class ThesisCreateView(LoginRequiredMixin, CreateView):
         context['resumes'] = Document.objects.filter(type="Resume")
         context['centers']= Center.objects.all()
         # context['fields'] = DOCUMENT_FIELDS
+        context['years']=['pre98', '98', '99']
+        for i in range(400, 430):
+            context['years'].append(str(i))
         return context
 
 
@@ -769,6 +772,9 @@ class ThesisUpdateForm(LoginRequiredMixin, UpdateView):
         context['resumes']=Document.objects.filter(type="Resume")
         context['centers']= Center.objects.all()
         # context['fields']=DOCUMENT_FIELDS
+        context['years']=['pre98', '98', '99']
+        for i in range(400, 430):
+            context['years'].append(str(i))
         return context
 
 
@@ -825,8 +831,8 @@ class ResumeDetailsView(LoginRequiredMixin, DetailView):
             context['object_list'].append((item, 'ایده', item.presented_at))
             context['idea_num']+=1
 
-        context['books']=self.object.book_producer.all()
-        for item in self.object.book_producer.all():
+        context['books']=self.object.book_producers.all()
+        for item in self.object.book_producers.all():
             context['object_list'].append((item, 'کتاب', item.published_at))
             context['book_num']+=1
 
@@ -883,24 +889,24 @@ class ResumeDetailsView(LoginRequiredMixin, DetailView):
 
 
         for item in self.object.idea_judges.all():
-            context['others'].append((item, 'داوری', item.presented_at))
-            context['object_list'].append((item, 'داوری', item.presented_at))
+            context['others'].append((item, 'داوری- ایده', item.presented_at))
+            context['object_list'].append((item, 'داوری- ایده', item.presented_at))
             context['judge_num']+=1
         for item in self.object.book_judges.all():
-            context['others'].append((item, 'داوری', item.published_at))
-            context['object_list'].append((item, 'داوری', item.published_at))
+            context['others'].append((item, 'داوری- کتاب', item.published_at))
+            context['object_list'].append((item, 'داوری- کتاب', item.published_at))
             context['judge_num']+=1
         for item in self.object.experience_judges.all():
-            context['others'].append((item, 'داوری', item.presented_at))
-            context['object_list'].append((item, 'داوری', item.presented_at))
+            context['others'].append((item, 'داوری- تجربه', item.presented_at))
+            context['object_list'].append((item, 'داوری- تجربه', item.presented_at))
             context['judge_num']+=1
         for item in self.object.seminar_judges.all():
-            context['others'].append((item, 'داوری', item.presented_at))
-            context['object_list'].append((item, 'داوری', item.presented_at))
+            context['others'].append((item, 'داوری- سمینار', item.presented_at))
+            context['object_list'].append((item, 'داوری- سمینار', item.presented_at))
             context['judge_num']+=1
         for item in self.object.article_judges.all():
-            context['others'].append((item, 'داوری', item.published_at))
-            context['object_list'].append((item, 'داوری', item.published_at))
+            context['others'].append((item, 'داوری- مقاله', item.published_at))
+            context['object_list'].append((item, 'داوری- مقاله', item.published_at))
             context['judge_num']+=1
 
         return context

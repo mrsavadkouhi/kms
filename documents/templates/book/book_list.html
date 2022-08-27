@@ -3,7 +3,7 @@
 {% load jalali_date %}
 
 
-{% block head_title %}لیست کتاب ها{% endblock %}
+{% block head_title %}فهرست کتاب های منتشر شده{% endblock %}
 
 {% block title-breadcrumb %}
 	<div class="col-md-10">
@@ -14,7 +14,7 @@
 				<a>مدیریت دانش</a>
 			</li>
 			<li class="breadcrumb-item active">
-                <a  href="{% url 'documents:book_list' %}" >لیست کتاب ها</a>
+                <a  href="{% url 'documents:book_list' %}" >فهرست کتاب های منتشر شده</a>
 			</li>
 		</ol>
 	</div>
@@ -78,8 +78,7 @@
 						<th class="text-center" style="background-color: white">عنوان</th>
 						<th class="text-center" style="background-color: white">شناسه</th>
 						<th class="text-center" style="background-color: white">حوزه</th>
-						<th class="text-center" style="background-color: white">مولف/مترجم</th>
-						<th class="text-center" style="background-color: white">تحصیلات مولف/مترجم</th>
+						<th class="text-center" style="background-color: white">مولفین/مترجمین</th>
 						<th class="text-center" style="background-color: white">فیپا/شابک</th>
 						<th class="text-center" style="background-color: white">انتشارات</th>
 						<th class="text-center" style="background-color: white">تاریخ چاپ</th>
@@ -97,8 +96,11 @@
 							<td class="align-middle text-center"><a href="{% url 'documents:book_details' pk=obj.id %}">{{ obj.title }}</a></td>
 							<td class="align-middle text-center">{{ obj.organization_code }}</td>
 							<td class="align-middle text-center">{{ obj.field }}</td>
-							<td class="align-middle text-center">{{ obj.producer.title }}</td>
-							<td class="align-middle text-center">{{ obj.producer.degree }}</td>
+                            <td class="align-middle text-center">
+                                {% for o in obj.producers.all %}
+                                    {{ o.title }}-{{ o.organization_code }},
+                                {% endfor %}
+                            </td>
 							<td class="align-middle text-center">{{ obj.fipa }}</td>
 							<td class="align-middle text-center">{{ obj.publisher }}</td>
 							<td class="align-middle text-center">{{ obj.published_at | j_format_date:"%Y/%m/%d" }}</td>
@@ -194,7 +196,7 @@
 								.prepend("<tr><th colspan='12'>" +
 									"<img src='http://127.0.0.1:8000/static/img/logo.png' class='float-left obj-fit-contain' style='position:relative;width:10%' />" +
 									"<img src='http://127.0.0.1:8000/static/img/sepah_balck.png' class='float-right obj-fit-contain' style='position:relative;width:10%' />" +
-									"<h2 class='text-center'><b>لیست کتاب ها</b></h2>" +
+									"<h2 class='text-center'><b>فهرست کتاب های منتشر شده</b></h2>" +
 									"</th>" +
 									"</tr>");
                             $(win.document.body).find('tfoot')

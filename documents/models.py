@@ -122,8 +122,8 @@ class Assessment(Document):
     scientific_rank = models.CharField(max_length=255)
     father = models.CharField(max_length=255)
     profile_type = models.CharField(max_length=255)
-    necessary_condition = models.TextField()
-    sufficient_condition = models.TextField()
+    necessary_condition = models.TextField(null=True, blank=True)
+    sufficient_condition = models.TextField(null=True, blank=True)
 
 
 ARTICLE_PUBLISH_TYPES = [
@@ -181,7 +181,7 @@ class Experience(Document):
 
 
 class Book(Document):
-    producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='book_producer')
+    producers=models.ManyToManyField(to=Resume, related_name='book_producers')
     fipa = models.CharField(max_length=255)
     published_at = models.DateTimeField()
     publisher = models.CharField(max_length=255)
@@ -305,6 +305,7 @@ class CoWork(Document):
     person_type = models.CharField(max_length=255, choices=PERSON_TYPES)
     cowork_type = models.CharField(max_length=255, choices=COWORK_TYPES)
     address = models.TextField()
+    started_at = models.DateTimeField()
 
 
 class CenterPersonnel(models.Model):

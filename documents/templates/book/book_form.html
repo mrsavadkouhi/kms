@@ -30,7 +30,7 @@
 				<a>مدیریت دانش</a>
 			</li>
 			<li class="breadcrumb-item">
-                <a href="{% url 'documents:book_list' %}" >لیست کتاب ها</a>
+                <a href="{% url 'documents:book_list' %}" >فهرست کتاب های منتشر شده</a>
 			</li>
 			<li class="breadcrumb-item active">
                 {% if title == 'update' %}
@@ -122,9 +122,9 @@
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="producer_label">مولف/مترجم: </span>
+                    <span class="input-group-text required" id="producer_label">مولفین/مترجمین: </span>
                   </div>
-                    <select name="producer" id="producer" class="select2 form-control">
+                    <select name="producers" id="producers" class="select2 form-control">
                         {% for obj in resumes %}
                             <option value="{{ obj.id }}">{{ obj.title }}-{{ obj.organization_code }}</option>
                         {% endfor %}
@@ -242,10 +242,18 @@
                 theme: 'bootstrap4',
         });
         organization_code_year.val("{{ object.organization_code_year }}").trigger("change");
-        var producer = $("#producer").select2({
-                theme: 'bootstrap4',
+
+        var producers = $("#producers").select2({
+                    theme: 'bootstrap4',
+                    multiple: true,
+                    placeholder: "نویسنده ها",
+                    allowClear: true
         });
-        producer.val("{{ object.producer.id }}").trigger("change");
+        vals = [];
+        {% for obj in object.producers.all %}
+            vals.push("{{ obj.id }}");
+        {% endfor %}
+        producers.val(vals).trigger("change");
 
         var field = $("#field").select2({
                 theme: 'bootstrap4',

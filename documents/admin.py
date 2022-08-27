@@ -45,9 +45,9 @@ class ArticleAdmin(admin.ModelAdmin):
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
 	save_on_top = True
-	list_filter = ['title', 'organization_code', 'producer']
-	list_display = ['title', 'organization_code', 'producer']
-	search_fields = ['title', 'organization_code', 'producer']
+	list_filter = ['title', 'organization_code']
+	list_display = ['title', 'organization_code']
+	search_fields = ['title', 'organization_code']
 
 
 @admin.register(Experience)

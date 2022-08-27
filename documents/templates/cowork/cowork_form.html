@@ -30,7 +30,7 @@
 				<a>آینده پژوهی و همکاری های علمی</a>
 			</li>
 			<li class="breadcrumb-item">
-                <a href="{% url 'documents:cowork_list' %}" >لیست همکاری ها</a>
+                <a href="{% url 'documents:cowork_list' %}" >فهرست همکاری ها</a>
 			</li>
 			<li class="breadcrumb-item active">
                 {% if title == 'update' %}
@@ -105,6 +105,15 @@
                             <option value="{{ val }}">{{ obj }}</option>
                         {% endfor %}
                     </select>
+                </div>
+                <div class="input-group mb-2">
+                    <div class="input-group-append">
+                    <span class="input-group-text required" id="published_at_label">تاریخ همکاری: </span>
+                    </div>
+                    <input type="datetime" id="datepicker" class="form-control" name="started_at" aria-describedby="published_at_label">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-calendar fa-2x"></i></span>
+                    </div>
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
@@ -251,7 +260,7 @@
         };
 
         var datepicker = $("#datepicker").persianDatepicker(datepickeroption);
-        $('#datepicker').val('{{ object.presented_at | j_format_date:"%Y-%m-%d %H:%M" }}');
+        $('#datepicker').val('{{ object.started_at | j_format_date:"%Y-%m-%d %H:%M" }}');
 
          $('#ar-form').submit(function () {
 

@@ -3,7 +3,7 @@
 {% load jalali_date %}
 
 
-{% block head_title %}لیست مرکز ها{% endblock %}
+{% block head_title %}فهرست مرکز ها{% endblock %}
 
 {% block title-breadcrumb %}
 	<div class="col-md-10">
@@ -14,7 +14,7 @@
 				<a>مدیریت دانش</a>
 			</li>
 			<li class="breadcrumb-item active">
-                <a  href="{% url 'documents:center_list' %}" >لیست مراکز</a>
+                <a  href="{% url 'documents:center_list' %}" >فهرست مراکز تحقیقاتی و مدیریت های ساتخ ندسا</a>
 			</li>
 		</ol>
 	</div>
@@ -172,7 +172,7 @@
 								.prepend("<tr><th colspan='4'>" +
 									"<img src='http://127.0.0.1:8000/static/img/logo.png' class='float-left obj-fit-contain' style='position:relative;width:10%' />" +
 									"<img src='http://127.0.0.1:8000/static/img/sepah_balck.png' class='float-right obj-fit-contain' style='position:relative;width:10%' />" +
-									"<h2 class='text-center'><b>لیست مراکز</b></h2>" +
+									"<h2 class='text-center'><b>فهرست مراکز تحقیقاتی و مدیریت های ساتخ ندسا</b></h2>" +
 									"</th>" +
 									"</tr>");
                             $(win.document.body).find('tfoot')
@@ -223,10 +223,10 @@
 		});
 
 		$('#producer').on('keyup', function () {
-                table.column(1).search(this.value).draw();
+                table.column(2).search(this.value).draw();
 		});
 		$('#center').on('keyup', function () {
-			table.column(6).search(this.value).draw();
+			table.column(3).search(this.value).draw();
 		});
 
 

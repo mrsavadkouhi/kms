@@ -42,7 +42,7 @@
 				<a>مدیریت دانش</a>
 			</li>
 			<li class="breadcrumb-item">
-                <a href="{% url 'documents:resume_list' %}" >لیست رزومه ها</a>
+                <a href="{% url 'documents:resume_list' %}" >فهرست رزومه ها</a>
 			</li>
 			<li class="breadcrumb-item active">
                 {% if title == 'update' %}
@@ -138,16 +138,16 @@
                   </div>
                   <input type="text" class="form-control" value="{{ object.degree }}" name="degree" aria-describedby="degree_label">
                 </div>
-                <div class="input-group mb-2">
-                  <div class="input-group-append">
-                    <span class="input-group-text required" id="center_label">کاربر: </span>
-                  </div>
-                    <select name="profile" id="profile" class="select2 form-control">
-                        {% for obj in profiles %}
-                            <option value="{{ obj.id }}">{{ obj.user.first_name }} {{ obj.user.last_name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
+{#                <div class="input-group mb-2">#}
+{#                  <div class="input-group-append">#}
+{#                    <span class="input-group-text required" id="center_label">کاربر: </span>#}
+{#                  </div>#}
+{#                    <select name="profile" id="profile" class="select2 form-control">#}
+{#                        {% for obj in profiles %}#}
+{#                            <option value="{{ obj.id }}">{{ obj.user.first_name }} {{ obj.user.last_name }}</option>#}
+{#                        {% endfor %}#}
+{#                    </select>#}
+{#                </div>#}
                 <div class="input-group mb-2">
                   <div class="input-group-append">
                     <span class="input-group-text required" id="center_label">مرکز: </span>
