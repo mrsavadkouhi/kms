@@ -232,23 +232,47 @@ class DocumentImportForm(forms.Form):
     excel_file = forms.FileField()
     doc_type = forms.CharField()
 
-    def import_articles(self,excel_data):
-        error_line = 0
+    def check_articles(self, excel_data):
+        error_line = 1
+        cleaned_data = []
         for row in excel_data:
             error_line += 1
-            title = row[0]
-            organization_code = row[1]
-            field = row[2]
-            doc_type = 'Article'
-            key_words = row[3]
-            published_at=row[6]
-            publish_title=row[9]
-            center=row[10]
 
+            title = row[0]
+            if title in ['nan', None, '']:
+                raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            organization_code = row[1]
+            if organization_code in ['nan', None, '']:
+                raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
+            published_at = row[6]
+            if published_at in ['nan', None, '']:
+                raise forms.ValidationError("ستون تاریخ چاپ در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
+                published_at = published_at.togregorian()
+            except:
+                raise forms.ValidationError("فرمت اطلاعات ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+
+            publish_title = row[9]
+            if publish_title in ['nan', None, '']:
+                raise forms.ValidationError("ستون عنوان انتشار در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
+            center = row[10]
+            if center in ['nan', None, '']:
+                raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                center = Center.objects.get(title=center)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
+
+            if row[4] in ['nan', None, '']:
+                raise forms.ValidationError("ستون نویسندگان در خط " + str(error_line) + " نمی تواند خالی باشد.")
             producers_raw = row[4].split(',')
             producers_raw = producers_raw[:-1]
             if not producers_raw:
-                raise forms.ValidationError("فرمت اطلاعات ستون نویسندگان وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
+                raise forms.ValidationError("فرمت اطلاعات ستون نویسندگان در خط " + str(error_line) + " فایل صحیح نیست")
             producers = []
             for producer in producers_raw:
                 producer = producer.strip()
@@ -257,14 +281,14 @@ class DocumentImportForm(forms.Form):
                     producer = (detail[1], detail[0])
                 except:
                     raise forms.ValidationError(
-                        "فرمت اطلاعات ستون نویسندگان وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
+                        "فرمت اطلاعات ستون نویسندگان در خط " + str(error_line) + " فایل صحیح نیست")
                 producers.append(producer)
 
-            if row[5]:
+            if row[5] not in ['nan', None, '']:
                 judges_raw = row[5].split(',')
                 judges_raw = judges_raw[:-1]
                 if not judges_raw:
-                    raise forms.ValidationError("فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
+                    raise forms.ValidationError("فرمت اطلاعات ستون داوران در خط " + str(error_line) + " فایل صحیح نیست")
                 judges = []
                 for judge in judges_raw:
                     judge = judge.strip()
@@ -273,28 +297,34 @@ class DocumentImportForm(forms.Form):
                         judge = (detail[1], detail[0])
                     except:
                         raise forms.ValidationError(
-                            "فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
+                            "فرمت اطلاعات ستون داوران در خط " + str(error_line) + " فایل صحیح نیست")
                     judges.append(judge)
             else:
                 judges = []
 
             publish_type = row[7]
+            if publish_type in ['nan', None, '']:
+                raise forms.ValidationError("ستون نوع انتشار در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            flag = True
             for name, des in ARTICLE_PUBLISH_TYPES:
                 if publish_type == des:
                     publish_type = name
+                    flag = False
+            if flag:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون نوع انتشار در خط " + str(error_line) + " فایل صحیح نیست")
 
             publish_level = row[8]
+            if publish_level in ['nan', None, '']:
+                raise forms.ValidationError("ستون سطح انتشار در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            flag = True
             for name, des in ARTICLE_PUBLISH_LEVELS:
                 if publish_level == des:
-                    publish_level = name
-
-            center = Center.objects.get(title=center)
-            
-            try:
-                published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
-                published_at = published_at.togregorian()
-            except:
-                raise forms.ValidationError("فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+                    publish_level=name
+                    flag = False
+            if flag:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون سطح انتشار در خط " + str(error_line) + " فایل صحیح نیست")
 
             producers_list = []
             for producer in producers:
@@ -305,6 +335,16 @@ class DocumentImportForm(forms.Form):
                 judge_obj, c = Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
                 judges_list.append(judge_obj)
 
+            field=row[2]
+            doc_type='Article'
+            key_words=row[3]
+
+            cleaned_data.append((title, organization_code, doc_type, field, key_words, producers_list, judges_list, published_at, publish_title, publish_type, publish_level, center))
+        return cleaned_data
+
+    def import_articles(self, excel_data):
+        cleaned_data = self.check_articles(excel_data)
+        for title, organization_code, doc_type, field, key_words, producers_list, judges_list, published_at, publish_title, publish_type, publish_level, center in cleaned_data:
             article = Article.objects.create(
                 title=title,
                 organization_code=organization_code,
@@ -316,29 +356,63 @@ class DocumentImportForm(forms.Form):
                 publish_type=publish_type,
                 publish_title=publish_title,
                 center=center,
-                                   )
+            )
+
             article.producers.set(producers_list)
             article.judges.set(judges_list)
 
-    def import_books(self,excel_data):
-        error_line = 0
+    def check_books(self, excel_data):
+        error_line = 1
+        cleaned_data = []
         for row in excel_data:
             error_line += 1
-            title = row[0]
-            organization_code = row[1]
-            field = row[2]
-            doc_type = 'Book'
-            published_at=row[7]
-            publisher = row[6]
-            assessment_result=row[9]
-            fipa=row[5]
-            center=row[10]
 
-            producers_raw=row[3].split(',')
-            producers_raw=producers_raw[:-1]
+            title = row[0]
+            if title in ['nan', None, '']:
+                raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
+            organization_code = row[1]
+            if organization_code in ['nan', None, '']:
+                raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
+            published_at = row[6]
+            if published_at in ['nan', None, '']:
+                raise forms.ValidationError("ستون تاریخ چاپ در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
+                published_at = published_at.togregorian()
+            except:
+                raise forms.ValidationError("فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+
+            publisher = row[5]
+            if publisher in ['nan', None, '']:
+                raise forms.ValidationError("ستون انتشارات در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
+            assessment_result = row[8]
+            if assessment_result in ['nan', None, '']:
+                raise forms.ValidationError("ستون ارزشیابی در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
+            fipa = row[4]
+            if fipa in ['nan', None, '']:
+                raise forms.ValidationError("ستون فیپا در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
+            center = row[9]
+            if center in ['nan', None, '']:
+                raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                center = Center.objects.get(title=center)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
+
+
+            if row[3] in ['nan', None, '']:
+                raise forms.ValidationError("ستون نویسندگان در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            producers_raw = row[3].split(',')
+            producers_raw = producers_raw[:-1]
             if not producers_raw:
                 raise forms.ValidationError(
-                    "فرمت اطلاعات ستون نویسندگان وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
+                    "فرمت اطلاعات ستون نویسندگان در خط " + str(error_line) + " فایل صحیح نیست")
             producers=[]
             for producer in producers_raw:
                 producer=producer.strip()
@@ -347,14 +421,14 @@ class DocumentImportForm(forms.Form):
                     producer=(detail[1], detail[0])
                 except:
                     raise forms.ValidationError(
-                        "فرمت اطلاعات ستون نویسندگان وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
+                        "فرمت اطلاعات ستون نویسندگان در خط " + str(error_line) + " فایل صحیح نیست")
                 producers.append(producer)
 
-            if row[8]:
-                judges_raw = row[8].split(',')
+            if row[7] not in ['nan', None, '']:
+                judges_raw = row[7].split(',')
                 judges_raw=judges_raw[:-1]
                 if not judges_raw:
-                    raise forms.ValidationError("فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
+                    raise forms.ValidationError("فرمت اطلاعات ستون داوران در خط " + str(error_line) + " فایل صحیح نیست")
                 judges = []
                 for judge in judges_raw:
                     judge = judge.strip()
@@ -363,17 +437,12 @@ class DocumentImportForm(forms.Form):
                         judge=(detail[1], detail[0])
                     except:
                         raise forms.ValidationError(
-                            "فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
+                            "فرمت اطلاعات ستون داوران در خط " + str(error_line) + " فایل صحیح نیست")
                     judges.append(judge)
             else:
                 judges = []
 
-            center = Center.objects.get(title=center)
-            try:
-                published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
-                published_at = published_at.togregorian()
-            except:
-                raise forms.ValidationError("فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+
 
             producers_list=[]
             for producer in producers:
@@ -386,6 +455,15 @@ class DocumentImportForm(forms.Form):
                 judge_obj, c = Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
                 judges_list.append(judge_obj)
 
+            field = row[2]
+            doc_type = 'Book'
+
+            cleaned_data.append((title, organization_code, doc_type, field, producers_list, judges_list, published_at, publisher, assessment_result, fipa, center))
+        return cleaned_data
+
+    def import_books(self,excel_data):
+        cleaned_data = self.check_books(excel_data)
+        for title, organization_code, doc_type, field, producers_list, judges_list, published_at, publisher, assessment_result, fipa, center in cleaned_data:
             book = Book.objects.create(
                 title=title,
                 organization_code=organization_code,
@@ -418,7 +496,7 @@ class DocumentImportForm(forms.Form):
                 judges_raw = row[6].split(',')
                 judges_raw = judges_raw[:-1]
                 if not judges_raw:
-                    raise forms.ValidationError("فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
+                    raise forms.ValidationError("فرمت اطلاعات ستون داوران در خط " + str(error_line) + " فایل صحیح نیست")
                 judges=[]
                 for judge in judges_raw:
                     judge=judge.strip()
@@ -427,7 +505,7 @@ class DocumentImportForm(forms.Form):
                         judge=(detail[1], detail[0])
                     except:
                         raise forms.ValidationError(
-                            "فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
+                            "فرمت اطلاعات ستون داوران در خط " + str(error_line) + " فایل صحیح نیست")
                     judges.append(judge)
             else:
                 judges = []
@@ -438,7 +516,7 @@ class DocumentImportForm(forms.Form):
                 presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
                 presented_at=presented_at.togregorian()
             except:
-                raise forms.ValidationError("فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+                raise forms.ValidationError("فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
             producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
 
@@ -477,7 +555,7 @@ class DocumentImportForm(forms.Form):
                 judges_raw=row[6].split(',')
                 judges_raw=judges_raw[:-1]
                 if not judges_raw:
-                    raise forms.ValidationError("فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
+                    raise forms.ValidationError("فرمت اطلاعات ستون داوران در خط " + str(error_line) + " فایل صحیح نیست")
                 judges=[]
                 for judge in judges_raw:
                     judge=judge.strip()
@@ -486,7 +564,7 @@ class DocumentImportForm(forms.Form):
                         judge=(detail[1], detail[0])
                     except:
                         raise forms.ValidationError(
-                            "فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
+                            "فرمت اطلاعات ستون داوران در خط " + str(error_line) + " فایل صحیح نیست")
                     judges.append(judge)
             else:
                 judges = []
@@ -497,7 +575,7 @@ class DocumentImportForm(forms.Form):
                 presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
                 presented_at=presented_at.togregorian()
             except:
-                raise forms.ValidationError("فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+                raise forms.ValidationError("فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
             producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
 
@@ -539,7 +617,7 @@ class DocumentImportForm(forms.Form):
                 presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
                 presented_at=presented_at.togregorian()
             except:
-                raise forms.ValidationError("فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+                raise forms.ValidationError("فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
             producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
 
@@ -574,7 +652,7 @@ class DocumentImportForm(forms.Form):
                 declared_at=jdatetime.datetime.strptime(declared_at, "%Y/%m/%d")
                 declared_at=declared_at.togregorian()
             except:
-                raise forms.ValidationError("فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+                raise forms.ValidationError("فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
             producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
 
@@ -607,7 +685,7 @@ class DocumentImportForm(forms.Form):
                 issued_at=issued_at.togregorian()
             except:
                 raise forms.ValidationError(
-                    "فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
             receiver_obj, c=Resume.objects.get_or_create(type='Resume', title=receiver)
 
             order=Order.objects.create(
@@ -639,7 +717,7 @@ class DocumentImportForm(forms.Form):
                 judges_raw=row[7].split(',')
                 judges_raw=judges_raw[:-1]
                 if not judges_raw:
-                    raise forms.ValidationError("فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
+                    raise forms.ValidationError("فرمت اطلاعات ستون داوران در خط " + str(error_line) + " فایل صحیح نیست")
                 judges=[]
                 for judge in judges_raw:
                     judge=judge.strip()
@@ -648,7 +726,7 @@ class DocumentImportForm(forms.Form):
                         judge=(detail[1], detail[0])
                     except:
                         raise forms.ValidationError(
-                            "فرمت اطلاعات ستون داوران وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
+                            "فرمت اطلاعات ستون داوران در خط " + str(error_line) + " فایل صحیح نیست")
                     judges.append(judge)
             else:
                 judges = []
@@ -660,7 +738,7 @@ class DocumentImportForm(forms.Form):
                 presented_at=presented_at.togregorian()
             except:
                 raise forms.ValidationError(
-                    "فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
             producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
 
@@ -702,7 +780,7 @@ class DocumentImportForm(forms.Form):
                 finished_at=finished_at.togregorian()
             except:
                 raise forms.ValidationError(
-                    "فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
             manager_obj, c=Resume.objects.get_or_create(type='Resume', title=manager)
 
@@ -739,7 +817,7 @@ class DocumentImportForm(forms.Form):
                 held_at=held_at.togregorian()
             except:
                 raise forms.ValidationError(
-                    "فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
             conference=Conference.objects.create(
                 title=title,
@@ -770,7 +848,7 @@ class DocumentImportForm(forms.Form):
                 visited_at=visited_at.togregorian()
             except:
                 raise forms.ValidationError(
-                    "فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
             visit=Visit.objects.create(
                 title=title,
@@ -803,7 +881,7 @@ class DocumentImportForm(forms.Form):
                 presented_at=presented_at.togregorian()
             except:
                 raise forms.ValidationError(
-                    "فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
             producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
 
@@ -955,7 +1033,7 @@ class DocumentImportForm(forms.Form):
                 presented_at=presented_at.togregorian()
             except:
                 raise forms.ValidationError(
-                    "فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
             producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
 
@@ -986,7 +1064,7 @@ class DocumentImportForm(forms.Form):
                 presented_at=presented_at.togregorian()
             except:
                 raise forms.ValidationError(
-                    "فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
             journal=Journal.objects.create(
                 title=title,
@@ -1041,7 +1119,7 @@ class DocumentImportForm(forms.Form):
             producers_raw = row[3].split(',')
             producers_raw = producers_raw[:-1]
             if not producers_raw:
-                raise forms.ValidationError("فرمت اطلاعات ستون محققین وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
+                raise forms.ValidationError("فرمت اطلاعات ستون محققین در خط " + str(error_line) + " فایل صحیح نیست")
             producers = []
             for producer in producers_raw:
                 producer = producer.strip()
@@ -1050,7 +1128,7 @@ class DocumentImportForm(forms.Form):
                     producer = (detail[1], detail[0])
                 except:
                     raise forms.ValidationError(
-                        "فرمت اطلاعات ستون نویسندگان وارد شده در خط " + str(error_line) + " فایل صحیح نیست")
+                        "فرمت اطلاعات ستون نویسندگان در خط " + str(error_line) + " فایل صحیح نیست")
                 producers.append(producer)
 
             center = Center.objects.get(title=center)
@@ -1060,7 +1138,7 @@ class DocumentImportForm(forms.Form):
                 registered_at = registered_at.togregorian()
             except:
                 raise forms.ValidationError(
-                    "فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
             producers_list = []
             for producer in producers:
@@ -1101,7 +1179,7 @@ class DocumentImportForm(forms.Form):
                 elite_received_at=elite_received_at.togregorian()
             except:
                 raise forms.ValidationError(
-                    "فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
             producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
 
@@ -1145,7 +1223,7 @@ class DocumentImportForm(forms.Form):
                 started_at=started_at.togregorian()
             except:
                 raise forms.ValidationError(
-                    "فرمت اطلاعات وارد شده در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
             producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
 
