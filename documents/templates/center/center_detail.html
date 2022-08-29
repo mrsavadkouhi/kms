@@ -309,7 +309,7 @@
         });
 		var table;
         table = $('.dataTables-example').DataTable({
-				pageLength: 25,
+				pageLength: 10,
 				responsive: true,
 				dom: 'lTfgitp<"float-right"B>',
                 buttons: [
@@ -336,7 +336,8 @@
 									"<h3 class='text-center'>مدیریت دانش ساتخ ندسا</h3>" +
 									"<br><br><br>" +
                                     "{% if object.avatar %}<img class='float-left img-thumbnail circle-img img-circle' src='http://127.0.0.1:8000{{ object.avatar.url }}'>{% endif %}" +
-									"<h3><strong>عنوان: </strong>{{ object.title }}</h3>" +
+									"<br><br><br>" +
+                                    "<h3><strong>عنوان: </strong>{{ object.title }}</h3>" +
 									"<h3><strong>کد: </strong>{{ object.code }}</h3>" +
                                     "<br>" +
                                     "<h3><strong>آمار کلی تعداد</strong></h3>" +

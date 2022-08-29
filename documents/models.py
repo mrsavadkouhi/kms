@@ -310,7 +310,7 @@ PERSON_TYPES = [
 class CoWork(Document):
     person_type = models.CharField(max_length=255, choices=PERSON_TYPES)
     cowork_type = models.CharField(max_length=255, choices=COWORK_TYPES)
-    address = models.TextField()
+    address = models.TextField(null=True, blank=True)
     started_at = models.DateTimeField()
 
 
