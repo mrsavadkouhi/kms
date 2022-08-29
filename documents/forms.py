@@ -795,19 +795,30 @@ class DocumentImportForm(forms.Form):
             )
 
 
-    def import_orders(self,excel_data):
+    def check_orders(self,excel_data):
         error_line = 1
+        cleaned_data = []
         for row in excel_data:
             error_line += 1
+
             title = row[0]
             if title in ['nan', None, '']:
                 raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             organization_code = row[1]
             if organization_code in ['nan', None, '']:
                 raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
-            field=row[2]
-            doc_type='Order'
+
             issued_at=row[4]
+            if issued_at in ['nan', None, '']:
+                raise forms.ValidationError("ستون تاریخ صدور در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                issued_at=jdatetime.datetime.strptime(issued_at, "%Y/%m/%d")
+                issued_at=issued_at.togregorian()
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+
             center=row[5]
             if center in ['nan', None, '']:
                 raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
@@ -816,17 +827,25 @@ class DocumentImportForm(forms.Form):
             except:
                 raise forms.ValidationError(
                     "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
+
             receiver=row[3]
-
-
+            if receiver in ['nan', None, '']:
+                raise forms.ValidationError("ستون گیرنده در خط " + str(error_line) + " نمی تواند خالی باشد.")
             try:
-                issued_at=jdatetime.datetime.strptime(issued_at, "%Y/%m/%d")
-                issued_at=issued_at.togregorian()
+                receiver_obj, c=Resume.objects.get_or_create(type='Resume', title=receiver)
             except:
                 raise forms.ValidationError(
-                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
-            receiver_obj, c=Resume.objects.get_or_create(type='Resume', title=receiver)
+                    "فرمت اطلاعات ستون گیرنده در خط " + str(error_line) + " فایل صحیح نیست")
 
+            field=row[2]
+            doc_type='Order'
+
+            cleaned_data.append((title, organization_code, doc_type, field, receiver_obj, issued_at, center))
+        return cleaned_data
+
+    def import_orders(self,excel_data):
+        cleaned_data = self.check_orders(excel_data)
+        for title, organization_code, doc_type, field, receiver_obj, issued_at, center in cleaned_data:
             order=Order.objects.create(
                 title=title,
                 organization_code=organization_code,
@@ -838,21 +857,43 @@ class DocumentImportForm(forms.Form):
             )
 
 
-    def import_seminars(self,excel_data):
+    def check_seminars(self,excel_data):
         error_line = 1
+        cleaned_data = []
         for row in excel_data:
             error_line += 1
+
             title = row[0]
             if title in ['nan', None, '']:
                 raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             organization_code = row[1]
             if organization_code in ['nan', None, '']:
                 raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
-            field=row[2]
-            doc_type='Seminar'
+
             presented_at=row[5]
+            if presented_at in ['nan', None, '']:
+                raise forms.ValidationError("ستون تاریخ ارائه در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
+                presented_at=presented_at.togregorian()
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+
             participant_number=row[6]
+            if participant_number in ['nan', None, '']:
+                raise forms.ValidationError("ستون تعداد شرکت کنندگان در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                participant_number = int(participant_number)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون تعداد شرکت کنندگان در خط " + str(error_line) + " فایل صحیح نیست")
+
             assessment_result=row[8]
+            if assessment_result in ['nan', None, '']:
+                raise forms.ValidationError("ستون ارزشیابی در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             center=row[9]
             if center in ['nan', None, '']:
                 raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
@@ -861,16 +902,17 @@ class DocumentImportForm(forms.Form):
             except:
                 raise forms.ValidationError(
                     "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
+
             producer=row[3]
             if producer in ['nan', None, '']:
-                raise forms.ValidationError("ستون نویسنده در خط " + str(error_line) + " نمی تواند خالی باشد.")
+                raise forms.ValidationError("ستون ارائه دهنده در خط " + str(error_line) + " نمی تواند خالی باشد.")
             try:
                 producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
             except:
                 raise forms.ValidationError(
-                    "فرمت اطلاعات ستون نویسنده در خط " + str(error_line) + " فایل صحیح نیست")
+                    "فرمت اطلاعات ستون ارائه دهنده در خط " + str(error_line) + " فایل صحیح نیست")
 
-            if row[7]:
+            if row[7] in ['nan', None, '']:
                 judges_raw=row[7].split(',')
                 judges_raw=judges_raw[:-1]
                 if not judges_raw:
@@ -888,29 +930,28 @@ class DocumentImportForm(forms.Form):
             else:
                 judges = []
 
-
-
-            try:
-                presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
-                presented_at=presented_at.togregorian()
-            except:
-                raise forms.ValidationError(
-                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
-
-
-
             judges_list=[]
             for judge in judges:
                 judge_obj, c=Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
                 judges_list.append(judge_obj)
 
+            field=row[2]
+            doc_type='Seminar'
+
+            cleaned_data.append((title, organization_code, doc_type, field, producer_obj, presented_at, participant_number, assessment_result, judges_list, center))
+        return cleaned_data
+
+
+    def import_seminars(self,excel_data):
+        cleaned_data = self.check_seminars(excel_data)
+        for title, organization_code, doc_type, field, producer_obj, presented_at, participant_number, assessment_result, judges_list, center in excel_data:
             seminar=Seminar.objects.create(
                 title=title,
                 organization_code=organization_code,
                 field=field,
                 type=doc_type,
                 producer=producer_obj,
-                participant_number=int(participant_number),
+                participant_number=participant_number,
                 presented_at=presented_at,
                 assessment_result=assessment_result,
                 center=center,
@@ -1542,8 +1583,10 @@ class DocumentImportForm(forms.Form):
             raise forms.ValidationError("هیچ فایلی انتخاب نشده است.")
 
         # df = pd.read_csv(excel_file)
-        df = pd.read_excel(excel_file, engine='openpyxl')
-
+        try:
+            df = pd.read_excel(excel_file, engine='openpyxl')
+        except:
+            raise forms.ValidationError("فایل وارد شده فرمت اکسل نیست.")
         # wb = openpyxl.load_workbook(excel_file)
         # worksheet = wb["Sheet1"]
 
