@@ -659,22 +659,41 @@ class DocumentImportForm(forms.Form):
             )
             idea.judges.set(judges_list)
 
-    def import_theses(self,excel_data):
-        error_line = 0
+    def check_theses(self,excel_data):
+        error_line = 1
+        cleaned_data = []
         for row in excel_data:
             error_line += 1
+
             title = row[0]
             if title in ['nan', None, '']:
                 raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             organization_code = row[1]
             if organization_code in ['nan', None, '']:
                 raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
-            field=row[2]
-            doc_type='Thesis'
+
             measure=row[4]
+            if measure in ['nan', None, '']:
+                raise forms.ValidationError("ستون رشته تحصیلی در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             degree=row[5]
+            if degree in ['nan', None, '']:
+                raise forms.ValidationError("ستون مقطع تحصیلی در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             university=row[6]
+            if university in ['nan', None, '']:
+                raise forms.ValidationError("ستون دانشگاه در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             presented_at=row[7]
+            if presented_at in ['nan', None, '']:
+                raise forms.ValidationError("ستون تاریخ دفاع در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
+                presented_at=presented_at.togregorian()
+            except:
+                raise forms.ValidationError("فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+
             center=row[8]
             if center in ['nan', None, '']:
                 raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
@@ -683,25 +702,25 @@ class DocumentImportForm(forms.Form):
             except:
                 raise forms.ValidationError(
                     "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
+
             producer=row[3]
             if producer in ['nan', None, '']:
-                raise forms.ValidationError("ستون نویسنده در خط " + str(error_line) + " نمی تواند خالی باشد.")
+                raise forms.ValidationError("ستون دانشجو در خط " + str(error_line) + " نمی تواند خالی باشد.")
             try:
                 producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
             except:
                 raise forms.ValidationError(
-                    "فرمت اطلاعات ستون نویسنده در خط " + str(error_line) + " فایل صحیح نیست")
+                    "فرمت اطلاعات ستون دانشجو در خط " + str(error_line) + " فایل صحیح نیست")
 
+            field=row[2]
+            doc_type='Thesis'
 
+            cleaned_data.append((title, organization_code, doc_type, field, producer_obj, presented_at, measure, degree, university, center))
+        return cleaned_data
 
-            try:
-                presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
-                presented_at=presented_at.togregorian()
-            except:
-                raise forms.ValidationError("فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
-
-
-
+    def import_theses(self, excel_data):
+        cleaned_data = self.check_theses(excel_data)
+        for title, organization_code, doc_type, field, producer_obj, presented_at, measure, degree, university, center in cleaned_data:
             thesis=Thesis.objects.create(
                 title=title,
                 organization_code=organization_code,
@@ -715,19 +734,29 @@ class DocumentImportForm(forms.Form):
                 center=center,
             )
 
-    def import_manuals(self,excel_data):
-        error_line = 0
+    def check_manuals(self,excel_data):
+        error_line = 1
+        cleaned_data = []
         for row in excel_data:
             error_line += 1
+
             title = row[0]
             if title in ['nan', None, '']:
                 raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             organization_code = row[1]
             if organization_code in ['nan', None, '']:
                 raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
-            field=row[2]
-            doc_type='Manual'
+
             declared_at=row[4]
+            if declared_at in ['nan', None, '']:
+                raise forms.ValidationError("ستون تاریخ ابلاغ در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                declared_at=jdatetime.datetime.strptime(declared_at, "%Y/%m/%d")
+                declared_at=declared_at.togregorian()
+            except:
+                raise forms.ValidationError("فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+
             center=row[5]
             if center in ['nan', None, '']:
                 raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
@@ -736,25 +765,25 @@ class DocumentImportForm(forms.Form):
             except:
                 raise forms.ValidationError(
                     "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
+
             producer=row[3]
             if producer in ['nan', None, '']:
-                raise forms.ValidationError("ستون نویسنده در خط " + str(error_line) + " نمی تواند خالی باشد.")
+                raise forms.ValidationError("ستون تهیه کننده در خط " + str(error_line) + " نمی تواند خالی باشد.")
             try:
                 producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
             except:
                 raise forms.ValidationError(
-                    "فرمت اطلاعات ستون نویسنده در خط " + str(error_line) + " فایل صحیح نیست")
+                    "فرمت اطلاعات ستون تهیه کننده در خط " + str(error_line) + " فایل صحیح نیست")
 
+            field=row[2]
+            doc_type='Manual'
 
+            cleaned_data.append((title, organization_code, doc_type, field, producer_obj, declared_at, center))
+        return cleaned_data
 
-            try:
-                declared_at=jdatetime.datetime.strptime(declared_at, "%Y/%m/%d")
-                declared_at=declared_at.togregorian()
-            except:
-                raise forms.ValidationError("فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
-
-
-
+    def import_manuals(self,excel_data):
+        cleaned_data = self.check_manuals(excel_data)
+        for title, organization_code, doc_type, field, producer_obj, declared_at, center in cleaned_data:
             manual=Manual.objects.create(
                 title=title,
                 organization_code=organization_code,
@@ -767,7 +796,7 @@ class DocumentImportForm(forms.Form):
 
 
     def import_orders(self,excel_data):
-        error_line = 0
+        error_line = 1
         for row in excel_data:
             error_line += 1
             title = row[0]
@@ -810,7 +839,7 @@ class DocumentImportForm(forms.Form):
 
 
     def import_seminars(self,excel_data):
-        error_line = 0
+        error_line = 1
         for row in excel_data:
             error_line += 1
             title = row[0]
@@ -890,7 +919,7 @@ class DocumentImportForm(forms.Form):
 
 
     def import_projects(self,excel_data):
-        error_line = 0
+        error_line = 1
         for row in excel_data:
             error_line += 1
             title = row[0]
@@ -932,7 +961,7 @@ class DocumentImportForm(forms.Form):
             )
 
     def import_conferences(self,excel_data):
-        error_line = 0
+        error_line = 1
         for row in excel_data:
             error_line += 1
             title = row[0]
@@ -976,7 +1005,7 @@ class DocumentImportForm(forms.Form):
             )
 
     def import_visits(self,excel_data):
-        error_line = 0
+        error_line = 1
         for row in excel_data:
             error_line += 1
             title = row[0]
@@ -1017,7 +1046,7 @@ class DocumentImportForm(forms.Form):
 
 
     def import_reports(self,excel_data):
-        error_line = 0
+        error_line = 1
         for row in excel_data:
             error_line += 1
             title = row[0]
@@ -1070,7 +1099,7 @@ class DocumentImportForm(forms.Form):
             )
 
     def import_resumes(self,excel_data):
-        error_line = 0
+        error_line = 1
         for row in excel_data:
             error_line += 1
             title = row[0]
@@ -1105,7 +1134,7 @@ class DocumentImportForm(forms.Form):
             )
 
     def import_centers(self,excel_data):
-        error_line = 0
+        error_line = 1
         for row in excel_data:
             error_line += 1
             title = row[0]
@@ -1119,7 +1148,7 @@ class DocumentImportForm(forms.Form):
             )
 
     def import_cores(self,excel_data):
-        error_line = 0
+        error_line = 1
         for row in excel_data:
             error_line += 1
             title = row[0]
@@ -1147,7 +1176,7 @@ class DocumentImportForm(forms.Form):
                                    )
 
     def import_techs(self,excel_data):
-        error_line = 0
+        error_line = 1
         for row in excel_data:
             error_line += 1
             title = row[0]
@@ -1175,7 +1204,7 @@ class DocumentImportForm(forms.Form):
             )
 
     def import_companies(self,excel_data):
-        error_line = 0
+        error_line = 1
         for row in excel_data:
             error_line += 1
             title = row[0]
@@ -1203,7 +1232,7 @@ class DocumentImportForm(forms.Form):
             )
 
     def import_futures(self,excel_data):
-        error_line = 0
+        error_line = 1
         for row in excel_data:
             error_line += 1
             title = row[0]
@@ -1258,7 +1287,7 @@ class DocumentImportForm(forms.Form):
             )
 
     def import_journals(self,excel_data):
-        error_line = 0
+        error_line = 1
         for row in excel_data:
             error_line += 1
             title = row[0]
@@ -1289,7 +1318,7 @@ class DocumentImportForm(forms.Form):
             )
 
     def import_coworks(self,excel_data):
-        error_line = 0
+        error_line = 1
         for row in excel_data:
             error_line += 1
             title = row[0]
@@ -1326,7 +1355,7 @@ class DocumentImportForm(forms.Form):
             )
 
     def import_inventions(self,excel_data):
-        error_line = 0
+        error_line = 1
         for row in excel_data:
             error_line += 1
             title = row[0]
@@ -1385,7 +1414,7 @@ class DocumentImportForm(forms.Form):
             invention.producers.set(producers_list)
 
     def import_assessments(self,excel_data):
-        error_line = 0
+        error_line = 1
         for row in excel_data:
             error_line += 1
             producer=row[0]
@@ -1440,7 +1469,7 @@ class DocumentImportForm(forms.Form):
             )
 
     def import_workshops(self,excel_data):
-        error_line = 0
+        error_line = 1
         for row in excel_data:
             error_line += 1
             title = row[0]
