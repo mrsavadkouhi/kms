@@ -12,7 +12,7 @@
         <div class="row">
             <div class="col-lg-2">
                 <div>
-                    <img src="{% static 'img/sepah_balck.png' %}" style="width: 100px;alignment: center"/>
+                    <img src="{% static 'img/sepah_balck.png' %}" style="width: 200px;alignment: center"/>
                 </div>
             </div>
             <div class="col-lg-8">
@@ -20,7 +20,7 @@
             </div>
             <div class="col-lg-2">
                 <div>
-                    <img src="{% static 'img/logo.png' %}" style="width: 100px; alignment: center"/>
+                    <img src="{% static 'img/logo.png' %}" style="width: 200px; alignment: center"/>
                 </div>
             </div>
         </div>
@@ -32,7 +32,7 @@
             {% if user.is_superuser or has_knowledge_perm %}
             <div class="col-lg-3 text-center" href="{% url 'documents:article_list' %}">
                 <div class="text-center">
-                    <a href="{% url 'documents:article_list' %}"><img src="{% static 'img/knowledge.png' %}" style="height: 300px; alignment: center"/></a>
+                    <a href="{% url 'documents:article_list' %}"><img src="{% static 'img/knowledge.png' %}" style="height: 350px; alignment: center"/></a>
                 </div>
 {#                <a href="{% url 'documents:article_list' %}"><h3>مدیریت دانش</h3></a>#}
             </div>
@@ -42,7 +42,7 @@
         {% if user.is_superuser or has_center_perm %}
             <div class="col-lg-3 text-center" href="{% url 'documents:project_list' %}">
                 <div class="text-center">
-                    <a href="{% url 'documents:core_list' %}"><img src="{% static 'img/development.png' %}" style="height: 300px; alignment: center"/></a>
+                    <a href="{% url 'documents:core_list' %}"><img src="{% static 'img/development.png' %}" style="height: 350px; alignment: center"/></a>
                 </div>
 {#                <a href="{% url 'documents:core_list' %}"><h3>مرکز رشد</h3></a>#}
             </div>
@@ -56,7 +56,7 @@
             {% if user.is_superuser or has_future_perm %}
             <div class="col-lg-3 text-center" >
                 <div class="text-center">
-                    <a href="{% url 'documents:future_list' %}"><img src="{% static 'img/future.png' %}" style="height: 300px; alignment: center"/></a>
+                    <a href="{% url 'documents:future_list' %}"><img src="{% static 'img/future.png' %}" style="height: 350px; alignment: center"/></a>
                 </div>
 {#                <a href="{% url 'documents:future_list' %}"><h3>آینده پژوهی و همکاری های علمی</h3></a>#}
             </div>
@@ -66,7 +66,7 @@
         {% if user.is_superuser or has_resume_perm %}
             <div class="col-lg-3 text-center" >
                 <div class="text-center">
-                    <a href="{% url 'documents:assessment_list' %}"><img src="{% static 'img/learning.png' %}" style="height: 300px; alignment: center"/></a>
+                    <a href="{% url 'documents:assessment_list' %}"><img src="{% static 'img/learning.png' %}" style="height: 350px; alignment: center"/></a>
                 </div>
 {#                <a href="{% url 'documents:assessment_list' %}"><h3>نخبگان آموزش و امور محققین</h3></a>#}
             </div>

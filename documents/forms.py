@@ -794,7 +794,6 @@ class DocumentImportForm(forms.Form):
                 center=center,
             )
 
-
     def check_orders(self,excel_data):
         error_line = 1
         cleaned_data = []
@@ -856,7 +855,6 @@ class DocumentImportForm(forms.Form):
                 center=center,
             )
 
-
     def check_seminars(self,excel_data):
         error_line = 1
         cleaned_data = []
@@ -885,7 +883,7 @@ class DocumentImportForm(forms.Form):
             if participant_number in ['nan', None, '']:
                 raise forms.ValidationError("ستون تعداد شرکت کنندگان در خط " + str(error_line) + " نمی تواند خالی باشد.")
             try:
-                participant_number = int(participant_number)
+                participant_number = float(participant_number)
             except:
                 raise forms.ValidationError(
                     "فرمت اطلاعات ستون تعداد شرکت کنندگان در خط " + str(error_line) + " فایل صحیح نیست")
@@ -941,10 +939,9 @@ class DocumentImportForm(forms.Form):
             cleaned_data.append((title, organization_code, doc_type, field, producer_obj, presented_at, participant_number, assessment_result, judges_list, center))
         return cleaned_data
 
-
     def import_seminars(self,excel_data):
         cleaned_data = self.check_seminars(excel_data)
-        for title, organization_code, doc_type, field, producer_obj, presented_at, participant_number, assessment_result, judges_list, center in excel_data:
+        for title, organization_code, doc_type, field, producer_obj, presented_at, participant_number, assessment_result, judges_list, center in cleaned_data:
             seminar=Seminar.objects.create(
                 title=title,
                 organization_code=organization_code,
@@ -958,18 +955,35 @@ class DocumentImportForm(forms.Form):
             )
             seminar.judges.set(judges_list)
 
-
-    def import_projects(self,excel_data):
+    def check_projects(self,excel_data):
         error_line = 1
+        cleaned_data = []
         for row in excel_data:
             error_line += 1
+
             title = row[0]
             if title in ['nan', None, '']:
                 raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
-            field=row[1]
-            doc_type='Project'
+
             duration=row[4]
+            if duration in ['nan', None, '']:
+                raise forms.ValidationError("ستون مدت اجرا در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                duration = float(duration)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات در ستون مدت اجرا در خط " + str(error_line) + " فایل صحیح نیست.")
+
             finished_at=row[3]
+            if finished_at in ['nan', None, '']:
+                raise forms.ValidationError("ستون تازیخ شروع در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                finished_at=jdatetime.datetime.strptime(finished_at, "%Y/%m/%d")
+                finished_at=finished_at.togregorian()
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+
             center=row[5]
             if center in ['nan', None, '']:
                 raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
@@ -978,22 +992,29 @@ class DocumentImportForm(forms.Form):
             except:
                 raise forms.ValidationError(
                     "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
+
             manager=row[2]
-
-
-
+            if manager in ['nan', None, '']:
+                raise forms.ValidationError("ستون مدیر در خط " + str(error_line) + " نمی تواند خالی باشد.")
             try:
-                finished_at=jdatetime.datetime.strptime(finished_at, "%Y/%m/%d")
-                finished_at=finished_at.togregorian()
+                manager_obj, c=Resume.objects.get_or_create(type='Resume', title=manager)
             except:
                 raise forms.ValidationError(
-                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+                    "فرمت اطلاعات ستون مدیر در خط " + str(error_line) + " فایل صحیح نیست")
 
-            manager_obj, c=Resume.objects.get_or_create(type='Resume', title=manager)
 
+            field=row[1]
+            doc_type='Project'
+
+            cleaned_data.append((title, doc_type, field, manager_obj, finished_at, duration, center))
+        return cleaned_data
+
+    def import_projects(self,excel_data):
+        cleaned_data = self.check_projects(excel_data)
+        for title, doc_type, field, manager_obj, finished_at, duration, center in cleaned_data:
             project=Project.objects.create(
                 title=title,
-                duration=int(duration),
+                duration=float(duration),
                 field=field,
                 type=doc_type,
                 manager=manager_obj,
@@ -1001,17 +1022,30 @@ class DocumentImportForm(forms.Form):
                 center=center,
             )
 
-    def import_conferences(self,excel_data):
+    def check_conferences(self,excel_data):
         error_line = 1
+        cleaned_data = []
         for row in excel_data:
             error_line += 1
+
             title = row[0]
             if title in ['nan', None, '']:
                 raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
-            field=row[1]
-            doc_type='Conference'
+
             location=row[4]
+            if location in ['nan', None, '']:
+                raise forms.ValidationError("ستون محل برگزاری در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             held_at=row[3]
+            if held_at in ['nan', None, '']:
+                raise forms.ValidationError("ستون تاریخ برگزاری در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                held_at=jdatetime.datetime.strptime(held_at, "%Y/%m/%d")
+                held_at=held_at.togregorian()
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+
             center=row[5]
             if center in ['nan', None, '']:
                 raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
@@ -1022,19 +1056,26 @@ class DocumentImportForm(forms.Form):
                     "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
 
             conference_level=row[2]
+            if conference_level in ['nan', None, '']:
+                raise forms.ValidationError("ستون سطح برگزاری در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            flag = True
             for name, des in CONFERENCE_LEVELS:
                 if conference_level == des:
                     conference_level=name
-
-
-
-            try:
-                held_at=jdatetime.datetime.strptime(held_at, "%Y/%m/%d")
-                held_at=held_at.togregorian()
-            except:
+                    flag = False
+            if flag:
                 raise forms.ValidationError(
-                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+                    "فرمت اطلاعات ستون سطح برگزاری در خط " + str(error_line) + " فایل صحیح نیست")
 
+            field=row[1]
+            doc_type='Conference'
+
+            cleaned_data.append((title, location, doc_type, field, held_at, conference_level, center))
+        return cleaned_data
+
+    def import_conferences(self,excel_data):
+        cleaned_data = self.check_conferences(excel_data)
+        for title, location, doc_type, field, held_at, conference_level, center in cleaned_data:
             conference=Conference.objects.create(
                 title=title,
                 field=field,
@@ -1045,17 +1086,30 @@ class DocumentImportForm(forms.Form):
                 center=center,
             )
 
-    def import_visits(self,excel_data):
+    def check_visits(self,excel_data):
         error_line = 1
+        cleaned_data = []
         for row in excel_data:
             error_line += 1
+
             title = row[0]
             if title in ['nan', None, '']:
                 raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
-            field=row[1]
-            doc_type='Visit'
+
             location=row[4]
+            if location in ['nan', None, '']:
+                raise forms.ValidationError("ستون محل بازدید در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             visited_at=row[3]
+            if visited_at in ['nan', None, '']:
+                raise forms.ValidationError("ستون تاریخ بازدید در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                visited_at=jdatetime.datetime.strptime(visited_at, "%Y/%m/%d")
+                visited_at=visited_at.togregorian()
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+
             center=row[5]
             if center in ['nan', None, '']:
                 raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
@@ -1064,42 +1118,64 @@ class DocumentImportForm(forms.Form):
             except:
                 raise forms.ValidationError(
                     "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
+
             participant_number=row[2]
-
-
-
+            if participant_number in ['nan', None, '']:
+                raise forms.ValidationError("ستون تعداد شرکت کنندگان در خط " + str(error_line) + " نمی تواند خالی باشد.")
             try:
-                visited_at=jdatetime.datetime.strptime(visited_at, "%Y/%m/%d")
-                visited_at=visited_at.togregorian()
+                participant_number = float(participant_number)
             except:
                 raise forms.ValidationError(
-                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+                    "فرمت اطلاعات ستون تعداد شرکت کنندگان در خط " + str(error_line) + " فایل صحیح نیست")
 
+            field=row[1]
+            doc_type='Visit'
+
+            cleaned_data.append((title, location, doc_type, field, visited_at, participant_number, center))
+        return cleaned_data
+
+    def import_visits(self,excel_data):
+        cleaned_data = self.check_visits(excel_data)
+        for title, location, doc_type, field, visited_at, participant_number, center in cleaned_data:
             visit=Visit.objects.create(
                 title=title,
                 field=field,
                 type=doc_type,
                 location=location,
                 visited_at=visited_at,
-                participant_number=int(participant_number),
+                participant_number=participant_number,
                 center=center,
             )
 
 
-    def import_reports(self,excel_data):
+    def check_reports(self,excel_data):
         error_line = 1
+        cleaned_data = []
         for row in excel_data:
             error_line += 1
+
             title = row[0]
             if title in ['nan', None, '']:
                 raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             organization_code = row[1]
             if organization_code in ['nan', None, '']:
                 raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
-            field=row[2]
-            doc_type='Report'
+
             presented_at=row[4]
+            if presented_at in ['nan', None, '']:
+                raise forms.ValidationError("ستون تاریخ ارائه در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
+                presented_at=presented_at.togregorian()
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+
             related_project=row[5]
+            if related_project in ['nan', None, '']:
+                raise forms.ValidationError("ستون پروژه های مرتبط در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             center=row[6]
             if center in ['nan', None, '']:
                 raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
@@ -1108,26 +1184,25 @@ class DocumentImportForm(forms.Form):
             except:
                 raise forms.ValidationError(
                     "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
+
             producer=row[3]
             if producer in ['nan', None, '']:
-                raise forms.ValidationError("ستون نویسنده در خط " + str(error_line) + " نمی تواند خالی باشد.")
+                raise forms.ValidationError("ستون تهیه کننده در خط " + str(error_line) + " نمی تواند خالی باشد.")
             try:
                 producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
             except:
                 raise forms.ValidationError(
-                    "فرمت اطلاعات ستون نویسنده در خط " + str(error_line) + " فایل صحیح نیست")
+                    "فرمت اطلاعات ستون تهیه کننده در خط " + str(error_line) + " فایل صحیح نیست")
 
+            field=row[2]
+            doc_type='Report'
 
+            cleaned_data.append((title, organization_code,producer_obj, doc_type, field, presented_at, related_project, center))
+        return cleaned_data
 
-            try:
-                presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
-                presented_at=presented_at.togregorian()
-            except:
-                raise forms.ValidationError(
-                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
-
-
-
+    def import_reports(self,excel_data):
+        cleaned_data = self.check_reports(excel_data)
+        for title, organization_code,producer_obj, doc_type, field, presented_at, related_project, center in cleaned_data:
             report=Report.objects.create(
                 title=title,
                 organization_code=organization_code,
@@ -1139,20 +1214,20 @@ class DocumentImportForm(forms.Form):
                 center=center,
             )
 
-    def import_resumes(self,excel_data):
+    def check_resumes(self,excel_data):
         error_line = 1
+        cleaned_data = []
         for row in excel_data:
             error_line += 1
+
             title = row[0]
             if title in ['nan', None, '']:
-                raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
+                raise forms.ValidationError("ستون نام و نام خانوادگی در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             organization_code = row[1]
-            if organization_code in ['nan', None, '']:
-                raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
-            doc_type='Resume'
-            entrance_year=row[2]
-            measure=row[3]
-            degree=row[4]
+            if organization_code in ['nan', None, '', 'None']:
+                raise forms.ValidationError("ستون کد پاسداری در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             center=row[5]
             if center in ['nan', None, '']:
                 raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
@@ -1162,48 +1237,123 @@ class DocumentImportForm(forms.Form):
                 raise forms.ValidationError(
                     "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
 
+            entrance_year=row[2]
+            if entrance_year in ['nan', None, '']:
+                entrance_year = None
+            else:
+                try:
+                    entrance_year = float(entrance_year)
+                except:
+                    raise forms.ValidationError(
+                        "فرمت اطلاعات ستون سال ورود در خط " + str(error_line) + " فایل صحیح نیست")
 
+            doc_type='Resume'
+            measure=row[3]
+            degree=row[4]
 
+            cleaned_data.append((title, organization_code, doc_type, entrance_year, measure, degree, center))
+        return cleaned_data
+
+    def import_resumes(self,excel_data):
+        cleaned_data = self.check_resumes(excel_data)
+        for title, organization_code, doc_type, entrance_year, measure, degree, center in cleaned_data:
             resume=Resume.objects.create(
                 title=title,
                 organization_code=organization_code,
                 type=doc_type,
                 measure=measure,
                 degree=degree,
-                entrance_year=int(entrance_year),
+                entrance_year=entrance_year,
                 center=center,
             )
 
-    def import_centers(self,excel_data):
+    def check_centers(self,excel_data):
         error_line = 1
+        cleaned_data = []
         for row in excel_data:
             error_line += 1
+
             title = row[0]
             if title in ['nan', None, '']:
                 raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
-            code=row[1]
 
+            code=row[1]
+            if code in ['nan', None, '']:
+                raise forms.ValidationError("ستون کد در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                code=float(code)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون کد در خط " + str(error_line) + " فایل صحیح نیست")
+
+            cleaned_data.append((title, code))
+        return cleaned_data
+
+
+    def import_centers(self,excel_data):
+        cleaned_data=self.check_centers(excel_data)
+        for title, code in cleaned_data:
             center=Center.objects.create(
                 title=title,
                 code=code,
             )
 
-    def import_cores(self,excel_data):
+    def check_cores(self,excel_data):
         error_line = 1
+        cleaned_data = []
         for row in excel_data:
             error_line += 1
+
             title = row[0]
             if title in ['nan', None, '']:
-                raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
+                raise forms.ValidationError("ستون نام در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             status = row[1]
+            if status in ['nan', None, '']:
+                raise forms.ValidationError("ستون وضع موجودیت در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             manager = row[2]
+            if manager in ['nan', None, '']:
+                raise forms.ValidationError("ستون مسئول واحد در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             contact = row[3]
+            if contact in ['nan', None, '']:
+                raise forms.ValidationError("ستون شماره تماس در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             establish_year = row[4]
+            if establish_year in ['nan', None, '']:
+                raise forms.ValidationError("ستون سال تاسیس در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                establish_year=float(establish_year)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون سال تاسیس در خط " + str(error_line) + " فایل صحیح نیست")
+
             activity_field = row[5]
+            if activity_field in ['nan', None, '']:
+                raise forms.ValidationError("ستون حوزه فعالیت در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             professional_field = row[6]
+            if professional_field in ['nan', None, '']:
+                raise forms.ValidationError("ستون حوزه تخصصی در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             number = row[7]
+            if number in ['nan', None, '']:
+                raise forms.ValidationError("ستون تعداد اعضا در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                number=float(number)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون تعداد اعضا در خط " + str(error_line) + " فایل صحیح نیست")
+
             doc_type = 'Core'
 
+            cleaned_data.append((title, status, doc_type, number, professional_field, activity_field, establish_year, contact, manager))
+        return cleaned_data
+
+    def import_cores(self,excel_data):
+        cleaned_data=self.check_cores(excel_data)
+        for title, status, doc_type, number, professional_field, activity_field, establish_year, contact, manager in cleaned_data:
             core = Core.objects.create(
                 type=doc_type,
                 title=title,
@@ -1216,22 +1366,63 @@ class DocumentImportForm(forms.Form):
                 number=number
                                    )
 
-    def import_techs(self,excel_data):
-        error_line = 1
+    def check_techs(self,excel_data):
+        error_line=1
+        cleaned_data=[]
         for row in excel_data:
-            error_line += 1
-            title = row[0]
+            error_line+=1
+
+            title=row[0]
             if title in ['nan', None, '']:
-                raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
+                raise forms.ValidationError("ستون نام در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             status=row[1]
+            if status in ['nan', None, '']:
+                raise forms.ValidationError("ستون وضع موجودیت در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             manager=row[2]
+            if manager in ['nan', None, '']:
+                raise forms.ValidationError("ستون مسئول واحد در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             contact=row[3]
+            if contact in ['nan', None, '']:
+                raise forms.ValidationError("ستون شماره تماس در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             establish_year=row[4]
+            if establish_year in ['nan', None, '']:
+                raise forms.ValidationError("ستون سال تاسیس در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                establish_year=float(establish_year)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون سال تاسیس در خط " + str(error_line) + " فایل صحیح نیست")
+
             activity_field=row[5]
+            if activity_field in ['nan', None, '']:
+                raise forms.ValidationError("ستون حوزه فعالیت در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             professional_field=row[6]
+            if professional_field in ['nan', None, '']:
+                raise forms.ValidationError("ستون حوزه تخصصی در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             number=row[7]
+            if number in ['nan', None, '']:
+                raise forms.ValidationError("ستون تعداد اعضا در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                number=float(number)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون تعداد اعضا در خط " + str(error_line) + " فایل صحیح نیست")
+
             doc_type='TechUnit'
 
+            cleaned_data.append(
+                (title, status, doc_type, number, professional_field, activity_field, establish_year, contact, manager))
+        return cleaned_data
+
+    def import_techs(self,excel_data):
+        cleaned_data=self.check_techs(excel_data)
+        for title, status, doc_type, number, professional_field, activity_field, establish_year, contact, manager in cleaned_data:
             tech=Tech.objects.create(
                 type=doc_type,
                 title=title,
@@ -1244,22 +1435,62 @@ class DocumentImportForm(forms.Form):
                 number=number
             )
 
-    def import_companies(self,excel_data):
-        error_line = 1
+    def check_companies(self,excel_data):
+        error_line=1
+        cleaned_data=[]
         for row in excel_data:
-            error_line += 1
-            title = row[0]
+            error_line+=1
+
+            title=row[0]
             if title in ['nan', None, '']:
-                raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
+                raise forms.ValidationError("ستون نام در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             status=row[1]
+            if status in ['nan', None, '']:
+                raise forms.ValidationError("ستون وضع موجودیت در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             manager=row[2]
+            if manager in ['nan', None, '']:
+                raise forms.ValidationError("ستون مسئول واحد در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             contact=row[3]
+            if contact in ['nan', None, '']:
+                raise forms.ValidationError("ستون شماره تماس در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             establish_year=row[4]
+            if establish_year in ['nan', None, '']:
+                raise forms.ValidationError("ستون سال تاسیس در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                establish_year=float(establish_year)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون سال تاسیس در خط " + str(error_line) + " فایل صحیح نیست")
+
             activity_field=row[5]
+            if activity_field in ['nan', None, '']:
+                raise forms.ValidationError("ستون حوزه فعالیت در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             professional_field=row[6]
+            if professional_field in ['nan', None, '']:
+                raise forms.ValidationError("ستون حوزه تخصصی در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             number=row[7]
+            if number in ['nan', None, '']:
+                raise forms.ValidationError("ستون تعداد اعضا در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                number=float(number)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون تعداد اعضا در خط " + str(error_line) + " فایل صحیح نیست")
+
             doc_type='Comapny'
 
+            cleaned_data.append(
+                (title, status, doc_type, number, professional_field, activity_field, establish_year, contact, manager))
+        return cleaned_data
+    def import_companies(self,excel_data):
+        cleaned_data=self.check_companies(excel_data)
+        for title, status, doc_type, number, professional_field, activity_field, establish_year, contact, manager in cleaned_data:
             company=Company.objects.create(
                 type=doc_type,
                 title=title,
@@ -1274,6 +1505,7 @@ class DocumentImportForm(forms.Form):
 
     def import_futures(self,excel_data):
         error_line = 1
+        cleaned_data = []
         for row in excel_data:
             error_line += 1
             title = row[0]
@@ -1329,6 +1561,7 @@ class DocumentImportForm(forms.Form):
 
     def import_journals(self,excel_data):
         error_line = 1
+        cleaned_data = []
         for row in excel_data:
             error_line += 1
             title = row[0]
@@ -1355,11 +1588,12 @@ class DocumentImportForm(forms.Form):
                 field=field,
                 type=doc_type,
                 presented_at=presented_at,
-                page_number=int(page_number),
+                page_number=float(page_number),
             )
 
     def import_coworks(self,excel_data):
         error_line = 1
+        cleaned_data = []
         for row in excel_data:
             error_line += 1
             title = row[0]
@@ -1397,6 +1631,7 @@ class DocumentImportForm(forms.Form):
 
     def import_inventions(self,excel_data):
         error_line = 1
+        cleaned_data = []
         for row in excel_data:
             error_line += 1
             title = row[0]
@@ -1456,6 +1691,7 @@ class DocumentImportForm(forms.Form):
 
     def import_assessments(self,excel_data):
         error_line = 1
+        cleaned_data = []
         for row in excel_data:
             error_line += 1
             producer=row[0]
@@ -1511,6 +1747,7 @@ class DocumentImportForm(forms.Form):
 
     def import_workshops(self,excel_data):
         error_line = 1
+        cleaned_data = []
         for row in excel_data:
             error_line += 1
             title = row[0]
@@ -1563,8 +1800,8 @@ class DocumentImportForm(forms.Form):
                 started_at=started_at,
                 workshop_type=workshop_type,
                 location=location,
-                meeting_number=int(meeting_number),
-                participant_number=int(participant_number),
+                meeting_number=float(meeting_number),
+                participant_number=float(participant_number),
                 center=center,
             )
 
