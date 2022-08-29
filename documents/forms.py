@@ -241,6 +241,7 @@ class DocumentImportForm(forms.Form):
             title = row[0]
             if title in ['nan', None, '']:
                 raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             organization_code = row[1]
             if organization_code in ['nan', None, '']:
                 raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
@@ -478,21 +479,53 @@ class DocumentImportForm(forms.Form):
             book.judges.set(judges_list)
             book.producers.set(producers_list)
 
-    def import_experiences(self,excel_data):
-        error_line = 0
+    def check_experiences(self,excel_data):
+        error_line = 1
+        cleaned_data = []
         for row in excel_data:
             error_line += 1
-            title=row[0]
-            organization_code=row[1]
-            field=row[2]
-            doc_type='Experience'
+
+            title = row[0]
+            if title in ['nan', None, '']:
+                raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
+            organization_code = row[1]
+            if organization_code in ['nan', None, '']:
+                raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             presented_at=row[5]
+            if presented_at in ['nan', None, '']:
+                raise forms.ValidationError("ستون تاریخ ارائه در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
+                presented_at=presented_at.togregorian()
+            except:
+                raise forms.ValidationError("فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+
             assessment_result=row[7]
+            if assessment_result in ['nan', None, '']:
+                raise forms.ValidationError("ستون ارزشیابی در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             center=row[8]
+            if center in ['nan', None, '']:
+                raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                center = Center.objects.get(title=center)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
 
             producer=row[3]
+            if producer in ['nan', None, '']:
+                raise forms.ValidationError("ستون نویسنده در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون نویسنده در خط " + str(error_line) + " فایل صحیح نیست")
+            
 
-            if row[6]:
+            if row[6] not in ['nan', None, '']:
                 judges_raw = row[6].split(',')
                 judges_raw = judges_raw[:-1]
                 if not judges_raw:
@@ -510,21 +543,21 @@ class DocumentImportForm(forms.Form):
             else:
                 judges = []
 
-            center=Center.objects.get(title=center)
-
-            try:
-                presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
-                presented_at=presented_at.togregorian()
-            except:
-                raise forms.ValidationError("فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
-
-            producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
 
             judges_list=[]
             for judge in judges:
                 judge_obj, c=Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
                 judges_list.append(judge_obj)
 
+            field=row[2]
+            doc_type='Experience'
+            
+            cleaned_data.append((title, organization_code, doc_type, field, producer_obj, judges_list, presented_at, assessment_result, center))
+        return cleaned_data
+
+    def import_experiences(self,excel_data):
+        cleaned_data = self.check_experiences(excel_data)
+        for title, organization_code, doc_type, field, producer_obj, judges_list, presented_at, assessment_result, center in cleaned_data:
             experience=Experience.objects.create(
                 title=title,
                 organization_code=organization_code,
@@ -537,21 +570,52 @@ class DocumentImportForm(forms.Form):
             )
             experience.judges.set(judges_list)
 
-    def import_ideas(self,excel_data):
-        error_line = 0
+    def check_ideas(self,excel_data):
+        error_line=1
+        cleaned_data=[]
         for row in excel_data:
-            error_line += 1
+            error_line+=1
+
             title=row[0]
+            if title in ['nan', None, '']:
+                raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             organization_code=row[1]
-            field=row[2]
-            doc_type='Idea'
+            if organization_code in ['nan', None, '']:
+                raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             presented_at=row[5]
+            if presented_at in ['nan', None, '']:
+                raise forms.ValidationError("ستون تاریخ ارائه در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
+                presented_at=presented_at.togregorian()
+            except:
+                raise forms.ValidationError("فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+
             assessment_result=row[7]
+            if assessment_result in ['nan', None, '']:
+                raise forms.ValidationError("ستون ارزشیابی در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             center=row[8]
+            if center in ['nan', None, '']:
+                raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                center=Center.objects.get(title=center)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
 
             producer=row[3]
+            if producer in ['nan', None, '']:
+                raise forms.ValidationError("ستون نویسنده در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون نویسنده در خط " + str(error_line) + " فایل صحیح نیست")
 
-            if row[6]:
+            if row[6] not in ['nan', None, '']:
                 judges_raw=row[6].split(',')
                 judges_raw=judges_raw[:-1]
                 if not judges_raw:
@@ -567,23 +631,22 @@ class DocumentImportForm(forms.Form):
                             "فرمت اطلاعات ستون داوران در خط " + str(error_line) + " فایل صحیح نیست")
                     judges.append(judge)
             else:
-                judges = []
-
-            center=Center.objects.get(title=center)
-
-            try:
-                presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
-                presented_at=presented_at.togregorian()
-            except:
-                raise forms.ValidationError("فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
-
-            producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
+                judges=[]
 
             judges_list=[]
             for judge in judges:
                 judge_obj, c=Resume.objects.get_or_create(type='Resume', title=judge[1], organization_code=judge[0])
                 judges_list.append(judge_obj)
 
+            field=row[2]
+            doc_type='Idea'
+
+            cleaned_data.append((title, organization_code, doc_type, field, producer_obj, judges_list, presented_at,assessment_result, center))
+        return cleaned_data
+
+    def import_ideas(self,excel_data):
+        cleaned_data = self.check_ideas(excel_data)
+        for title, organization_code, doc_type, field, producer_obj, judges_list, presented_at,assessment_result, center in cleaned_data:
             idea=Idea.objects.create(
                 title=title,
                 organization_code=organization_code,
@@ -600,8 +663,12 @@ class DocumentImportForm(forms.Form):
         error_line = 0
         for row in excel_data:
             error_line += 1
-            title=row[0]
-            organization_code=row[1]
+            title = row[0]
+            if title in ['nan', None, '']:
+                raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            organization_code = row[1]
+            if organization_code in ['nan', None, '']:
+                raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
             field=row[2]
             doc_type='Thesis'
             measure=row[4]
@@ -609,9 +676,23 @@ class DocumentImportForm(forms.Form):
             university=row[6]
             presented_at=row[7]
             center=row[8]
+            if center in ['nan', None, '']:
+                raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                center = Center.objects.get(title=center)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
             producer=row[3]
+            if producer in ['nan', None, '']:
+                raise forms.ValidationError("ستون نویسنده در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون نویسنده در خط " + str(error_line) + " فایل صحیح نیست")
 
-            center=Center.objects.get(title=center)
+
 
             try:
                 presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
@@ -619,7 +700,7 @@ class DocumentImportForm(forms.Form):
             except:
                 raise forms.ValidationError("فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
-            producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
+
 
             thesis=Thesis.objects.create(
                 title=title,
@@ -638,15 +719,33 @@ class DocumentImportForm(forms.Form):
         error_line = 0
         for row in excel_data:
             error_line += 1
-            title=row[0]
-            organization_code=row[1]
+            title = row[0]
+            if title in ['nan', None, '']:
+                raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            organization_code = row[1]
+            if organization_code in ['nan', None, '']:
+                raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
             field=row[2]
             doc_type='Manual'
             declared_at=row[4]
             center=row[5]
+            if center in ['nan', None, '']:
+                raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                center = Center.objects.get(title=center)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
             producer=row[3]
+            if producer in ['nan', None, '']:
+                raise forms.ValidationError("ستون نویسنده در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون نویسنده در خط " + str(error_line) + " فایل صحیح نیست")
 
-            center=Center.objects.get(title=center)
+
 
             try:
                 declared_at=jdatetime.datetime.strptime(declared_at, "%Y/%m/%d")
@@ -654,7 +753,7 @@ class DocumentImportForm(forms.Form):
             except:
                 raise forms.ValidationError("فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
-            producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
+
 
             manual=Manual.objects.create(
                 title=title,
@@ -671,15 +770,26 @@ class DocumentImportForm(forms.Form):
         error_line = 0
         for row in excel_data:
             error_line += 1
-            title=row[0]
-            organization_code=row[1]
+            title = row[0]
+            if title in ['nan', None, '']:
+                raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            organization_code = row[1]
+            if organization_code in ['nan', None, '']:
+                raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
             field=row[2]
             doc_type='Order'
             issued_at=row[4]
             center=row[5]
+            if center in ['nan', None, '']:
+                raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                center = Center.objects.get(title=center)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
             receiver=row[3]
 
-            center=Center.objects.get(title=center)
+
             try:
                 issued_at=jdatetime.datetime.strptime(issued_at, "%Y/%m/%d")
                 issued_at=issued_at.togregorian()
@@ -703,15 +813,33 @@ class DocumentImportForm(forms.Form):
         error_line = 0
         for row in excel_data:
             error_line += 1
-            title=row[0]
-            organization_code=row[1]
+            title = row[0]
+            if title in ['nan', None, '']:
+                raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            organization_code = row[1]
+            if organization_code in ['nan', None, '']:
+                raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
             field=row[2]
             doc_type='Seminar'
             presented_at=row[5]
             participant_number=row[6]
             assessment_result=row[8]
             center=row[9]
+            if center in ['nan', None, '']:
+                raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                center = Center.objects.get(title=center)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
             producer=row[3]
+            if producer in ['nan', None, '']:
+                raise forms.ValidationError("ستون نویسنده در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون نویسنده در خط " + str(error_line) + " فایل صحیح نیست")
 
             if row[7]:
                 judges_raw=row[7].split(',')
@@ -731,7 +859,7 @@ class DocumentImportForm(forms.Form):
             else:
                 judges = []
 
-            center=Center.objects.get(title=center)
+
 
             try:
                 presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
@@ -740,7 +868,7 @@ class DocumentImportForm(forms.Form):
                 raise forms.ValidationError(
                     "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
-            producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
+
 
             judges_list=[]
             for judge in judges:
@@ -765,15 +893,24 @@ class DocumentImportForm(forms.Form):
         error_line = 0
         for row in excel_data:
             error_line += 1
-            title=row[0]
+            title = row[0]
+            if title in ['nan', None, '']:
+                raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
             field=row[1]
             doc_type='Project'
             duration=row[4]
             finished_at=row[3]
             center=row[5]
+            if center in ['nan', None, '']:
+                raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                center = Center.objects.get(title=center)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
             manager=row[2]
 
-            center=Center.objects.get(title=center)
+
 
             try:
                 finished_at=jdatetime.datetime.strptime(finished_at, "%Y/%m/%d")
@@ -798,19 +935,28 @@ class DocumentImportForm(forms.Form):
         error_line = 0
         for row in excel_data:
             error_line += 1
-            title=row[0]
+            title = row[0]
+            if title in ['nan', None, '']:
+                raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
             field=row[1]
             doc_type='Conference'
             location=row[4]
             held_at=row[3]
             center=row[5]
+            if center in ['nan', None, '']:
+                raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                center = Center.objects.get(title=center)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
 
             conference_level=row[2]
             for name, des in CONFERENCE_LEVELS:
                 if conference_level == des:
                     conference_level=name
 
-            center=Center.objects.get(title=center)
+
 
             try:
                 held_at=jdatetime.datetime.strptime(held_at, "%Y/%m/%d")
@@ -833,15 +979,24 @@ class DocumentImportForm(forms.Form):
         error_line = 0
         for row in excel_data:
             error_line += 1
-            title=row[0]
+            title = row[0]
+            if title in ['nan', None, '']:
+                raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
             field=row[1]
             doc_type='Visit'
             location=row[4]
             visited_at=row[3]
             center=row[5]
+            if center in ['nan', None, '']:
+                raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                center = Center.objects.get(title=center)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
             participant_number=row[2]
 
-            center=Center.objects.get(title=center)
+
 
             try:
                 visited_at=jdatetime.datetime.strptime(visited_at, "%Y/%m/%d")
@@ -865,16 +1020,34 @@ class DocumentImportForm(forms.Form):
         error_line = 0
         for row in excel_data:
             error_line += 1
-            title=row[0]
-            organization_code=row[1]
+            title = row[0]
+            if title in ['nan', None, '']:
+                raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            organization_code = row[1]
+            if organization_code in ['nan', None, '']:
+                raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
             field=row[2]
             doc_type='Report'
             presented_at=row[4]
             related_project=row[5]
             center=row[6]
+            if center in ['nan', None, '']:
+                raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                center = Center.objects.get(title=center)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
             producer=row[3]
+            if producer in ['nan', None, '']:
+                raise forms.ValidationError("ستون نویسنده در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون نویسنده در خط " + str(error_line) + " فایل صحیح نیست")
 
-            center=Center.objects.get(title=center)
+
 
             try:
                 presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
@@ -883,7 +1056,7 @@ class DocumentImportForm(forms.Form):
                 raise forms.ValidationError(
                     "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
-            producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
+
 
             report=Report.objects.create(
                 title=title,
@@ -900,15 +1073,26 @@ class DocumentImportForm(forms.Form):
         error_line = 0
         for row in excel_data:
             error_line += 1
-            title=row[0]
-            organization_code=row[1]
+            title = row[0]
+            if title in ['nan', None, '']:
+                raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            organization_code = row[1]
+            if organization_code in ['nan', None, '']:
+                raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
             doc_type='Resume'
             entrance_year=row[2]
             measure=row[3]
             degree=row[4]
             center=row[5]
+            if center in ['nan', None, '']:
+                raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                center = Center.objects.get(title=center)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
 
-            center=Center.objects.get(title=center)
+
 
             resume=Resume.objects.create(
                 title=title,
@@ -924,7 +1108,9 @@ class DocumentImportForm(forms.Form):
         error_line = 0
         for row in excel_data:
             error_line += 1
-            title=row[0]
+            title = row[0]
+            if title in ['nan', None, '']:
+                raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
             code=row[1]
 
             center=Center.objects.create(
@@ -937,6 +1123,8 @@ class DocumentImportForm(forms.Form):
         for row in excel_data:
             error_line += 1
             title = row[0]
+            if title in ['nan', None, '']:
+                raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
             status = row[1]
             manager = row[2]
             contact = row[3]
@@ -962,7 +1150,9 @@ class DocumentImportForm(forms.Form):
         error_line = 0
         for row in excel_data:
             error_line += 1
-            title=row[0]
+            title = row[0]
+            if title in ['nan', None, '']:
+                raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
             status=row[1]
             manager=row[2]
             contact=row[3]
@@ -988,7 +1178,9 @@ class DocumentImportForm(forms.Form):
         error_line = 0
         for row in excel_data:
             error_line += 1
-            title=row[0]
+            title = row[0]
+            if title in ['nan', None, '']:
+                raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
             status=row[1]
             manager=row[2]
             contact=row[3]
@@ -1014,8 +1206,12 @@ class DocumentImportForm(forms.Form):
         error_line = 0
         for row in excel_data:
             error_line += 1
-            title=row[0]
-            organization_code=row[1]
+            title = row[0]
+            if title in ['nan', None, '']:
+                raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            organization_code = row[1]
+            if organization_code in ['nan', None, '']:
+                raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
             field=row[2]
             doc_type='Future'
             presented_at=row[4]
@@ -1024,9 +1220,22 @@ class DocumentImportForm(forms.Form):
                 if future_type == des:
                     future_type=name
             center=row[6]
+            if center in ['nan', None, '']:
+                raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                center = Center.objects.get(title=center)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
             producer=row[3]
+            if producer in ['nan', None, '']:
+                raise forms.ValidationError("ستون نویسنده در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون نویسنده در خط " + str(error_line) + " فایل صحیح نیست")
 
-            center=Center.objects.get(title=center)
 
             try:
                 presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
@@ -1035,7 +1244,7 @@ class DocumentImportForm(forms.Form):
                 raise forms.ValidationError(
                     "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
-            producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
+
 
             future=Future.objects.create(
                 title=title,
@@ -1052,8 +1261,12 @@ class DocumentImportForm(forms.Form):
         error_line = 0
         for row in excel_data:
             error_line += 1
-            title=row[0]
-            organization_code=row[1]
+            title = row[0]
+            if title in ['nan', None, '']:
+                raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            organization_code = row[1]
+            if organization_code in ['nan', None, '']:
+                raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
             field=row[2]
             doc_type='Journal'
             presented_at=row[3]
@@ -1079,7 +1292,9 @@ class DocumentImportForm(forms.Form):
         error_line = 0
         for row in excel_data:
             error_line += 1
-            title=row[0]
+            title = row[0]
+            if title in ['nan', None, '']:
+                raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
             field=row[1]
             doc_type='Cowork'
             person_type=row[2]
@@ -1092,8 +1307,13 @@ class DocumentImportForm(forms.Form):
                     cowork_type=name
             address=row[4]
             center=row[5]
-
-            center=Center.objects.get(title=center)
+            if center in ['nan', None, '']:
+                raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                center = Center.objects.get(title=center)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
 
             cowork=CoWork.objects.create(
                 title=title,
@@ -1110,11 +1330,20 @@ class DocumentImportForm(forms.Form):
         for row in excel_data:
             error_line += 1
             title = row[0]
+            if title in ['nan', None, '']:
+                raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
             organization_code=row[2]
             doc_type = 'Invention'
             registered_at=row[4]
             project_title=row[1]
             center=row[5]
+            if center in ['nan', None, '']:
+                raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                center = Center.objects.get(title=center)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
 
             producers_raw = row[3].split(',')
             producers_raw = producers_raw[:-1]
@@ -1131,7 +1360,7 @@ class DocumentImportForm(forms.Form):
                         "فرمت اطلاعات ستون نویسندگان در خط " + str(error_line) + " فایل صحیح نیست")
                 producers.append(producer)
 
-            center = Center.objects.get(title=center)
+
 
             try:
                 registered_at = jdatetime.datetime.strptime(registered_at, "%Y/%m/%d")
@@ -1160,6 +1389,13 @@ class DocumentImportForm(forms.Form):
         for row in excel_data:
             error_line += 1
             producer=row[0]
+            if producer in ['nan', None, '']:
+                raise forms.ValidationError("ستون نویسنده در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون نویسنده در خط " + str(error_line) + " فایل صحیح نیست")
             father=row[2]
             scientific_rank=row[3]
             doc_type='Assessment'
@@ -1170,8 +1406,14 @@ class DocumentImportForm(forms.Form):
             necessary_condition=row[8]
             sufficient_condition=row[9]
             center=row[10]
+            if center in ['nan', None, '']:
+                raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                center = Center.objects.get(title=center)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
 
-            center=Center.objects.get(title=center)
             try:
                 order_issued_at=jdatetime.datetime.strptime(order_issued_at, "%Y/%m/%d")
                 order_issued_at=order_issued_at.togregorian()
@@ -1181,7 +1423,7 @@ class DocumentImportForm(forms.Form):
                 raise forms.ValidationError(
                     "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
-            producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
+
 
             assessment=Assessment.objects.create(
                 type=doc_type,
@@ -1201,8 +1443,12 @@ class DocumentImportForm(forms.Form):
         error_line = 0
         for row in excel_data:
             error_line += 1
-            title=row[0]
-            organization_code=row[1]
+            title = row[0]
+            if title in ['nan', None, '']:
+                raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            organization_code = row[1]
+            if organization_code in ['nan', None, '']:
+                raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
             field=row[2]
             doc_type='Workshop'
             workshop_type=row[5]
@@ -1214,9 +1460,22 @@ class DocumentImportForm(forms.Form):
             participant_number=row[8]
             location=row[9]
             center=row[10]
+            if center in ['nan', None, '']:
+                raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                center = Center.objects.get(title=center)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
             producer=row[3]
+            if producer in ['nan', None, '']:
+                raise forms.ValidationError("ستون نویسنده در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون نویسنده در خط " + str(error_line) + " فایل صحیح نیست")
 
-            center=Center.objects.get(title=center)
 
             try:
                 started_at=jdatetime.datetime.strptime(started_at, "%Y/%m/%d")
@@ -1224,8 +1483,6 @@ class DocumentImportForm(forms.Form):
             except:
                 raise forms.ValidationError(
                     "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
-
-            producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
 
             workshop=Workshop.objects.create(
                 title=title,
