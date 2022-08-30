@@ -145,7 +145,7 @@
         {% if user.is_superuser or has_future_perm %}
             <li {% if request.resolver_match.view_name == 'documents:journal_list' or request.resolver_match.view_name == 'documents:future_list' or request.resolver_match.view_name == 'documents:cowork_list' %}class="active"{% endif %}>
                 <a href="#"><i class="fa fa-handshake-alt"></i>
-                    <span class="nav-label">آینده پژوهی,همکاری علمی</span>
+                    <span class="nav-label">آینده پژوهی و همکاری های علمی</span>
                     <span class="fa arrow"></span>
                 </a>
                 <ul class="nav nav-second-level collapse">

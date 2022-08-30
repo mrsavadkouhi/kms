@@ -13,7 +13,7 @@ def get_avatar_directory_path(instance, filename):
 PERMISSIONS = [
     ('knowledge', 'مدیریت دانش'),
     ('center', 'رشد، خلاقیت و نوآوری'),
-    ('resume', 'امور محققین'),
+    ('resume', 'آموزش و امور محققین'),
     ('future', 'آینده پژوهی'),
 ]
 
