@@ -232,6 +232,26 @@ class DocumentImportForm(forms.Form):
     excel_file = forms.FileField()
     doc_type = forms.CharField()
 
+    def check_organization_code(self, type, code):
+        years = ['pre98', '98', '99']
+        for i in range(400, 430):
+            years.append(str(i))
+
+        try:
+            code_sections = code.split('-')
+            if len(code_sections) != 3:
+                return False
+            elif code_sections[0] != 'KM/'+type:
+                return False
+            elif code_sections[1] not in years:
+                return False
+            elif len(code_sections[2]) < 3:
+                return False
+            temp = int(code_sections[2])
+        except:
+            return False
+        return True
+
     def check_articles(self, excel_data):
         error_line = 1
         cleaned_data = []
@@ -245,6 +265,8 @@ class DocumentImportForm(forms.Form):
             organization_code = row[1]
             if organization_code in ['nan', None, '']:
                 raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            if not self.check_organization_code('P',organization_code):
+                raise forms.ValidationError("فرمت اطلاعات ستون شناسه در خط " + str(error_line) + " فایل صحیح نیست.")
 
             published_at = row[6]
             if published_at in ['nan', None, '']:
@@ -375,6 +397,8 @@ class DocumentImportForm(forms.Form):
             organization_code = row[1]
             if organization_code in ['nan', None, '']:
                 raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            if not self.check_organization_code('B',organization_code):
+                raise forms.ValidationError("فرمت اطلاعات ستون شناسه در خط " + str(error_line) + " فایل صحیح نیست.")
 
             published_at = row[6]
             if published_at in ['nan', None, '']:
@@ -492,6 +516,8 @@ class DocumentImportForm(forms.Form):
             organization_code = row[1]
             if organization_code in ['nan', None, '']:
                 raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            if not self.check_organization_code('E',organization_code):
+                raise forms.ValidationError("فرمت اطلاعات ستون شناسه در خط " + str(error_line) + " فایل صحیح نیست.")
 
             presented_at=row[5]
             if presented_at in ['nan', None, '']:
@@ -583,6 +609,8 @@ class DocumentImportForm(forms.Form):
             organization_code=row[1]
             if organization_code in ['nan', None, '']:
                 raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            if not self.check_organization_code('I',organization_code):
+                raise forms.ValidationError("فرمت اطلاعات ستون شناسه در خط " + str(error_line) + " فایل صحیح نیست.")
 
             presented_at=row[5]
             if presented_at in ['nan', None, '']:
@@ -672,6 +700,8 @@ class DocumentImportForm(forms.Form):
             organization_code = row[1]
             if organization_code in ['nan', None, '']:
                 raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            if not self.check_organization_code('T',organization_code):
+                raise forms.ValidationError("فرمت اطلاعات ستون شناسه در خط " + str(error_line) + " فایل صحیح نیست.")
 
             measure=row[4]
             if measure in ['nan', None, '']:
@@ -747,6 +777,8 @@ class DocumentImportForm(forms.Form):
             organization_code = row[1]
             if organization_code in ['nan', None, '']:
                 raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            if not self.check_organization_code('M',organization_code):
+                raise forms.ValidationError("فرمت اطلاعات ستون شناسه در خط " + str(error_line) + " فایل صحیح نیست.")
 
             declared_at=row[4]
             if declared_at in ['nan', None, '']:
@@ -868,6 +900,8 @@ class DocumentImportForm(forms.Form):
             organization_code = row[1]
             if organization_code in ['nan', None, '']:
                 raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            if not self.check_organization_code('S',organization_code):
+                raise forms.ValidationError("فرمت اطلاعات ستون شناسه در خط " + str(error_line) + " فایل صحیح نیست.")
 
             presented_at=row[5]
             if presented_at in ['nan', None, '']:
@@ -910,7 +944,7 @@ class DocumentImportForm(forms.Form):
                 raise forms.ValidationError(
                     "فرمت اطلاعات ستون ارائه دهنده در خط " + str(error_line) + " فایل صحیح نیست")
 
-            if row[7] in ['nan', None, '']:
+            if row[7] not in ['nan', None, '']:
                 judges_raw=row[7].split(',')
                 judges_raw=judges_raw[:-1]
                 if not judges_raw:
@@ -1161,6 +1195,8 @@ class DocumentImportForm(forms.Form):
             organization_code = row[1]
             if organization_code in ['nan', None, '']:
                 raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            if not self.check_organization_code('R',organization_code):
+                raise forms.ValidationError("فرمت اطلاعات ستون شناسه در خط " + str(error_line) + " فایل صحیح نیست.")
 
             presented_at=row[4]
             if presented_at in ['nan', None, '']:
@@ -1503,11 +1539,12 @@ class DocumentImportForm(forms.Form):
                 number=number
             )
 
-    def import_futures(self,excel_data):
+    def check_futures(self,excel_data):
         error_line = 1
         cleaned_data = []
         for row in excel_data:
             error_line += 1
+
             title = row[0]
             if title in ['nan', None, '']:
                 raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
@@ -1756,6 +1793,9 @@ class DocumentImportForm(forms.Form):
             organization_code = row[1]
             if organization_code in ['nan', None, '']:
                 raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            if not self.check_organization_code('W',organization_code):
+                raise forms.ValidationError("فرمت اطلاعات ستون شناسه در خط " + str(error_line) + " فایل صحیح نیست.")
+
             field=row[2]
             doc_type='Workshop'
             workshop_type=row[5]
