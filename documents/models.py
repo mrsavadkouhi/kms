@@ -69,7 +69,7 @@ DOCUMENT_TYPES = [
 
 class Center(models.Model):
     avatar=models.ImageField(upload_to=get_center_avatar_directory_path, max_length=255, blank=True, null=True)
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, unique=True)
     code = models.IntegerField()
 
 

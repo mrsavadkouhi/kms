@@ -1311,7 +1311,12 @@ class DocumentImportForm(forms.Form):
             title = row[0]
             if title in ['nan', None, '']:
                 raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
-
+            try:
+                Center.objects.get(title=title)
+                raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند تکراری باشد. مرکزی با این عنوان از قبل وجود دارد.")
+            except:
+                pass
+            
             code=row[1]
             if code in ['nan', None, '']:
                 raise forms.ValidationError("ستون کد در خط " + str(error_line) + " نمی تواند خالی باشد.")

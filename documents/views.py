@@ -1504,13 +1504,13 @@ DOC_TYPES = [
     ('آینده پژوهی و همکاری های علمی', 'Future', 'آینده پژوهی ها', 'documents:future_list'),
     ('آینده پژوهی و همکاری های علمی', 'Cowork', 'همکاری های علمی', 'documents:cowork_list'),
 
-    ('نخبگان آموزش و امور محققین', 'Invention', 'ثبت اختراع ها', 'documents:invention_list'),
-    ('نخبگان آموزش و امور محققین', 'Workshop', 'کارگاه های آموزشی', 'documents:workshop_list'),
-    ('نخبگان آموزش و امور محققین', 'Assessment', 'ارزیابی ها', 'documents:assessment_list'),
+    ('آموزش و امور محققین', 'Invention', 'ثبت اختراع ها', 'documents:invention_list'),
+    ('آموزش و امور محققین', 'Workshop', 'کارگاه های آموزشی', 'documents:workshop_list'),
+    ('آموزش و امور محققین', 'Assessment', 'ارزیابی ها', 'documents:assessment_list'),
 
-    ('مرکز رشد', 'Core', 'هسته ها', 'documents:core_list'),
-    ('مرکز رشد', 'Tech', 'واحدهای فناور', 'documents:tech_list'),
-    ('مرکز رشد', 'Company', 'شرکت ها', 'documents:company_list'),
+    ('رشد، خلاقیت و نوآوری', 'Core', 'هسته ها', 'documents:core_list'),
+    ('رشد، خلاقیت و نوآوری', 'Tech', 'واحدهای فناور', 'documents:tech_list'),
+    ('رشد، خلاقیت و نوآوری', 'Company', 'شرکت ها', 'documents:company_list'),
 ]
 
 
