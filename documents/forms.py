@@ -1181,7 +1181,6 @@ class DocumentImportForm(forms.Form):
                 center=center,
             )
 
-
     def check_reports(self,excel_data):
         error_line = 1
         cleaned_data = []
@@ -1324,7 +1323,6 @@ class DocumentImportForm(forms.Form):
 
             cleaned_data.append((title, code))
         return cleaned_data
-
 
     def import_centers(self,excel_data):
         cleaned_data=self.check_centers(excel_data)
@@ -1524,6 +1522,7 @@ class DocumentImportForm(forms.Form):
             cleaned_data.append(
                 (title, status, doc_type, number, professional_field, activity_field, establish_year, contact, manager))
         return cleaned_data
+
     def import_companies(self,excel_data):
         cleaned_data=self.check_companies(excel_data)
         for title, status, doc_type, number, professional_field, activity_field, establish_year, contact, manager in cleaned_data:
@@ -1548,16 +1547,39 @@ class DocumentImportForm(forms.Form):
             title = row[0]
             if title in ['nan', None, '']:
                 raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             organization_code = row[1]
             if organization_code in ['nan', None, '']:
                 raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
-            field=row[2]
-            doc_type='Future'
+
             presented_at=row[4]
+            if presented_at in ['nan', None, '']:
+                raise forms.ValidationError("ستون تاریخ ارائه در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
+                presented_at=presented_at.togregorian()
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+
             future_type=row[5]
+            if future_type in ['nan', None, '']:
+                raise forms.ValidationError("ستون نوع آینده پژوهی در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                other_sec = future_type.split('-')
+                future_type = other_sec[0]
+                other = other_sec[1]
+            except:
+                future_type = row[5]
+            flag = True
             for name, des in FUTURE_TYPES:
                 if future_type == des:
                     future_type=name
+                    flag = False
+            if flag:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون نوع آینده پژوهی در خط " + str(error_line) + " فایل صحیح نیست")
+
             center=row[6]
             if center in ['nan', None, '']:
                 raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
@@ -1566,6 +1588,7 @@ class DocumentImportForm(forms.Form):
             except:
                 raise forms.ValidationError(
                     "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
+
             producer=row[3]
             if producer in ['nan', None, '']:
                 raise forms.ValidationError("ستون نویسنده در خط " + str(error_line) + " نمی تواند خالی باشد.")
@@ -1575,16 +1598,16 @@ class DocumentImportForm(forms.Form):
                 raise forms.ValidationError(
                     "فرمت اطلاعات ستون نویسنده در خط " + str(error_line) + " فایل صحیح نیست")
 
+            field=row[2]
+            doc_type='Future'
 
-            try:
-                presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
-                presented_at=presented_at.togregorian()
-            except:
-                raise forms.ValidationError(
-                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+            cleaned_data.append(
+                (title, field, doc_type, producer_obj, organization_code, presented_at, future_type, other,center))
+        return cleaned_data
 
-
-
+    def import_futures(self,excel_data):
+        cleaned_data=self.check_futures(excel_data)
+        for title, field, doc_type, producer_obj, organization_code, presented_at, future_type, other, center in cleaned_data:
             future=Future.objects.create(
                 title=title,
                 organization_code=organization_code,
@@ -1593,25 +1616,27 @@ class DocumentImportForm(forms.Form):
                 producer=producer_obj,
                 presented_at=presented_at,
                 future_type=future_type,
+                other=other,
                 center=center,
             )
 
-    def import_journals(self,excel_data):
+    def check_journals(self,excel_data):
         error_line = 1
         cleaned_data = []
         for row in excel_data:
             error_line += 1
+
             title = row[0]
             if title in ['nan', None, '']:
                 raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
             organization_code = row[1]
             if organization_code in ['nan', None, '']:
                 raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
-            field=row[2]
-            doc_type='Journal'
-            presented_at=row[3]
-            page_number=row[4]
 
+            presented_at=row[3]
+            if presented_at in ['nan', None, '']:
+                raise forms.ValidationError("ستون تاریخ چاپ در خط " + str(error_line) + " نمی تواند خالی باشد.")
             try:
                 presented_at=jdatetime.datetime.strptime(presented_at, "%Y/%m/%d")
                 presented_at=presented_at.togregorian()
@@ -1619,6 +1644,25 @@ class DocumentImportForm(forms.Form):
                 raise forms.ValidationError(
                     "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
+            page_number=row[4]
+            if page_number in ['nan', None, '']:
+                raise forms.ValidationError("ستون تعداد صفحات در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                page_number = float(page_number)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون تعداد صفحات در خط " + str(error_line) + " فایل صحیح نیست")
+
+            field=row[2]
+            doc_type='Journal'
+
+            cleaned_data.append(
+                (title, field, doc_type, organization_code, presented_at, page_number))
+        return cleaned_data
+
+    def import_journals(self,excel_data):
+        cleaned_data=self.check_futures(excel_data)
+        for title, field, doc_type, organization_code, presented_at, page_number in cleaned_data:
             journal=Journal.objects.create(
                 title=title,
                 organization_code=organization_code,
@@ -1628,26 +1672,53 @@ class DocumentImportForm(forms.Form):
                 page_number=float(page_number),
             )
 
-    def import_coworks(self,excel_data):
+    def check_coworks(self,excel_data):
         error_line = 1
         cleaned_data = []
         for row in excel_data:
             error_line += 1
+
             title = row[0]
             if title in ['nan', None, '']:
                 raise forms.ValidationError("ستون عنوان در خط " + str(error_line) + " نمی تواند خالی باشد.")
-            field=row[1]
-            doc_type='Cowork'
-            person_type=row[2]
+
+            started_at=row[2]
+            if started_at in ['nan', None, '']:
+                raise forms.ValidationError("ستون تاریخ هکاری در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                started_at=jdatetime.datetime.strptime(started_at, "%Y/%m/%d")
+                started_at=started_at.togregorian()
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+
+
+            person_type=row[3]
+            if person_type in ['nan', None, '']:
+                raise forms.ValidationError("ستون شخض در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            flag = True
             for name, des in PERSON_TYPES:
                 if person_type == des:
                     person_type=name
-            cowork_type=row[3]
+                    flag = False
+            if flag:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون شخص در خط " + str(error_line) + " فایل صحیح نیست")
+
+            cowork_type=row[4]
+            if cowork_type in ['nan', None, '']:
+                raise forms.ValidationError("ستون نوع در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            flag = True
             for name, des in COWORK_TYPES:
                 if cowork_type == des:
                     cowork_type=name
-            address=row[4]
-            center=row[5]
+                    flag = False
+            if flag:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون نوع در خط " + str(error_line) + " فایل صحیح نیست")
+
+
+            center=row[6]
             if center in ['nan', None, '']:
                 raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
             try:
@@ -1656,11 +1727,23 @@ class DocumentImportForm(forms.Form):
                 raise forms.ValidationError(
                     "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
 
+            field=row[1]
+            doc_type='Cowork'
+            address=row[5]
+
+            cleaned_data.append(
+                (title, field, doc_type, cowork_type, person_type, started_at, address, center))
+        return cleaned_data
+
+    def import_coworks(self,excel_data):
+        cleaned_data=self.check_coworks(excel_data)
+        for title, field, doc_type, cowork_type, person_type, started_at, address, center in cleaned_data:
             cowork=CoWork.objects.create(
                 title=title,
                 person_type=person_type,
                 cowork_type=cowork_type,
                 field=field,
+                started_at=started_at,
                 type=doc_type,
                 center=center,
                 address=address,
