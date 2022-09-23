@@ -108,9 +108,18 @@ class Resume(Document):
     degree = models.CharField(max_length=255,null=True, blank=True)
 
 
+VERIFICATION_TYPES = [
+    ('verified', 'تایید شد'),
+    ('not-verified', 'تایید نشد'),
+]
+
 class Order(Document):
     receiver = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='order_receiver')
     issued_at = models.DateTimeField()
+    sent_at = models.DateTimeField()
+    answered_at = models.DateTimeField()
+    owner = models.CharField(max_length=255)
+    verification = models.CharField(max_length=255, choices=VERIFICATION_TYPES)
     other = models.CharField(max_length=255, null=True, blank=True)
 
 

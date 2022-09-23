@@ -30,7 +30,7 @@
 				<a>مدیریت دانش</a>
 			</li>
 			<li class="breadcrumb-item">
-                <a href="{% url 'documents:order_list' %}" >فهرست احکام</a>
+                <a href="{% url 'documents:order_list' %}" >فهرست احکام کمیته داوران</a>
 			</li>
 			<li class="breadcrumb-item active">
                 {% if title == 'update' %}
@@ -120,6 +120,12 @@
                   </div>
                     <input type="text" class="form-control" value="{{ object.other }}" name="other" aria-describedby="field_label">
                 </div>
+                <div class="input-group mb-2" id="other">
+                  <div class="input-group-append">
+                    <span class="input-group-text required" id="field_label">مالک: </span>
+                  </div>
+                    <input type="text" class="form-control" value="{{ object.owner }}" name="owner" aria-describedby="field_label">
+                </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
                     <span class="input-group-text required" id="producer_label">گیرنده: </span>
@@ -134,10 +140,38 @@
                     <div class="input-group-append">
                         <span class="input-group-text required" id="issued_at_label">تاریخ صدور: </span>
                     </div>
-                    <input type="datetime" id="datepicker" class="form-control" name="issued_at" aria-describedby="issued_at_label">
+                    <input type="datetime" id="issue_datepicker" class="form-control" name="issued_at" aria-describedby="issued_at_label">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-calendar fa-2x"></i></span>
                     </div>
+                </div>
+                <div class="input-group mb-2">
+                    <div class="input-group-append">
+                        <span class="input-group-text required" id="issued_at_label">تاریخ ارسال: </span>
+                    </div>
+                    <input type="datetime" id="send_datepicker" class="form-control" name="sent_at" aria-describedby="issued_at_label">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-calendar fa-2x"></i></span>
+                    </div>
+                </div>
+                <div class="input-group mb-2">
+                    <div class="input-group-append">
+                        <span class="input-group-text required" id="issued_at_label">تاریخ جواب: </span>
+                    </div>
+                    <input type="datetime" id="answer_datepicker" class="form-control" name="answered_at" aria-describedby="issued_at_label">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-calendar fa-2x"></i></span>
+                    </div>
+                </div>
+                <div class="input-group mb-2">
+                  <div class="input-group-append">
+                    <span class="input-group-text required" id="level_label">وضعیت: </span>
+                  </div>
+                    <select name="verification" id="verification" class="select2 form-control">
+                        {% for val,obj in verification_types %}
+                            <option value="{{ val }}">{{ obj }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
@@ -218,6 +252,11 @@
         });
         field.val("{{ object.field }}").trigger("change");
 
+        var verification = $("#verification").select2({
+                theme: 'bootstrap4',
+        });
+        verification.val("{{ object.verification }}").trigger("change");
+
         var center = $("#center").select2({
                 theme: 'bootstrap4',
         });
@@ -265,15 +304,28 @@
             },
         };
 
-        var datepicker = $("#datepicker").persianDatepicker(datepickeroption);
-        $('#datepicker').val('{{ object.issued_at | j_format_date:"%Y-%m-%d %H:%M" }}');
+        var issue_datepicker = $("#issue_datepicker").persianDatepicker(datepickeroption);
+        $('#issue_datepicker').val('{{ object.issued_at | j_format_date:"%Y-%m-%d %H:%M" }}');
+        var send_datepicker = $("#send_datepicker").persianDatepicker(datepickeroption);
+        $('#send_datepicker').val('{{ object.sent_at | j_format_date:"%Y-%m-%d %H:%M" }}');
+        var answer_datepicker = $("#answer_datepicker").persianDatepicker(datepickeroption);
+        $('#answer_datepicker').val('{{ object.answered_at | j_format_date:"%Y-%m-%d %H:%M" }}');
 
          $('#ar-form').submit(function () {
-
-             if ($('#datepicker').val() === '') {
-                 $('#datepicker').val('');
+             if ($('#issue_datepicker').val() === '') {
+                 $('#issue_datepicker').val('');
              } else {
-                 $('#datepicker').val(datepicker.getState().selected.dateObject.toCalendar('gregorian').toLocale('en').format('YYYY-MM-DD HH:mm'));
+                 $('#issue_datepicker').val(issue_datepicker.getState().selected.dateObject.toCalendar('gregorian').toLocale('en').format('YYYY-MM-DD HH:mm'));
+             }
+             if ($('#send_datepicker').val() === '') {
+                 $('#send_datepicker').val('');
+             } else {
+                 $('#send_datepicker').val(send_datepicker.getState().selected.dateObject.toCalendar('gregorian').toLocale('en').format('YYYY-MM-DD HH:mm'));
+             }
+             if ($('#answer_datepicker').val() === '') {
+                 $('#answer_datepicker').val('');
+             } else {
+                 $('#answer_datepicker').val(answer_datepicker.getState().selected.dateObject.toCalendar('gregorian').toLocale('en').format('YYYY-MM-DD HH:mm'));
              }
          });
 

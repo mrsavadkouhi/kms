@@ -349,7 +349,8 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['resumes'] = Document.objects.filter(type="Resume")
-        context['centers']= Center.objects.all()
+        context['verification_types'] = VERIFICATION_TYPES
+        context['centers'] = Center.objects.all()
         return context
 
 
@@ -370,6 +371,7 @@ class OrderUpdateForm(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['resumes'] = Document.objects.filter(type="Resume")
+        context['verification_types']=VERIFICATION_TYPES
         context['centers']= Center.objects.all()
         return context
 

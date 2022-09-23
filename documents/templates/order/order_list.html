@@ -14,7 +14,7 @@
 				<a>مدیریت دانش</a>
 			</li>
 			<li class="breadcrumb-item active">
-                <a  href="{% url 'documents:order_list' %}" >فهرست احکام</a>
+                <a  href="{% url 'documents:order_list' %}" >فهرست احکام کمیته داوران</a>
 			</li>
 		</ol>
 	</div>
@@ -78,8 +78,12 @@
 						<th class="text-center" style="background-color: white">عنوان</th>
 						<th class="text-center" style="background-color: white">شماره</th>
 						<th class="text-center" style="background-color: white">موضوع</th>
+						<th class="text-center" style="background-color: white">مالک</th>
 						<th class="text-center" style="background-color: white">گیرنده</th>
 						<th class="text-center" style="background-color: white">تاریخ صدور</th>
+						<th class="text-center" style="background-color: white">تاریخ ارسال</th>
+						<th class="text-center" style="background-color: white">تاریخ جواب</th>
+						<th class="text-center" style="background-color: white">وضعیت</th>
 						<th class="text-center" style="background-color: white">مرکز تحقیقاتی</th>
 						<th class="text-center" style="background-color: white; width: 10%">عملیات</th>
 					</tr>
@@ -92,8 +96,12 @@
 							<td class="align-middle text-center"><a href="{% url 'documents:order_details' pk=obj.id %}">{{ obj.title }}</a></td>
 							<td class="align-middle text-center">{{ obj.organization_code }}</td>
 							<td class="align-middle text-center">{{ obj.field }}</td>
+							<td class="align-middle text-center">{{ obj.owner }}</td>
 							<td class="align-middle text-center">{{ obj.receiver.title }}</td>
 							<td class="align-middle text-center">{{ obj.issued_at | j_format_date:"%Y/%m/%d" }}</td>
+							<td class="align-middle text-center">{{ obj.sent_at | j_format_date:"%Y/%m/%d" }}</td>
+							<td class="align-middle text-center">{{ obj.answered_at | j_format_date:"%Y/%m/%d" }}</td>
+							<td class="align-middle text-center">{{ obj.get_verification_display}}</td>
 							<td class="align-middle text-center">{{ obj.center.title }}</td>
 							<td class="align-middle text-center">
 								<div class="btn-group">
