@@ -83,7 +83,7 @@
 						<th class="text-center" style="background-color: white">تاریخ صدور</th>
 						<th class="text-center" style="background-color: white">تاریخ ارسال</th>
 						<th class="text-center" style="background-color: white">تاریخ جواب</th>
-						<th class="text-center" style="background-color: white">وضعیت</th>
+						<th class="text-center" style="background-color: white">نتیجه</th>
 						<th class="text-center" style="background-color: white">مرکز تحقیقاتی</th>
 						<th class="text-center" style="background-color: white; width: 10%">عملیات</th>
 					</tr>
@@ -176,7 +176,7 @@
                         title: '',
 
 						exportOptions: {
-							columns: [0, 1, 2, 3, 4, 5, 6],
+							columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
 							{#stripHtml: true#}
 						},
                         customize: function (win) {
@@ -221,7 +221,7 @@
                         title: '',
 						filename: 'orders',
 						exportOptions: {
-							columns: [ 1, 2, 3, 4, 5, 6],
+							columns: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
 						}
 					},
                     {
@@ -241,13 +241,13 @@
                 table.column(2).search(this.value).draw();
 		});
 		$('#producer').on('keyup', function () {
-                table.column(4).search(this.value).draw();
+                table.column(5).search(this.value).draw();
 		});
 		$('#center').on('keyup', function () {
-			table.column(11).search(this.value).draw();
+			table.column(10).search(this.value).draw();
 		});
 		$('#publish_date').on('keyup', function () {
-			table.column(8).search(this.value).draw();
+			table.column(6).search(this.value).draw();
 		});
 
 		$('#delete-modal').on('show.bs.modal', function (e) {

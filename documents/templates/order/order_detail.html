@@ -52,7 +52,7 @@
 				<h3><strong>تاریخ صدور: </strong>{{ object.issued_at | j_format_date:"%Y/%m/%d"  }}</h3>
 				<h3><strong>تاریخ ارسال: </strong>{{ object.sent_at | j_format_date:"%Y/%m/%d"  }}</h3>
 				<h3><strong>تاریخ جواب: </strong>{{ object.answered_at | j_format_date:"%Y/%m/%d"  }}</h3>
-				<h3><strong>وضعیت: </strong>{{ object.get_verification_display }}</h3>
+				<h3><strong>نتیجه: </strong>{{ object.get_verification_display }}</h3>
                 <h3><strong>توضیحات: </strong>{{ object.description }}</h3>
 				<div><br></div>
 			</div>
