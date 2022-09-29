@@ -3,7 +3,7 @@
 {% load jalali_date %}
 
 
-{% block head_title %}فهرست احکام{% endblock %}
+{% block head_title %}فهرست کمیته داوران{% endblock %}
 
 {% block title-breadcrumb %}
 	<div class="col-md-10">
@@ -14,7 +14,7 @@
 				<a>مدیریت دانش</a>
 			</li>
 			<li class="breadcrumb-item active">
-                <a  href="{% url 'documents:order_list' %}" >فهرست احکام کمیته داوران</a>
+                <a  href="{% url 'documents:order_list' %}" >فهرست کمیته داوران</a>
 			</li>
 		</ol>
 	</div>
@@ -34,7 +34,7 @@
     	<div class="col-lg-12">
 			<div class="ibox ">
                 <div class="ibox-title">
-                    <h5>جستجوی پیشرفته احکام</h5>
+                    <h5>جستجوی پیشرفته کمیته داوران</h5>
                     <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -48,7 +48,7 @@
                     <br>
                     <div class="row">
                         <div class="col-lg-1">
-                            <label for="producer">گیرنده حکم</label>
+                            <label for="producer">گیرنده</label>
                             </div>
                             <div class="col-lg-3">
                             <input type="text" id="producer" name="producer">
@@ -130,13 +130,13 @@
 						<span aria-hidden="true">&times;</span>
 						<span class="sr-only">بستن</span>
 					</button>
-					<h5 class="modal-title" id="exampleModalLabel">حذف حکم</h5>
+					<h5 class="modal-title" id="exampleModalLabel">حذف کمیته داوران</h5>
 				</div>
 				<form method="post" id="delete-form">
 					{% csrf_token %}
 					<div class="modal-body">
 						<p class="float-right">
-							آیا واقعا می خواهید حکم 
+							آیا واقعا می خواهید کمیته داوران
 							<code>
 								<strong id="delete-name"></strong>
 							</code>
@@ -187,7 +187,7 @@
 								.prepend("<tr><th colspan='7'>" +
 									"<img src='http://127.0.0.1:8000/static/img/logo.png' class='float-left obj-fit-contain' style='position:relative;width:15%' />" +
 									"<img src='http://127.0.0.1:8000/static/img/sepah_balck.png' class='float-right obj-fit-contain' style='position:relative;width:15%' />" +
-									"<h2 class='text-center'><b>فهرست احکام صادره</b></h2>" +
+									"<h2 class='text-center'><b>فهرست کمیته داوران</b></h2>" +
 									"</th>" +
 									"</tr>");
                             $(win.document.body).find('tbody')

@@ -840,7 +840,20 @@ class DocumentImportForm(forms.Form):
             if organization_code in ['nan', None, '']:
                 raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
 
-            issued_at=row[4]
+            owner = row[3]
+            if owner in ['nan', None, '']:
+                raise forms.ValidationError("ستون مالک در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
+            receiver=row[4]
+            if receiver in ['nan', None, '']:
+                raise forms.ValidationError("ستون گیرنده در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                receiver_obj, c=Resume.objects.get_or_create(type='Resume', title=receiver)
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون گیرنده در خط " + str(error_line) + " فایل صحیح نیست")
+
+            issued_at=row[5]
             if issued_at in ['nan', None, '']:
                 raise forms.ValidationError("ستون تاریخ صدور در خط " + str(error_line) + " نمی تواند خالی باشد.")
             try:
@@ -850,7 +863,39 @@ class DocumentImportForm(forms.Form):
                 raise forms.ValidationError(
                     "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
-            center=row[5]
+            sent_at=row[6]
+            if sent_at in ['nan', None, '']:
+                raise forms.ValidationError("ستون تاریخ ارسال در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                sent_at=jdatetime.datetime.strptime(sent_at, "%Y/%m/%d")
+                sent_at=sent_at.togregorian()
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+
+            answered_at=row[7]
+            if answered_at in ['nan', None, '']:
+                raise forms.ValidationError("ستون تاریخ جواب در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                answered_at=jdatetime.datetime.strptime(answered_at, "%Y/%m/%d")
+                answered_at=answered_at.togregorian()
+            except:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+
+            verification=row[8]
+            if verification in ['nan', None, '']:
+                raise forms.ValidationError("ستون نتیجه در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            flag=True
+            for name, des in VERIFICATION_TYPES:
+                if verification == des:
+                    verification=name
+                    flag=False
+            if flag:
+                raise forms.ValidationError(
+                    "فرمت اطلاعات ستون نتیجه در خط " + str(error_line) + " فایل صحیح نیست")
+
+            center=row[9]
             if center in ['nan', None, '']:
                 raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
             try:
@@ -859,31 +904,27 @@ class DocumentImportForm(forms.Form):
                 raise forms.ValidationError(
                     "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
 
-            receiver=row[3]
-            if receiver in ['nan', None, '']:
-                raise forms.ValidationError("ستون گیرنده در خط " + str(error_line) + " نمی تواند خالی باشد.")
-            try:
-                receiver_obj, c=Resume.objects.get_or_create(type='Resume', title=receiver)
-            except:
-                raise forms.ValidationError(
-                    "فرمت اطلاعات ستون گیرنده در خط " + str(error_line) + " فایل صحیح نیست")
 
             field=row[2]
             doc_type='Order'
 
-            cleaned_data.append((title, organization_code, doc_type, field, receiver_obj, issued_at, center))
+            cleaned_data.append((title, organization_code, doc_type, field, owner, receiver_obj, issued_at, sent_at, answered_at, verification, center))
         return cleaned_data
 
     def import_orders(self,excel_data):
         cleaned_data = self.check_orders(excel_data)
-        for title, organization_code, doc_type, field, receiver_obj, issued_at, center in cleaned_data:
+        for title, organization_code, doc_type, field, owner, receiver_obj, issued_at, sent_at, answered_at, verification, center in cleaned_data:
             order=Order.objects.create(
                 title=title,
                 organization_code=organization_code,
                 field=field,
+                owner=owner,
                 type=doc_type,
                 receiver=receiver_obj,
                 issued_at=issued_at,
+                sent_at=sent_at,
+                answered_at=answered_at,
+                verification=verification,
                 center=center,
             )
 

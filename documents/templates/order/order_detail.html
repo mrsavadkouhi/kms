@@ -4,7 +4,7 @@
 {% load jalali_date %}
 
 
-{% block head_title %}جزئیات حکم{% endblock %}
+{% block head_title %}جزئیات کمیته داوران{% endblock %}
 
 
 {% block title-breadcrumb %}
@@ -16,10 +16,10 @@
 				<a>مدیریت دانش</a>
 			</li>
 			<li class="breadcrumb-item">
-                <a  href="{% url 'documents:order_list' %}" >فهرست احکام کمیته داوران</a>
+                <a  href="{% url 'documents:order_list' %}" >فهرست کمیته داوران</a>
 			</li>
 			<li class="breadcrumb-item active">
-				<a href="{% url 'documents:order_details' object.id %}"><strong>جزئیات حکم {{ object.name }}</strong></a>
+				<a href="{% url 'documents:order_details' object.id %}"><strong>جزئیات کمیته داوران {{ object.name }}</strong></a>
 			</li>
 		</ol>
 	</div>
@@ -138,13 +138,13 @@
 						<span aria-hidden="true">&times;</span>
 						<span class="sr-only">بستن</span>
 					</button>
-					<h5 class="modal-title" id="exampleModalLabel">حذف حکم</h5>
+					<h5 class="modal-title" id="exampleModalLabel">حذف کمیته داوران</h5>
 				</div>
 				<form method="post" id="delete-form" action="{% url 'documents:order_delete' pk=object.id %}">
 					{% csrf_token %}
 					<div class="modal-body">
 						<p class="float-right">
-							آیا واقعا می خواهید حکم
+							آیا واقعا می خواهید کمیته داوران
 							<code>
 								<strong id="delete-name">{{ object.title }}</strong>
 							</code>

@@ -18,7 +18,7 @@
 
 {% endblock %}
 
-{% block head_title %}{% if title == 'update' %}جزئیات حکم{% else %}ایجاد حکم{% endif %}{% endblock %}
+{% block head_title %}{% if title == 'update' %}جزئیات کمیته داوران{% else %}ایجاد کمیته داوران{% endif %}{% endblock %}
 
 
 {% block title-breadcrumb %}
@@ -30,13 +30,13 @@
 				<a>مدیریت دانش</a>
 			</li>
 			<li class="breadcrumb-item">
-                <a href="{% url 'documents:order_list' %}" >فهرست احکام کمیته داوران</a>
+                <a href="{% url 'documents:order_list' %}" >فهرست کمیته داوران</a>
 			</li>
 			<li class="breadcrumb-item active">
                 {% if title == 'update' %}
                     <a href="{% url 'documents:order_update' object.id %}"><strong>ویرایش {{ object.title }}</strong></a>
                 {% else %}
-                    <a href="{% url 'documents:order_create' %}"><strong>افزودن حکم جدید</strong></a>
+                    <a href="{% url 'documents:order_create' %}"><strong>افزودن کمیته داوران جدید</strong></a>
                 {% endif %}
 			</li>
 		</ol>
@@ -207,13 +207,13 @@
 						<span aria-hidden="true">&times;</span>
 						<span class="sr-only">بستن</span>
 					</button>
-					<h5 class="modal-title" id="exampleModalLabel">حذف حکم</h5>
+					<h5 class="modal-title" id="exampleModalLabel">حذف کمیته داوران</h5>
 				</div>
 				<form method="post" id="delete-form" {% if title == 'update' %} action="{% url 'documents:order_delete' pk=object.id %}" {% endif %}>
 					{% csrf_token %}
 					<div class="modal-body">
 						<p class="float-right">
-							آیا واقعا می خواهید حکم
+							آیا واقعا می خواهید کمیته داوران
 							<code>
 								<strong id="delete-name">{{ object.title }}</strong>
 							</code>
