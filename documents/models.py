@@ -42,7 +42,7 @@ DOCUMENT_TYPES = [
     ('Journal', 'فصلنامه'),
     ('Future', 'آینده پژوهی'),
     ('CoWork', 'همکاری'),
-    ('Order', 'حکم'),
+    ('Order', 'داوری'),
     ('Invention', 'ثبت اختراع'),
     ('Assessment', 'ارزیابی'),
 ]

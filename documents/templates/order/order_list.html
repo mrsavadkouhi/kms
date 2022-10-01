@@ -22,7 +22,7 @@
 	<div class="col-md-2">
 		<div class="title-action float-right">
             <div class="btn-group">
-                <a href="{% url 'documents:order_create' %}" class="btn btn-outline-primary"><i class="fa small fa-plus"></i> <i class="fa fa-diamond"></i> افزودن حکم جدید</a>
+                <a href="{% url 'documents:order_create' %}" class="btn btn-outline-primary"><i class="fa small fa-plus"></i> <i class="fa fa-diamond"></i> افزودن داوری جدید</a>
 
             </div>
             </div>
@@ -130,13 +130,13 @@
 						<span aria-hidden="true">&times;</span>
 						<span class="sr-only">بستن</span>
 					</button>
-					<h5 class="modal-title" id="exampleModalLabel">حذف کمیته داوران</h5>
+					<h5 class="modal-title" id="exampleModalLabel">حذف داوری</h5>
 				</div>
 				<form method="post" id="delete-form">
 					{% csrf_token %}
 					<div class="modal-body">
 						<p class="float-right">
-							آیا واقعا می خواهید کمیته داوران
+							آیا واقعا می خواهید داوری
 							<code>
 								<strong id="delete-name"></strong>
 							</code>
@@ -184,7 +184,7 @@
 							$(win.document.body).find('thead')
 								.css('color', 'black')
 								.css('font-family', 'VazirFD')
-								.prepend("<tr><th colspan='7'>" +
+								.prepend("<tr><th colspan='11'>" +
 									"<img src='http://127.0.0.1:8000/static/img/logo.png' class='float-left obj-fit-contain' style='position:relative;width:15%' />" +
 									"<img src='http://127.0.0.1:8000/static/img/sepah_balck.png' class='float-right obj-fit-contain' style='position:relative;width:15%' />" +
 									"<h2 class='text-center'><b>فهرست کمیته داوران</b></h2>" +
@@ -219,7 +219,7 @@
                         text: '<button class="btn btn-lg btn-outline-success"><i class="fa fa-print"></i> خروجی Excel</button>',
 						className: 'bg-transparent',
                         title: '',
-						filename: 'orders',
+						filename: 'judgment_committee',
 						exportOptions: {
 							columns: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
 						}

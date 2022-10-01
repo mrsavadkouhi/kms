@@ -1902,11 +1902,11 @@ class DocumentImportForm(forms.Form):
 
             issue_code=row[4]
             if issue_code in ['nan', None, '']:
-                raise forms.ValidationError("ستون شماره حکم در خط " + str(error_line) + " نمی تواند خالی باشد.")
+                raise forms.ValidationError("ستون شماره داوری در خط " + str(error_line) + " نمی تواند خالی باشد.")
 
             order_issued_at=row[5]
             if order_issued_at in ['nan', None, '']:
-                raise forms.ValidationError("ستون تاریخ صدور حکم در خط " + str(error_line) + " نمی تواند خالی باشد.")
+                raise forms.ValidationError("ستون تاریخ صدور داوری در خط " + str(error_line) + " نمی تواند خالی باشد.")
             try:
                 order_issued_at=jdatetime.datetime.strptime(order_issued_at, "%Y/%m/%d")
                 order_issued_at=order_issued_at.togregorian()
