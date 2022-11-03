@@ -97,20 +97,14 @@ class CenterDetailsView(LoginRequiredMixin, DetailView):
         context['idea_num']= 0
         context['exp_num']= 0
         context['inv_num']= 0
+        context['workshop_num']= 0
         context['manual_num']= 0
         context['seminar_num']= 0
-        context['conf_num']= 0
         context['project_num']= 0
-        context['visit_num']= 0
         context['report_num']= 0
         context['order_num']= 0
-        context['thesis_num']= 0
-        context['resume_num']= 0
 
         for item in self.object.center.all():
-            if item.type == 'Resume':
-                context['resume_num']+=1
-
             if item.type == 'Article':
                 context['article_num']+=1
 
@@ -129,15 +123,6 @@ class CenterDetailsView(LoginRequiredMixin, DetailView):
             elif item.type == 'Seminar':
                 context['seminar_num']+=1
 
-            elif item.type == 'Thesis':
-                context['thesis_num']+=1
-
-            elif item.type == 'Conference':
-                context['conf_num']+=1
-
-            elif item.type == 'Visit':
-                context['visit_num']+=1
-
             elif item.type == 'Project':
                 context['project_num']+=1
 
@@ -149,6 +134,9 @@ class CenterDetailsView(LoginRequiredMixin, DetailView):
 
             elif item.type == 'Invention':
                 context['inv_num']+=1
+
+            elif item.type == 'Workshop':
+                context['workshop_num']+=1
 
 
 
@@ -855,6 +843,7 @@ class ResumeDetailsView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
 
         context['object_list']= []
+        context['others'] = []
         context['workshop_num']= 0
         context['workshop_has_attachments']= False
         context['article_num']= 0

@@ -77,7 +77,7 @@
 						<th class="text-center" style="background-color: white;width: 7%">ردیف</th>
 						<th class="text-center" style="background-color: white">عنوان</th>
 						<th class="text-center" style="background-color: white">شناسه</th>
-						<th class="text-center" style="background-color: white">زمان دوره</th>
+						<th class="text-center" style="background-color: white">زمان دوره(روز)</th>
 						<th class="text-center" style="background-color: white">ارائه دهنده</th>
 						<th class="text-center" style="background-color: white">تحصیلات ارائه دهنده/کارآموز</th>
 						<th class="text-center" style="background-color: white">نوع کارگاه</th>
@@ -178,7 +178,7 @@
                         title: '',
 
 						exportOptions: {
-							columns: [0, 1, 2, 3, 4, 5, 6,7,8,9,10,11],
+							columns: [0, 1, 2, 3, 4, 7,8,10,11],
 							{#stripHtml: true#}
 						},
                         customize: function (win) {
@@ -189,7 +189,7 @@
 								.prepend("<tr><th colspan='12'>" +
 									"<img src='http://127.0.0.1:8000/static/img/logo.png' class='float-left obj-fit-contain' style='position:relative;width:15%' />" +
 									"<img src='http://127.0.0.1:8000/static/img/sepah_balck.png' class='float-right obj-fit-contain' style='position:relative;width:15%' />" +
-									"<h2 class='text-center'><b>فهرست کارگاه های آموزشی</b></h2>" +
+									"<h2 class='text-center'><u><b>فهرست کارگاه دوره های آموزشی</b></u></h2>" +
 									"</th>" +
 									"</tr>");
                             $(win.document.body).find('tfoot')
@@ -223,7 +223,7 @@
                         title: '',
 						filename: 'workshops',
 						exportOptions: {
-							columns: [ 1, 2, 3, 4, 5, 6,7,8,9,10,11],
+							columns: [ 1, 2, 3, 4,7,8,10,11],
 						}
 					},
                     {

@@ -204,7 +204,7 @@
 						className: 'bg-transparent',
                         title: '',
 						exportOptions: {
-							columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+							columns: [0, 1, 2, 5, 6, 7, 8, 9, 10],
 							{#stripHtml: true#}
 						},
                         customize: function (win) {
@@ -215,7 +215,7 @@
 								.prepend("<tr><th colspan='12'>" +
 									"<img src='http://127.0.0.1:8000/static/img/logo.png' class='float-left obj-fit-contain' style='position:relative;width:15%' />" +
 									"<img src='http://127.0.0.1:8000/static/img/sepah_balck.png' class='float-right obj-fit-contain' style='position:relative;width:15%' />" +
-									"<h2 class='text-center'><b>فهرست مقالات</b></h2>" +
+									"<h2 class='text-center'><u><b>فهرست مقالات</b></u></h2>" +
 									"</th>" +
 									"</tr>");
                             $(win.document.body).find('tbody')
@@ -249,7 +249,7 @@
 						className: 'bg-transparent',
 						filename: 'articles',
 						exportOptions: {
-							columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+							columns: [1, 2, 5, 6, 7, 8, 9, 10],
 						},
 					},
                     {

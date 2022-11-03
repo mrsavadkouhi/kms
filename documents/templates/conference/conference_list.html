@@ -14,7 +14,7 @@
 				<a>رشد، خلاقیت و نوآوری</a>
 			</li>
 			<li class="breadcrumb-item active">
-                <a  href="{% url 'documents:conference_list' %}" >فهرست کنفرانس ها</a>
+                <a  href="{% url 'documents:conference_list' %}" >فهرست رویدادها و همایش ها</a>
 			</li>
 		</ol>
 	</div>
@@ -22,7 +22,7 @@
 	<div class="col-md-2">
 		<div class="title-action float-right">
             <div class="btn-group">
-                <a href="{% url 'documents:conference_create' %}" class="btn btn-outline-primary"><i class="fa small fa-plus"></i> <i class="fa fa-ticket-alt"></i> افزودن کنفرانس جدید</a>
+                <a href="{% url 'documents:conference_create' %}" class="btn btn-outline-primary"><i class="fa small fa-plus"></i> <i class="fa fa-ticket-alt"></i> افزودن رویداد/همایش جدید</a>
 
             </div>
             </div>
@@ -34,7 +34,7 @@
     	<div class="col-lg-12">
 			<div class="ibox ">
                 <div class="ibox-title">
-                    <h5>جستجوی پیشرفته کنفرانس ها</h5>
+                    <h5>جستجوی پیشرفته رویدادها و همایش ها</h5>
                     <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -180,7 +180,7 @@
 								.prepend("<tr><th colspan='7'>" +
 									"<img src='http://127.0.0.1:8000/static/img/logo.png' class='float-left obj-fit-contain' style='position:relative;width:15%' />" +
 									"<img src='http://127.0.0.1:8000/static/img/sepah_balck.png' class='float-right obj-fit-contain' style='position:relative;width:15%' />" +
-									"<h2 class='text-center'><b>فهرست کنفرانس ها</b></h2>" +
+									"<h2 class='text-center'><u><b>فهرست رویدادها و همایش ها</b></u></h2>" +
 									"</th>" +
 									"</tr>");
                             $(win.document.body).find('tbody')

@@ -63,7 +63,7 @@
 				<h3><strong>عنوان: </strong>{{ object.title }}</h3>
 				<h3><strong>کد: </strong>{{ object.code }}</h3>
 				<div><br></div>
-                                <h3><strong>آمار کلی تعداد</strong></h3>
+                <h3><strong>آمار کلی تعداد</strong></h3>
                 <div class="row">
                     <div class="col-lg-2">
                         <h3>مقاله:</h3>
@@ -84,10 +84,10 @@
                         <h3>{{ seminar_num }}</h3>
                     </div>
                     <div class="col-lg-2">
-                        <h3>پایان نامه:</h3>
+                        <h3>ثبت اختراع:</h3>
                     </div>
                     <div class="col-lg-1">
-                        <h3>{{ thesis_num }}</h3>
+                        <h3>{{ inv_num }}</h3>
                     </div>
                 </div>
                 <div class="row">
@@ -110,19 +110,13 @@
                         <h3>{{ manual_num }}</h3>
                     </div>
                     <div class="col-lg-2">
-                        <h3>بازدید:</h3>
+                        <h3>دوره/کارگاه آموزشی:</h3>
                     </div>
                     <div class="col-lg-1">
-                        <h3>{{ visit_num }}</h3>
+                        <h3>{{ workshop_num }}</h3>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-2">
-                        <h3>کمیته داوران:</h3>
-                    </div>
-                    <div class="col-lg-1">
-                        <h3>{{ order_num }}</h3>
-                    </div>
                     <div class="col-lg-2">
                         <h3>گزارش:</h3>
                     </div>
@@ -130,10 +124,10 @@
                         <h3>{{ report_num }}</h3>
                     </div>
                     <div class="col-lg-2">
-                        <h3>کنفرانس:</h3>
+                        <h3>کمیته داوران:</h3>
                     </div>
                     <div class="col-lg-1">
-                        <h3>{{ conf_num }}</h3>
+                        <h3>{{ order_num }}</h3>
                     </div>
                     <div class="col-lg-2">
                         <h3>پروژه:</h3>
@@ -141,19 +135,7 @@
                     <div class="col-lg-1">
                         <h3>{{ project_num }}</h3>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-2">
-                        <h3>رزومه:</h3>
-                    </div>
-                    <div class="col-lg-1">
-                        <h3>{{ resume_num }}</h3>
-                    </div>
-                    <div class="col-lg-2">
-                        <h3>ثبت اختراع:</h3>
-                    </div>
-                    <div class="col-lg-1">
-                        <h3>{{ inv_num }}</h3>
+                    <div class="col-lg-3">
                     </div>
                 </div>
                 <div><br></div>
@@ -348,7 +330,7 @@
                         title: '',
 
 						exportOptions: {
-							columns: [ 0, 1, 2 ],
+							columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ],
 							{#stripHtml: true#}
 						},
                         customize: function (win) {
@@ -368,10 +350,10 @@
 									"<h3><strong>کد: </strong>{{ object.code }}</h3>" +
                                     "<br>" +
                                     "<h3><strong>آمار کلی تعداد</strong></h3>" +
-                                    "<h3>مقاله: {{ article_num }} , کتاب: {{ book_num }} , سمینار: {{ seminar_num }} , پایان نامه: {{ thesis_num }}</h3>" +
-                                    "<h3>ایده: {{ idea_num }} , تجربه: {{ exp_num }} , دستورالعمل: {{ manual_num }} , بازدید: {{ visit_num }}</h3>" +
-                                    "<h3>احکام: {{ order_num }} , گزارش: {{ report_num }} , کنفرانس: {{ conf_num }} , پروژه: {{ project_num }}</h3>" +
-                                    "<h3>رزومه: {{ resume_num }}</h3>" +
+                                    "<h3>مقاله: {{ article_num }} , کتاب: {{ book_num }} , سمینار: {{ seminar_num }}</h3>" +
+                                    "<h3>ایده: {{ idea_num }} , تجربه: {{ exp_num }} , دستورالعمل: {{ manual_num }}</h3>" +
+                                    "<h3>کمیته داوران: {{ order_num }} , گزارش: {{ report_num }} , پروژه: {{ project_num }}</h3>" +
+                                    "<h3>دوره/کارگاه آموزشی: {{ workshop_num }} , ثبت اختراع: {{ inv_num }}</h3>" +
                                     "<br>" +
                                     "</th>" +
 									"</tr>");
