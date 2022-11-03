@@ -116,7 +116,7 @@
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="field_label">حوزه تخصصی: </span>
+                    <span class="input-group-text" id="field_label">حوزه تخصصی: </span>
                   </div>
                     <input type="text" class="form-control" value="{{ object.field }}" name="field" aria-describedby="field_label">
                 </div>
@@ -136,16 +136,16 @@
                         {% endfor %}
                     </select>
                 </div>
-                <div class="input-group mb-2">
-                  <div class="input-group-append">
-                    <span class="input-group-text" id="producer_label">داوران: </span>
-                  </div>
-                    <select name="judges" id="judges" class="select2 form-control">
-                        {% for obj in resumes %}
-                            <option value="{{ obj.id }}">{{ obj.title }}-{{ obj.organization_code }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
+{#                <div class="input-group mb-2">#}
+{#                  <div class="input-group-append">#}
+{#                    <span class="input-group-text" id="producer_label">داوران: </span>#}
+{#                  </div>#}
+{#                    <select name="judges" id="judges" class="select2 form-control">#}
+{#                        {% for obj in resumes %}#}
+{#                            <option value="{{ obj.id }}">{{ obj.title }}-{{ obj.organization_code }}</option>#}
+{#                        {% endfor %}#}
+{#                    </select>#}
+{#                </div>#}
                 <div class="input-group mb-2">
                     <div class="input-group-append">
                     <span class="input-group-text required" id="published_at_label">تاریخ چاپ: </span>
@@ -157,7 +157,7 @@
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="type_label">نوع انتشار: </span>
+                    <span class="input-group-text" id="type_label">نوع انتشار: </span>
                   </div>
                     <select name="publish_type" id="publish_type" class="select2 form-control">
                         {% for val,obj in types %}
@@ -167,7 +167,7 @@
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="level_label">سطح انتشار: </span>
+                    <span class="input-group-text" id="level_label">سطح انتشار: </span>
                   </div>
                     <select name="publish_level" id="publish_level" class="select2 form-control">
                         {% for val,obj in mag_levels %}
@@ -177,7 +177,7 @@
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="type_label">عنوان انتشار: </span>
+                    <span class="input-group-text" id="type_label">عنوان انتشار: </span>
                   </div>
                   <input type="text" class="form-control" value="{{ object.publish_title }}" name="publish_title" aria-describedby="type_label">
                 </div>

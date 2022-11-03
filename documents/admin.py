@@ -53,25 +53,25 @@ class BookAdmin(admin.ModelAdmin):
 @admin.register(Experience)
 class ExperienceAdmin(admin.ModelAdmin):
 	save_on_top = True
-	list_filter = ['title', 'organization_code', 'producer']
-	list_display = ['title', 'organization_code', 'producer']
-	search_fields = ['title', 'organization_code', 'producer']
+	list_filter = ['title', 'organization_code']
+	list_display = ['title', 'organization_code']
+	search_fields = ['title', 'organization_code']
 
 
 @admin.register(Idea)
 class IdeaAdmin(admin.ModelAdmin):
 	save_on_top = True
-	list_filter = ['title', 'organization_code', 'producer']
-	list_display = ['title', 'organization_code', 'producer']
-	search_fields = ['title', 'organization_code', 'producer']
+	list_filter = ['title', 'organization_code']
+	list_display = ['title', 'organization_code']
+	search_fields = ['title', 'organization_code']
 
 
 @admin.register(Seminar)
-class Seminardmin(admin.ModelAdmin):
+class SeminarAdmin(admin.ModelAdmin):
 	save_on_top = True
-	list_filter = ['title', 'organization_code', 'producer']
-	list_display = ['title', 'organization_code', 'producer']
-	search_fields = ['title', 'organization_code', 'producer']
+	list_filter = ['title', 'organization_code']
+	list_display = ['title', 'organization_code']
+	search_fields = ['title', 'organization_code']
 
 
 @admin.register(Workshop)
@@ -85,9 +85,9 @@ class Workshopdmin(admin.ModelAdmin):
 @admin.register(Manual)
 class Manualdmin(admin.ModelAdmin):
 	save_on_top = True
-	list_filter = ['title', 'organization_code', 'producer']
-	list_display = ['title', 'organization_code', 'producer']
-	search_fields = ['title', 'organization_code', 'producer']
+	list_filter = ['title', 'organization_code']
+	list_display = ['title', 'organization_code']
+	search_fields = ['title', 'organization_code']
 
 
 @admin.register(Project)

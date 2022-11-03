@@ -78,10 +78,10 @@
 						<th class="text-center" style="background-color: white">عنوان</th>
 						<th class="text-center" style="background-color: white">شناسه</th>
 						<th class="text-center" style="background-color: white">حوزه</th>
-						<th class="text-center" style="background-color: white">ایده پرداز</th>
-						<th class="text-center" style="background-color: white">تحصیلات ایده پرداز</th>
+						<th class="text-center" style="background-color: white">ایده پردازان</th>
+{#						<th class="text-center" style="background-color: white">تحصیلات ایده پرداز</th>#}
 						<th class="text-center" style="background-color: white">تاریخ ارائه</th>
-						<th class="text-center" style="background-color: white">داوران</th>
+{#						<th class="text-center" style="background-color: white">داوران</th>#}
 						<th class="text-center" style="background-color: white">ارزشیابی</th>
 						<th class="text-center" style="background-color: white">مرکز تحقیقاتی</th>
 						<th class="text-center" style="background-color: white; width: 10%">عملیات</th>
@@ -95,14 +95,18 @@
 							<td class="align-middle text-center"><a href="{% url 'documents:idea_details' pk=obj.id %}">{{ obj.title }}</a></td>
 							<td class="align-middle text-center">{{ obj.organization_code }}</td>
 							<td class="align-middle text-center">{{ obj.field }}</td>
-							<td class="align-middle text-center">{{ obj.producer.title }}</td>
-							<td class="align-middle text-center">{{ obj.producer.degree }}</td>
-							<td class="align-middle text-center">{{ obj.presented_at | j_format_date:"%Y/%m/%d" }}</td>
 							<td class="align-middle text-center">
-                            {% for o in obj.judges.all %}
+                            {% for o in obj.producers.all %}
                                 {{ o.title }}-{{ o.organization_code }},
                             {% endfor %}
                             </td>
+{#							<td class="align-middle text-center">{{ obj.producer.degree }}</td>#}
+							<td class="align-middle text-center">{{ obj.presented_at | j_format_date:"%Y/%m/%d" }}</td>
+{#							<td class="align-middle text-center">#}
+{#                            {% for o in obj.judges.all %}#}
+{#                                {{ o.title }}-{{ o.organization_code }},#}
+{#                            {% endfor %}#}
+{#                            </td>#}
 							<td class="align-middle text-center">{{ obj.assessment_result }}</td>
 							<td class="align-middle text-center">{{ obj.center.title }}</td>
 							<td class="align-middle text-center">

@@ -116,15 +116,15 @@
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="field_label">حوزه تخصصی: </span>
+                    <span class="input-group-text" id="field_label">حوزه تخصصی: </span>
                   </div>
                     <input type="text" class="form-control" value="{{ object.field }}" name="field" aria-describedby="field_label">
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="producer_label">تهیه کننده: </span>
+                    <span class="input-group-text required" id="producer_label">تهیه کنندگان: </span>
                   </div>
-                    <select name="producer" id="producer" class="select2 form-control">
+                    <select name="producers" id="producers" class="select2 form-control">
                         {% for obj in resumes %}
                             <option value="{{ obj.id }}">{{ obj.title }}-{{ obj.organization_code }}</option>
                         {% endfor %}
@@ -132,7 +132,7 @@
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="related_project_label">پروژه مرتبط: </span>
+                    <span class="input-group-text" id="related_project_label">پروژه مرتبط: </span>
                   </div>
                   <input type="text" class="form-control" value="{{ object.related_project }}" name="related_project" aria-describedby="related_project_label">
                 </div>
@@ -145,16 +145,16 @@
                         <span class="input-group-text"><i class="fa fa-calendar fa-2x"></i></span>
                     </div>
                 </div>
-                <div class="input-group mb-2">
-                  <div class="input-group-append">
-                    <span class="input-group-text required" id="center_label">مرکز: </span>
-                  </div>
-                    <select name="center" id="center" class="select2 form-control">
-                        {% for obj in centers %}
-                            <option value="{{ obj.id  }}">{{ obj.title }}-{{ obj.code }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
+{#                <div class="input-group mb-2">#}
+{#                  <div class="input-group-append">#}
+{#                    <span class="input-group-text required" id="center_label">مرکز: </span>#}
+{#                  </div>#}
+{#                    <select name="center" id="center" class="select2 form-control">#}
+{#                        {% for obj in centers %}#}
+{#                            <option value="{{ obj.id  }}">{{ obj.title }}-{{ obj.code }}</option>#}
+{#                        {% endfor %}#}
+{#                    </select>#}
+{#                </div>#}
 
             <div class="input-group mb-2">
                     <div class="input-group-append">
@@ -205,20 +205,27 @@
 
 {% block scripts %}
 	<script>
-        var producer = $("#producer").select2({
-                theme: 'bootstrap4',
+        var producers = $("#producers").select2({
+                    theme: 'bootstrap4',
+                    multiple: true,
+                    placeholder: "تهیه کنندگان",
+                    allowClear: true
         });
-        producer.val("{{ object.producer.id }}").trigger("change");
-
-        var projects = $("#related_project").select2({
-                theme: 'bootstrap4',
-        });
-        projects.val("{{ object.related_project.id }}").trigger("change");
+        vals = [];
+        {% for obj in object.judges.all %}
+            vals.push("{{ obj.id }}");
+        {% endfor %}
+        producers.val(vals).trigger("change");
 
         var field = $("#field").select2({
                 theme: 'bootstrap4',
         });
         field.val("{{ object.field }}").trigger("change");
+
+        var organization_code_year = $("#organization_code_year").select2({
+                theme: 'bootstrap4',
+        });
+        organization_code_year.val("{{ object.organization_code_year  }}").trigger("change");
 
         var center = $("#center").select2({
                 theme: 'bootstrap4',

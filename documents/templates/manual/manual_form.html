@@ -116,15 +116,15 @@
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="field_label">حوزه تخصصی: </span>
+                    <span class="input-group-text" id="field_label">حوزه تخصصی: </span>
                   </div>
                     <input type="text" class="form-control" value="{{ object.field }}" name="field" aria-describedby="field_label">
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="producer_label">تهیه کننده: </span>
+                    <span class="input-group-text required" id="producer_label">تهیه کنندگان: </span>
                   </div>
-                    <select name="producer" id="producer" class="select2 form-control">
+                    <select name="producers" id="producers" class="select2 form-control">
                         {% for obj in resumes %}
                             <option value="{{ obj.id }}">{{ obj.title }}-{{ obj.organization_code }}</option>
                         {% endfor %}
@@ -203,10 +203,18 @@
                 theme: 'bootstrap4',
         });
         organization_code_year.val("{{ object.organization_code_year }}").trigger("change");
-        var producer = $("#producer").select2({
-                theme: 'bootstrap4',
+
+        var producers = $("#producers").select2({
+                    theme: 'bootstrap4',
+                    multiple: true,
+                    placeholder: "تهیه کنندگان",
+                    allowClear: true
         });
-        producer.val("{{ object.producer.id }}").trigger("change");
+        vals = [];
+        {% for obj in object.judges.all %}
+            vals.push("{{ obj.id }}");
+        {% endfor %}
+        producers.val(vals).trigger("change");
 
         var field = $("#field").select2({
                 theme: 'bootstrap4',

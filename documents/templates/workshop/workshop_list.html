@@ -77,12 +77,13 @@
 						<th class="text-center" style="background-color: white;width: 7%">ردیف</th>
 						<th class="text-center" style="background-color: white">عنوان</th>
 						<th class="text-center" style="background-color: white">شناسه</th>
-						<th class="text-center" style="background-color: white">حوزه</th>
+						<th class="text-center" style="background-color: white">زمان دوره</th>
 						<th class="text-center" style="background-color: white">ارائه دهنده</th>
-						<th class="text-center" style="background-color: white">تحصیلات ارائه دهنده</th>
+						<th class="text-center" style="background-color: white">تحصیلات ارائه دهنده/کارآموز</th>
 						<th class="text-center" style="background-color: white">نوع کارگاه</th>
 						<th class="text-center" style="background-color: white">تاریخ شروع</th>
-						<th class="text-center" style="background-color: white">تعداد جلسات</th>
+						<th class="text-center" style="background-color: white">تاریخ پایان</th>
+{#						<th class="text-center" style="background-color: white">تعداد جلسات</th>#}
 						<th class="text-center" style="background-color: white">تعداد شرکت کنندگان</th>
 						<th class="text-center" style="background-color: white">محل برگزاری</th>
 						<th class="text-center" style="background-color: white">مرکز تحقیقاتی</th>
@@ -96,12 +97,12 @@
 							<td class="align-middle text-center">{{ forloop.counter }}</td>
 							<td class="align-middle text-center"><a href="{% url 'documents:workshop_details' pk=obj.id %}">{{ obj.title }}</a></td>
 							<td class="align-middle text-center">{{ obj.organization_code }}</td>
-							<td class="align-middle text-center">{{ obj.field }}</td>
+							<td class="align-middle text-center">{{ obj.duration }}</td>
 							<td class="align-middle text-center">{{ obj.producer.title }}</td>
 							<td class="align-middle text-center">{{ obj.producer.degree }}</td>
                             <td class="align-middle text-center">{{ obj.get_workshop_type_display }}</td>
 							<td class="align-middle text-center">{{ obj.started_at | j_format_date:"%Y/%m/%d" }}</td>
-							<td class="align-middle text-center">{{ obj.meeting_number }}</td>
+							<td class="align-middle text-center">{{ obj.finished_at | j_format_date:"%Y/%m/%d" }}</td>
 							<td class="align-middle text-center">{{ obj.participant_number }}</td>
                             <td class="align-middle text-center">{{ obj.location }}</td>
 							<td class="align-middle text-center">{{ obj.center.title }}</td>

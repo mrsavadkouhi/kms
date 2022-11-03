@@ -45,11 +45,15 @@
 			<div class="card col-lg-9">
 				<div><br></div>
 				<h3><strong>عنوان: </strong>{{ object.title }}</h3>
-				<h3><strong>شماره: </strong>{{ object.organization_code }}</h3>
+{#				<h3><strong>شماره: </strong>{{ object.organization_code }}</h3>#}
 				<h3><strong>موضوع: </strong>{{ object.field }}{% if object.field == 'سایر' %}-{{ object.other }}{% endif %}</h3>
 				<h3><strong>مالک: </strong>{{ object.owner }}</h3>
-				<h3><strong>گیرنده: </strong>{{ object.receiver.title }}</h3>
-				<h3><strong>تاریخ صدور: </strong>{{ object.issued_at | j_format_date:"%Y/%m/%d"  }}</h3>
+				<h3><strong>داوران: </strong>
+                {% for o in object.judges.all %}
+                    {{ o.title }}-{{ o.organization_code }},
+                {% endfor %}
+                </h3>
+				<h3><strong>تاریخ صدور حکم: </strong>{{ object.issued_at | j_format_date:"%Y/%m/%d"  }}</h3>
 				<h3><strong>تاریخ ارسال: </strong>{{ object.sent_at | j_format_date:"%Y/%m/%d"  }}</h3>
 				<h3><strong>تاریخ جواب: </strong>{{ object.answered_at | j_format_date:"%Y/%m/%d"  }}</h3>
 				<h3><strong>نتیجه: </strong>{{ object.get_verification_display }}</h3>

@@ -16,10 +16,10 @@
 				<a>آینده پژوهی و همکاری های علمی</a>
 			</li>
 			<li class="breadcrumb-item">
-                <a  href="{% url 'documents:future_list' %}" >فهرست آینده پژوهی ها</a>
+                <a  href="{% url 'documents:future_list' %}" >فهرست رصد و آینده پژوهی ها</a>
 			</li>
 			<li class="breadcrumb-item active">
-				<a href="{% url 'documents:future_details' object.id %}"><strong>جزئیات آینده پژوهی {{ object.name }}</strong></a>
+				<a href="{% url 'documents:future_details' object.id %}"><strong>جزئیات رصد و آینده پژوهی {{ object.name }}</strong></a>
 			</li>
 		</ol>
 	</div>
@@ -47,7 +47,11 @@
 				<h3><strong>عنوان: </strong>{{ object.title }}</h3>
 				<h3><strong>شناسه: </strong>{{ object.organization_code }}</h3>
 				<h3><strong>حوزه تخصصی: </strong>{{ object.field }}</h3>
-				<h3><strong>تهیه کننده: </strong>{{ object.producer.title }}</h3>
+				<h3><strong>تهیه کنندگان: </strong>
+                {% for obj in object.producers.all %}
+                        {{ obj.title }}-{{ obj.organization_code }},
+                    {% endfor %}
+                </h3>
 				<h3><strong>نوع آینده پژوهی: </strong>{{ object.get_future_type_display }}{% if object.future_type == 'Other' %}-{{ object.other }}{% endif %}</h3>
 				<h3><strong>تاریخ ارائه: </strong>{{ object.presented_at | j_format_date:"%Y/%m/%d"  }}</h3>
 				<h3><strong>مرکز تحقیقاتی: </strong>{{ object.center.title }}</h3>

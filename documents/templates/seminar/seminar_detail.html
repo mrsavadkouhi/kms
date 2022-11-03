@@ -47,13 +47,17 @@
 				<h3><strong>عنوان: </strong>{{ object.title }}</h3>
 				<h3><strong>شناسه: </strong>{{ object.organization_code }}</h3>
 				<h3><strong>حوزه تخصصی: </strong>{{ object.field }}</h3>
-				<h3><strong>ارائه دهنده: </strong>{{ object.producer.title }}</h3>
-                <h3><strong>تحصیلات ارائه دهنده: </strong>{{ object.producer.degree }}</h3>
-				<h3><strong>داوران: </strong>
-                    {% for obj in object.judges.all %}
+				<h3><strong>ارائه دهندگان: </strong>
+                    {% for obj in object.producers.all %}
                         {{ obj.title }}-{{ obj.organization_code }},
                     {% endfor %}
                 </h3>
+{#                <h3><strong>تحصیلات ارائه دهنده: </strong>{{ object.producer.degree }}</h3>#}
+{#				<h3><strong>داوران: </strong>#}
+{#                    {% for obj in object.judges.all %}#}
+{#                        {{ obj.title }}-{{ obj.organization_code }},#}
+{#                    {% endfor %}#}
+{#                </h3>#}
 				<h3><strong>ارزشیابی: </strong>{{ object.assessment_result }}</h3>
 				<h3><strong>تاریخ ارائه: </strong>{{ object.presented_at | j_format_date:"%Y/%m/%d"  }}</h3>
 				<h3><strong>تعداد شرکت کنندگان: </strong>{{ object.participant_number }}</h3>

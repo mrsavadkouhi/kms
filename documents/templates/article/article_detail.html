@@ -53,11 +53,11 @@
                         {{ obj.title }}-{{ obj.organization_code }},
                     {% endfor %}
                 </h3>
-				<h3><strong>داوران: </strong>
-                    {% for obj in object.judges.all %}
-                        {{ obj.title }}-{{ obj.organization_code }},
-                    {% endfor %}
-                </h3>
+{#				<h3><strong>داوران: </strong>#}
+{#                    {% for obj in object.judges.all %}#}
+{#                        {{ obj.title }}-{{ obj.organization_code }},#}
+{#                    {% endfor %}#}
+{#                </h3>#}
 {#				<h3><strong>کد پاسداری نویسنده: </strong>{{ object.producer.organization_code }}</h3>#}
 				<h3><strong>تاریخ چاپ: </strong>{{ object.published_at | j_format_date:"%Y/%m/%d"  }}</h3>
 				<h3><strong>نوع انتشار: </strong>{{ object.get_publish_type_display }}</h3>

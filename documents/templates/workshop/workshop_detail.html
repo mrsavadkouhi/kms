@@ -46,12 +46,13 @@
 				<div><br></div>
 				<h3><strong>عنوان: </strong>{{ object.title }}</h3>
 				<h3><strong>شناسه: </strong>{{ object.organization_code }}</h3>
-				<h3><strong>حوزه تخصصی: </strong>{{ object.field }}</h3>
-				<h3><strong>ارائه دهنده: </strong>{{ object.producer.title }}</h3>
-                <h3><strong>تحصیلات ارائه دهنده: </strong>{{ object.producer.degree }}</h3>
+				<h3><strong>زمان دوره: </strong>{{ object.duration }}</h3>
+				<h3><strong>ارائه دهنده/کارآموز: </strong>{{ object.producer.title }}</h3>
+                <h3><strong>تحصیلات ارائه دهنده/کارآموز: </strong>{{ object.producer.degree }}</h3>
 				<h3><strong>محل برگزاری: </strong>{{ object.location }}</h3>
-				<h3><strong>تعداد جلسات: </strong>{{ object.meeting_number }}</h3>
+{#				<h3><strong>تعداد جلسات: </strong>{{ object.meeting_number }}</h3>#}
 				<h3><strong>تاریخ شروع: </strong>{{ object.started_at | j_format_date:"%Y/%m/%d"  }}</h3>
+				<h3><strong>تاریخ پایان: </strong>{{ object.finished_at | j_format_date:"%Y/%m/%d"  }}</h3>
 				<h3><strong>تعداد شرکت کنندگان: </strong>{{ object.participant_number }}</h3>
 				<h3><strong>نوع کارگاه: </strong>{{ object.get_workshop_type_display }}</h3>
 				<h3><strong>مرکز تحقیقاتی: </strong>{{ object.center.title }}</h3>

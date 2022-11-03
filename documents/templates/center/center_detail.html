@@ -118,7 +118,7 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-2">
-                        <h3>احکام:</h3>
+                        <h3>کمیته داوران:</h3>
                     </div>
                     <div class="col-lg-1">
                         <h3>{{ order_num }}</h3>
@@ -149,6 +149,12 @@
                     <div class="col-lg-1">
                         <h3>{{ resume_num }}</h3>
                     </div>
+                    <div class="col-lg-2">
+                        <h3>ثبت اختراع:</h3>
+                    </div>
+                    <div class="col-lg-1">
+                        <h3>{{ inv_num }}</h3>
+                    </div>
                 </div>
                 <div><br></div>
 			</div>
@@ -162,21 +168,41 @@
 			<div class="card col-lg-9">
                 <div class="table-responsive">
                     <br>
-                    <table class="table table-striped table-bordered table-hover dataTables-example">
+                    <table class="table table-striped table-bordered table-hover dataTables-example" id="achievments">
                         <thead>
                         <tr>
                             <th class="text-center" style="background-color: white;width: 7%">ردیف</th>
-                            <th class="text-center" style="background-color: white">عنوان</th>
-                            <th class="text-center" style="background-color: white">نوع</th>
+                            <th class="text-center" style="background-color: white">محقق</th>
+                            <th class="text-center" style="background-color: white">مقاله</th>
+                            <th class="text-center" style="background-color: white">کتاب</th>
+                            <th class="text-center" style="background-color: white">ثبت اختراع</th>
+                            <th class="text-center" style="background-color: white">ایده</th>
+                            <th class="text-center" style="background-color: white">تجربه</th>
+                            <th class="text-center" style="background-color: white">دستورالعمل</th>
+                            <th class="text-center" style="background-color: white">پروژه</th>
+                            <th class="text-center" style="background-color: white">سمینار</th>
+                            <th class="text-center" style="background-color: white">گزارش</th>
+                            <th class="text-center" style="background-color: white">کارگاه</th>
+                            <th class="text-center" style="background-color: white">کمیته داوران</th>
                         </tr>
                         </thead>
                         <tbody>
 
-                        {% for obj in object_list %}
-                            <tr id="c-tr-{{ obj.id }}"style="background-color: whitesmoke">
+                        {% for title, articles, books, inventions, ideas, experiences, manuals, projects, seminars, reports, workshops,orders in object_list %}
+                            <tr id="c-tr-{{ obj.id }}" style="background-color: whitesmoke">
                                 <td class="align-middle text-center">{{ forloop.counter }}</td>
-                                <td class="align-middle text-center">{% if obj.type == 'Assessment' %}{{ obj.producer.title }}{% else %}{{ obj.title }}{% endif %}</td>
-                                <td class="align-middle text-center">{{ obj.get_type_display }}</td>
+                                <td class="align-middle text-center">{{ title }}</td>
+                                <td class="align-middle text-center">{{ articles }}</td>
+                                <td class="align-middle text-center">{{ books }}</td>
+                                <td class="align-middle text-center">{{ inventions }}</td>
+                                <td class="align-middle text-center">{{ ideas }}</td>
+                                <td class="align-middle text-center">{{ experiences }}</td>
+                                <td class="align-middle text-center">{{ manuals }}</td>
+                                <td class="align-middle text-center">{{ projects }}</td>
+                                <td class="align-middle text-center">{{ seminars }}</td>
+                                <td class="align-middle text-center">{{ reports }}</td>
+                                <td class="align-middle text-center">{{ workshops }}</td>
+                                <td class="align-middle text-center">{{ orders }}</td>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -190,6 +216,7 @@
                 <div><br></div>
             </div>
 		</div>
+
 		<div class="col-lg-12">
 			<div class="col-lg-3 text-center">
 				<div><br></div>
@@ -308,7 +335,7 @@
             });
         });
 		var table;
-        table = $('.dataTables-example').DataTable({
+        table = $('#achievments').DataTable({
 				pageLength: 100,
 				responsive: true,
 				dom: 'lTfgitp<"float-right"B>',

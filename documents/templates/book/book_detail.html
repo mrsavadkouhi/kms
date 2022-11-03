@@ -53,11 +53,11 @@
                     {% endfor %}
                 </h3>
 				<h3><strong>انتشارات: </strong>{{ object.publisher }}</h3>
-				<h3><strong>داوران: </strong>
-                    {% for obj in object.judges.all %}
-                        {{ obj.title }}-{{ obj.organization_code }},
-                    {% endfor %}
-                </h3>
+{#				<h3><strong>داوران: </strong>#}
+{#                    {% for obj in object.judges.all %}#}
+{#                        {{ obj.title }}-{{ obj.organization_code }},#}
+{#                    {% endfor %}#}
+{#                </h3>#}
 				<h3><strong>ارزشیابی: </strong>{{ object.assessment_result }}</h3>
 				<h3><strong>تاریخ چاپ: </strong>{{ object.published_at | j_format_date:"%Y/%m/%d"  }}</h3>
 				<h3><strong>مرکز تحقیقاتی: </strong>{{ object.center.title }}</h3>

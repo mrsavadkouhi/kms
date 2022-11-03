@@ -82,7 +82,7 @@
 						<th class="text-center" style="background-color: white">فیپا/شابک</th>
 						<th class="text-center" style="background-color: white">انتشارات</th>
 						<th class="text-center" style="background-color: white">تاریخ چاپ</th>
-						<th class="text-center" style="background-color: white">داوران</th>
+{#						<th class="text-center" style="background-color: white">داوران</th>#}
 						<th class="text-center" style="background-color: white">ارزشیابی</th>
 						<th class="text-center" style="background-color: white">مرکز تحقیقاتی</th>
 						<th class="text-center" style="background-color: white; width: 10%">عملیات</th>
@@ -104,11 +104,11 @@
 							<td class="align-middle text-center">{{ obj.fipa }}</td>
 							<td class="align-middle text-center">{{ obj.publisher }}</td>
 							<td class="align-middle text-center">{{ obj.published_at | j_format_date:"%Y/%m/%d" }}</td>
-							<td class="align-middle text-center">
-                            {% for o in obj.judges.all %}
-                                    {{ o.title }}-{{ o.organization_code }},
-                            {% endfor %}
-                            </td>
+{#							<td class="align-middle text-center">#}
+{#                            {% for o in obj.judges.all %}#}
+{#                                    {{ o.title }}-{{ o.organization_code }},#}
+{#                            {% endfor %}#}
+{#                            </td>#}
 							<td class="align-middle text-center">{{ obj.assessment_result }}</td>
 							<td class="align-middle text-center">{{ obj.center.title }}</td>
 							<td class="align-middle text-center">

@@ -99,7 +99,7 @@
 						<th class="text-center" style="background-color: white">حوزه</th>
 						<th class="text-center" style="background-color: white">کلید واژه ها</th>
 						<th class="text-center" style="background-color: white">نویسنده ها</th>
-						<th class="text-center" style="background-color: white">داوران</th>
+{#						<th class="text-center" style="background-color: white">داوران</th>#}
 {#						<th class="text-center" style="background-color: white">شناسه پاسداری/کد ملی</th>#}
 						<th class="text-center" style="background-color: white">تاریخ انتشار</th>
 						<th class="text-center" style="background-color: white">نوع انتشار</th>
@@ -123,11 +123,11 @@
                                     {{ o.title }}-{{ o.organization_code }},
                                 {% endfor %}
                             </td>
-                            <td class="align-middle text-center">
-                                {% for o in obj.judges.all %}
-                                    {{ o.title }}-{{ o.organization_code }},
-                                {% endfor %}
-                            </td>
+{#                            <td class="align-middle text-center">#}
+{#                                {% for o in obj.judges.all %}#}
+{#                                    {{ o.title }}-{{ o.organization_code }},#}
+{#                                {% endfor %}#}
+{#                            </td>#}
 {#							<td class="align-middle text-center">{{ obj.producer.organization_code }}</td>#}
 							<td class="align-middle text-center">{{ obj.published_at | j_format_date:"%Y/%m/%d" }}</td>
 							<td class="align-middle text-center">{{ obj.get_publish_type_display }}</td>

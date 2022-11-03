@@ -48,7 +48,7 @@
                     <br>
                     <div class="row">
                         <div class="col-lg-1">
-                            <label for="producer">گیرنده</label>
+                            <label for="producer">داور</label>
                             </div>
                             <div class="col-lg-3">
                             <input type="text" id="producer" name="producer">
@@ -76,11 +76,11 @@
 					<tr>
 						<th class="text-center" style="background-color: white;width: 7%">ردیف</th>
 						<th class="text-center" style="background-color: white">عنوان</th>
-						<th class="text-center" style="background-color: white">شماره</th>
+{#						<th class="text-center" style="background-color: white">شماره</th>#}
 						<th class="text-center" style="background-color: white">موضوع</th>
 						<th class="text-center" style="background-color: white">مالک</th>
-						<th class="text-center" style="background-color: white">گیرنده</th>
-						<th class="text-center" style="background-color: white">تاریخ صدور</th>
+						<th class="text-center" style="background-color: white">داوران</th>
+						<th class="text-center" style="background-color: white">تاریخ صدور حکم</th>
 						<th class="text-center" style="background-color: white">تاریخ ارسال</th>
 						<th class="text-center" style="background-color: white">تاریخ جواب</th>
 						<th class="text-center" style="background-color: white">نتیجه</th>
@@ -94,10 +94,14 @@
 						<tr id="c-tr-{{ obj.id }}"style="background-color: whitesmoke">
 							<td class="align-middle text-center">{{ forloop.counter }}</td>
 							<td class="align-middle text-center"><a href="{% url 'documents:order_details' pk=obj.id %}">{{ obj.title }}</a></td>
-							<td class="align-middle text-center">{{ obj.organization_code }}</td>
+{#							<td class="align-middle text-center">{{ obj.organization_code }}</td>#}
 							<td class="align-middle text-center">{{ obj.field }}</td>
 							<td class="align-middle text-center">{{ obj.owner }}</td>
-							<td class="align-middle text-center">{{ obj.receiver.title }}</td>
+							<td class="align-middle text-center">
+                                {% for o in obj.judges.all %}
+                                    {{ o.title }}-{{ o.organization_code }},
+                                {% endfor %}
+                            </td>
 							<td class="align-middle text-center">{{ obj.issued_at | j_format_date:"%Y/%m/%d" }}</td>
 							<td class="align-middle text-center">{{ obj.sent_at | j_format_date:"%Y/%m/%d" }}</td>
 							<td class="align-middle text-center">{{ obj.answered_at | j_format_date:"%Y/%m/%d" }}</td>

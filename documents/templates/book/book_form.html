@@ -116,7 +116,7 @@
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="field_label">حوزه تخصصی: </span>
+                    <span class="input-group-text" id="field_label">حوزه تخصصی: </span>
                   </div>
                     <input type="text" class="form-control" value="{{ object.field }}" name="field" aria-describedby="field_label">
                 </div>
@@ -138,7 +138,7 @@
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="publisher_label">انتشارات: </span>
+                    <span class="input-group-text" id="publisher_label">انتشارات: </span>
                   </div>
                   <input type="text" class="form-control" value="{{ object.publisher }}" name="publisher" aria-describedby="publisher_label">
                 </div>
@@ -151,19 +151,19 @@
                         <span class="input-group-text"><i class="fa fa-calendar fa-2x"></i></span>
                     </div>
                 </div>
+{#                <div class="input-group mb-2">#}
+{#                  <div class="input-group-append">#}
+{#                    <span class="input-group-text" id="producer_label">داوران: </span>#}
+{#                  </div>#}
+{#                    <select name="judges" id="judges" class="select2 form-control">#}
+{#                        {% for obj in resumes %}#}
+{#                            <option value="{{ obj.id }}">{{ obj.title }}-{{ obj.organization_code }}</option>#}
+{#                        {% endfor %}#}
+{#                    </select>#}
+{#                </div>#}
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text" id="producer_label">داوران: </span>
-                  </div>
-                    <select name="judges" id="judges" class="select2 form-control">
-                        {% for obj in resumes %}
-                            <option value="{{ obj.id }}">{{ obj.title }}-{{ obj.organization_code }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="input-group mb-2">
-                  <div class="input-group-append">
-                    <span class="input-group-text required" id="assessment_result_label">ارزشیابی: </span>
+                    <span class="input-group-text" id="assessment_result_label">ارزشیابی: </span>
                   </div>
                   <input type="text" class="form-control" value="{{ object.assessment_result }}" name="assessment_result" aria-describedby="assessment_result_label">
                 </div>

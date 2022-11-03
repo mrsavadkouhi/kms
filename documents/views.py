@@ -96,6 +96,7 @@ class CenterDetailsView(LoginRequiredMixin, DetailView):
         context['book_num']= 0
         context['idea_num']= 0
         context['exp_num']= 0
+        context['inv_num']= 0
         context['manual_num']= 0
         context['seminar_num']= 0
         context['conf_num']= 0
@@ -109,43 +110,84 @@ class CenterDetailsView(LoginRequiredMixin, DetailView):
         for item in self.object.center.all():
             if item.type == 'Resume':
                 context['resume_num']+=1
-                context['object_list'].append(item)
+
             if item.type == 'Article':
                 context['article_num']+=1
-                context['object_list'].append(item)
+
             elif item.type == 'Book':
                 context['book_num']+=1
-                context['object_list'].append(item)
+
             elif item.type == 'Idea':
                 context['idea_num']+=1
-                context['object_list'].append(item)
+
             elif item.type == 'Experience':
                 context['exp_num']+=1
-                context['object_list'].append(item)
+
             elif item.type == 'Manual':
                 context['manual_num']+=1
-                context['object_list'].append(item)
+
             elif item.type == 'Seminar':
                 context['seminar_num']+=1
-                context['object_list'].append(item)
+
             elif item.type == 'Thesis':
                 context['thesis_num']+=1
-                context['object_list'].append(item)
+
             elif item.type == 'Conference':
                 context['conf_num']+=1
-                context['object_list'].append(item)
+
             elif item.type == 'Visit':
                 context['visit_num']+=1
-                context['object_list'].append(item)
+
             elif item.type == 'Project':
                 context['project_num']+=1
-                context['object_list'].append(item)
+
             elif item.type == 'Order':
                 context['order_num']+=1
-                context['object_list'].append(item)
+
             elif item.type == 'Report':
                 context['report_num']+=1
-                context['object_list'].append(item)
+
+            elif item.type == 'Invention':
+                context['inv_num']+=1
+
+
+
+        for item in self.object.center.all():
+            if item.type == 'Resume':
+                workshops = 0
+                for sub_item in item.workshop_producer.all():
+                    workshops += 1
+                ideas = 0
+                for sub_item in item.idea_producers.all():
+                    ideas += 1
+                books = 0
+                for sub_item in item.book_producers.all():
+                    books += 1
+                experiences = 0
+                for sub_item in item.experience_producers.all():
+                    experiences += 1
+                manuals = 0
+                for sub_item in item.manual_producers.all():
+                    manuals += 1
+                orders = 0
+                for sub_item in item.order_judges.all():
+                    orders += 1
+                seminars = 0
+                for sub_item in item.seminar_producers.all():
+                    seminars += 1
+                reports = 0
+                for sub_item in item.report_producers.all():
+                    reports += 1
+                projects = 0
+                for sub_item in item.project_manager.all():
+                    projects += 1
+                inventions = 0
+                for sub_item in item.invention_producers.all():
+                    inventions += 1
+                articles = 0
+                for sub_item in item.article_producers.all():
+                    articles += 1
+                context['object_list'].append((item.title, articles, books, inventions, ideas, experiences, manuals, projects, seminars, reports, workshops, orders))
 
         return context
 
@@ -813,6 +855,8 @@ class ResumeDetailsView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
 
         context['object_list']= []
+        context['workshop_num']= 0
+        context['workshop_has_attachments']= False
         context['article_num']= 0
         context['article_has_attachments']= False
         context['book_num']= 0
@@ -833,15 +877,20 @@ class ResumeDetailsView(LoginRequiredMixin, DetailView):
         context['report_has_attachments']= False
         context['seminar_num']= 0
         context['seminar_has_attachments']= False
-        context['thesis_num']= 0
-        context['thesis_has_attachments']= False
+        # context['thesis_num']= 0
+        # context['thesis_has_attachments']= False
         context['invention_num']= 0
         context['invention_has_attachments']= False
 
-        context['others']=[]
+        context['workshops']=self.object.workshop_producer.all()
+        for item in self.object.workshop_producer.all():
+            if item.attachments.all():
+                context['workshop_has_attachments']=True
+            context['object_list'].append((item, 'ایده', item.started_at))
+            context['workshop_num']+=1
 
-        context['ideas']=self.object.idea_producer.all()
-        for item in self.object.idea_producer.all():
+        context['ideas']=self.object.idea_producers.all()
+        for item in self.object.idea_producers.all():
             if item.attachments.all():
                 context['idea_has_attachments']=True
             context['object_list'].append((item, 'ایده', item.presented_at))
@@ -854,47 +903,47 @@ class ResumeDetailsView(LoginRequiredMixin, DetailView):
             context['object_list'].append((item, 'کتاب', item.published_at))
             context['book_num']+=1
 
-        context['experiences']=self.object.experience_producer.all()
-        for item in self.object.experience_producer.all():
+        context['experiences']=self.object.experience_producers.all()
+        for item in self.object.experience_producers.all():
             if item.attachments.all():
                 context['exp_has_attachments']=True
             context['object_list'].append((item, 'تجربه', item.presented_at))
             context['exp_num']+=1
 
-        context['theses']=self.object.thesis_producer.all()
-        for item in self.object.thesis_producer.all():
-            if item.attachments.all():
-                context['thesis_has_attachments']=True
-            context['others'].append((item, 'پایان نامه', item.presented_at))
-            context['object_list'].append((item, 'پایان نامه', item.presented_at))
-            context['thesis_num']+=1
+        # context['theses']=self.object.thesis_producer.all()
+        # for item in self.object.thesis_producer.all():
+        #     if item.attachments.all():
+        #         context['thesis_has_attachments']=True
+        #     context['others'].append((item, 'پایان نامه', item.presented_at))
+        #     context['object_list'].append((item, 'پایان نامه', item.presented_at))
+        #     context['thesis_num']+=1
 
-        context['manuals']=self.object.manual_producer.all()
-        for item in self.object.manual_producer.all():
+        context['manuals']=self.object.manual_producers.all()
+        for item in self.object.manual_producers.all():
             if item.attachments.all():
                 context['manual_has_attachments']=True
             context['others'].append((item, 'دستورالعمل', item.declared_at))
             context['object_list'].append((item, 'دستورالعمل', item.declared_at))
             context['manual_num']+=1
 
-        context['orders']=self.object.order_receiver.all()
-        for item in self.object.order_receiver.all():
+        context['orders']=self.object.order_judges.all()
+        for item in self.object.order_judges.all():
             if item.attachments.all():
                 context['order_has_attachments']=True
-            context['others'].append((item, 'احکام', item.issued_at))
-            context['object_list'].append((item, 'احکام', item.issued_at))
+            context['others'].append((item, item.field+"-"+'کمیته داوران', item.issued_at))
+            context['object_list'].append((item, item.field+"-"+'کمیته داوران', item.issued_at))
             context['order_num']+=1
 
-        context['seminars']=self.object.seminar_producer.all()
-        for item in self.object.seminar_producer.all():
+        context['seminars']=self.object.seminar_producers.all()
+        for item in self.object.seminar_producers.all():
             if item.attachments.all():
                 context['seminar_has_attachments']=True
             context['others'].append((item, 'سمینار', item.presented_at))
             context['object_list'].append((item, 'سمینار', item.presented_at))
             context['seminar_num']+=1
 
-        context['reports']=self.object.report_producer.all()
-        for item in self.object.report_producer.all():
+        context['reports']=self.object.report_producers.all()
+        for item in self.object.report_producers.all():
             if item.attachments.all():
                 context['report_has_attachments']=True
             context['others'].append((item, 'گزارش', item.presented_at))
@@ -922,38 +971,6 @@ class ResumeDetailsView(LoginRequiredMixin, DetailView):
                 context['invention_has_attachments']=True
             context['object_list'].append((item, 'اختراع', item.registered_at))
             context['invention_num']+=1
-
-
-        for item in self.object.idea_judges.all():
-            if item.attachments.all():
-                context['judge_has_attachments']=True
-            context['others'].append((item, 'داوری- ایده', item.presented_at))
-            context['object_list'].append((item, 'داوری- ایده', item.presented_at))
-            context['judge_num']+=1
-        for item in self.object.book_judges.all():
-            if item.attachments.all():
-                context['judge_has_attachments']=True
-            context['others'].append((item, 'داوری- کتاب', item.published_at))
-            context['object_list'].append((item, 'داوری- کتاب', item.published_at))
-            context['judge_num']+=1
-        for item in self.object.experience_judges.all():
-            if item.attachments.all():
-                context['judge_has_attachments']=True
-            context['others'].append((item, 'داوری- تجربه', item.presented_at))
-            context['object_list'].append((item, 'داوری- تجربه', item.presented_at))
-            context['judge_num']+=1
-        for item in self.object.seminar_judges.all():
-            if item.attachments.all():
-                context['judge_has_attachments']=True
-            context['others'].append((item, 'داوری- سمینار', item.presented_at))
-            context['object_list'].append((item, 'داوری- سمینار', item.presented_at))
-            context['judge_num']+=1
-        for item in self.object.article_judges.all():
-            if item.attachments.all():
-                context['judge_has_attachments']=True
-            context['others'].append((item, 'داوری- مقاله', item.published_at))
-            context['object_list'].append((item, 'داوری- مقاله', item.published_at))
-            context['judge_num']+=1
 
         return context
 

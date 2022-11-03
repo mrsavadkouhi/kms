@@ -114,11 +114,12 @@ VERIFICATION_TYPES = [
 ]
 
 class Order(Document):
-    receiver = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='order_receiver')
-    issued_at = models.DateTimeField()
-    sent_at = models.DateTimeField()
-    answered_at = models.DateTimeField()
-    owner = models.CharField(max_length=255)
+    # receiver = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='order_receiver')
+    judges = models.ManyToManyField(to=Resume, related_name='order_judges')
+    issued_at = models.DateTimeField(null=True, blank=True)
+    sent_at = models.DateTimeField(null=True, blank=True)
+    answered_at = models.DateTimeField(null=True, blank=True)
+    owner = models.CharField(max_length=255, null=True, blank=True)
     verification = models.CharField(max_length=255, choices=VERIFICATION_TYPES)
     other = models.CharField(max_length=255, null=True, blank=True)
 
@@ -126,7 +127,7 @@ class Order(Document):
 class Invention(Document):
     producers = models.ManyToManyField(to=Resume, related_name='invention_producers')
     registered_at = models.DateTimeField()
-    project_title = models.CharField(max_length=255)
+    project_title = models.CharField(max_length=255, null=True, blank=True)
 
 
 class Assessment(Document):
@@ -150,19 +151,16 @@ ARTICLE_PUBLISH_LEVELS = [
     #magazine
     ('ISI', 'ISI'),
     ('ISC', 'ISC'),
-    ('Journal', 'فصلنامه'),
     ('Research', 'علمی-پژوهشی'),
     ('Extension', 'علمی-ترویجی'),
     ('Specialized', 'علمی-تخصصی'),
     #conference
-    ('Sepah', 'سپاه'),
     ('Martial', 'نیروهای مسلح'),
     ('National', 'ملی'),
     ('International', 'بین المللی'),
 ]
 
 ARTICLE_CONFERENCE_PUBLISH_LEVELS = [
-    ('Sepah', 'سپاه'),
     ('Martial', 'نیروهای مسلح'),
     ('National', 'ملی'),
     ('International', 'بین المللی'),
@@ -171,7 +169,6 @@ ARTICLE_CONFERENCE_PUBLISH_LEVELS = [
 ARTICLE_MAGANIZE_PUBLISH_LEVELS = [
     ('ISI', 'ISI'),
     ('ISC', 'ISC'),
-    ('Journal', 'فصلنامه'),
     ('Research', 'علمی-پژوهشی'),
     ('Extension', 'علمی-ترویجی'),
     ('Specialized', 'علمی-تخصصی'),
@@ -180,43 +177,46 @@ ARTICLE_MAGANIZE_PUBLISH_LEVELS = [
 
 class Article(Document):
     producers = models.ManyToManyField(to=Resume, related_name='article_producers')
-    judges = models.ManyToManyField(to=Resume, related_name='article_judges', blank=True, null=True)
+    # judges = models.ManyToManyField(to=Resume, related_name='article_judges', blank=True, null=True)
     key_words = models.TextField(blank=True, null=True)
     published_at = models.DateTimeField()
-    publish_type = models.CharField(max_length=255, choices=ARTICLE_PUBLISH_TYPES)
-    publish_level = models.CharField(max_length=255, choices=ARTICLE_PUBLISH_LEVELS)
-    publish_title = models.CharField(max_length=255)
+    publish_type = models.CharField(max_length=255, choices=ARTICLE_PUBLISH_TYPES, blank=True, null=True)
+    publish_level = models.CharField(max_length=255, choices=ARTICLE_PUBLISH_LEVELS, blank=True, null=True)
+    publish_title = models.CharField(max_length=255, blank=True, null=True)
 
 
 class Experience(Document):
-    producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='experience_producer')
-    judges=models.ManyToManyField(to=Resume, related_name='experience_judges', blank=True, null=True)
+    # producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='experience_producer')
+    producers = models.ManyToManyField(to=Resume, related_name='experience_producers')
+    # judges=models.ManyToManyField(to=Resume, related_name='experience_judges', blank=True, null=True)
     presented_at = models.DateTimeField()
-    assessment_result = models.CharField(max_length=255)
+    assessment_result = models.CharField(max_length=255, blank=True, null=True)
 
 
 class Book(Document):
     producers=models.ManyToManyField(to=Resume, related_name='book_producers')
     fipa = models.CharField(max_length=255)
     published_at = models.DateTimeField()
-    publisher = models.CharField(max_length=255)
-    judges=models.ManyToManyField(to=Resume, related_name='book_judges', blank=True, null=True)
-    assessment_result = models.CharField(max_length=255)
+    publisher = models.CharField(max_length=255, blank=True, null=True)
+    # judges=models.ManyToManyField(to=Resume, related_name='book_judges', blank=True, null=True)
+    assessment_result = models.CharField(max_length=255, blank=True, null=True)
 
 
 class Idea(Document):
-    producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='idea_producer')
-    judges=models.ManyToManyField(to=Resume, related_name='idea_judges', blank=True, null=True)
+    # producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='idea_producer')
+    producers = models.ManyToManyField(to=Resume, related_name='idea_producers')
+    # judges=models.ManyToManyField(to=Resume, related_name='idea_judges', blank=True, null=True)
     presented_at = models.DateTimeField()
-    assessment_result = models.CharField(max_length=255)
+    assessment_result = models.CharField(max_length=255, blank=True, null=True)
 
 
 class Seminar(Document):
-    producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='seminar_producer')
-    judges=models.ManyToManyField(to=Resume, related_name='seminar_judges', blank=True, null=True)
+    # producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='seminar_producer')
+    producers = models.ManyToManyField(to=Resume, related_name='seminar_producers')
+    # judges=models.ManyToManyField(to=Resume, related_name='seminar_judges', blank=True, null=True)
     presented_at = models.DateTimeField()
-    participant_number = models.IntegerField()
-    assessment_result = models.CharField(max_length=255)
+    participant_number = models.IntegerField(blank=True, null=True)
+    assessment_result = models.CharField(max_length=255, blank=True, null=True)
 
 
 WORKSHOP_TYPES = [
@@ -229,17 +229,18 @@ WORKSHOP_TYPES = [
 class Workshop(Document):
     producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='workshop_producer')
     started_at = models.DateTimeField()
-    meeting_number = models.IntegerField()
+    finished_at = models.DateTimeField()
+    duration = models.IntegerField()
     participant_number = models.IntegerField()
     location = models.CharField(max_length=255)
     workshop_type = models.CharField(max_length=255, choices=WORKSHOP_TYPES)
 
 
 CONFERENCE_LEVELS=[
-    ('Citywid', 'شهری'),
-    ('Regional', 'استانی'),
-    ('Countrywide', 'کشوری'),
-    ('Wordwide', 'بین المللی'),
+    ('Organizational', 'سازمانی'),
+    ('Martial', 'نیروهای مسلح'),
+    ('National', 'ملی'),
+    ('International', 'بین المللی'),
 ]
 
 
@@ -256,7 +257,8 @@ class Visit(Document):
 
 
 class Manual(Document):
-    producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='manual_producer')
+    # producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='manual_producer')
+    producers = models.ManyToManyField(to=Resume, related_name='manual_producers')
     declared_at = models.DateTimeField()
 
 
@@ -269,9 +271,10 @@ class Project(Document):
 
 
 class Report(Document):
-    producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='report_producer')
+    # producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='report_producer')
+    producers = models.ManyToManyField(to=Resume, related_name='report_producers')
     presented_at = models.DateTimeField()
-    related_project=models.CharField(max_length=255)
+    related_project = models.CharField(max_length=255, blank=True, null=True)
 
 
 class Thesis(Document):
@@ -297,8 +300,9 @@ FUTURE_TYPES = [
 
 
 class Future(Document):
-    producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='future_producer')
-    presented_at = models.DateTimeField()
+    # producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='future_producer')
+    producers = models.ManyToManyField(to=Resume, related_name='future_producers')
+    presented_at = models.DateTimeField(null=True, blank=True)
     other = models.CharField(max_length=255, null=True, blank=True)
     future_type = models.CharField(max_length=255, choices=FUTURE_TYPES)
 
@@ -318,7 +322,7 @@ PERSON_TYPES = [
 
 class CoWork(Document):
     person_type = models.CharField(max_length=255, choices=PERSON_TYPES)
-    cowork_type = models.CharField(max_length=255, choices=COWORK_TYPES)
+    cowork_type = models.CharField(max_length=255, choices=COWORK_TYPES, null=True, blank=True)
     address = models.TextField(null=True, blank=True)
     started_at = models.DateTimeField()
 

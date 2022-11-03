@@ -116,13 +116,13 @@
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="field_label">حوزه تخصصی: </span>
+                    <span class="input-group-text required" id="field_label">زمان دوره(روز): </span>
                   </div>
-                    <input type="text" class="form-control" value="{{ object.field }}" name="field" aria-describedby="field_label">
+                    <input type="number" class="form-control" value="{{ object.duration }}" name="duration" aria-describedby="field_label">
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="producer_label">ارائه دهنده: </span>
+                    <span class="input-group-text required" id="producer_label">ارائه دهنده/کارآموز: </span>
                   </div>
                     <select name="producer" id="producer" class="select2 form-control">
                         {% for obj in resumes %}
@@ -134,17 +134,26 @@
                     <div class="input-group-append">
                         <span class="input-group-text required" id="started_at_label">تاریخ شروع: </span>
                     </div>
-                    <input type="datetime" id="datepicker" class="form-control" name="started_at" aria-describedby="started_at_label">
+                    <input type="datetime" id="datepicker_started_at" class="form-control" name="started_at" aria-describedby="started_at_label">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-calendar fa-2x"></i></span>
                     </div>
                 </div>
                 <div class="input-group mb-2">
-                  <div class="input-group-append">
-                    <span class="input-group-text required" id="meeting_number_label">تعداد جلسات: </span>
-                  </div>
-                  <input type="number" class="form-control" value="{{ object.meeting_number }}" name="meeting_number" aria-describedby="meeting_number_label">
+                    <div class="input-group-append">
+                        <span class="input-group-text required" id="started_at_label">تاریخ پایان: </span>
+                    </div>
+                    <input type="datetime" id="datepicker_finished_at" class="form-control" name="finished_at" aria-describedby="started_at_label">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-calendar fa-2x"></i></span>
+                    </div>
                 </div>
+{#                <div class="input-group mb-2">#}
+{#                  <div class="input-group-append">#}
+{#                    <span class="input-group-text required" id="meeting_number_label">تعداد جلسات: </span>#}
+{#                  </div>#}
+{#                  <input type="number" class="form-control" value="{{ object.finished_at }}" name="meeting_number" aria-describedby="meeting_number_label">#}
+{#                </div>#}
                 <div class="input-group mb-2">
                   <div class="input-group-append">
                     <span class="input-group-text required" id="participant_number_label">تعداد شرکت کنندگان: </span>
@@ -294,15 +303,26 @@
             },
         };
 
-        var datepicker = $("#datepicker").persianDatepicker(datepickeroption);
-        $('#datepicker').val('{{ object.started_at | j_format_date:"%Y-%m-%d %H:%M" }}');
+        var datepicker_started_at = $("#datepicker_started_at").persianDatepicker(datepickeroption);
+        $('#datepicker_started_at').val('{{ object.started_at | j_format_date:"%Y-%m-%d %H:%M" }}');
 
          $('#ar-form').submit(function () {
 
-             if ($('#datepicker').val() === '') {
-                 $('#datepicker').val('');
+             if ($('#datepicker_started_at').val() === '') {
+                 $('#datepicker_started_at').val('');
              } else {
-                 $('#datepicker').val(datepicker.getState().selected.dateObject.toCalendar('gregorian').toLocale('en').format('YYYY-MM-DD HH:mm'));
+                 $('#datepicker_started_at').val(datepicker_started_at.getState().selected.dateObject.toCalendar('gregorian').toLocale('en').format('YYYY-MM-DD HH:mm'));
+             }
+         });
+        var datepicker_finished_at = $("#datepicker_finished_at").persianDatepicker(datepickeroption);
+        $('#datepicker_finished_at').val('{{ object.finished_at | j_format_date:"%Y-%m-%d %H:%M" }}');
+
+         $('#ar-form').submit(function () {
+
+             if ($('#datepicker_finished_at').val() === '') {
+                 $('#datepicker_finished_at').val('');
+             } else {
+                 $('#datepicker_finished_at').val(datepicker_finished_at.getState().selected.dateObject.toCalendar('gregorian').toLocale('en').format('YYYY-MM-DD HH:mm'));
              }
          });
 

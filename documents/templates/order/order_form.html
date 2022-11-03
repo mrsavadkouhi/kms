@@ -84,12 +84,12 @@
                   </div>
                   <input type="text" class="form-control" value="{{ object.title }}" name="title" aria-describedby="name_label">
                 </div>
-                <div class="input-group mb-2">
-                  <div class="input-group-append">
-                    <span class="input-group-text required" id="organization_code_label">شماره: </span>
-                  </div>
-                  <input type="text" class="form-control" value="{{ object.organization_code }}" name="organization_code" id="organization_code" aria-describedby="organization_code_label">
-                </div>
+{#                <div class="input-group mb-2">#}
+{#                  <div class="input-group-append">#}
+{#                    <span class="input-group-text required" id="organization_code_label">شماره: </span>#}
+{#                  </div>#}
+{#                  <input type="text" class="form-control" value="{{ object.organization_code }}" name="organization_code" id="organization_code" aria-describedby="organization_code_label">#}
+{#                </div>#}
                 <div class="input-group mb-2" hidden>
                   <div class="input-group-append">
                     <span class="input-group-text required" id="type_label">نوع: </span>
@@ -122,15 +122,15 @@
                 </div>
                 <div class="input-group mb-2" id="other">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="field_label">مالک: </span>
+                    <span class="input-group-text" id="field_label">مالک: </span>
                   </div>
                     <input type="text" class="form-control" value="{{ object.owner }}" name="owner" aria-describedby="field_label">
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="producer_label">گیرنده: </span>
+                    <span class="input-group-text required" id="producer_label">داوران: </span>
                   </div>
-                    <select name="receiver" id="receiver" class="select2 form-control">
+                    <select name="judges" id="judges" class="select2 form-control">
                         {% for obj in resumes %}
                             <option value="{{ obj.id }}">{{ obj.title }}-{{ obj.organization_code }}</option>
                         {% endfor %}
@@ -138,7 +138,7 @@
                 </div>
                 <div class="input-group mb-2">
                     <div class="input-group-append">
-                        <span class="input-group-text required" id="issued_at_label">تاریخ صدور: </span>
+                        <span class="input-group-text" id="issued_at_label">تاریخ صدور حکم: </span>
                     </div>
                     <input type="datetime" id="issue_datepicker" class="form-control" name="issued_at" aria-describedby="issued_at_label">
                     <div class="input-group-prepend">
@@ -147,7 +147,7 @@
                 </div>
                 <div class="input-group mb-2">
                     <div class="input-group-append">
-                        <span class="input-group-text required" id="issued_at_label">تاریخ ارسال: </span>
+                        <span class="input-group-text" id="issued_at_label">تاریخ ارسال: </span>
                     </div>
                     <input type="datetime" id="send_datepicker" class="form-control" name="sent_at" aria-describedby="issued_at_label">
                     <div class="input-group-prepend">
@@ -156,7 +156,7 @@
                 </div>
                 <div class="input-group mb-2">
                     <div class="input-group-append">
-                        <span class="input-group-text required" id="issued_at_label">تاریخ جواب: </span>
+                        <span class="input-group-text" id="issued_at_label">تاریخ جواب: </span>
                     </div>
                     <input type="datetime" id="answer_datepicker" class="form-control" name="answered_at" aria-describedby="issued_at_label">
                     <div class="input-group-prepend">
@@ -233,10 +233,17 @@
 
 {% block scripts %}
 	<script>
-        var receiver = $("#receiver").select2({
-                theme: 'bootstrap4',
+        var judges = $("#judges").select2({
+                    theme: 'bootstrap4',
+                    multiple: true,
+                    placeholder: "تهیه کنندگان",
+                    allowClear: true
         });
-        receiver.val("{{ object.receiver.id }}").trigger("change");
+        vals = [];
+        {% for obj in object.judges.all %}
+            vals.push("{{ obj.id }}");
+        {% endfor %}
+        judges.val(vals).trigger("change");
 
         var field = $("#field").select2({
                 theme: 'bootstrap4',

@@ -18,7 +18,7 @@
 
 {% endblock %}
 
-{% block head_title %}{% if title == 'update' %}جزئیات آینده پژوهی{% else %}ایجاد آینده پژوهی{% endif %}{% endblock %}
+{% block head_title %}{% if title == 'update' %}جزئیات رصد و آینده پژوهی{% else %}ایجاد رصد و آینده پژوهی{% endif %}{% endblock %}
 
 
 {% block title-breadcrumb %}
@@ -30,13 +30,13 @@
 				<a>آینده پژوهی و همکاری های علمی</a>
 			</li>
 			<li class="breadcrumb-item">
-                <a href="{% url 'documents:future_list' %}" >فهرست آینده پژوهی ها</a>
+                <a href="{% url 'documents:future_list' %}" >فهرست رصد و آینده پژوهی ها</a>
 			</li>
 			<li class="breadcrumb-item active">
                 {% if title == 'update' %}
                     <a href="{% url 'documents:future_update' object.id %}"><strong>ویرایش {{ object.title }}</strong></a>
                 {% else %}
-                    <a href="{% url 'documents:future_create' %}"><strong>افزودن آینده پژوهی جدید</strong></a>
+                    <a href="{% url 'documents:future_create' %}"><strong>افزودن رصد و آینده پژوهی جدید</strong></a>
                 {% endif %}
 			</li>
 		</ol>
@@ -86,7 +86,7 @@
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="organization_code_label">شناسه: </span>
+                    <span class="input-group-text" id="organization_code_label">شناسه: </span>
                   </div>
                   <input type="text" class="form-control" value="{{ object.organization_code }}" name="organization_code" aria-describedby="organization_code_label">
                 </div>
@@ -104,9 +104,9 @@
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="producer_label">تهیه کننده: </span>
+                    <span class="input-group-text required" id="producer_label">تهیه کنندگان: </span>
                   </div>
-                    <select name="producer" id="producer" class="select2 form-control">
+                    <select name="producers" id="producers" class="select2 form-control">
                         {% for obj in resumes %}
                             <option value="{{ obj.id }}">{{ obj.title }}-{{ obj.organization_code }}</option>
                         {% endfor %}
@@ -130,7 +130,7 @@
                 </div>
                 <div class="input-group mb-2">
                     <div class="input-group-append">
-                        <span class="input-group-text required" id="presented_at_label">تاریخ ارائه: </span>
+                        <span class="input-group-text" id="presented_at_label">تاریخ ارائه: </span>
                     </div>
                     <input type="datetime" id="datepicker" class="form-control" name="presented_at" aria-describedby="presented_at_label">
                     <div class="input-group-prepend">
@@ -197,10 +197,17 @@
 
 {% block scripts %}
 	<script>
-        var producer = $("#producer").select2({
-                theme: 'bootstrap4',
+        var producers = $("#producers").select2({
+                    theme: 'bootstrap4',
+                    multiple: true,
+                    placeholder: "تهیه کنندگان",
+                    allowClear: true
         });
-        producer.val("{{ object.producer.id }}").trigger("change");
+        vals = [];
+        {% for obj in object.judges.all %}
+            vals.push("{{ obj.id }}");
+        {% endfor %}
+        producers.val(vals).trigger("change");
 
         var future_types = $("#future_type").select2({
                 theme: 'bootstrap4',
