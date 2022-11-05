@@ -166,7 +166,7 @@
                         title: '',
 
 						exportOptions: {
-							columns: [0, 2, 3, 4, 5, 6, 7],
+							columns: [0, 2, 4, 5, 6, 7],
 							{#stripHtml: true#}
 						},
                         customize: function (win) {
@@ -177,7 +177,7 @@
 								.prepend("<tr><th colspan='7'>" +
 									"<img src='http://127.0.0.1:8000/static/img/logo.png' class='float-left obj-fit-contain' style='position:relative;width:15%' />" +
 									"<img src='http://127.0.0.1:8000/static/img/sepah_balck.png' class='float-right obj-fit-contain' style='position:relative;width:15%' />" +
-									"<h2 class='text-center'><b>فهرست رزومه دانشی محققین</b></h2>" +
+									"<h2 class='text-center'><u><b>فهرست رزومه دانشی محققین</b></u></h2>" +
 									"</th>" +
 									"</tr>");
                             $(win.document.body).find('tbody')
@@ -212,7 +212,7 @@
                         title: '',
 						filename: 'resumes',
 						exportOptions: {
-							columns: [ 2, 3, 4, 5, 6, 7],
+							columns: [ 2, 4, 5, 6, 7],
 						}
 					},
                     {

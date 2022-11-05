@@ -335,44 +335,177 @@
 						},
                         customize: function (win) {
 							$(win.document.body).addClass('white-bg');
+                            $(win.document.body).find('tbody')
+                                .html('');
 							$(win.document.body).find('thead')
+								.html('')
+                                .addClass('compact')
+								.css('border-color', 'transparent')
 								.css('color', 'black')
 								.css('font-family', 'VazirFD')
-								.prepend("<tr><th colspan='3'>" +
+								.append("<tr>" +
+                                    "<th colspan='5'>" +
 									"<img src='http://127.0.0.1:8000/static/img/logo.png' class='float-left obj-fit-contain' style='position:relative;width:15%' />" +
 									"<img src='http://127.0.0.1:8000/static/img/sepah_balck.png' class='float-right obj-fit-contain' style='position:relative;width:15%' />" +
-									"<h2 class='text-center'>رزومه فعالیت های پژوهشی مرکز تحقیقات</h2>" +
+                                    "<h2 class='text-center'>رزومه فعالیت های پژوهشی مرکز تحقیقات</h2>" +
 									"<h3 class='text-center'>مدیریت دانش ساتخ ندسا</h3>" +
 									"<br><br><br>" +
+                                    "</th>" +
+                                    "</tr>")
+                                .append("<tr>" +
+                                    "<th colspan='5'>" +
+                                    "<div class='col-lg-12' >" +
                                     "{% if object.avatar %}<img class='float-left img-thumbnail circle-img img-circle' src='http://127.0.0.1:8000{{ object.avatar.url }}'>{% endif %}" +
-									"<br><br><br>" +
-                                    "<h3><strong>عنوان: </strong>{{ object.title }}</h3>" +
-									"<h3><strong>کد: </strong>{{ object.code }}</h3>" +
-                                    "<br>" +
-                                    "<h3><strong>آمار کلی تعداد</strong></h3>" +
-                                    "<h3>مقاله: {{ article_num }} , کتاب: {{ book_num }} , سمینار: {{ seminar_num }}</h3>" +
-                                    "<h3>ایده: {{ idea_num }} , تجربه: {{ exp_num }} , دستورالعمل: {{ manual_num }}</h3>" +
-                                    "<h3>کمیته داوران: {{ order_num }} , گزارش: {{ report_num }} , پروژه: {{ project_num }}</h3>" +
-                                    "<h3>دوره/کارگاه آموزشی: {{ workshop_num }} , ثبت اختراع: {{ inv_num }}</h3>" +
-                                    "<br>" +
+                                    "<h2><strong>عنوان: </strong>{{ object.title }}</h2>" +
+									"<h2><strong>کد: </strong>{{ object.code }}</h2>" +
+                                    "<br><br><br>" +
+                                    "</div>" +
+                                    "<br><br><br>" +
                                     "</th>" +
-									"</tr>");
-
-							$(win.document.body).find('table')
-								.addClass('compact')
-								.css('font-size', 'inherit')
-								.css('color', 'black')
-								.css('border-color', 'transparent')
-								.css('font-family', 'VazirFD')
-                                .append(
+                                    "</tr>")
+                                .append("<tr>" +
+                                    "<th colspan='5'>" +
+                                    "<div class='col-lg-12' >" +
+                                    "<div class='col-lg-4 resume_title_purple' style='background-color: blue;' >" +
+                                    "<h2><strong> در یک نگاه</strong></h2>" +
+                                    "</div>" +
+                                    "<br>" +
+                                    "<div class='table-responsive'>" +
+                                    "<table class='table table-striped table-bordered table-hover dataTables-example'>" +
+                                    "<thead>" +
                                     "<tr>" +
-                                    "<th colspan='3'>" +
-                                    "<br><br><br>" +
-                                    "<div class='text-center' >مدیر دانش ساتخ ندسا</div" +
+                                    "<th class='text-center' style='background-color: grey; width: 7%'>ردیف</th>" +
+                                    "<th class='text-center' style='background-color: grey'>عنوان</th>" +
+                                    "<th class='text-center' style='background-color: grey'>تعداد</th>" +
+                                    "<th class='text-center' style='background-color: grey'>پیوست</th>" +
+                                    "</tr>" +
+                                    "</thead>" +
+                                    "<tbody>" +
+                                    "<tr>" +
+                                    "<td class='align-middle text-center'>۱</td>" +
+                                    "<td class='align-middle text-center'>مقالات</td>" +
+                                    "<td class='align-middle text-center'>{{ article_num }}</td>" +
+                                    "<td class='align-middle text-center'>{% if article_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
+                                    "</tr>" +
+                                    "<tr>" +
+                                    "<td class='align-middle text-center'>۲</td>" +
+                                    "<td class='align-middle text-center'>کتاب</td>" +
+                                    "<td class='align-middle text-center'>{{ book_num }}</td>" +
+                                    "<td class='align-middle text-center'>{% if book_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
+                                    "</tr>" +
+                                    "<tr>" +
+                                    "<td class='align-middle text-center'>۳</td>" +
+                                    "<td class='align-middle text-center'>سمینار</td>" +
+                                    "<td class='align-middle text-center'>{{ seminar_num }}</td>" +
+                                    "<td class='align-middle text-center'>{% if seminar_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
+                                    "</tr>" +
+                                    "<tr>" +
+                                    "<td class='align-middle text-center'>۵</td>" +
+                                    "<td class='align-middle text-center'>ایده پردازی</td>" +
+                                    "<td class='align-middle text-center'>{{ idea_num }}</td>" +
+                                    "<td class='align-middle text-center'>{% if idea_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
+                                    "</tr>" +
+                                    "<tr>" +
+                                    "<td class='align-middle text-center'>۶</td>" +
+                                    "<td class='align-middle text-center'>تجربه نگاری</td>" +
+                                    "<td class='align-middle text-center'>{{ exp_num }}</td>" +
+                                    "<td class='align-middle text-center'>{% if exp_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
+                                    "</tr>" +
+                                    "<tr>" +
+                                    "<td class='align-middle text-center'>۷</td>" +
+                                    "<td class='align-middle text-center'>دستورالعمل</td>" +
+                                    "<td class='align-middle text-center'>{{ manual_num }}</td>" +
+                                    "<td class='align-middle text-center'>{% if manual_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
+                                    "</tr>" +
+                                    "<tr>" +
+                                    "<td class='align-middle text-center'>۸</td>" +
+                                    "<td class='align-middle text-center'>کمیته داوران</td>" +
+                                    "<td class='align-middle text-center'>{{ order_num }}</td>" +
+                                    "<td class='align-middle text-center'>{% if order_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
+                                    "</tr>" +
+                                    "<tr>" +
+                                    "<td class='align-middle text-center'>۹</td>" +
+                                    "<td class='align-middle text-center'>گزارشات فنی</td>" +
+                                    "<td class='align-middle text-center'>{{ report_num }}</td>" +
+                                    "<td class='align-middle text-center'>{% if report_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
+                                    "</tr>" +
+                                    "<tr>" +
+                                    "<td class='align-middle text-center'>۱۰</td>" +
+                                    "<td class='align-middle text-center'>پروژه خاتمه یافته</td>" +
+                                    "<td class='align-middle text-center'>{{ project_num }}</td>" +
+                                    "<td class='align-middle text-center'>{% if project_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
+                                    "</tr>" +
+                                    "<tr>" +
+                                    "<td class='align-middle text-center'>۱۱</td>" +
+                                    "<td class='align-middle text-center'>دوره/ کارگاه آموزشی</td>" +
+                                    "<td class='align-middle text-center'>{{ workshop_num }}</td>" +
+                                    "<td class='align-middle text-center'>{% if workshop_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
+                                    "</tr>" +
+                                    "<tr>" +
+                                    "<td class='align-middle text-center'>۱۲</td>" +
+                                    "<td class='align-middle text-center'>ثبت اختراع</td>" +
+                                    "<td class='align-middle text-center'>{{ invention_num }}</td>" +
+                                    "<td class='align-middle text-center'>{% if invention_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
+                                    "</tr>" +
+                                    "</tbody>" +
+                                    "</table>" +
+                                    "</div>" +
                                     "<br><br><br>" +
                                     "</th>" +
-                                    "<tr>"
-                                )
+                                    "</tr>")
+                                .append("<tr>" +
+                                    "<th colspan='5'>" +
+                                    "<div class='col-lg-12' >" +
+                                    "<div class='col-lg-4 resume_title_red'>" +
+                                    "<h2><strong>دستاورد محققین مرکز</strong></h2>" +
+                                    "</div>" +
+                                    "<br>" +
+                                    "<div class='table-responsive'>" +
+                                    "<table class='table table-striped table-bordered table-hover dataTables-example'>" +
+                                    "<thead>" +
+                                    "<tr>" +
+                                    "<th class='text-center' style='background-color: grey; width: 7%'>ردیف</th>" +
+                                    "<th class='text-center' style='background-color: grey'>محقق</th>" +
+                                    "<th class='text-center' style='background-color: grey'>مقاله</th>" +
+                                    "<th class='text-center' style='background-color: grey'>کتاب</th>" +
+                                    "<th class='text-center' style='background-color: grey'>ثبت اختراع</th>" +
+                                    "<th class='text-center' style='background-color: grey'>ایده</th>" +
+                                    "<th class='text-center' style='background-color: grey'>تجربه</th>" +
+                                    "<th class='text-center' style='background-color: grey'>دستورالعمل</th>" +
+                                    "<th class='text-center' style='background-color: grey'>پروژه</th>" +
+                                    "<th class='text-center' style='background-color: grey'>سمینار</th>" +
+                                    "<th class='text-center' style='background-color: grey'>گزارش</th>" +
+                                    "<th class='text-center' style='background-color: grey'>کارگاه</th>" +
+                                    "<th class='text-center' style='background-color: grey'>کمیته داوران</th>" +
+                                    "</tr>" +
+                                    "</thead>" +
+                                    "<tbody>" +
+                                    "{% for title, articles, books, inventions, ideas, experiences, manuals, projects, seminars, reports, workshops,orders in object_list %}" +
+                                    "<tr>" +
+                                        "<td class='align-middle text-center'>{{ forloop.counter }}</td>"+
+                                        "<td class='align-middle text-center'>{{ title }}</td>"+
+                                        "<td class='align-middle text-center'>{{ articles }}</td>"+
+                                        "<td class='align-middle text-center'>{{ books }}</td>"+
+                                        "<td class='align-middle text-center'>{{ inventions }}</td>"+
+                                        "<td class='align-middle text-center'>{{ ideas }}</td>"+
+                                        "<td class='align-middle text-center'>{{ experiences }}</td>"+
+                                        "<td class='align-middle text-center'>{{ manuals }}</td>"+
+                                        "<td class='align-middle text-center'>{{ projects }}</td>"+
+                                        "<td class='align-middle text-center'>{{ seminars }}</td>"+
+                                        "<td class='align-middle text-center'>{{ reports }}</td>"+
+                                        "<td class='align-middle text-center'>{{ workshops }}</td>"+
+                                        "<td class='align-middle text-center'>{{ orders }}</td>" +
+                                    "</tr>" +
+                                    "{% endfor %}" +
+                                    "</tbody>" +
+                                    "</table>" +
+                                    "</div>" +
+                                    "<br><br><br>" +
+                                    "<h2 class='text-center' ><b>مدیر دانش ساتخ ندسا</b></h2>" +
+                                    "<h3 class='text-center' >محل مهر و امضا</h3" +
+                                    "<br><br><br>" +
+                                    "</th>" +
+                                    "</tr>")
 						}
 					},
                     {

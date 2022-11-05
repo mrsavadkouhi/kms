@@ -375,13 +375,13 @@
                                     "</div>" +
                                     "<br>" +
                                     "{% if object.avatar %}<img class='float-left img-thumbnail circle-img img-circle' src='http://127.0.0.1:8000{{ object.avatar.url }}'>{% endif %}" +
-                                    "<h3><strong>نام و نام خانوادگی: </strong>{{ object.title }}</h3>" +
-                                    "<h3><strong>شناسه پاسداری/کد ملی: </strong>{{ object.organization_code }}</h3>" +
-                                    "<h3><strong>سال ورود: </strong>{{ object.entrance_year }}</h3>" +
-                                    "<h3><strong>رشته: </strong>{{ object.measure }}</h3>" +
-                                    "<h3><strong>مدرک: </strong>{{ object.degree }}</h3>" +
-                                    "<h3><strong>مرکز تحقیقاتی: </strong>{{ object.center.title }}</h3>" +
-                                    "<h3><strong>توضیحات: </strong>{{ object.description }}</h3>" +
+                                    "<h2><strong>نام و نام خانوادگی: </strong>{{ object.title }}</h2>" +
+                                    "<h2><strong>شناسه پاسداری/کد ملی: </strong>{{ object.organization_code }}</h2>" +
+                                    "<h2><strong>سال ورود: </strong>{{ object.entrance_year }}</h2>" +
+                                    "<h2><strong>رشته: </strong>{{ object.measure }}</h2>" +
+                                    "<h2><strong>مدرک: </strong>{{ object.degree }}</h2>" +
+                                    "<h2><strong>مرکز تحقیقاتی: </strong>{{ object.center.title }}</h2>" +
+                                    "<h2><strong>توضیحات: </strong>{{ object.description }}</h2>" +
                                     "</div>" +
                                     "<br><br><br>" +
                                     "</th>" +
@@ -423,12 +423,6 @@
                                     "<td class='align-middle text-center'>{% if seminar_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
                                     "</tr>" +
                                     "<tr>" +
-                                    "<td class='align-middle text-center'>۴</td>" +
-                                    "<td class='align-middle text-center'>پایان نامه</td>" +
-                                    "<td class='align-middle text-center'>{{ thesis_num }}</td>" +
-                                    "<td class='align-middle text-center'>{% if thesis_has_attachments%}دارد{% else %}ندارد{% endif %}</td>" +
-                                    "</tr>" +
-                                    "<tr>" +
                                     "<td class='align-middle text-center'>۵</td>" +
                                     "<td class='align-middle text-center'>ایده پردازی</td>" +
                                     "<td class='align-middle text-center'>{{ idea_num }}</td>" +
@@ -448,9 +442,9 @@
                                     "</tr>" +
                                     "<tr>" +
                                     "<td class='align-middle text-center'>۸</td>" +
-                                    "<td class='align-middle text-center'>داوری</td>" +
-                                    "<td class='align-middle text-center'>{{ judge_num }}</td>" +
-                                    "<td class='align-middle text-center'>{% if judge_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
+                                    "<td class='align-middle text-center'>کمیته داوران</td>" +
+                                    "<td class='align-middle text-center'>{{ order_num }}</td>" +
+                                    "<td class='align-middle text-center'>{% if order_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
                                     "</tr>" +
                                     "<tr>" +
                                     "<td class='align-middle text-center'>۹</td>" +
@@ -466,9 +460,9 @@
                                     "</tr>" +
                                     "<tr>" +
                                     "<td class='align-middle text-center'>۱۱</td>" +
-                                    "<td class='align-middle text-center'>احکام صادره</td>" +
-                                    "<td class='align-middle text-center'>{{ order_num }}</td>" +
-                                    "<td class='align-middle text-center'>{% if order_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
+                                    "<td class='align-middle text-center'>دوره/ کارگاه آموزشی</td>" +
+                                    "<td class='align-middle text-center'>{{ workshop_num }}</td>" +
+                                    "<td class='align-middle text-center'>{% if workshop_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
                                     "</tr>" +
                                     "<tr>" +
                                     "<td class='align-middle text-center'>۱۲</td>" +
@@ -496,7 +490,7 @@
                                     "<th class='text-center' style='background-color: grey; width: 7%'>ردیف</th>" +
                                     "<th class='text-center' style='background-color: grey'>عنوان مقاله</th>" +
                                     "<th class='text-center' style='background-color: grey'>نوع ارائه</th>" +
-                                    "<th class='text-center' style='background-color: grey'>سطح ارائه</th>" +
+                                    "<th class='text-center' style='background-color: grey'>محل نشر</th>" +
                                     "<th class='text-center' style='background-color: grey'>تاریخ چاپ</th>" +
                                     "<th class='text-center' style='background-color: grey'>شناسه سازمانی</th>" +
                                     "</tr>" +
@@ -690,7 +684,7 @@
                                     "<thead>" +
                                     "<tr>" +
                                     "<th class='text-center' style='background-color: grey; width: 7%'>ردیف</th>" +
-                                    "<th class='text-center' style='background-color: grey'>عنوان</th>" +
+                                    "<th class='text-center' style='background-color: grey'>موضوع</th>" +
                                     "<th class='text-center' style='background-color: grey'>نوع</th>" +
                                     "<th class='text-center' style='background-color: grey'>تاریخ</th>" +
                                     "</tr>" +

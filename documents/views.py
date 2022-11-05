@@ -875,7 +875,8 @@ class ResumeDetailsView(LoginRequiredMixin, DetailView):
         for item in self.object.workshop_producer.all():
             if item.attachments.all():
                 context['workshop_has_attachments']=True
-            context['object_list'].append((item, 'ایده', item.started_at))
+            context['others'].append((item, 'دوره/کارگاه آموزشی', item.declared_at))
+            context['object_list'].append((item, 'دوره/کارگاه', item.started_at))
             context['workshop_num']+=1
 
         context['ideas']=self.object.idea_producers.all()
