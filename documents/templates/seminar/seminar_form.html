@@ -228,7 +228,7 @@
                     allowClear: true
         });
         vals = [];
-        {% for obj in object.judges.all %}
+        {% for obj in object.producers.all %}
             vals.push("{{ obj.id }}");
         {% endfor %}
         producers.val(vals).trigger("change");

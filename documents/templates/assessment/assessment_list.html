@@ -76,11 +76,11 @@
 					<tr>
 						<th class="text-center" style="background-color: white;width: 7%">ردیف</th>
 						<th class="text-center" style="background-color: white">محقق</th>
-						<th class="text-center" style="background-color: white">کد پاسداری</th>
+{#						<th class="text-center" style="background-color: white">کد پاسداری</th>#}
 						<th class="text-center" style="background-color: white">نام پدر</th>
 						<th class="text-center" style="background-color: white">رتبه علمی</th>
 						<th class="text-center" style="background-color: white">شماره داوری</th>
-						<th class="text-center" style="background-color: white">تاریخ صدور داوری</th>
+						<th class="text-center" style="background-color: white">تاریخ صدور</th>
 						<th class="text-center" style="background-color: white">تاریخ دریافت نخبگی</th>
 						<th class="text-center" style="background-color: white">نوع پرونده</th>
 						<th class="text-center" style="background-color: white">شرط لازم</th>
@@ -95,7 +95,7 @@
 						<tr id="c-tr-{{ obj.id }}"style="background-color: whitesmoke">
 							<td class="align-middle text-center">{{ forloop.counter }}</td>
 							<td class="align-middle text-center"><a href="{% url 'documents:assessment_details' pk=obj.id %}">{{ obj.producer.title }}</a></td>
-							<td class="align-middle text-center">{{ obj.producer.organization_code }}</td>
+{#							<td class="align-middle text-center">{{ obj.producer.organization_code }}</td>#}
 							<td class="align-middle text-center">{{ obj.father }}</td>
 							<td class="align-middle text-center">{{ obj.scientific_rank }}</td>
 							<td class="align-middle text-center">{{ obj.issue_code }}</td>
@@ -175,7 +175,7 @@
 						className: 'bg-transparent',
                         title: '',
 						exportOptions: {
-							columns: [0, 1, 2, 3, 4, 5, 6, 7,8,9,10,11],
+							columns: [0, 1, 3, 5, 7,8,10],
 							{#stripHtml: true#}
 						},
                         customize: function (win) {
@@ -186,7 +186,7 @@
 								.prepend("<tr><th colspan='13'>" +
 									"<img src='http://127.0.0.1:8000/static/img/logo.png' class='float-left obj-fit-contain' style='position:relative;width:15%' />" +
 									"<img src='http://127.0.0.1:8000/static/img/sepah_balck.png' class='float-right obj-fit-contain' style='position:relative;width:15%' />" +
-									"<h2 class='text-center'><b>فهرست ارزیابی ها</b></h2>" +
+									"<h2 class='text-center'><b>نظام ارزیابی محققین و مدبران</b></h2>" +
 									"</th>" +
 									"</tr>");
                             $(win.document.body).find('tbody')
@@ -221,7 +221,7 @@
                         title: '',
 						filename: 'assessments',
 						exportOptions: {
-							columns: [ 1, 2, 3, 4, 5, 6, 7,8,9,10,11],
+							columns: [ 1, 2, 3, 4, 5, 6, 7,8,9,10],
 						}
 					},
                     {

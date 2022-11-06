@@ -875,7 +875,7 @@ class ResumeDetailsView(LoginRequiredMixin, DetailView):
         for item in self.object.workshop_producer.all():
             if item.attachments.all():
                 context['workshop_has_attachments']=True
-            context['others'].append((item, 'دوره/کارگاه آموزشی', item.declared_at))
+            context['others'].append((item, 'دوره/کارگاه آموزشی', item.started_at))
             context['object_list'].append((item, 'دوره/کارگاه', item.started_at))
             context['workshop_num']+=1
 
@@ -920,8 +920,12 @@ class ResumeDetailsView(LoginRequiredMixin, DetailView):
         for item in self.object.order_judges.all():
             if item.attachments.all():
                 context['order_has_attachments']=True
-            context['others'].append((item, item.field+"-"+'کمیته داوران', item.issued_at))
-            context['object_list'].append((item, item.field+"-"+'کمیته داوران', item.issued_at))
+            if item.field:
+                context['others'].append((item, item.field+"-"+'کمیته داوران', item.issued_at))
+                context['object_list'].append((item, item.field+"-"+'کمیته داوران', item.issued_at))
+            else:
+                context['others'].append((item,'نامشخص-کمیته داوران', item.issued_at))
+                context['object_list'].append((item, item.field + "-" + 'نامشخص-کمیته داوران', item.issued_at))
             context['order_num']+=1
 
         context['seminars']=self.object.seminar_producers.all()

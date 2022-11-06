@@ -98,7 +98,7 @@
 							<td class="align-middle text-center">{{ obj.field }}</td>
 							<td class="align-middle text-center">
                                 {% for o in obj.producers.all %}
-                                    {{ o.title }}-{{ o.organization_code }},
+                                    {{ o.title }},
                                 {% endfor %}
                             </td>
 {#							<td class="align-middle text-center">{{ obj.producer.degree }}</td>#}
@@ -194,7 +194,7 @@
 								.prepend("<tr><th colspan='11'>" +
 									"<img src='http://127.0.0.1:8000/static/img/logo.png' class='float-left obj-fit-contain' style='position:relative;width:15%' />" +
 									"<img src='http://127.0.0.1:8000/static/img/sepah_balck.png' class='float-right obj-fit-contain' style='position:relative;width:15%' />" +
-									"<h2 class='text-center'><u><b>فهرست سمینار</b></u></h2>" +
+									"<h2 class='text-center'><u><b>فهرست سمینارهای ارائه شده</b></u></h2>" +
 									"</th>" +
 									"</tr>");
                             $(win.document.body).find('tbody')
