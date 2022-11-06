@@ -48,7 +48,7 @@
 {#				<h3><strong>شماره: </strong>{{ object.organization_code }}</h3>#}
 				<h3><strong>موضوع: </strong>{{ object.field }}{% if object.field == 'سایر' %}-{{ object.other }}{% endif %}</h3>
 				<h3><strong>مالک: </strong>{{ object.owner }}</h3>
-				<h3><strong>داوران: </strong>
+				<h3><strong>داوری: </strong>
                 {% for o in object.judges.all %}
                     {{ o.title }}-{{ o.organization_code }},
                 {% endfor %}
