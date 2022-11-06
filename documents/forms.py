@@ -1824,19 +1824,19 @@ class DocumentImportForm(forms.Form):
                 raise forms.ValidationError(
                     "فرمت اطلاعات ستون محقق در خط " + str(error_line) + " فایل صحیح نیست")
 
-            father=row[2]
-            if father in ['nan', None, '']:
-                raise forms.ValidationError("ستون نام پدر در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            # father=row[2]
+            # if father in ['nan', None, '']:
+            #     raise forms.ValidationError("ستون نام پدر در خط " + str(error_line) + " نمی تواند خالی باشد.")
 
-            scientific_rank=row[3]
+            scientific_rank=row[2]
             if scientific_rank in ['nan', None, '']:
                 raise forms.ValidationError("ستون رتبه علمی در خط " + str(error_line) + " نمی تواند خالی باشد.")
 
-            issue_code=row[4]
+            issue_code=row[3]
             if issue_code in ['nan', None, '']:
                 raise forms.ValidationError("ستون شماره داوری در خط " + str(error_line) + " نمی تواند خالی باشد.")
 
-            order_issued_at=row[5]
+            order_issued_at=row[4]
             if order_issued_at in ['nan', None, '']:
                 raise forms.ValidationError("ستون تاریخ صدور داوری در خط " + str(error_line) + " نمی تواند خالی باشد.")
             try:
@@ -1846,7 +1846,7 @@ class DocumentImportForm(forms.Form):
                 raise forms.ValidationError(
                     "فرمت اطلاعات در ستون تاریخ صدور در خط " + str(error_line) + " فایل صحیح نیست.")
 
-            elite_received_at=row[6]
+            elite_received_at=row[5]
             if elite_received_at in ['nan', None, '']:
                 raise forms.ValidationError("ستون تاریخ دریافت نخبگی در خط " + str(error_line) + " نمی تواند خالی باشد.")
             try:
@@ -1856,11 +1856,11 @@ class DocumentImportForm(forms.Form):
                 raise forms.ValidationError(
                     "فرمت اطلاعات در ستون تاریخ دریافت در خط " + str(error_line) + " فایل صحیح نیست.")
 
-            profile_type=row[7]
+            profile_type=row[6]
             if profile_type in ['nan', None, '']:
                 raise forms.ValidationError("ستون نویسنده در خط " + str(error_line) + " نمی تواند خالی باشد.")
 
-            center=row[10]
+            center=row[9]
             if center in ['nan', None, '']:
                 raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
             try:
@@ -1870,19 +1870,18 @@ class DocumentImportForm(forms.Form):
                     "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
 
             doc_type='Assessment'
-            necessary_condition=row[8]
-            sufficient_condition=row[9]
+            necessary_condition=row[7]
+            sufficient_condition=row[8]
 
             cleaned_data.append(
-                (producer_obj, doc_type, father, issue_code, scientific_rank, order_issued_at, elite_received_at, profile_type, sufficient_condition, necessary_condition, center))
+                (producer_obj, doc_type, issue_code, scientific_rank, order_issued_at, elite_received_at, profile_type, sufficient_condition, necessary_condition, center))
         return cleaned_data
 
     def import_assessments(self,excel_data):
         cleaned_data=self.check_assessments(excel_data)
-        for producer_obj, doc_type, father, issue_code, scientific_rank, order_issued_at, elite_received_at, profile_type, sufficient_condition, necessary_condition, center in cleaned_data:
+        for producer_obj, doc_type, issue_code, scientific_rank, order_issued_at, elite_received_at, profile_type, sufficient_condition, necessary_condition, center in cleaned_data:
             assessment=Assessment.objects.create(
                 type=doc_type,
-                father=father,
                 producer=producer_obj,
                 scientific_rank=scientific_rank,
                 issue_code=issue_code,

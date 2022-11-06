@@ -136,7 +136,7 @@ class Assessment(Document):
     order_issued_at = models.DateTimeField()
     issue_code = models.CharField(max_length=255)
     scientific_rank = models.CharField(max_length=255)
-    father = models.CharField(max_length=255)
+    # father = models.CharField(max_length=255)
     profile_type = models.CharField(max_length=255)
     necessary_condition = models.TextField(null=True, blank=True)
     sufficient_condition = models.TextField(null=True, blank=True)
