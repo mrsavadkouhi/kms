@@ -313,7 +313,7 @@ class DocumentImportForm(forms.Form):
                 producers_list.append(producer_obj)
 
             publish_type = row[4]
-            if publish_type in ['nan', None, '']:
+            if publish_type in ['nan', None, 'None', '']:
                pass
             else:
                 flag = True
@@ -326,7 +326,7 @@ class DocumentImportForm(forms.Form):
                         "فرمت اطلاعات ستون نوع انتشار در خط " + str(error_line) + " فایل صحیح نیست")
 
             publish_level = row[5]
-            if publish_level in ['nan', None, '']:
+            if publish_level in ['nan', None, 'None', '']:
                pass
             else:
                 flag = True
