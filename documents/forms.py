@@ -283,7 +283,7 @@ class DocumentImportForm(forms.Form):
 
             published_at = row[3]
             if published_at in ['nan', None, '']:
-                raise forms.ValidationError("ستون انتشار چاپ در خط " + str(error_line) + " نمی تواند خالی باشد.")
+                raise forms.ValidationError("ستون تاریخ چاپ در خط " + str(error_line) + " نمی تواند خالی باشد.")
             try:
                 published_at = jdatetime.datetime.strptime(published_at, "%Y/%m/%d")
                 published_at = published_at.togregorian()
@@ -291,8 +291,6 @@ class DocumentImportForm(forms.Form):
                 raise forms.ValidationError("فرمت اطلاعات ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
             publish_title = row[6]
-            if publish_title in ['nan', None, '']:
-                raise forms.ValidationError("ستون عنوان انتشار در خط " + str(error_line) + " نمی تواند خالی باشد.")
 
             center = row[7]
             if center in ['nan', None, '']:
@@ -316,27 +314,29 @@ class DocumentImportForm(forms.Form):
 
             publish_type = row[4]
             if publish_type in ['nan', None, '']:
-                raise forms.ValidationError("ستون نوع انتشار در خط " + str(error_line) + " نمی تواند خالی باشد.")
-            flag = True
-            for name, des in ARTICLE_PUBLISH_TYPES:
-                if publish_type == des:
-                    publish_type = name
-                    flag = False
-            if flag:
-                raise forms.ValidationError(
-                    "فرمت اطلاعات ستون نوع انتشار در خط " + str(error_line) + " فایل صحیح نیست")
+               pass
+            else:
+                flag = True
+                for name, des in ARTICLE_PUBLISH_TYPES:
+                    if publish_type == des:
+                        publish_type = name
+                        flag = False
+                if flag:
+                    raise forms.ValidationError(
+                        "فرمت اطلاعات ستون نوع انتشار در خط " + str(error_line) + " فایل صحیح نیست")
 
             publish_level = row[5]
             if publish_level in ['nan', None, '']:
-                raise forms.ValidationError("ستون سطح انتشار در خط " + str(error_line) + " نمی تواند خالی باشد.")
-            flag = True
-            for name, des in ARTICLE_PUBLISH_LEVELS:
-                if publish_level == des:
-                    publish_level=name
-                    flag = False
-            if flag:
-                raise forms.ValidationError(
-                    "فرمت اطلاعات ستون سطح انتشار در خط " + str(error_line) + " فایل صحیح نیست")
+               pass
+            else:
+                flag = True
+                for name, des in ARTICLE_PUBLISH_LEVELS:
+                    if publish_level == des:
+                        publish_level=name
+                        flag = False
+                if flag:
+                    raise forms.ValidationError(
+                        "فرمت اطلاعات ستون سطح انتشار در خط " + str(error_line) + " فایل صحیح نیست")
 
             doc_type='Article'
 
@@ -385,8 +385,6 @@ class DocumentImportForm(forms.Form):
                 raise forms.ValidationError("فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
             publisher = row[4]
-            if publisher in ['nan', None, '']:
-                raise forms.ValidationError("ستون انتشارات در خط " + str(error_line) + " نمی تواند خالی باشد.")
 
             # assessment_result = row[8]
             # if assessment_result in ['nan', None, '']:
@@ -714,8 +712,6 @@ class DocumentImportForm(forms.Form):
                 raise forms.ValidationError("ستون شناسه در خط " + str(error_line) + " نمی تواند خالی باشد.")
 
             owner = row[2]
-            if owner in ['nan', None, '']:
-                raise forms.ValidationError("ستون مالک در خط " + str(error_line) + " نمی تواند خالی باشد.")
 
             if row[3] in ['nan', None, '']:
                 raise forms.ValidationError("ستون داوری در خط " + str(error_line) + " نمی تواند خالی باشد.")
@@ -730,33 +726,36 @@ class DocumentImportForm(forms.Form):
 
             issued_at=row[4]
             if issued_at in ['nan', None, '']:
-                raise forms.ValidationError("ستون تاریخ صدور در خط " + str(error_line) + " نمی تواند خالی باشد.")
-            try:
-                issued_at=jdatetime.datetime.strptime(issued_at, "%Y/%m/%d")
-                issued_at=issued_at.togregorian()
-            except:
-                raise forms.ValidationError(
-                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+                pass
+            else:
+                try:
+                    issued_at=jdatetime.datetime.strptime(issued_at, "%Y/%m/%d")
+                    issued_at=issued_at.togregorian()
+                except:
+                    raise forms.ValidationError(
+                        "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
             sent_at=row[5]
             if sent_at in ['nan', None, '']:
-                raise forms.ValidationError("ستون تاریخ ارسال در خط " + str(error_line) + " نمی تواند خالی باشد.")
-            try:
-                sent_at=jdatetime.datetime.strptime(sent_at, "%Y/%m/%d")
-                sent_at=sent_at.togregorian()
-            except:
-                raise forms.ValidationError(
-                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+                pass
+            else:
+                try:
+                    sent_at=jdatetime.datetime.strptime(sent_at, "%Y/%m/%d")
+                    sent_at=sent_at.togregorian()
+                except:
+                    raise forms.ValidationError(
+                        "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
             answered_at=row[6]
             if answered_at in ['nan', None, '']:
-                raise forms.ValidationError("ستون تاریخ جواب در خط " + str(error_line) + " نمی تواند خالی باشد.")
-            try:
-                answered_at=jdatetime.datetime.strptime(answered_at, "%Y/%m/%d")
-                answered_at=answered_at.togregorian()
-            except:
-                raise forms.ValidationError(
-                    "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
+                pass
+            else:
+                try:
+                    answered_at=jdatetime.datetime.strptime(answered_at, "%Y/%m/%d")
+                    answered_at=answered_at.togregorian()
+                except:
+                    raise forms.ValidationError(
+                        "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
 
             center=row[7]
@@ -818,8 +817,6 @@ class DocumentImportForm(forms.Form):
                     "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
             assessment_result=row[4]
-            if assessment_result in ['nan', None, '']:
-                raise forms.ValidationError("ستون ارزشیابی در خط " + str(error_line) + " نمی تواند خالی باشد.")
 
             center=row[5]
             if center in ['nan', None, '']:
@@ -1078,8 +1075,6 @@ class DocumentImportForm(forms.Form):
                     "فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
             related_project=row[5]
-            if related_project in ['nan', None, '']:
-                raise forms.ValidationError("ستون پروژه های مرتبط در خط " + str(error_line) + " نمی تواند خالی باشد.")
 
             center=row[6]
             if center in ['nan', None, '']:
