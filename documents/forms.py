@@ -2,6 +2,8 @@ import jdatetime
 import openpyxl
 import pandas as pd
 from django import forms
+from django.core.exceptions import ValidationError
+
 from .models import *
 from bootstrap_modal_forms.forms import BSModalModelForm
 
@@ -59,9 +61,20 @@ class CenterForm(forms.ModelForm):
 
 
 class ResumeForm(forms.ModelForm):
+    title = forms.CharField(required=True)
     class Meta:
         model = Resume
         fields = '__all__'
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        title = cleaned_data.get('title')
+        if title:
+            if Resume.objects.filter(title=title).exists():
+                raise forms.ValidationError("نام و نام خانوادگی از قبل وجود داشته است.")
+
+        return cleaned_data
 
 
 class ArticleForm(forms.ModelForm):
@@ -292,20 +305,14 @@ class DocumentImportForm(forms.Form):
 
             if row[2] in ['nan', None, '']:
                 raise forms.ValidationError("ستون نویسندگان در خط " + str(error_line) + " نمی تواند خالی باشد.")
-            producers_raw = row[2].split(',')
-            producers_raw = producers_raw[:-1]
-            if not producers_raw:
+            producers = row[2].split(',')
+            producers = producers[:-1]
+            if not producers:
                 raise forms.ValidationError("فرمت اطلاعات ستون نویسندگان در خط " + str(error_line) + " فایل صحیح نیست")
-            producers = []
-            for producer in producers_raw:
-                producer = producer.strip()
-                detail = producer.split('-')
-                try:
-                    producer = (detail[1], detail[0])
-                except:
-                    raise forms.ValidationError(
-                        "فرمت اطلاعات ستون نویسندگان در خط " + str(error_line) + " فایل صحیح نیست")
-                producers.append(producer)
+            producers_list = []
+            for producer in producers:
+                producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer.strip())
+                producers_list.append(producer_obj)
 
             publish_type = row[4]
             if publish_type in ['nan', None, '']:
@@ -330,11 +337,6 @@ class DocumentImportForm(forms.Form):
             if flag:
                 raise forms.ValidationError(
                     "فرمت اطلاعات ستون سطح انتشار در خط " + str(error_line) + " فایل صحیح نیست")
-
-            producers_list = []
-            for producer in producers:
-                producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer[1], organization_code=producer[0])
-                producers_list.append(producer_obj)
 
             doc_type='Article'
 
@@ -403,29 +405,15 @@ class DocumentImportForm(forms.Form):
                 raise forms.ValidationError(
                     "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
 
-
             if row[2] in ['nan', None, '']:
                 raise forms.ValidationError("ستون نویسندگان در خط " + str(error_line) + " نمی تواند خالی باشد.")
-            producers_raw = row[2].split(',')
-            producers_raw = producers_raw[:-1]
-            if not producers_raw:
-                raise forms.ValidationError(
-                    "فرمت اطلاعات ستون نویسندگان در خط " + str(error_line) + " فایل صحیح نیست")
-            producers=[]
-            for producer in producers_raw:
-                producer=producer.strip()
-                detail=producer.split('-')
-                try:
-                    producer=(detail[1], detail[0])
-                except:
-                    raise forms.ValidationError(
-                        "فرمت اطلاعات ستون نویسندگان در خط " + str(error_line) + " فایل صحیح نیست")
-                producers.append(producer)
-
-            producers_list=[]
+            producers = row[2].split(',')
+            producers = producers[:-1]
+            if not producers:
+                raise forms.ValidationError("فرمت اطلاعات ستون نویسندگان در خط " + str(error_line) + " فایل صحیح نیست")
+            producers_list = []
             for producer in producers:
-                producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer[1],
-                                                             organization_code=producer[0])
+                producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer.strip())
                 producers_list.append(producer_obj)
 
             doc_type = 'Book'
@@ -483,27 +471,15 @@ class DocumentImportForm(forms.Form):
 
             if row[2] in ['nan', None, '']:
                 raise forms.ValidationError("ستون تجربه نگاران در خط " + str(error_line) + " نمی تواند خالی باشد.")
-            producers_raw = row[2].split(',')
-            producers_raw = producers_raw[:-1]
-            if not producers_raw:
-                raise forms.ValidationError(
-                    "فرمت اطلاعات ستون تجربه نگاران در خط " + str(error_line) + " فایل صحیح نیست")
-            producers = []
-            for producer in producers_raw:
-                producer = producer.strip()
-                detail = producer.split('-')
-                try:
-                    producer = (detail[1], detail[0])
-                except:
-                    raise forms.ValidationError(
-                        "فرمت اطلاعات ستون تجربه نگاران در خط " + str(error_line) + " فایل صحیح نیست")
-                producers.append(producer)
-
+            producers = row[2].split(',')
+            producers = producers[:-1]
+            if not producers:
+                raise forms.ValidationError("فرمت اطلاعات ستون تجربه نگاران در خط " + str(error_line) + " فایل صحیح نیست")
             producers_list = []
             for producer in producers:
-                producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer[1],
-                                                               organization_code=producer[0])
+                producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer.strip())
                 producers_list.append(producer_obj)
+
 
             doc_type='Experience'
             
@@ -558,26 +534,13 @@ class DocumentImportForm(forms.Form):
 
             if row[2] in ['nan', None, '']:
                 raise forms.ValidationError("ستون ایده پردازان در خط " + str(error_line) + " نمی تواند خالی باشد.")
-            producers_raw = row[2].split(',')
-            producers_raw = producers_raw[:-1]
-            if not producers_raw:
-                raise forms.ValidationError(
-                    "فرمت اطلاعات ستون ایده پردازان در خط " + str(error_line) + " فایل صحیح نیست")
-            producers = []
-            for producer in producers_raw:
-                producer = producer.strip()
-                detail = producer.split('-')
-                try:
-                    producer = (detail[1], detail[0])
-                except:
-                    raise forms.ValidationError(
-                        "فرمت اطلاعات ستون ایده پردازان در خط " + str(error_line) + " فایل صحیح نیست")
-                producers.append(producer)
-
+            producers = row[2].split(',')
+            producers = producers[:-1]
+            if not producers:
+                raise forms.ValidationError("فرمت اطلاعات ستون ایده پردازان در خط " + str(error_line) + " فایل صحیح نیست")
             producers_list = []
             for producer in producers:
-                producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer[1],
-                                                               organization_code=producer[0])
+                producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer.strip())
                 producers_list.append(producer_obj)
 
             doc_type='Idea'
@@ -708,26 +671,13 @@ class DocumentImportForm(forms.Form):
 
             if row[3] in ['nan', None, '']:
                 raise forms.ValidationError("ستون تهیه کنندگان در خط " + str(error_line) + " نمی تواند خالی باشد.")
-            producers_raw = row[3].split(',')
-            producers_raw = producers_raw[:-1]
-            if not producers_raw:
-                raise forms.ValidationError(
-                    "فرمت اطلاعات ستون تهیه کنندگان در خط " + str(error_line) + " فایل صحیح نیست")
-            producers = []
-            for producer in producers_raw:
-                producer = producer.strip()
-                detail = producer.split('-')
-                try:
-                    producer = (detail[1], detail[0])
-                except:
-                    raise forms.ValidationError(
-                        "فرمت اطلاعات ستون تهیه کنندگان در خط " + str(error_line) + " فایل صحیح نیست")
-                producers.append(producer)
-
+            producers = row[3].split(',')
+            producers = producers[:-1]
+            if not producers:
+                raise forms.ValidationError("فرمت اطلاعات ستون تهیه کنندگان در خط " + str(error_line) + " فایل صحیح نیست")
             producers_list = []
             for producer in producers:
-                producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer[1],
-                                                               organization_code=producer[0])
+                producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer.strip())
                 producers_list.append(producer_obj)
 
             field=row[2]
@@ -768,27 +718,14 @@ class DocumentImportForm(forms.Form):
                 raise forms.ValidationError("ستون مالک در خط " + str(error_line) + " نمی تواند خالی باشد.")
 
             if row[3] in ['nan', None, '']:
-                raise forms.ValidationError("ستون داوران در خط " + str(error_line) + " نمی تواند خالی باشد.")
-            producers_raw = row[3].split(',')
-            producers_raw = producers_raw[:-1]
-            if not producers_raw:
-                raise forms.ValidationError(
-                    "فرمت اطلاعات ستون داوران در خط " + str(error_line) + " فایل صحیح نیست")
-            producers = []
-            for producer in producers_raw:
-                producer = producer.strip()
-                detail = producer.split('-')
-                try:
-                    producer = (detail[1], detail[0])
-                except:
-                    raise forms.ValidationError(
-                        "فرمت اطلاعات ستون داوران در خط " + str(error_line) + " فایل صحیح نیست")
-                producers.append(producer)
-
+                raise forms.ValidationError("ستون داوری در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            producers = row[3].split(',')
+            producers = producers[:-1]
+            if not producers:
+                raise forms.ValidationError("فرمت اطلاعات ستون داوری در خط " + str(error_line) + " فایل صحیح نیست")
             producers_list = []
             for producer in producers:
-                producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer[1],
-                                                               organization_code=producer[0])
+                producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer.strip())
                 producers_list.append(producer_obj)
 
             issued_at=row[4]
@@ -895,26 +832,13 @@ class DocumentImportForm(forms.Form):
 
             if row[2] in ['nan', None, '']:
                 raise forms.ValidationError("ستون ارائه دهندگان در خط " + str(error_line) + " نمی تواند خالی باشد.")
-            producers_raw = row[2].split(',')
-            producers_raw = producers_raw[:-1]
-            if not producers_raw:
-                raise forms.ValidationError(
-                    "فرمت اطلاعات ستون ارائه دهندگان در خط " + str(error_line) + " فایل صحیح نیست")
-            producers = []
-            for producer in producers_raw:
-                producer = producer.strip()
-                detail = producer.split('-')
-                try:
-                    producer = (detail[1], detail[0])
-                except:
-                    raise forms.ValidationError(
-                        "فرمت اطلاعات ستون ارائه دهندگان در خط " + str(error_line) + " فایل صحیح نیست")
-                producers.append(producer)
-
+            producers = row[2].split(',')
+            producers = producers[:-1]
+            if not producers:
+                raise forms.ValidationError("فرمت اطلاعات ستون ارائه دهندگان در خط " + str(error_line) + " فایل صحیح نیست")
             producers_list = []
             for producer in producers:
-                producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer[1],
-                                                               organization_code=producer[0])
+                producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer.strip())
                 producers_list.append(producer_obj)
 
             doc_type='Seminar'
@@ -1205,11 +1129,11 @@ class DocumentImportForm(forms.Form):
             if title in ['nan', None, '']:
                 raise forms.ValidationError("ستون نام و نام خانوادگی در خط " + str(error_line) + " نمی تواند خالی باشد.")
 
-            organization_code = row[1]
-            if organization_code in ['nan', None, '', 'None']:
-                raise forms.ValidationError("ستون کد پاسداری در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            # organization_code = row[1]
+            # if organization_code in ['nan', None, '', 'None']:
+            #     raise forms.ValidationError("ستون کد پاسداری در خط " + str(error_line) + " نمی تواند خالی باشد.")
 
-            center=row[5]
+            center=row[4]
             if center in ['nan', None, '']:
                 raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
             try:
@@ -1218,7 +1142,7 @@ class DocumentImportForm(forms.Form):
                 raise forms.ValidationError(
                     "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
 
-            entrance_year=row[2]
+            entrance_year=row[1]
             if entrance_year in ['nan', None, '']:
                 entrance_year = None
             else:
@@ -1229,18 +1153,17 @@ class DocumentImportForm(forms.Form):
                         "فرمت اطلاعات ستون سال ورود در خط " + str(error_line) + " فایل صحیح نیست")
 
             doc_type='Resume'
-            measure=row[3]
-            degree=row[4]
+            measure=row[2]
+            degree=row[3]
 
-            cleaned_data.append((title, organization_code, doc_type, entrance_year, measure, degree, center))
+            cleaned_data.append((title, doc_type, entrance_year, measure, degree, center))
         return cleaned_data
 
     def import_resumes(self,excel_data):
         cleaned_data = self.check_resumes(excel_data)
-        for title, organization_code, doc_type, entrance_year, measure, degree, center in cleaned_data:
+        for title, doc_type, entrance_year, measure, degree, center in cleaned_data:
             resume=Resume.objects.create(
                 title=title,
-                organization_code=organization_code,
                 type=doc_type,
                 measure=measure,
                 degree=degree,
@@ -1543,27 +1466,14 @@ class DocumentImportForm(forms.Form):
                     "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
 
             if row[3] in ['nan', None, '']:
-                raise forms.ValidationError("ستون تهیه کنندگان در خط " + str(error_line) + " نمی تواند خالی باشد.")
-            producers_raw = row[3].split(',')
-            producers_raw = producers_raw[:-1]
-            if not producers_raw:
-                raise forms.ValidationError(
-                    "فرمت اطلاعات ستون تهیه کنندگان در خط " + str(error_line) + " فایل صحیح نیست")
-            producers = []
-            for producer in producers_raw:
-                producer = producer.strip()
-                detail = producer.split('-')
-                try:
-                    producer = (detail[1], detail[0])
-                except:
-                    raise forms.ValidationError(
-                        "فرمت اطلاعات ستون تهیه کنندگان در خط " + str(error_line) + " فایل صحیح نیست")
-                producers.append(producer)
-
+                raise forms.ValidationError("ستون ارائه دهندگان در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            producers = row[3].split(',')
+            producers = producers[:-1]
+            if not producers:
+                raise forms.ValidationError("فرمت اطلاعات ستون ارائه دهندگان در خط " + str(error_line) + " فایل صحیح نیست")
             producers_list = []
             for producer in producers:
-                producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer[1],
-                                                               organization_code=producer[0])
+                producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer.strip())
                 producers_list.append(producer_obj)
 
             field=row[2]
@@ -1766,25 +1676,14 @@ class DocumentImportForm(forms.Form):
                     "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
 
             if row[3] in ['nan', None, '']:
-                raise forms.ValidationError("ستون محققین در خط " + str(error_line) + " نمی تواند خالی باشد.")
-            producers_raw = row[3].split(',')
-            producers_raw = producers_raw[:-1]
-            if not producers_raw:
-                raise forms.ValidationError("فرمت اطلاعات ستون محققین در خط " + str(error_line) + " فایل صحیح نیست")
-            producers = []
-            for producer in producers_raw:
-                producer = producer.strip()
-                detail = producer.split('-')
-                try:
-                    producer = (detail[1], detail[0])
-                except:
-                    raise forms.ValidationError(
-                        "فرمت اطلاعات ستون محققین در خط " + str(error_line) + " فایل صحیح نیست")
-                producers.append(producer)
-
+                raise forms.ValidationError("ستون ارائه دهندگان در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            producers = row[3].split(',')
+            producers = producers[:-1]
+            if not producers:
+                raise forms.ValidationError("فرمت اطلاعات ستون ارائه دهندگان در خط " + str(error_line) + " فایل صحیح نیست")
             producers_list = []
             for producer in producers:
-                producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer[1], organization_code=producer[0])
+                producer_obj, c = Resume.objects.get_or_create(type='Resume', title=producer.strip())
                 producers_list.append(producer_obj)
 
             doc_type='Invention'
@@ -1815,11 +1714,11 @@ class DocumentImportForm(forms.Form):
             producer=row[0]
             if producer in ['nan', None, '']:
                 raise forms.ValidationError("ستون محقق در خط " + str(error_line) + " نمی تواند خالی باشد.")
-            organization_code=row[1]
-            if organization_code in ['nan', None, '']:
-                raise forms.ValidationError("ستون کد پاسداری در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            # organization_code=row[1]
+            # if organization_code in ['nan', None, '']:
+            #     raise forms.ValidationError("ستون کد پاسداری در خط " + str(error_line) + " نمی تواند خالی باشد.")
             try:
-                producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer, organization_code=organization_code)
+                producer_obj, c=Resume.objects.get_or_create(type='Resume', title=producer)
             except:
                 raise forms.ValidationError(
                     "فرمت اطلاعات ستون محقق در خط " + str(error_line) + " فایل صحیح نیست")
@@ -1828,17 +1727,17 @@ class DocumentImportForm(forms.Form):
             # if father in ['nan', None, '']:
             #     raise forms.ValidationError("ستون نام پدر در خط " + str(error_line) + " نمی تواند خالی باشد.")
 
-            scientific_rank=row[2]
+            scientific_rank=row[1]
             if scientific_rank in ['nan', None, '']:
                 raise forms.ValidationError("ستون رتبه علمی در خط " + str(error_line) + " نمی تواند خالی باشد.")
 
-            issue_code=row[3]
+            issue_code=row[2]
             if issue_code in ['nan', None, '']:
                 raise forms.ValidationError("ستون شماره داوری در خط " + str(error_line) + " نمی تواند خالی باشد.")
 
-            order_issued_at=row[4]
+            order_issued_at=row[3]
             if order_issued_at in ['nan', None, '']:
-                raise forms.ValidationError("ستون تاریخ صدور داوری در خط " + str(error_line) + " نمی تواند خالی باشد.")
+                raise forms.ValidationError("ستون تاریخ صدور در خط " + str(error_line) + " نمی تواند خالی باشد.")
             try:
                 order_issued_at=jdatetime.datetime.strptime(order_issued_at, "%Y/%m/%d")
                 order_issued_at=order_issued_at.togregorian()
@@ -1846,7 +1745,7 @@ class DocumentImportForm(forms.Form):
                 raise forms.ValidationError(
                     "فرمت اطلاعات در ستون تاریخ صدور در خط " + str(error_line) + " فایل صحیح نیست.")
 
-            elite_received_at=row[5]
+            elite_received_at=row[4]
             if elite_received_at in ['nan', None, '']:
                 raise forms.ValidationError("ستون تاریخ دریافت نخبگی در خط " + str(error_line) + " نمی تواند خالی باشد.")
             try:
@@ -1856,11 +1755,11 @@ class DocumentImportForm(forms.Form):
                 raise forms.ValidationError(
                     "فرمت اطلاعات در ستون تاریخ دریافت در خط " + str(error_line) + " فایل صحیح نیست.")
 
-            profile_type=row[6]
+            profile_type=row[5]
             if profile_type in ['nan', None, '']:
-                raise forms.ValidationError("ستون نویسنده در خط " + str(error_line) + " نمی تواند خالی باشد.")
+                raise forms.ValidationError("ستون نوع پرونده در خط " + str(error_line) + " نمی تواند خالی باشد.")
 
-            center=row[9]
+            center=row[8]
             if center in ['nan', None, '']:
                 raise forms.ValidationError("ستون مرکز در خط " + str(error_line) + " نمی تواند خالی باشد.")
             try:
@@ -1870,8 +1769,8 @@ class DocumentImportForm(forms.Form):
                     "فرمت اطلاعات ستون مرکز در خط " + str(error_line) + " فایل صحیح نیست")
 
             doc_type='Assessment'
-            necessary_condition=row[7]
-            sufficient_condition=row[8]
+            necessary_condition=row[6]
+            sufficient_condition=row[7]
 
             cleaned_data.append(
                 (producer_obj, doc_type, issue_code, scientific_rank, order_issued_at, elite_received_at, profile_type, sufficient_condition, necessary_condition, center))

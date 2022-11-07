@@ -79,7 +79,7 @@
 {#						<th class="text-center" style="background-color: white">شماره</th>#}
 						<th class="text-center" style="background-color: white">موضوع</th>
 						<th class="text-center" style="background-color: white">مالک</th>
-						<th class="text-center" style="background-color: white">داوران</th>
+						<th class="text-center" style="background-color: white">داوری</th>
 						<th class="text-center" style="background-color: white">تاریخ صدور حکم</th>
 						<th class="text-center" style="background-color: white">تاریخ ارسال</th>
 						<th class="text-center" style="background-color: white">تاریخ جواب</th>
@@ -99,7 +99,7 @@
 							<td class="align-middle text-center">{{ obj.owner }}</td>
 							<td class="align-middle text-center">
                                 {% for o in obj.judges.all %}
-                                    {{ o.title }}-{{ o.organization_code }},
+                                    {{ o.title }},
                                 {% endfor %}
                             </td>
 							<td class="align-middle text-center">{{ obj.issued_at | j_format_date:"%Y/%m/%d" }}</td>
