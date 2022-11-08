@@ -97,7 +97,7 @@
 							<td class="align-middle text-center">{{ obj.field }}</td>
 							<td class="align-middle text-center">
                             {% for o in obj.producers.all %}
-                                {{ o.title }}-{{ o.organization_code }},
+                                {{ o.title }},
                             {% endfor %}
                             </td>
 {#							<td class="align-middle text-center">{{ obj.producer.degree }}</td>#}
@@ -227,7 +227,7 @@
                         title: '',
 						filename: 'ideas',
 						exportOptions: {
-							columns: [ 1, 2, 4, 5, 7],
+							columns: [ 1, 2,3, 4, 5,6, 7],
 						}
 					},
                     {
