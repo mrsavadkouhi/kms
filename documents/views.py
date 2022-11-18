@@ -972,7 +972,7 @@ class ResumeDetailsView(LoginRequiredMixin, DetailView):
 class ResumeUpdateForm(LoginRequiredMixin, UpdateView):
     model = Resume
     template_name = 'resume/resume_form.html'
-    form_class = ResumeForm
+    form_class = ResumeEditForm
     success_url = reverse_lazy('documents:resume_list')
     extra_context = {
         'title': 'update',

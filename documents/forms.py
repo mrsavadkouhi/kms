@@ -77,6 +77,13 @@ class ResumeForm(forms.ModelForm):
         return cleaned_data
 
 
+class ResumeEditForm(forms.ModelForm):
+    title = forms.CharField(required=True)
+    class Meta:
+        model = Resume
+        fields = '__all__'
+
+
 class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
