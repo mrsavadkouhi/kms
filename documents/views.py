@@ -96,7 +96,7 @@ class CenterDetailsView(LoginRequiredMixin, DetailView):
         context['book_num']= 0
         context['idea_num']= 0
         context['exp_num']= 0
-        context['inv_num']= 0
+        context['invention_num']= 0
         context['workshop_num']= 0
         context['manual_num']= 0
         context['seminar_num']= 0
@@ -133,7 +133,7 @@ class CenterDetailsView(LoginRequiredMixin, DetailView):
                 context['report_num']+=1
 
             elif item.type == 'Invention':
-                context['inv_num']+=1
+                context['invention_num']+=1
 
             elif item.type == 'Workshop':
                 context['workshop_num']+=1
