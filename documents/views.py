@@ -48,6 +48,8 @@ class DocumentAttachmentCreateView(LoginRequiredMixin, BSModalCreateView):
             return reverse_lazy('documents:future_details', kwargs={'pk': self.kwargs['pk']})
         elif doc.type == 'CoWork':
             return reverse_lazy('documents:cowork_details', kwargs={'pk': self.kwargs['pk']})
+        elif doc.type == 'Order':
+            return reverse_lazy('documents:order_details', kwargs={'pk': self.kwargs['pk']})
 
 
 class CoreAttachmentCreateView(LoginRequiredMixin, BSModalCreateView):

@@ -60,10 +60,10 @@
                             <input type="text" id="center" name="center">
                         </div>
                         <div class="col-lg-1">
-                            <label for="presentation_date">تاریخ صدور</label>
+                            <label for="publish_date">تاریخ صدور</label>
                         </div>
                         <div class="col-lg-3">
-                            <input type="text" id="presentation_date" name="presentation_date">
+                            <input type="text" id="publish_date" name="presentation_date">
                         </div>
                     </div>
                     <br>
@@ -241,17 +241,14 @@
 
 		});
 
-		$('#code').on('keyup', function () {
-                table.column(2).search(this.value).draw();
-		});
 		$('#producer').on('keyup', function () {
-                table.column(5).search(this.value).draw();
+                table.column(4).search(this.value).draw();
 		});
 		$('#center').on('keyup', function () {
-			table.column(10).search(this.value).draw();
+			table.column(9).search(this.value).draw();
 		});
 		$('#publish_date').on('keyup', function () {
-			table.column(6).search(this.value).draw();
+			table.column(5).search(this.value).draw();
 		});
 
 		$('#delete-modal').on('show.bs.modal', function (e) {
