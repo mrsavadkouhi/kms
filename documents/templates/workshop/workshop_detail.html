@@ -16,10 +16,10 @@
 				<a>آموزش و امور محققین</a>
 			</li>
 			<li class="breadcrumb-item">
-                <a  href="{% url 'documents:workshop_list' %}" >فهرست کارگاهها</a>
+                <a  href="{% url 'documents:workshop_list' %}" >فهرست کارگاه و دوره های آموزشی</a>
 			</li>
 			<li class="breadcrumb-item active">
-				<a href="{% url 'documents:workshop_details' object.id %}"><strong>جزئیات کارگاه {{ object.name }}</strong></a>
+				<a href="{% url 'documents:workshop_details' object.id %}"><strong>جزئیات دوره آموزشی {{ object.name }}</strong></a>
 			</li>
 		</ol>
 	</div>
@@ -54,7 +54,7 @@
 				<h3><strong>تاریخ شروع: </strong>{{ object.started_at | j_format_date:"%Y/%m/%d"  }}</h3>
 				<h3><strong>تاریخ پایان: </strong>{{ object.finished_at | j_format_date:"%Y/%m/%d"  }}</h3>
 				<h3><strong>تعداد شرکت کنندگان: </strong>{{ object.participant_number }}</h3>
-				<h3><strong>نوع کارگاه: </strong>{{ object.get_workshop_type_display }}</h3>
+				<h3><strong>نوع دوره: </strong>{{ object.get_workshop_type_display }}</h3>
 				<h3><strong>مرکز تحقیقاتی: </strong>{{ object.center.title }}</h3>
                 <h3><strong>توضیحات: </strong>{{ object.description }}</h3>
 				<div><br></div>
@@ -141,13 +141,13 @@
 						<span aria-hidden="true">&times;</span>
 						<span class="sr-only">بستن</span>
 					</button>
-					<h5 class="modal-title" id="exampleModalLabel">حذف کارگاه</h5>
+					<h5 class="modal-title" id="exampleModalLabel">حذف دوره آموزشی</h5>
 				</div>
 				<form method="post" id="delete-form" action="{% url 'documents:workshop_delete' pk=object.id %}">
 					{% csrf_token %}
 					<div class="modal-body">
 						<p class="float-right">
-							آیا واقعا می خواهید کارگاه
+							آیا واقعا می خواهید دوره آموزشی
 							<code>
 								<strong id="delete-name">{{ object.title }}</strong>
 							</code>

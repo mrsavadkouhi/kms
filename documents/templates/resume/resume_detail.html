@@ -119,10 +119,10 @@
                         <h3>{{ seminar_num }}</h3>
                     </div>
                     <div class="col-lg-2">
-                        <h3>ثبت اختراع:</h3>
+                        <h3>رصد و آینده پژوهی:</h3>
                     </div>
                     <div class="col-lg-1">
-                        <h3>{{ invention_num }}</h3>
+                        <h3>{{ future_num }}</h3>
                     </div>
                 </div>
                 <div class="row">
@@ -170,7 +170,11 @@
                     <div class="col-lg-1">
                         <h3>{{ project_num }}</h3>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
+                        <h3>پایان نامه:</h3>
+                    </div>
+                    <div class="col-lg-1">
+                        <h3>{{ thesis_num }}</h3>
                     </div>
                 </div>
                 <div><br></div>
@@ -189,7 +193,7 @@
                         <thead>
                         <tr>
                             <th class="text-center" style="background-color: white;width: 7%">ردیف</th>
-                            <th class="text-center" style="background-color: white">عنوان</th>
+                            <th class="text-center" style="background-color: white">عنوان فعالیت</th>
                             <th class="text-center" style="background-color: white">نوع</th>
                             <th class="text-center" style="background-color: white">تاریخ</th>
                             <th class="text-center" style="background-color: white">شناسه سند</th>
@@ -398,7 +402,7 @@
                                     "<thead>" +
                                     "<tr>" +
                                     "<th class='text-center' style='background-color: grey; width: 7%'>ردیف</th>" +
-                                    "<th class='text-center' style='background-color: grey'>عنوان</th>" +
+                                    "<th class='text-center' style='background-color: grey'>عنوان فعالیت</th>" +
                                     "<th class='text-center' style='background-color: grey'>تعداد</th>" +
                                     "<th class='text-center' style='background-color: grey'>پیوست</th>" +
                                     "</tr>" +
@@ -466,9 +470,15 @@
                                     "</tr>" +
                                     "<tr>" +
                                     "<td class='align-middle text-center'>۱۲</td>" +
-                                    "<td class='align-middle text-center'>ثبت اختراع</td>" +
-                                    "<td class='align-middle text-center'>{{ invention_num }}</td>" +
-                                    "<td class='align-middle text-center'>{% if invention_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
+                                    "<td class='align-middle text-center'>رصد و آینده پژوهی</td>" +
+                                    "<td class='align-middle text-center'>{{ future_num }}</td>" +
+                                    "<td class='align-middle text-center'>{% if future_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
+                                    "</tr>" +
+                                    "<tr>" +
+                                    "<td class='align-middle text-center'>۱۳</td>" +
+                                    "<td class='align-middle text-center'>پایان نامه</td>" +
+                                    "<td class='align-middle text-center'>{{ thesis_num }}</td>" +
+                                    "<td class='align-middle text-center'>{% if thesis_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
                                     "</tr>" +
                                     "</tbody>" +
                                     "</table>" +
@@ -612,7 +622,7 @@
                                     "<th colspan='5'>" +
                                     "<div class='col-lg-12' >" +
                                     "<div class='col-lg-4 resume_title_blue' >" +
-                                    "<h2><strong>ثبت اختراع</strong></h2>" +
+                                    "<h2><strong>رصد و آینده پژوهی</strong></h2>" +
                                     "</div>" +
                                     "<br>" +
                                     "<div class='table-responsive'>" +
@@ -620,17 +630,17 @@
                                     "<thead>" +
                                     "<tr>" +
                                     "<th class='text-center' style='background-color: grey; width: 7%'>ردیف</th>" +
-                                    "<th class='text-center' style='background-color: grey'>عنوان ثبت اختراع</th>" +
-                                    "<th class='text-center' style='background-color: grey'>تاریخ پذیرش</th>" +
+                                    "<th class='text-center' style='background-color: grey'>عنوان رصد</th>" +
+                                    "<th class='text-center' style='background-color: grey'>تاریخ ارائه</th>" +
                                     "<th class='text-center' style='background-color: grey'>شناسه سازمانی</th>" +
                                     "</tr>" +
                                     "</thead>" +
                                     "<tbody>" +
-                                    "{% for obj in inventions %}" +
+                                    "{% for obj in futures %}" +
                                     "<tr>" +
                                     "<td class='align-middle text-center'>{{ forloop.counter }}</td>" +
                                     "<td class='align-middle text-center'>{{ obj.title }}</td>" +
-                                    "<td class='align-middle text-center'>{{ obj.registered_at | j_format_date:"%Y/%m/%d" }}</td>" +
+                                    "<td class='align-middle text-center'>{{ obj.presented_at | j_format_date:"%Y/%m/%d" }}</td>" +
                                     "<td class='align-middle text-center'>{{ obj.organization_code }}</td>" +
                                     "</tr>" +
                                     "{% endfor %}" +

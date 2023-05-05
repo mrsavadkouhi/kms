@@ -77,12 +77,13 @@
 						<th class="text-center" style="background-color: white;width: 7%">ردیف</th>
 						<th class="text-center" style="background-color: white">عنوان</th>
 						<th class="text-center" style="background-color: white">شناسه</th>
-						<th class="text-center" style="background-color: white">حوزه</th>
+						<th class="text-center" style="background-color: white">استاد راهنما</th>
 						<th class="text-center" style="background-color: white">دانشجو</th>
-						<th class="text-center" style="background-color: white">رشته تحصیلی</th>
-						<th class="text-center" style="background-color: white">مقطع تحصیلی</th>
+{#						<th class="text-center" style="background-color: white">رشته تحصیلی</th>#}
+						<th class="text-center" style="background-color: white">نوع</th>
 						<th class="text-center" style="background-color: white">دانشگاه</th>
 						<th class="text-center" style="background-color: white">تاریخ دفاع</th>
+						<th class="text-center" style="background-color: white">تاریخ جذب</th>
 						<th class="text-center" style="background-color: white">مرکز تحقیقاتی</th>
 						<th class="text-center" style="background-color: white; width: 10%">عملیات</th>
 					</tr>
@@ -94,12 +95,12 @@
 							<td class="align-middle text-center">{{ forloop.counter }}</td>
 							<td class="align-middle text-center"><a href="{% url 'documents:thesis_details' pk=obj.id %}">{{ obj.title }}</a></td>
 							<td class="align-middle text-center">{{ obj.organization_code }}</td>
-							<td class="align-middle text-center">{{ obj.field }}</td>
+							<td class="align-middle text-center">{{ obj.professor }}</td>
 							<td class="align-middle text-center">{{ obj.producer.title }}</td>
-							<td class="align-middle text-center">{{ obj.measure }}</td>
-							<td class="align-middle text-center">{{ obj.degree }}</td>
+							<td class="align-middle text-center">{{ obj.thesis_type }}</td>
 							<td class="align-middle text-center">{{ obj.university }}</td>
 							<td class="align-middle text-center">{{ obj.presented_at | j_format_date:"%Y/%m/%d" }}</td>
+							<td class="align-middle text-center">{{ obj.registered_at | j_format_date:"%Y/%m/%d" }}</td>
 							<td class="align-middle text-center">{{ obj.center.title }}</td>
 							<td class="align-middle text-center">
 								<div class="btn-group">

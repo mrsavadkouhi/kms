@@ -80,7 +80,7 @@
                 <div><br></div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="title_label">عنوان: </span>
+                    <span class="input-group-text " id="title_label">عنوان: </span>
                   </div>
                   <input type="text" class="form-control" value="{{ object.title }}" name="title" aria-describedby="name_label">
                 </div>
@@ -116,9 +116,9 @@
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text" id="field_label">حوزه تخصصی: </span>
+                    <span class="input-group-text required" id="field_label">استاد راهنما: </span>
                   </div>
-                    <input type="text" class="form-control" value="{{ object.field }}" name="field" aria-describedby="field_label">
+                    <input type="text" class="form-control" value="{{ object.professor }}" name="field" aria-describedby="field_label">
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
@@ -132,27 +132,36 @@
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="measure_label">رشته تحصیلی: </span>
+                    <span class="input-group-text " id="measure_label">نوع: </span>
                   </div>
-                  <input type="text" class="form-control" value="{{ object.measure }}" name="measure" aria-describedby="measure_label">
+                  <input type="text" class="form-control" value="{{ object.thesis_type }}" name="thesis_type" aria-describedby="measure_label">
                 </div>
+{#                <div class="input-group mb-2">#}
+{#                  <div class="input-group-append">#}
+{#                    <span class="input-group-text required" id="degree_label">مقطع تحصیلی: </span>#}
+{#                  </div>#}
+{#                  <input type="text" class="form-control" value="{{ object.degree }}" name="degree" aria-describedby="degree_label">#}
+{#                </div>#}
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="degree_label">مقطع تحصیلی: </span>
-                  </div>
-                  <input type="text" class="form-control" value="{{ object.degree }}" name="degree" aria-describedby="degree_label">
-                </div>
-                <div class="input-group mb-2">
-                  <div class="input-group-append">
-                    <span class="input-group-text required" id="university_label">دانشگاه: </span>
+                    <span class="input-group-text " id="university_label">دانشگاه: </span>
                   </div>
                   <input type="text" class="form-control" value="{{ object.university }}" name="university" aria-describedby="university_label">
                 </div>
                 <div class="input-group mb-2">
                     <div class="input-group-append">
-                        <span class="input-group-text required" id="presented_at_label">تاریخ دفاع: </span>
+                        <span class="input-group-text " id="presented_at_label">تاریخ دفاع: </span>
                     </div>
                     <input type="datetime" id="datepicker" class="form-control" name="presented_at" aria-describedby="presented_at_label">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-calendar fa-2x"></i></span>
+                    </div>
+                </div>
+                <div class="input-group mb-2">
+                    <div class="input-group-append">
+                        <span class="input-group-text " id="presented_at_label">تاریخ جذب: </span>
+                    </div>
+                    <input type="datetime" id="datepicker_reg" class="form-control" name="registered_at" aria-describedby="presented_at_label">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-calendar fa-2x"></i></span>
                     </div>
@@ -292,11 +301,19 @@
         var datepicker = $("#datepicker").persianDatepicker(datepickeroption);
         $('#datepicker').val('{{ object.presented_at | j_format_date:"%Y-%m-%d %H:%M" }}');
 
+        var datepicker_reg = $("#datepicker_reg").persianDatepicker(datepickeroption);
+        $('#datepicker_reg').val('{{ object.registered_at | j_format_date:"%Y-%m-%d %H:%M" }}');
+
          $('#ar-form').submit(function () {
              if ($('#datepicker').val() === '') {
                  $('#datepicker').val('');
              } else {
                  $('#datepicker').val(datepicker.getState().selected.dateObject.toCalendar('gregorian').toLocale('en').format('YYYY-MM-DD HH:mm'));
+             }
+             if ($('#datepicker_reg').val() === '') {
+                 $('#datepicker_reg').val('');
+             } else {
+                 $('#datepicker_reg').val(datepicker_reg.getState().selected.dateObject.toCalendar('gregorian').toLocale('en').format('YYYY-MM-DD HH:mm'));
              }
          });
 

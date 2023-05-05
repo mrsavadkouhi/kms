@@ -132,12 +132,12 @@ class Invention(Document):
 
 class Assessment(Document):
     producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='assessment_resume')
-    elite_received_at = models.DateTimeField()
-    order_issued_at = models.DateTimeField()
-    issue_code = models.CharField(max_length=255)
-    scientific_rank = models.CharField(max_length=255)
+    elite_received_at = models.DateTimeField(null=True, blank=True)
+    order_issued_at = models.DateTimeField(null=True, blank=True)
+    issue_code = models.CharField(max_length=255, null=True, blank=True)
+    scientific_rank = models.CharField(max_length=255, null=True, blank=True)
     # father = models.CharField(max_length=255)
-    profile_type = models.CharField(max_length=255)
+    profile_type = models.CharField(max_length=255, null=True, blank=True)
     necessary_condition = models.TextField(null=True, blank=True)
     sufficient_condition = models.TextField(null=True, blank=True)
 
@@ -228,12 +228,12 @@ WORKSHOP_TYPES = [
 
 class Workshop(Document):
     producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='workshop_producer')
-    started_at = models.DateTimeField()
-    finished_at = models.DateTimeField()
-    duration = models.IntegerField()
-    participant_number = models.IntegerField()
-    location = models.CharField(max_length=255)
-    workshop_type = models.CharField(max_length=255, choices=WORKSHOP_TYPES)
+    started_at = models.DateTimeField(null=True, blank=True)
+    finished_at = models.DateTimeField(null=True, blank=True)
+    duration = models.IntegerField(null=True, blank=True)
+    participant_number = models.IntegerField(null=True, blank=True)
+    location = models.CharField(max_length=255, null=True, blank=True)
+    workshop_type = models.CharField(max_length=255, choices=WORKSHOP_TYPES, null=True, blank=True)
 
 
 CONFERENCE_LEVELS=[
@@ -279,10 +279,12 @@ class Report(Document):
 
 class Thesis(Document):
     producer = models.ForeignKey(to=Resume, on_delete=models.PROTECT, related_name='thesis_producer')
-    presented_at = models.DateTimeField()
-    university = models.CharField(max_length=255)
-    measure = models.CharField(max_length=255)
-    degree = models.CharField(max_length=255)
+    professor = models.CharField(max_length=255)
+    registered_at = models.DateTimeField(null=True, blank=True)
+    presented_at = models.DateTimeField(null=True, blank=True)
+    university = models.CharField(max_length=255, null=True, blank=True)
+    thesis_type = models.CharField(max_length=255, null=True, blank=True)
+    # degree = models.CharField(max_length=255, null=True, blank=True)
 
 
 class Journal(Document):

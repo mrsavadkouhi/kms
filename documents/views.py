@@ -101,6 +101,8 @@ class CenterDetailsView(LoginRequiredMixin, DetailView):
         context['idea_num']= 0
         context['exp_num']= 0
         context['invention_num']= 0
+        context['future_num']= 0
+        context['thesis_num']= 0
         context['workshop_num']= 0
         context['manual_num']= 0
         context['seminar_num']= 0
@@ -139,6 +141,12 @@ class CenterDetailsView(LoginRequiredMixin, DetailView):
             elif item.type == 'Invention':
                 context['invention_num']+=1
 
+            elif item.type == 'Future':
+                context['future_num']+=1
+
+            elif item.type == 'Thesis':
+                context['thesis_num']+=1
+
             elif item.type == 'Workshop':
                 context['workshop_num']+=1
 
@@ -173,13 +181,19 @@ class CenterDetailsView(LoginRequiredMixin, DetailView):
                 projects = 0
                 for sub_item in item.project_manager.all():
                     projects += 1
+                thesis = 0
+                for sub_item in item.thesis_producer.all():
+                    thesis += 1
+                futures = 0
+                for sub_item in item.future_producers.all():
+                    futures += 1
                 inventions = 0
                 for sub_item in item.invention_producers.all():
                     inventions += 1
                 articles = 0
                 for sub_item in item.article_producers.all():
                     articles += 1
-                context['object_list'].append((item.title, articles, books, inventions, ideas, experiences, manuals, projects, seminars, reports, workshops, orders))
+                context['object_list'].append((item.title, articles, books, inventions, futures, thesis, ideas, experiences, manuals, projects, seminars, reports, workshops, orders))
 
         return context
 
@@ -870,8 +884,10 @@ class ResumeDetailsView(LoginRequiredMixin, DetailView):
         context['report_has_attachments']= False
         context['seminar_num']= 0
         context['seminar_has_attachments']= False
-        # context['thesis_num']= 0
-        # context['thesis_has_attachments']= False
+        context['thesis_num']= 0
+        context['thesis_has_attachments']= False
+        context['future_num']= 0
+        context['future_has_attachments']= False
         context['invention_num']= 0
         context['invention_has_attachments']= False
 
@@ -904,13 +920,13 @@ class ResumeDetailsView(LoginRequiredMixin, DetailView):
             context['object_list'].append((item, 'تجربه', item.presented_at))
             context['exp_num']+=1
 
-        # context['theses']=self.object.thesis_producer.all()
-        # for item in self.object.thesis_producer.all():
-        #     if item.attachments.all():
-        #         context['thesis_has_attachments']=True
-        #     context['others'].append((item, 'پایان نامه', item.presented_at))
-        #     context['object_list'].append((item, 'پایان نامه', item.presented_at))
-        #     context['thesis_num']+=1
+        context['theses']=self.object.thesis_producer.all()
+        for item in self.object.thesis_producer.all():
+            if item.attachments.all():
+                context['thesis_has_attachments']=True
+            context['others'].append((item, 'پایان نامه', item.presented_at))
+            context['object_list'].append((item, 'پایان نامه', item.presented_at))
+            context['thesis_num']+=1
 
         context['manuals']=self.object.manual_producers.all()
         for item in self.object.manual_producers.all():
@@ -969,6 +985,13 @@ class ResumeDetailsView(LoginRequiredMixin, DetailView):
                 context['invention_has_attachments']=True
             context['object_list'].append((item, 'اختراع', item.registered_at))
             context['invention_num']+=1
+
+        context['futures']=self.object.future_producers.all()
+        for item in self.object.future_producers.all():
+            if item.attachments.all():
+                context['future_has_attachments']=True
+            context['object_list'].append((item, 'رصد و آینده پژوهی', item.presented_at))
+            context['future_num']+=1
 
         return context
 

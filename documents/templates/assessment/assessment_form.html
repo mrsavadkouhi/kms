@@ -18,7 +18,7 @@
 
 {% endblock %}
 
-{% block head_title %}{% if title == 'update' %}جزئیات ارزیابی{% else %}ایجاد ارزیابی{% endif %}{% endblock %}
+{% block head_title %}{% if title == 'update' %}جزئیات میزخدمتی{% else %}ایجاد میز خدمتی{% endif %}{% endblock %}
 
 
 {% block title-breadcrumb %}
@@ -30,13 +30,13 @@
 				<a>آموزش و امور محققین</a>
 			</li>
 			<li class="breadcrumb-item">
-                <a href="{% url 'documents:assessment_list' %}" >فهرست ارزیابی ها</a>
+                <a href="{% url 'documents:assessment_list' %}" >فهرست میز خدمتی و نظام ارزیابی</a>
 			</li>
 			<li class="breadcrumb-item active">
                 {% if title == 'update' %}
                     <a href="{% url 'documents:assessment_update' object.id %}"><strong>ویرایش {{ object.title }}</strong></a>
                 {% else %}
-                    <a href="{% url 'documents:assessment_create' %}"><strong>افزودن ارزیابی جدید</strong></a>
+                    <a href="{% url 'documents:assessment_create' %}"><strong>افزودن میز خدمتی جدید</strong></a>
                 {% endif %}
 			</li>
 		</ol>
@@ -96,19 +96,19 @@
 {#                </div>#}
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="type_label">نوع پرونده: </span>
+                    <span class="input-group-text " id="type_label">نوع پرونده: </span>
                   </div>
                   <input type="text" class="form-control" value="{{ object.profile_type }}" name="profile_type" aria-describedby="type_label">
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="type_label">رتبه علمی: </span>
+                    <span class="input-group-text " id="type_label">رتبه علمی: </span>
                   </div>
                   <input type="text" class="form-control" value="{{ object.scientific_rank }}" name="scientific_rank" aria-describedby="type_label">
                 </div>
                 <div class="input-group mb-2" hidden>
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="type_label">نوع: </span>
+                    <span class="input-group-text " id="type_label">نوع: </span>
                   </div>
                   <input type="text" class="form-control" value="Assessment" name="type" aria-describedby="type_label" readonly>
                 </div>
@@ -127,13 +127,13 @@
 
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="type_label">شماره داوری: </span>
+                    <span class="input-group-text " id="type_label">شماره داوری: </span>
                   </div>
                   <input type="text" class="form-control" value="{{ object.issue_code }}" name="issue_code" aria-describedby="type_label">
                 </div>
                 <div class="input-group mb-2">
                     <div class="input-group-append">
-                        <span class="input-group-text required" id="presented_at_label">تاریخ صدور: </span>
+                        <span class="input-group-text " id="presented_at_label">تاریخ صدور: </span>
                     </div>
                     <input type="datetime" id="datepicker" class="form-control" name="order_issued_at" aria-describedby="presented_at_label">
                     <div class="input-group-prepend">
@@ -142,7 +142,7 @@
                 </div>
                 <div class="input-group mb-2">
                     <div class="input-group-append">
-                        <span class="input-group-text required" id="presented_at_label">تاریخ صدور نخبگی: </span>
+                        <span class="input-group-text " id="presented_at_label">تاریخ صدور نخبگی: </span>
                     </div>
                     <input type="datetime" id="datepicker_elite" class="form-control" name="elite_received_at" aria-describedby="presented_at_label">
                     <div class="input-group-prepend">

@@ -84,10 +84,10 @@
                         <h3>{{ seminar_num }}</h3>
                     </div>
                     <div class="col-lg-2">
-                        <h3>ثبت اختراع:</h3>
+                        <h3>رصد و آینده پژوهی:</h3>
                     </div>
                     <div class="col-lg-1">
-                        <h3>{{ invention_num }}</h3>
+                        <h3>{{ future_num }}</h3>
                     </div>
                 </div>
                 <div class="row">
@@ -135,7 +135,11 @@
                     <div class="col-lg-1">
                         <h3>{{ project_num }}</h3>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
+                        <h3>پایان نامه:</h3>
+                    </div>
+                    <div class="col-lg-1">
+                        <h3>{{ thesis_num }}</h3>
                     </div>
                 </div>
                 <div><br></div>
@@ -157,7 +161,9 @@
                             <th class="text-center" style="background-color: white">محقق</th>
                             <th class="text-center" style="background-color: white">مقاله</th>
                             <th class="text-center" style="background-color: white">کتاب</th>
-                            <th class="text-center" style="background-color: white">ثبت اختراع</th>
+{#                            <th class="text-center" style="background-color: white">ثبت اختراع</th>#}
+                            <th class="text-center" style="background-color: white">پایان نامه</th>
+                            <th class="text-center" style="background-color: white">رصد و آینده پژوهی</th>
                             <th class="text-center" style="background-color: white">ایده</th>
                             <th class="text-center" style="background-color: white">تجربه</th>
                             <th class="text-center" style="background-color: white">دستورالعمل</th>
@@ -170,13 +176,15 @@
                         </thead>
                         <tbody>
 
-                        {% for title, articles, books, inventions, ideas, experiences, manuals, projects, seminars, reports, workshops,orders in object_list %}
+                        {% for title, articles, books, inventions, futures, thesis, ideas, experiences, manuals, projects, seminars, reports, workshops,orders in object_list %}
                             <tr id="c-tr-{{ obj.id }}" style="background-color: whitesmoke">
                                 <td class="align-middle text-center">{{ forloop.counter }}</td>
                                 <td class="align-middle text-center">{{ title }}</td>
                                 <td class="align-middle text-center">{{ articles }}</td>
                                 <td class="align-middle text-center">{{ books }}</td>
-                                <td class="align-middle text-center">{{ inventions }}</td>
+{#                                <td class="align-middle text-center">{{ inventions }}</td>#}
+                                <td class="align-middle text-center">{{ thesis }}</td>
+                                <td class="align-middle text-center">{{ futures }}</td>
                                 <td class="align-middle text-center">{{ ideas }}</td>
                                 <td class="align-middle text-center">{{ experiences }}</td>
                                 <td class="align-middle text-center">{{ manuals }}</td>
@@ -375,9 +383,9 @@
                                     "<thead>" +
                                     "<tr>" +
                                     "<th class='text-center' style='background-color: grey; width: 7%'>ردیف</th>" +
-                                    "<th class='text-center' style='background-color: grey'>عنوان</th>" +
+                                    "<th class='text-center' style='background-color: grey'>عنوان فعالیت</th>" +
                                     "<th class='text-center' style='background-color: grey'>تعداد</th>" +
-                                    "<th class='text-center' style='background-color: grey'>پیوست</th>" +
+                                    "<th class='text-center' style='background-color: grey'>امتیاز</th>" +
                                     "</tr>" +
                                     "</thead>" +
                                     "<tbody>" +
@@ -385,67 +393,85 @@
                                     "<td class='align-middle text-center'>۱</td>" +
                                     "<td class='align-middle text-center'>مقالات</td>" +
                                     "<td class='align-middle text-center'>{{ article_num }}</td>" +
-                                    "<td class='align-middle text-center'>{% if article_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
+                                    {#"<td class='align-middle text-center'>{% if article_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +#}
+                                    "<td class='align-middle text-center'></td>" +
                                     "</tr>" +
                                     "<tr>" +
                                     "<td class='align-middle text-center'>۲</td>" +
                                     "<td class='align-middle text-center'>کتاب</td>" +
                                     "<td class='align-middle text-center'>{{ book_num }}</td>" +
-                                    "<td class='align-middle text-center'>{% if book_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
+                                    {#"<td class='align-middle text-center'>{% if book_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +#}
+                                    "<td class='align-middle text-center'></td>" +
                                     "</tr>" +
                                     "<tr>" +
                                     "<td class='align-middle text-center'>۳</td>" +
                                     "<td class='align-middle text-center'>سمینار</td>" +
                                     "<td class='align-middle text-center'>{{ seminar_num }}</td>" +
-                                    "<td class='align-middle text-center'>{% if seminar_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
+                                    {#"<td class='align-middle text-center'>{% if seminar_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +#}
+                                    "<td class='align-middle text-center'></td>" +
                                     "</tr>" +
                                     "<tr>" +
                                     "<td class='align-middle text-center'>۵</td>" +
                                     "<td class='align-middle text-center'>ایده پردازی</td>" +
                                     "<td class='align-middle text-center'>{{ idea_num }}</td>" +
-                                    "<td class='align-middle text-center'>{% if idea_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
+                                    {#"<td class='align-middle text-center'>{% if idea_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +#}
+                                    "<td class='align-middle text-center'></td>" +
                                     "</tr>" +
                                     "<tr>" +
                                     "<td class='align-middle text-center'>۶</td>" +
                                     "<td class='align-middle text-center'>تجربه نگاری</td>" +
                                     "<td class='align-middle text-center'>{{ exp_num }}</td>" +
-                                    "<td class='align-middle text-center'>{% if exp_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
+                                    {#"<td class='align-middle text-center'>{% if exp_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +#}
+                                    "<td class='align-middle text-center'></td>" +
                                     "</tr>" +
                                     "<tr>" +
                                     "<td class='align-middle text-center'>۷</td>" +
                                     "<td class='align-middle text-center'>دستورالعمل</td>" +
                                     "<td class='align-middle text-center'>{{ manual_num }}</td>" +
-                                    "<td class='align-middle text-center'>{% if manual_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
+                                    {#"<td class='align-middle text-center'>{% if manual_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +#}
+                                    "<td class='align-middle text-center'></td>" +
                                     "</tr>" +
                                     "<tr>" +
                                     "<td class='align-middle text-center'>۸</td>" +
                                     "<td class='align-middle text-center'>کمیته داوران</td>" +
                                     "<td class='align-middle text-center'>{{ order_num }}</td>" +
-                                    "<td class='align-middle text-center'>{% if order_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
+                                    "<td class='align-middle text-center'></td>" +
+                                    {#"<td class='align-middle text-center'>{% if order_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +#}
                                     "</tr>" +
                                     "<tr>" +
                                     "<td class='align-middle text-center'>۹</td>" +
                                     "<td class='align-middle text-center'>گزارشات فنی</td>" +
                                     "<td class='align-middle text-center'>{{ report_num }}</td>" +
-                                    "<td class='align-middle text-center'>{% if report_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
+                                    "<td class='align-middle text-center'></td>" +
+                                    {#"<td class='align-middle text-center'>{% if report_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +#}
                                     "</tr>" +
                                     "<tr>" +
                                     "<td class='align-middle text-center'>۱۰</td>" +
                                     "<td class='align-middle text-center'>پروژه خاتمه یافته</td>" +
                                     "<td class='align-middle text-center'>{{ project_num }}</td>" +
-                                    "<td class='align-middle text-center'>{% if project_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
+                                    "<td class='align-middle text-center'></td>" +
+                                    {#"<td class='align-middle text-center'>{% if project_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +#}
                                     "</tr>" +
                                     "<tr>" +
                                     "<td class='align-middle text-center'>۱۱</td>" +
                                     "<td class='align-middle text-center'>دوره/ کارگاه آموزشی</td>" +
                                     "<td class='align-middle text-center'>{{ workshop_num }}</td>" +
-                                    "<td class='align-middle text-center'>{% if workshop_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
+                                    "<td class='align-middle text-center'></td>" +
+                                    {#"<td class='align-middle text-center'>{% if workshop_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +#}
                                     "</tr>" +
                                     "<tr>" +
                                     "<td class='align-middle text-center'>۱۲</td>" +
-                                    "<td class='align-middle text-center'>ثبت اختراع</td>" +
-                                    "<td class='align-middle text-center'>{{ invention_num }}</td>" +
-                                    "<td class='align-middle text-center'>{% if invention_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +
+                                    "<td class='align-middle text-center'>رصد و آینده پژوهی</td>" +
+                                    "<td class='align-middle text-center'>{{ future_num }}</td>" +
+                                    "<td class='align-middle text-center'></td>" +
+                                    {#"<td class='align-middle text-center'>{% if invention_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +#}
+                                    "</tr>" +
+                                    "<tr>" +
+                                    "<td class='align-middle text-center'>۱۳</td>" +
+                                    "<td class='align-middle text-center'>پایان نامه</td>" +
+                                    "<td class='align-middle text-center'>{{ thesis_num }}</td>" +
+                                    "<td class='align-middle text-center'></td>" +
+                                    {#"<td class='align-middle text-center'>{% if invention_has_attachments %}دارد{% else %}ندارد{% endif %}</td>" +#}
                                     "</tr>" +
                                     "</tbody>" +
                                     "</table>" +
@@ -468,7 +494,8 @@
                                     "<th class='text-center' style='background-color: grey'>محقق</th>" +
                                     "<th class='text-center' style='background-color: grey'>مقاله</th>" +
                                     "<th class='text-center' style='background-color: grey'>کتاب</th>" +
-                                    "<th class='text-center' style='background-color: grey'>ثبت اختراع</th>" +
+                                    "<th class='text-center' style='background-color: grey'>پایان نامه</th>" +
+                                    "<th class='text-center' style='background-color: grey'>رصد و آینده پژوهی</th>" +
                                     "<th class='text-center' style='background-color: grey'>ایده</th>" +
                                     "<th class='text-center' style='background-color: grey'>تجربه</th>" +
                                     "<th class='text-center' style='background-color: grey'>دستورالعمل</th>" +
@@ -480,13 +507,14 @@
                                     "</tr>" +
                                     "</thead>" +
                                     "<tbody>" +
-                                    "{% for title, articles, books, inventions, ideas, experiences, manuals, projects, seminars, reports, workshops,orders in object_list %}" +
+                                    "{% for title, articles, books, inventions, futures, thesis, ideas, experiences, manuals, projects, seminars, reports, workshops,orders in object_list %}" +
                                     "<tr>" +
                                         "<td class='align-middle text-center'>{{ forloop.counter }}</td>"+
                                         "<td class='align-middle text-center'>{{ title }}</td>"+
                                         "<td class='align-middle text-center'>{{ articles }}</td>"+
                                         "<td class='align-middle text-center'>{{ books }}</td>"+
-                                        "<td class='align-middle text-center'>{{ inventions }}</td>"+
+                                        "<td class='align-middle text-center'>{{ thesis }}</td>"+
+                                        "<td class='align-middle text-center'>{{ futures }}</td>"+
                                         "<td class='align-middle text-center'>{{ ideas }}</td>"+
                                         "<td class='align-middle text-center'>{{ experiences }}</td>"+
                                         "<td class='align-middle text-center'>{{ manuals }}</td>"+

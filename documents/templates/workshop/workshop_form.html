@@ -18,7 +18,7 @@
 
 {% endblock %}
 
-{% block head_title %}{% if title == 'update' %}جزئیات کارگاه{% else %}ایجاد کارگاه{% endif %}{% endblock %}
+{% block head_title %}{% if title == 'update' %}جزئیات دوره آموزشی{% else %}ایجاد دوره آموزشی{% endif %}{% endblock %}
 
 
 {% block title-breadcrumb %}
@@ -30,13 +30,13 @@
 				<a>آموزش و امور محققین</a>
 			</li>
 			<li class="breadcrumb-item">
-                <a href="{% url 'documents:workshop_list' %}" >فهرست کارگاهها</a>
+                <a href="{% url 'documents:workshop_list' %}" >فهرست کارگاه و دوره های آموزشی</a>
 			</li>
 			<li class="breadcrumb-item active">
                 {% if title == 'update' %}
                     <a href="{% url 'documents:workshop_update' object.id %}"><strong>ویرایش {{ object.title }}</strong></a>
                 {% else %}
-                    <a href="{% url 'documents:workshop_create' %}"><strong>افزودن کارگاه جدید</strong></a>
+                    <a href="{% url 'documents:workshop_create' %}"><strong>افزودن دوره آموزشی جدید</strong></a>
                 {% endif %}
 			</li>
 		</ol>
@@ -80,7 +80,7 @@
                 <div><br></div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="title_label">عنوان: </span>
+                    <span class="input-group-text " id="title_label">عنوان: </span>
                   </div>
                   <input type="text" class="form-control" value="{{ object.title }}" name="title" aria-describedby="name_label">
                 </div>
@@ -110,13 +110,13 @@
                 </div>
                 <div class="input-group mb-2" hidden>
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="type_label">نوع: </span>
+                    <span class="input-group-text " id="type_label">نوع: </span>
                   </div>
                   <input type="text" class="form-control" value="Workshop" name="type" aria-describedby="type_label" readonly>
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="field_label">زمان دوره(روز): </span>
+                    <span class="input-group-text " id="field_label">زمان دوره(روز): </span>
                   </div>
                     <input type="number" class="form-control" value="{{ object.duration }}" name="duration" aria-describedby="field_label">
                 </div>
@@ -132,7 +132,7 @@
                 </div>
                 <div class="input-group mb-2">
                     <div class="input-group-append">
-                        <span class="input-group-text required" id="started_at_label">تاریخ شروع: </span>
+                        <span class="input-group-text " id="started_at_label">تاریخ شروع: </span>
                     </div>
                     <input type="datetime" id="datepicker_started_at" class="form-control" name="started_at" aria-describedby="started_at_label">
                     <div class="input-group-prepend">
@@ -141,7 +141,7 @@
                 </div>
                 <div class="input-group mb-2">
                     <div class="input-group-append">
-                        <span class="input-group-text required" id="started_at_label">تاریخ پایان: </span>
+                        <span class="input-group-text " id="started_at_label">تاریخ پایان: </span>
                     </div>
                     <input type="datetime" id="datepicker_finished_at" class="form-control" name="finished_at" aria-describedby="started_at_label">
                     <div class="input-group-prepend">
@@ -156,19 +156,19 @@
 {#                </div>#}
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="participant_number_label">تعداد شرکت کنندگان: </span>
+                    <span class="input-group-text " id="participant_number_label">تعداد شرکت کنندگان: </span>
                   </div>
                   <input type="number" class="form-control" value="{{ object.participant_number }}" name="participant_number" aria-describedby="participant_number_label">
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="location_label">محل برگزاری: </span>
+                    <span class="input-group-text " id="location_label">محل برگزاری: </span>
                   </div>
                   <input type="text" class="form-control" value="{{ object.location }}" name="location" aria-describedby="location_label">
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
-                    <span class="input-group-text required" id="center_label">نوع کارگاه: </span>
+                    <span class="input-group-text " id="center_label">نوع دوره: </span>
                   </div>
                     <select name="workshop_type" id="workshop_type" class="select2 form-control">
                         {% for val,obj in workshop_types %}
@@ -210,13 +210,13 @@
 						<span aria-hidden="true">&times;</span>
 						<span class="sr-only">بستن</span>
 					</button>
-					<h5 class="modal-title" id="exampleModalLabel">حذف کارگاه</h5>
+					<h5 class="modal-title" id="exampleModalLabel">حذف دوره آموزشی</h5>
 				</div>
 				<form method="post" id="delete-form" {% if title == 'update' %} action="{% url 'documents:workshop_delete' pk=object.id %}" {% endif %}>
 					{% csrf_token %}
 					<div class="modal-body">
 						<p class="float-right">
-							آیا واقعا می خواهید کارگاه
+							آیا واقعا می خواهید دوره آموزشی
 							<code>
 								<strong id="delete-name">{{ object.title }}</strong>
 							</code>
