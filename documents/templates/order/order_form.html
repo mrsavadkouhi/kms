@@ -270,9 +270,9 @@
         });
         center.val("{{ object.center.id  }}").trigger("change");
 
-        var datepickeroption = {
+        var selected_issue = false;
+        var datepickeroption_issue = {
             initialValueType: 'gregorian',
-            //inline: true,
             format: 'YYYY-MM-DD HH:mm',
             submitButton: {
                 enabled: true,
@@ -310,30 +310,129 @@
                     enabled: true
                 }
             },
+            onSelect: function () {
+                selected_issue = true;
+            }
         };
 
-        var issue_datepicker = $("#issue_datepicker").persianDatepicker(datepickeroption);
+        var selected_send = false;
+        var datepickeroption_send = {
+            initialValueType: 'gregorian',
+            format: 'YYYY-MM-DD HH:mm',
+            submitButton: {
+                enabled: true,
+                text: {
+                    fa: "تایید",
+                    en: "Submit"
+                }
+            },
+            navigator: {
+                scroll: {
+                    enabled: false
+                }
+            },
+            calendar: {
+                persian: {
+                    leapYearMode: 'astronomical'
+                }
+            },
+            timePicker: {
+                enabled: true,
+                step: 5,
+                hour: {
+                    enabled: true,
+                    step: 1
+                },
+                minute: {
+                    enabled: true,
+                    step: 1
+                },
+                second: {
+                    enabled: false,
+                    step: 20
+                },
+                meridian: {
+                    enabled: true
+                }
+            },
+            onSelect: function () {
+                selected_send = true;
+            }
+        };
+
+        var selected_answer = false;
+        var datepickeroption_answer = {
+            initialValueType: 'gregorian',
+            format: 'YYYY-MM-DD HH:mm',
+            submitButton: {
+                enabled: true,
+                text: {
+                    fa: "تایید",
+                    en: "Submit"
+                }
+            },
+            navigator: {
+                scroll: {
+                    enabled: false
+                }
+            },
+            calendar: {
+                persian: {
+                    leapYearMode: 'astronomical'
+                }
+            },
+            timePicker: {
+                enabled: true,
+                step: 5,
+                hour: {
+                    enabled: true,
+                    step: 1
+                },
+                minute: {
+                    enabled: true,
+                    step: 1
+                },
+                second: {
+                    enabled: false,
+                    step: 20
+                },
+                meridian: {
+                    enabled: true
+                }
+            },
+            onSelect: function () {
+                selected_answer = true;
+            }
+        };
+
+        var issue_datepicker = $("#issue_datepicker").persianDatepicker(datepickeroption_issue);
         $('#issue_datepicker').val('{{ object.issued_at | j_format_date:"%Y-%m-%d %H:%M" }}');
-        var send_datepicker = $("#send_datepicker").persianDatepicker(datepickeroption);
+        var send_datepicker = $("#send_datepicker").persianDatepicker(datepickeroption_send);
         $('#send_datepicker').val('{{ object.sent_at | j_format_date:"%Y-%m-%d %H:%M" }}');
-        var answer_datepicker = $("#answer_datepicker").persianDatepicker(datepickeroption);
+        var answer_datepicker = $("#answer_datepicker").persianDatepicker(datepickeroption_answer);
         $('#answer_datepicker').val('{{ object.answered_at | j_format_date:"%Y-%m-%d %H:%M" }}');
 
          $('#ar-form').submit(function () {
-             if ($('#issue_datepicker').val() === '') {
-                 $('#issue_datepicker').val('');
+             if (selected_issue) {
+                $('#issue_datepicker').val(issue_datepicker.getState().selected.dateObject.toCalendar('gregorian').toLocale('en').format('YYYY-MM-DD HH:mm'));
+             } else if ($('#issue_datepicker').val() !== '') {
+                $('#issue_datepicker').val('{{ object.issued_at | date:"Y-m-d H:i" }}')
              } else {
-                 $('#issue_datepicker').val(issue_datepicker.getState().selected.dateObject.toCalendar('gregorian').toLocale('en').format('YYYY-MM-DD HH:mm'));
+                $('#issue_datepicker').val('');
              }
-             if ($('#send_datepicker').val() === '') {
-                 $('#send_datepicker').val('');
+             if (selected_send) {
+                $('#send_datepicker').val(send_datepicker.getState().selected.dateObject.toCalendar('gregorian').toLocale('en').format('YYYY-MM-DD HH:mm'));
+             } else if ($('#send_datepicker').val() !== '') {
+                $('#send_datepicker').val('{{ object.sent_at | date:"Y-m-d H:i" }}')
              } else {
-                 $('#send_datepicker').val(send_datepicker.getState().selected.dateObject.toCalendar('gregorian').toLocale('en').format('YYYY-MM-DD HH:mm'));
+                $('#send_datepicker').val('');
              }
-             if ($('#answer_datepicker').val() === '') {
-                 $('#answer_datepicker').val('');
+             if (selected_answer) {
+                $('#answer_datepicker').val(answer_datepicker.getState().selected.dateObject.toCalendar('gregorian').toLocale('en').format('YYYY-MM-DD HH:mm'));
+             } else if ($('#answer_datepicker').val() !== '') {
+                $('#answer_datepicker').val('{{ object.answered_at | date:"Y-m-d H:i" }}')
              } else {
-                 $('#answer_datepicker').val(answer_datepicker.getState().selected.dateObject.toCalendar('gregorian').toLocale('en').format('YYYY-MM-DD HH:mm'));
+                $('#answer_datepicker').val('');
              }
          });
 

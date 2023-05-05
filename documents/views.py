@@ -248,7 +248,7 @@ class ArticleDetailsView(LoginRequiredMixin, DetailView):
 class ArticleUpdateForm(LoginRequiredMixin, UpdateView):
     model = Article
     template_name = 'article/article_form.html'
-    form_class = ArticleForm
+    form_class = ArticleEditForm
     success_url = reverse_lazy('documents:article_list')
     extra_context = {
         'title': 'update',
@@ -305,7 +305,7 @@ class BookDetailsView(LoginRequiredMixin, DetailView):
 class BookUpdateForm(LoginRequiredMixin, UpdateView):
     model = Book
     template_name = 'book/book_form.html'
-    form_class = BookForm
+    form_class = BookEditForm
     success_url = reverse_lazy('documents:book_list')
     extra_context = {
         'title': 'update',
@@ -359,7 +359,7 @@ class ExperienceDetailsView(LoginRequiredMixin, DetailView):
 class ExperienceUpdateForm(LoginRequiredMixin, UpdateView):
     model = Experience
     template_name = 'experience/experience_form.html'
-    form_class = ExperienceForm
+    form_class = ExperienceEditForm
     success_url = reverse_lazy('documents:experience_list')
     extra_context = {
         'title': 'update',
@@ -410,7 +410,7 @@ class OrderDetailsView(LoginRequiredMixin, DetailView):
 class OrderUpdateForm(LoginRequiredMixin, UpdateView):
     model = Order
     template_name = 'order/order_form.html'
-    form_class = OrderForm
+    form_class = OrderEditForm
     success_url = reverse_lazy('documents:order_list')
     extra_context = {
         'title': 'update',
@@ -457,7 +457,7 @@ class InventionDetailsView(LoginRequiredMixin, DetailView):
 class InventionUpdateForm(LoginRequiredMixin, UpdateView):
     model = Invention
     template_name = 'invention/invention_form.html'
-    form_class = InventionForm
+    form_class = InventionEditForm
     success_url = reverse_lazy('documents:invention_list')
     extra_context = {
         'title': 'update',
@@ -503,7 +503,7 @@ class AssessmentDetailsView(LoginRequiredMixin, DetailView):
 class AssessmentUpdateForm(LoginRequiredMixin, UpdateView):
     model = Assessment
     template_name = 'assessment/assessment_form.html'
-    form_class = AssessmentForm
+    form_class = AssessmentEditForm
     success_url = reverse_lazy('documents:assessment_list')
     extra_context = {
         'title': 'update',
@@ -553,7 +553,7 @@ class IdeaDetailsView(LoginRequiredMixin, DetailView):
 class IdeaUpdateForm(LoginRequiredMixin, UpdateView):
     model = Idea
     template_name = 'idea/idea_form.html'
-    form_class = IdeaForm
+    form_class = IdeaEditForm
     success_url = reverse_lazy('documents:idea_list')
     extra_context = {
         'title': 'update',
@@ -607,7 +607,7 @@ class SeminarDetailsView(LoginRequiredMixin, DetailView):
 class SeminarUpdateForm(LoginRequiredMixin, UpdateView):
     model = Seminar
     template_name = 'seminar/seminar_form.html'
-    form_class = SeminarForm
+    form_class = SeminarEditForm
     success_url = reverse_lazy('documents:seminar_list')
     extra_context = {
         'title': 'update',
@@ -662,7 +662,7 @@ class WorkshopDetailsView(LoginRequiredMixin, DetailView):
 class WorkshopUpdateForm(LoginRequiredMixin, UpdateView):
     model = Workshop
     template_name = 'workshop/workshop_form.html'
-    form_class = WorkshopForm
+    form_class = WorkshopEditForm
     success_url = reverse_lazy('documents:workshop_list')
     extra_context = {
         'title': 'update',
@@ -714,7 +714,7 @@ class ConferenceDetailsView(LoginRequiredMixin, DetailView):
 class ConferenceUpdateForm(LoginRequiredMixin, UpdateView):
     model = Conference
     template_name = 'conference/conference_form.html'
-    form_class = ConferenceForm
+    form_class = ConferenceEditForm
     success_url = reverse_lazy('documents:conference_list')
     extra_context = {
         'title': 'update',
@@ -761,7 +761,7 @@ class VisitDetailsView(LoginRequiredMixin, DetailView):
 class VisitUpdateForm(LoginRequiredMixin, UpdateView):
     model = Visit
     template_name = 'visit/visit_form.html'
-    form_class = VisitForm
+    form_class = VisitEditForm
     success_url = reverse_lazy('documents:visit_list')
     extra_context = {
         'title': 'update',
@@ -811,7 +811,7 @@ class ThesisDetailsView(LoginRequiredMixin, DetailView):
 class ThesisUpdateForm(LoginRequiredMixin, UpdateView):
     model = Thesis
     template_name = 'thesis/thesis_form.html'
-    form_class = ThesisForm
+    form_class = ThesisEditForm
     success_url = reverse_lazy('documents:thesis_list')
     extra_context = {
         'title': 'update',
@@ -1046,7 +1046,7 @@ class ProjectDetailsView(LoginRequiredMixin, DetailView):
 class ProjectUpdateForm(LoginRequiredMixin, UpdateView):
     model = Project
     template_name = 'project/project_form.html'
-    form_class = ProjectForm
+    form_class = ProjectEditForm
     success_url = reverse_lazy('documents:project_list')
     extra_context = {
         'title': 'update',
@@ -1098,7 +1098,7 @@ class ReportDetailsView(LoginRequiredMixin, DetailView):
 class ReportUpdateForm(LoginRequiredMixin, UpdateView):
     model = Report
     template_name = 'report/report_form.html'
-    form_class = ReportForm
+    form_class = ReportEditForm
     success_url = reverse_lazy('documents:report_list')
     extra_context = {
         'title': 'update',
@@ -1153,7 +1153,7 @@ class ManualDetailsView(LoginRequiredMixin, DetailView):
 class ManualUpdateForm(LoginRequiredMixin, UpdateView):
     model = Manual
     template_name = 'manual/manual_form.html'
-    form_class = ManualForm
+    form_class = ManualEditForm
     success_url = reverse_lazy('documents:manual_list')
     extra_context = {
         'title': 'update',
@@ -1203,7 +1203,7 @@ class JournalDetailsView(LoginRequiredMixin, DetailView):
 class JournalUpdateForm(LoginRequiredMixin, UpdateView):
     model = Journal
     template_name = 'journal/journal_form.html'
-    form_class = JournalForm
+    form_class = JournalEditForm
     success_url = reverse_lazy('documents:journal_list')
     extra_context = {
         'title': 'update',
@@ -1251,7 +1251,7 @@ class FutureDetailsView(LoginRequiredMixin, DetailView):
 class FutureUpdateForm(LoginRequiredMixin, UpdateView):
     model = Future
     template_name = 'future/future_form.html'
-    form_class = FutureForm
+    form_class = FutureEditForm
     success_url = reverse_lazy('documents:future_list')
     extra_context = {
         'title': 'update',
@@ -1301,7 +1301,7 @@ class CoWorkDetailsView(LoginRequiredMixin, DetailView):
 class CoWorkUpdateForm(LoginRequiredMixin, UpdateView):
     model = CoWork
     template_name = 'cowork/cowork_form.html'
-    form_class = CoWorkForm
+    form_class = CoWorkEditForm
     success_url = reverse_lazy('documents:cowork_list')
     extra_context = {
         'title': 'update',
@@ -1343,7 +1343,7 @@ class CoreDetailsView(LoginRequiredMixin, DetailView):
 class CoreUpdateForm(LoginRequiredMixin, UpdateView):
     model = Core
     template_name = 'core/core_form.html'
-    form_class = CoreForm
+    form_class = CoreEditForm
     success_url = reverse_lazy('documents:core_list')
     extra_context = {
         'title': 'update',
@@ -1377,7 +1377,7 @@ class TechDetailsView(LoginRequiredMixin, DetailView):
 class TechUpdateForm(LoginRequiredMixin, UpdateView):
     model = Tech
     template_name = 'tech/tech_form.html'
-    form_class = TechForm
+    form_class = TechEditForm
     success_url = reverse_lazy('documents:tech_list')
     extra_context = {
         'title': 'update',
@@ -1411,7 +1411,7 @@ class CompanyDetailsView(LoginRequiredMixin, DetailView):
 class CompanyUpdateForm(LoginRequiredMixin, UpdateView):
     model = Company
     template_name = 'company/company_form.html'
-    form_class = CompanyForm
+    form_class = CompanyEditForm
     success_url = reverse_lazy('documents:company_list')
     extra_context = {
         'title': 'update',

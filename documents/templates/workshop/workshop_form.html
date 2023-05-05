@@ -261,9 +261,9 @@
         });
         center.val("{{ object.center.id  }}").trigger("change");
 
-        var datepickeroption = {
+        var selected_started_at = false;
+        var datepickeroption_started_at = {
             initialValueType: 'gregorian',
-            //inline: true,
             format: 'YYYY-MM-DD HH:mm',
             submitButton: {
                 enabled: true,
@@ -301,28 +301,77 @@
                     enabled: true
                 }
             },
+            onSelect: function () {
+                selected_started_at = true;
+            }
         };
 
-        var datepicker_started_at = $("#datepicker_started_at").persianDatepicker(datepickeroption);
+        var selected_finished_at = false;
+        var datepickeroption_finished_at = {
+            initialValueType: 'gregorian',
+            format: 'YYYY-MM-DD HH:mm',
+            submitButton: {
+                enabled: true,
+                text: {
+                    fa: "تایید",
+                    en: "Submit"
+                }
+            },
+            navigator: {
+                scroll: {
+                    enabled: false
+                }
+            },
+            calendar: {
+                persian: {
+                    leapYearMode: 'astronomical'
+                }
+            },
+            timePicker: {
+                enabled: true,
+                step: 5,
+                hour: {
+                    enabled: true,
+                    step: 1
+                },
+                minute: {
+                    enabled: true,
+                    step: 1
+                },
+                second: {
+                    enabled: false,
+                    step: 20
+                },
+                meridian: {
+                    enabled: true
+                }
+            },
+            onSelect: function () {
+                selected_finished_at = true;
+            }
+        };
+
+        var datepicker_started_at = $("#datepicker_started_at").persianDatepicker(datepickeroption_started_at);
         $('#datepicker_started_at').val('{{ object.started_at | j_format_date:"%Y-%m-%d %H:%M" }}');
 
-         $('#ar-form').submit(function () {
-
-             if ($('#datepicker_started_at').val() === '') {
-                 $('#datepicker_started_at').val('');
-             } else {
-                 $('#datepicker_started_at').val(datepicker_started_at.getState().selected.dateObject.toCalendar('gregorian').toLocale('en').format('YYYY-MM-DD HH:mm'));
-             }
-         });
-        var datepicker_finished_at = $("#datepicker_finished_at").persianDatepicker(datepickeroption);
+        var datepicker_finished_at = $("#datepicker_finished_at").persianDatepicker(datepickeroption_finished_at);
         $('#datepicker_finished_at').val('{{ object.finished_at | j_format_date:"%Y-%m-%d %H:%M" }}');
 
          $('#ar-form').submit(function () {
-
-             if ($('#datepicker_finished_at').val() === '') {
-                 $('#datepicker_finished_at').val('');
+             if (selected_started_at) {
+                $('#datepicker_started_at').val(datepicker_started_at.getState().selected.dateObject.toCalendar('gregorian').toLocale('en').format('YYYY-MM-DD HH:mm'));
+             } else if ($('#datepicker_started_at').val() !== '') {
+                $('#datepicker_started_at').val('{{ object.started_at | date:"Y-m-d H:i" }}')
              } else {
-                 $('#datepicker_finished_at').val(datepicker_finished_at.getState().selected.dateObject.toCalendar('gregorian').toLocale('en').format('YYYY-MM-DD HH:mm'));
+                $('#datepicker_started_at').val('');
+             }
+
+            if (selected_finished_at) {
+                $('#datepicker_finished_at').val(datepicker_finished_at.getState().selected.dateObject.toCalendar('gregorian').toLocale('en').format('YYYY-MM-DD HH:mm'));
+             } else if ($('#datepicker_finished_at').val() !== '') {
+                $('#datepicker_finished_at').val('{{ object.finished_at | date:"Y-m-d H:i" }}')
+             } else {
+                $('#datepicker_finished_at').val('');
              }
          });
 

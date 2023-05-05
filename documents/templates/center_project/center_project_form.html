@@ -189,60 +189,6 @@
         });
         center.val("{{ object.center.id  }}").trigger("change");
 
-        var datepickeroption = {
-            initialValueType: 'gregorian',
-            //inline: true,
-            format: 'YYYY-MM-DD HH:mm',
-            submitButton: {
-                enabled: true,
-                text: {
-                    fa: "تایید",
-                    en: "Submit"
-                }
-            },
-            navigator: {
-                scroll: {
-                    enabled: false
-                }
-            },
-            calendar: {
-                persian: {
-                    leapYearMode: 'astronomical'
-                }
-            },
-            timePicker: {
-                enabled: true,
-                step: 5,
-                hour: {
-                    enabled: true,
-                    step: 1
-                },
-                minute: {
-                    enabled: true,
-                    step: 1
-                },
-                second: {
-                    enabled: false,
-                    step: 20
-                },
-                meridian: {
-                    enabled: true
-                }
-            },
-        };
-
-        var datepicker = $("#datepicker").persianDatepicker(datepickeroption);
-        $('#datepicker').val('{{ object.started_at | j_format_date:"%Y-%m-%d %H:%M" }}');
-
-         $('#ar-form').submit(function () {
-
-             if ($('#datepicker').val() === '') {
-                 $('#datepicker').val('');
-             } else {
-                 $('#datepicker').val(datepicker.getState().selected.dateObject.toCalendar('gregorian').toLocale('en').format('YYYY-MM-DD HH:mm'));
-             }
-         });
-
 		// this is the id of the form
 		$("#delete-form").submit(function (e) {
 			var form = $(this);

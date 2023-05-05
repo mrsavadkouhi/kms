@@ -118,7 +118,7 @@
                   <div class="input-group-append">
                     <span class="input-group-text required" id="field_label">استاد راهنما: </span>
                   </div>
-                    <input type="text" class="form-control" value="{{ object.professor }}" name="field" aria-describedby="field_label">
+                    <input type="text" class="form-control" value="{{ object.professor }}" name="professor" aria-describedby="field_label">
                 </div>
                 <div class="input-group mb-2">
                   <div class="input-group-append">
@@ -256,9 +256,9 @@
         });
         center.val("{{ object.center.id  }}").trigger("change");
 
+        var selected = false;
         var datepickeroption = {
             initialValueType: 'gregorian',
-            //inline: true,
             format: 'YYYY-MM-DD HH:mm',
             submitButton: {
                 enabled: true,
@@ -296,24 +296,76 @@
                     enabled: true
                 }
             },
+            onSelect: function () {
+                selected = true;
+            }
+        };
+
+        var selected_reg = false;
+        var datepickeroption_reg = {
+            initialValueType: 'gregorian',
+            format: 'YYYY-MM-DD HH:mm',
+            submitButton: {
+                enabled: true,
+                text: {
+                    fa: "تایید",
+                    en: "Submit"
+                }
+            },
+            navigator: {
+                scroll: {
+                    enabled: false
+                }
+            },
+            calendar: {
+                persian: {
+                    leapYearMode: 'astronomical'
+                }
+            },
+            timePicker: {
+                enabled: true,
+                step: 5,
+                hour: {
+                    enabled: true,
+                    step: 1
+                },
+                minute: {
+                    enabled: true,
+                    step: 1
+                },
+                second: {
+                    enabled: false,
+                    step: 20
+                },
+                meridian: {
+                    enabled: true
+                }
+            },
+            onSelect: function () {
+                selected_reg = true;
+            }
         };
 
         var datepicker = $("#datepicker").persianDatepicker(datepickeroption);
         $('#datepicker').val('{{ object.presented_at | j_format_date:"%Y-%m-%d %H:%M" }}');
 
-        var datepicker_reg = $("#datepicker_reg").persianDatepicker(datepickeroption);
+        var datepicker_reg = $("#datepicker_reg").persianDatepicker(datepickeroption_reg);
         $('#datepicker_reg').val('{{ object.registered_at | j_format_date:"%Y-%m-%d %H:%M" }}');
 
          $('#ar-form').submit(function () {
-             if ($('#datepicker').val() === '') {
-                 $('#datepicker').val('');
+            if (selected) {
+                $('#datepicker').val(datepicker.getState().selected.dateObject.toCalendar('gregorian').toLocale('en').format('YYYY-MM-DD HH:mm'));
+             } else if ($('#datepicker').val() !== '') {
+                $('#datepicker').val('{{ object.presented_at | date:"Y-m-d H:i" }}')
              } else {
-                 $('#datepicker').val(datepicker.getState().selected.dateObject.toCalendar('gregorian').toLocale('en').format('YYYY-MM-DD HH:mm'));
+                $('#datepicker').val('');
              }
-             if ($('#datepicker_reg').val() === '') {
-                 $('#datepicker_reg').val('');
+            if (selected_reg) {
+                $('#datepicker_reg').val(datepicker_reg.getState().selected.dateObject.toCalendar('gregorian').toLocale('en').format('YYYY-MM-DD HH:mm'));
+             } else if ($('#datepicker_reg').val() !== '') {
+                $('#datepicker_reg').val('{{ object.registered_at | date:"Y-m-d H:i" }}')
              } else {
-                 $('#datepicker_reg').val(datepicker_reg.getState().selected.dateObject.toCalendar('gregorian').toLocale('en').format('YYYY-MM-DD HH:mm'));
+                $('#datepicker_reg').val('');
              }
          });
 

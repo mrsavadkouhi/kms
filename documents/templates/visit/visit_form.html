@@ -198,9 +198,9 @@
         });
         center.val("{{ object.center.id  }}").trigger("change");
 
+        var selected = false;
         var datepickeroption = {
             initialValueType: 'gregorian',
-            //inline: true,
             format: 'YYYY-MM-DD HH:mm',
             submitButton: {
                 enabled: true,
@@ -238,6 +238,9 @@
                     enabled: true
                 }
             },
+            onSelect: function () {
+                selected = true;
+            }
         };
 
         var datepicker = $("#datepicker").persianDatepicker(datepickeroption);
@@ -245,10 +248,12 @@
 
          $('#ar-form').submit(function () {
 
-             if ($('#datepicker').val() === '') {
-                 $('#datepicker').val('');
+            if (selected) {
+                $('#datepicker').val(datepicker.getState().selected.dateObject.toCalendar('gregorian').toLocale('en').format('YYYY-MM-DD HH:mm'));
+             } else if ($('#datepicker').val() !== '') {
+                $('#datepicker').val('{{ object.visited_at | date:"Y-m-d H:i" }}')
              } else {
-                 $('#datepicker').val(datepicker.getState().selected.dateObject.toCalendar('gregorian').toLocale('en').format('YYYY-MM-DD HH:mm'));
+                $('#datepicker').val('');
              }
          });
 

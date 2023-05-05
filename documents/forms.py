@@ -42,16 +42,34 @@ class OrderForm(forms.ModelForm):
         fields = '__all__'
 
 
+class OrderEditForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        exclude = ('attachments',)
+
+
 class InventionForm(forms.ModelForm):
     class Meta:
         model = Invention
         fields = '__all__'
 
 
+class InventionEditForm(forms.ModelForm):
+    class Meta:
+        model = Invention
+        exclude = ('attachments',)
+
+
 class AssessmentForm(forms.ModelForm):
     class Meta:
         model = Assessment
         fields = '__all__'
+
+
+class AssessmentEditForm(forms.ModelForm):
+    class Meta:
+        model = Assessment
+        exclude = ('attachments',)
 
 
 class CenterForm(forms.ModelForm):
@@ -81,7 +99,7 @@ class ResumeEditForm(forms.ModelForm):
     title = forms.CharField(required=True)
     class Meta:
         model = Resume
-        fields = '__all__'
+        exclude = ('attachments',)
 
 
 class ArticleForm(forms.ModelForm):
@@ -90,10 +108,22 @@ class ArticleForm(forms.ModelForm):
         fields = '__all__'
 
 
+class ArticleEditForm(forms.ModelForm):
+    class Meta:
+        model = Article
+        exclude = ('attachments',)
+
+
 class ExperienceForm(forms.ModelForm):
     class Meta:
         model = Experience
         fields = '__all__'
+
+
+class ExperienceEditForm(forms.ModelForm):
+    class Meta:
+        model = Experience
+        exclude = ('attachments',)
 
 
 class BookForm(forms.ModelForm):
@@ -102,10 +132,21 @@ class BookForm(forms.ModelForm):
         fields = '__all__'
 
 
+class BookEditForm(forms.ModelForm):
+    class Meta:
+        model = Book
+        exclude = ('attachments',)
+
+
 class IdeaForm(forms.ModelForm):
     class Meta:
         model = Idea
         fields = '__all__'
+
+class IdeaEditForm(forms.ModelForm):
+    class Meta:
+        model = Idea
+        exclude = ('attachments',)
 
 
 class SeminarForm(forms.ModelForm):
@@ -114,10 +155,22 @@ class SeminarForm(forms.ModelForm):
         fields = '__all__'
 
 
+class SeminarEditForm(forms.ModelForm):
+    class Meta:
+        model = Seminar
+        exclude = ('attachments',)
+
+
 class WorkshopForm(forms.ModelForm):
     class Meta:
         model = Workshop
         fields = '__all__'
+
+
+class WorkshopEditForm(forms.ModelForm):
+    class Meta:
+        model = Workshop
+        exclude = ('attachments',)
 
 
 class ConferenceForm(forms.ModelForm):
@@ -126,10 +179,22 @@ class ConferenceForm(forms.ModelForm):
         fields = '__all__'
 
 
+class ConferenceEditForm(forms.ModelForm):
+    class Meta:
+        model = Conference
+        exclude = ('attachments',)
+
+
 class VisitForm(forms.ModelForm):
     class Meta:
         model = Visit
         fields = '__all__'
+
+
+class VisitEditForm(forms.ModelForm):
+    class Meta:
+        model = Visit
+        exclude = ('attachments',)
 
 
 class ManualForm(forms.ModelForm):
@@ -138,10 +203,22 @@ class ManualForm(forms.ModelForm):
         fields = '__all__'
 
 
+class ManualEditForm(forms.ModelForm):
+    class Meta:
+        model = Manual
+        exclude = ('attachments',)
+
+
 class ReportForm(forms.ModelForm):
     class Meta:
         model = Report
         fields = '__all__'
+
+
+class ReportEditForm(forms.ModelForm):
+    class Meta:
+        model = Report
+        exclude = ('attachments',)
 
 
 class ProjectForm(forms.ModelForm):
@@ -150,10 +227,22 @@ class ProjectForm(forms.ModelForm):
         fields = '__all__'
 
 
+class ProjectEditForm(forms.ModelForm):
+    class Meta:
+        model = Project
+        exclude = ('attachments', 'middle_attachments', 'end_attachments')
+
+
 class ThesisForm(forms.ModelForm):
     class Meta:
         model = Thesis
         fields = '__all__'
+
+
+class ThesisEditForm(forms.ModelForm):
+    class Meta:
+        model = Thesis
+        exclude = ('attachments',)
 
 
 class JournalForm(forms.ModelForm):
@@ -162,10 +251,22 @@ class JournalForm(forms.ModelForm):
         fields = '__all__'
 
 
+class JournalEditForm(forms.ModelForm):
+    class Meta:
+        model = Journal
+        exclude = ('attachments',)
+
+
 class FutureForm(forms.ModelForm):
     class Meta:
         model = Future
         fields = '__all__'
+
+
+class FutureEditForm(forms.ModelForm):
+    class Meta:
+        model = Future
+        exclude = ('attachments',)
 
 
 class CoWorkForm(forms.ModelForm):
@@ -174,10 +275,22 @@ class CoWorkForm(forms.ModelForm):
         fields = '__all__'
 
 
+class CoWorkEditForm(forms.ModelForm):
+    class Meta:
+        model = CoWork
+        exclude = ('attachments',)
+
+
 class CoreForm(forms.ModelForm):
     class Meta:
         model = Core
         fields = '__all__'
+
+
+class CoreEditForm(forms.ModelForm):
+    class Meta:
+        model = Core
+        exclude = ('attachments',)
 
 
 class TechForm(forms.ModelForm):
@@ -186,10 +299,22 @@ class TechForm(forms.ModelForm):
         fields = '__all__'
 
 
+class TechEditForm(forms.ModelForm):
+    class Meta:
+        model = Tech
+        exclude = ('attachments',)
+
+
 class CompanyForm(forms.ModelForm):
     class Meta:
         model = Company
         fields = '__all__'
+
+
+class CompanyEditForm(forms.ModelForm):
+    class Meta:
+        model = Company
+        exclude = ('attachments',)
 
 
 class CenterPersonnelForm(forms.ModelForm):
