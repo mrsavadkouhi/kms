@@ -14,7 +14,7 @@
 				<a>آموزش و امور محققین</a>
 			</li>
 			<li class="breadcrumb-item active">
-                <a  href="{% url 'documents:assessment_list' %}" >فهرست میز خدمتی و نظام ارزیابی</a>
+                <a  href="{% url 'documents:assessment_list' %}" >فهرست سیر خدمتی و نظام ارزیابی</a>
 			</li>
 		</ol>
 	</div>
@@ -22,7 +22,7 @@
 	<div class="col-md-2">
 		<div class="title-action float-right">
             <div class="btn-group">
-                <a href="{% url 'documents:assessment_create' %}" class="btn btn-outline-primary"><i class="fa small fa-plus"></i> <i class="fa fa-chart-line"></i> افزودن میز خدمتی جدید</a>
+                <a href="{% url 'documents:assessment_create' %}" class="btn btn-outline-primary"><i class="fa small fa-plus"></i> <i class="fa fa-chart-line"></i> افزودن سیر خدمتی جدید</a>
 
             </div>
             </div>
@@ -130,13 +130,13 @@
 						<span aria-hidden="true">&times;</span>
 						<span class="sr-only">بستن</span>
 					</button>
-					<h5 class="modal-title" id="exampleModalLabel">حذف میز خدمتی</h5>
+					<h5 class="modal-title" id="exampleModalLabel">حذف سیر خدمتی</h5>
 				</div>
 				<form method="post" id="delete-form">
 					{% csrf_token %}
 					<div class="modal-body">
 						<p class="float-right">
-							آیا واقعا می خواهید میز خدمتی
+							آیا واقعا می خواهید سیر خدمتی
 							<code>
 								<strong id="delete-name"></strong>
 							</code>
@@ -186,7 +186,7 @@
 								.prepend("<tr><th colspan='13'>" +
 									"<img src='http://127.0.0.1:8000/static/img/logo.png' class='float-left obj-fit-contain' style='position:relative;width:15%' />" +
 									"<img src='http://127.0.0.1:8000/static/img/sepah_balck.png' class='float-right obj-fit-contain' style='position:relative;width:15%' />" +
-									"<h2 class='text-center'><b>میز خدمتی و نظام ارزیابی</b></h2>" +
+									"<h2 class='text-center'><b>سیر خدمتی و نظام ارزیابی</b></h2>" +
 									"</th>" +
 									"</tr>");
                             $(win.document.body).find('tbody')

@@ -46,7 +46,7 @@
 				<div><br></div>
 				<h3><strong>عنوان: </strong>{{ object.title }}</h3>
 				<h3><strong>شناسه: </strong>{{ object.organization_code }}</h3>
-				<h3><strong>حوزه تخصصی: </strong>{{ object.field }}</h3>
+				<h3><strong>پروژه مرتبط: </strong>{{ object.field }}</h3>
 				<h3><strong>ایده پردازان: </strong>
                 {% for o in object.producers.all %}
                     {{ o.title }}-{{ o.organization_code }},
@@ -58,7 +58,7 @@
 {#                        {{ obj.title }}-{{ obj.organization_code }},#}
 {#                    {% endfor %}#}
 {#                </h3>#}
-				<h3><strong>ارزشیابی: </strong>{{ object.assessment_result }}</h3>
+				<h3><strong>داور: </strong>{{ object.assessment_result }}</h3>
 				<h3><strong>تاریخ ارائه: </strong>{{ object.presented_at | j_format_date:"%Y/%m/%d"  }}</h3>
 				<h3><strong>مرکز تحقیقاتی: </strong>{{ object.center.title }}</h3>
                 <h3><strong>توضیحات: </strong>{{ object.description }}</h3>

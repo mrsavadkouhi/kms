@@ -74,7 +74,7 @@
                     </li>
                     <li {% if request.resolver_match.view_name == 'documents:order_list' %}class="active"{% endif %}>
                         <a href="{% url 'documents:order_list' %}" ><i class="fa fa-diamond"></i>
-                            <span class="nav-label">کمیته داوران</span>
+                            <span class="nav-label">ارزیابی و داوری</span>
                         </a>
                     </li>
                     <li {% if request.resolver_match.view_name == 'documents:seminar_list' %}class="active"{% endif %}>
@@ -89,7 +89,7 @@
                     </li>
                     <li {% if request.resolver_match.view_name == 'documents:conference_list' %}class="active"{% endif %}>
                         <a href="{% url 'documents:conference_list' %}" ><i class="fa fa-ticket-alt"></i>
-                            <span class="nav-label">ثبت رویدادها و همایش ها</span>
+                            <span class="nav-label">بازدید و نمایشگاه</span>
                         </a>
                     </li>
 
@@ -181,7 +181,7 @@
                     </li>
                     <li {% if request.resolver_match.view_name == 'documents:assessment_list' %}class="active"{% endif %}>
                         <a href="{% url 'documents:assessment_list' %}" ><i class="fa fa-chart-line"></i>
-                            <span class="nav-label">میز خدمتی و نظام ارزیابی</span>
+                            <span class="nav-label">سیر خدمتی و نظام ارزیابی</span>
                         </a>
                     </li>
                     <li {% if request.resolver_match.view_name == 'documents:workshop_list' %}class="active"{% endif %}>

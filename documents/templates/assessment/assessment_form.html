@@ -18,7 +18,7 @@
 
 {% endblock %}
 
-{% block head_title %}{% if title == 'update' %}جزئیات میزخدمتی{% else %}ایجاد میز خدمتی{% endif %}{% endblock %}
+{% block head_title %}{% if title == 'update' %}جزئیات سیرخدمتی{% else %}ایجاد سیر خدمتی{% endif %}{% endblock %}
 
 
 {% block title-breadcrumb %}
@@ -30,13 +30,13 @@
 				<a>آموزش و امور محققین</a>
 			</li>
 			<li class="breadcrumb-item">
-                <a href="{% url 'documents:assessment_list' %}" >فهرست میز خدمتی و نظام ارزیابی</a>
+                <a href="{% url 'documents:assessment_list' %}" >فهرست سیر خدمتی و نظام ارزیابی</a>
 			</li>
 			<li class="breadcrumb-item active">
                 {% if title == 'update' %}
                     <a href="{% url 'documents:assessment_update' object.id %}"><strong>ویرایش {{ object.title }}</strong></a>
                 {% else %}
-                    <a href="{% url 'documents:assessment_create' %}"><strong>افزودن میز خدمتی جدید</strong></a>
+                    <a href="{% url 'documents:assessment_create' %}"><strong>افزودن سیر خدمتی جدید</strong></a>
                 {% endif %}
 			</li>
 		</ol>
