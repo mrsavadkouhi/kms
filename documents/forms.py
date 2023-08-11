@@ -721,17 +721,22 @@ class DocumentImportForm(forms.Form):
             if not self.check_organization_code('T',organization_code):
                 raise forms.ValidationError("فرمت اطلاعات ستون شناسه در خط " + str(error_line) + " فایل صحیح نیست.")
 
-            measure=row[4]
-            if measure in ['nan', None, '']:
-                raise forms.ValidationError("ستون رشته تحصیلی در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            thesis_type=row[4]
+            if thesis_type in ['nan', None, '']:
+                raise forms.ValidationError("ستون نوع پایان نامه در خط " + str(error_line) + " نمی تواند خالی باشد.")
 
-            degree=row[5]
-            if degree in ['nan', None, '']:
-                raise forms.ValidationError("ستون مقطع تحصیلی در خط " + str(error_line) + " نمی تواند خالی باشد.")
-
-            university=row[6]
+            university=row[5]
             if university in ['nan', None, '']:
                 raise forms.ValidationError("ستون دانشگاه در خط " + str(error_line) + " نمی تواند خالی باشد.")
+
+            registered_at=row[6]
+            if registered_at in ['nan', None, '']:
+                raise forms.ValidationError("ستون تاریخ جذب در خط " + str(error_line) + " نمی تواند خالی باشد.")
+            try:
+                registered_at=jdatetime.datetime.strptime(registered_at, "%Y/%m/%d")
+                registered_at=registered_at.togregorian()
+            except:
+                raise forms.ValidationError("فرمت اطلاعات در ستون تاریخ در خط " + str(error_line) + " فایل صحیح نیست.")
 
             presented_at=row[7]
             if presented_at in ['nan', None, '']:
@@ -763,12 +768,12 @@ class DocumentImportForm(forms.Form):
             field = row[2]
             doc_type='Thesis'
 
-            cleaned_data.append((title,field, organization_code, doc_type, producer_obj, presented_at, measure, degree, university, center))
+            cleaned_data.append((title,field, organization_code, doc_type, producer_obj, thesis_type, registered_at, presented_at, university, center))
         return cleaned_data
 
     def import_theses(self, excel_data):
         cleaned_data = self.check_theses(excel_data)
-        for title,field, organization_code, doc_type, producer_obj, presented_at, measure, degree, university, center in cleaned_data:
+        for title,field, organization_code, doc_type, producer_obj, thesis_type, registered_at, presented_at, university, center in cleaned_data:
             thesis=Thesis.objects.create(
                 title=title,
                 field=field,
@@ -776,8 +781,8 @@ class DocumentImportForm(forms.Form):
                 type=doc_type,
                 producer=producer_obj,
                 presented_at=presented_at,
-                measure=measure,
-                degree=degree,
+                registered_at=registered_at,
+                thesis_type=thesis_type,
                 university=university,
                 center=center,
             )
