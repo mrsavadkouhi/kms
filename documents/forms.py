@@ -765,18 +765,18 @@ class DocumentImportForm(forms.Form):
                 raise forms.ValidationError(
                     "فرمت اطلاعات ستون دانشجو در خط " + str(error_line) + " فایل صحیح نیست")
 
-            field = row[2]
+            professor = row[2]
             doc_type='Thesis'
 
-            cleaned_data.append((title,field, organization_code, doc_type, producer_obj, thesis_type, registered_at, presented_at, university, center))
+            cleaned_data.append((title,professor, organization_code, doc_type, producer_obj, thesis_type, registered_at, presented_at, university, center))
         return cleaned_data
 
     def import_theses(self, excel_data):
         cleaned_data = self.check_theses(excel_data)
-        for title,field, organization_code, doc_type, producer_obj, thesis_type, registered_at, presented_at, university, center in cleaned_data:
+        for title,professor, organization_code, doc_type, producer_obj, thesis_type, registered_at, presented_at, university, center in cleaned_data:
             thesis=Thesis.objects.create(
                 title=title,
-                field=field,
+                professor=professor,
                 organization_code=organization_code,
                 type=doc_type,
                 producer=producer_obj,
